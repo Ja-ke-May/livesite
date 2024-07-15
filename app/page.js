@@ -20,7 +20,7 @@ export default function Home() {
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
       />
-      <main className="flex lg:max-w-[75%] flex-col items-center">
+      <main className="flex flex-col items-center justify-center lg:max-w-[75%] w-full mx-auto">
         <Viewer />
         <Votes />
         <Chat />

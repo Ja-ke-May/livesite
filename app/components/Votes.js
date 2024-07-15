@@ -38,7 +38,7 @@ const Votes = () => {
           {/* Sliding bar */}
         </div>
       </div>
-      <span className="text-yellow-400 text-3xl pr-2 md:pr-10 cursor-pointer" onClick={handleClickStar}>
+      <span className="text-yellow-400 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer" onClick={handleClickStar}>
         &#11088;
       </span> {/* Yellow star */}
     </div>
