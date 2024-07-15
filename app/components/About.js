@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from 'react';
-import Navbar from './/Navbar'; 
+import Navbar from './Navbar'; 
 import BottomNavbar from './BottomNavbar';
 
-const Profile = () => {
+const About = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Example initial state
-  const currentPath = '/profile'; 
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const currentPath = '/about'; 
   
     return (
       <>
@@ -15,7 +15,7 @@ const Profile = () => {
         <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} currentPath={currentPath} />
         <BottomNavbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} currentPath={currentPath} />
 <div>
-        <h1 className='mt-20'>Profile</h1>
+        <h1 className='mt-20'>About Us</h1>
         {/* Add profile details here */}
         </div>
 
@@ -24,5 +24,5 @@ const Profile = () => {
     );
   };
   
-  export default Profile;
+  export default About;
   

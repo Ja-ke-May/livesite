@@ -1,4 +1,6 @@
-import AuthForm from '../components/AuthForm';
+// pages/LogIn.js
+import React from 'react';
+import AuthForm from './AuthForm';
 
 const LogIn = () => <AuthForm isSignup={false} />;
 
