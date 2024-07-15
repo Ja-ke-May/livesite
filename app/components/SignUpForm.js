@@ -59,7 +59,7 @@ const SignUpForm = () => {
           {errorMessage}
         </div>
       )}
-      <div className="mb-4 mt-4">
+      <div className="mb-4">
         <label htmlFor="signUpName" className="block text-sm font-medium text-gray-200">Name</label>
         <input
           type="text"

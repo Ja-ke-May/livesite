@@ -7,7 +7,7 @@ import Menu from './menu/Menu';
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath }) => {
   const linkClasses = "bg-gray-800/80 text-white px-2 md:px-4 py-2 mx-1 md:mx-2 rounded-t-lg hover:bg-[#000110]";
-  const activeLinkClasses = "bg-[#000110] text-white px-2 md:px-4 py-2 mx-1 md:mx-2 rounded-t-lg"; // Style for active link
+  const activeLinkClasses = "bg-[#000110] text-white px-2 md:px-4 py-2 mx-1 md:mx-2 rounded-t-lg"; 
 
   const isActive = (href) => href === currentPath;
 
