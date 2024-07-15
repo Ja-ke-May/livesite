@@ -31,16 +31,17 @@ const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath }) => {
             id="menu-list"
             className='fixed top-0 right-0 md:pr-2 md:pt-2 bg-gray-800/80 text-white text-xl md:text-2xl p-4 z-50 rounded-bl-3xl'
           >
-            <Link href="/about" passHref>
+            
+            <Link href="/Leaderboards" passHref>
               <button 
                 className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block mt-10 md:pt-2" 
-                title='about'
-                onClick={() => handleLinkClick('/about')}
+                title='leaderboards'
+                onClick={() => handleLinkClick('/Leaderboards')}
               >
-                About
+                Leaderboards
               </button>
             </Link>
-            
+
             <Link href="/tokens" passHref>
               <button 
                 className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block" 
@@ -51,13 +52,13 @@ const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath }) => {
               </button>
             </Link>
 
-            <Link href="/Leaderboards" passHref>
+            <Link href="/about" passHref>
               <button 
                 className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block" 
-                title='leaderboards'
-                onClick={() => handleLinkClick('/Leaderboards')}
+                title='about'
+                onClick={() => handleLinkClick('/about')}
               >
-                Leaderboards
+                About
               </button>
             </Link>
 
