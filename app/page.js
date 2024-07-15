@@ -6,6 +6,7 @@ import Chat from './components/Chat';
 import Viewer from './components/Viewer';
 import Votes from './components/Votes';
 import CommentBox from './components/CommentBox';
+import ViewersOnline from './components/ViewersOnline';
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Example initial state
@@ -25,6 +26,7 @@ export default function Home() {
         <Chat />
       </main>
       <CommentBox />
+      <ViewersOnline />
     </div>
   );
 }

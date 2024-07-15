@@ -1,6 +1,3 @@
-"use client";
-
-// components/SignUpForm.js
 import React, { useState } from 'react';
 
 const SignUpForm = () => {
@@ -9,10 +6,17 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signUpName, setSignUpName] = useState('');
   const [dob, setDob] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false); // State for terms acceptance
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSignUpSubmit = (event) => {
     event.preventDefault();
+
+    // Validate terms acceptance
+    if (!termsAccepted) {
+      setErrorMessage('Please accept the terms and conditions.');
+      return;
+    }
 
     // Calculate age based on DOB
     const today = new Date();
@@ -41,6 +45,7 @@ const SignUpForm = () => {
     setConfirmPassword('');
     setSignUpName('');
     setDob('');
+    setTermsAccepted(false);
     setErrorMessage('');
   };
 
@@ -50,7 +55,7 @@ const SignUpForm = () => {
         Sign Up Form
       </div>
       {errorMessage && (
-        <div className="mb-4 text-red-500 text-sm">
+        <div className="m-2 text-red-500 text-sm">
           {errorMessage}
         </div>
       )}
@@ -108,6 +113,19 @@ const SignUpForm = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
+      </div>
+      <div className="m-4">
+        <input
+          type="checkbox"
+          id="termsConditions"
+          className="mr-2"
+          checked={termsAccepted}
+          onChange={(e) => setTermsAccepted(e.target.checked)}
+          required
+        />
+        <label htmlFor="termsConditions" className="text-gray-200 underline">
+          Please confirm you have read our terms and conditions
+        </label>
       </div>
       <div className="mb-4">
         <button
