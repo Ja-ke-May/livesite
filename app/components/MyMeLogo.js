@@ -3,7 +3,7 @@ import React from 'react';
 
 const MyMeLogo = () => {
   return (
-    <div className="absolute top-0 left-0 flex items-center text-[#000110] pt-4 md:pt-5 md:pr-4 md:pb-4 md:pl-4">
+    <div className="absolute top-0 left-0 flex items-center text-[#000110] pt-1 pl-1 md:pt-2 md:pr-4 md:pb-4 md:pl-4">
       <div className="flex items-center justify-center">
         <p className="text-5xl font-black">M</p>
       </div>
