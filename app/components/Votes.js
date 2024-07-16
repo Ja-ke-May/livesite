@@ -53,11 +53,11 @@ const Votes = () => {
   return (
     <div className="mt-4 w-full text-center flex justify-between items-center relative">
       {showOverlay && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
           {overlayIcon ? (
             <span className="text-red-700 text-9xl animate-pulse">{overlayIcon}</span>
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               {stars.map((star, index) => (
                 <span
                   key={index}
