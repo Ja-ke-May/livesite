@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Votes = () => {
-  const [slidePosition, setSlidePosition] = useState(95);
+  const [slidePosition, setSlidePosition] = useState(50);
   const [isPulsing, setIsPulsing] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [overlayIcon, setOverlayIcon] = useState(null);
