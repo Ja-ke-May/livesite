@@ -4,18 +4,20 @@ const SignUpForm = () => {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [signUpName, setSignUpName] = useState('');
+  const [userName, setUserName] = useState('');
   const [dob, setDob] = useState('');
-  const [termsAccepted, setTermsAccepted] = useState(false); // State for terms acceptance
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSignUpSubmit = (event) => {
     event.preventDefault();
 
+    const errors = [];
+
     // Validate terms acceptance
     if (!termsAccepted) {
-      setErrorMessage('Please accept the terms and conditions.');
-      return;
+      errors.push('Please accept the terms and conditions.');
     }
 
     // Calculate age based on DOB
@@ -30,43 +32,70 @@ const SignUpForm = () => {
     }
 
     if (age < 18) {
-      setErrorMessage('You must be at least 18 years old to sign up.');
-      return;
+      errors.push('You must be at least 18 years old to sign up.');
     }
 
     if (signUpPassword !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
+      errors.push('Passwords do not match.');
+    }
+
+    // Password requirements
+    const passwordRequirements = [
+      { regex: /.{6,}/, message: 'Password must be at least 6 characters long.' },
+      { regex: /[A-Z]/, message: 'Password must contain at least one uppercase letter.' },
+      { regex: /[a-z]/, message: 'Password must contain at least one lowercase letter.' },
+      { regex: /[0-9]/, message: 'Password must contain at least one number.' },
+      { regex: /[!@#$%^&*(),.?":{}|<>]/, message: 'Password must contain at least one special character.' },
+    ];
+
+    for (const requirement of passwordRequirements) {
+      if (!requirement.regex.test(signUpPassword)) {
+        errors.push(requirement.message);
+      }
+    }
+
+    if (errors.length > 0) {
+      setErrorMessage(errors.join(' '));
+      setSuccessMessage('');
       return;
     }
 
-    // Handle sign-up logic here
+    // Handle sign-up logic here (simulated success message)
+    setSuccessMessage('Welcome to MyMe! Please check your email to activate your account.');
+    setErrorMessage('');
+
+    // Reset form fields
     setSignUpEmail('');
     setSignUpPassword('');
     setConfirmPassword('');
-    setSignUpName('');
+    setUserName('');
     setDob('');
     setTermsAccepted(false);
-    setErrorMessage('');
   };
 
   return (
     <form onSubmit={handleSignUpSubmit} className="max-w-sm mx-auto mt-10 pl-5 pr-5">
-      <div className="flex justify-center align-center pt-10 text-lg font-bold text-gray-200">
-        Sign Up Form
+      <div className="flex justify-center align-center pt-5 text-lg font-bold text-gray-200">
+        Sign Up
       </div>
       {errorMessage && (
         <div className="m-2 text-red-500 text-sm">
           {errorMessage}
         </div>
       )}
+      {successMessage && (
+        <div className="m-2 text-green-500 text-sm">
+          {successMessage}
+        </div>
+      )}
       <div className="mb-4">
-        <label htmlFor="signUpName" className="block text-sm font-medium text-gray-200">Name</label>
+        <label htmlFor="userName" className="block text-sm font-medium text-gray-200">Username</label>
         <input
           type="text"
-          id="signUpName"
+          id="userName"
           className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm"
-          value={signUpName}
-          onChange={(e) => setSignUpName(e.target.value)}
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
           required
         />
       </div>
@@ -123,18 +152,16 @@ const SignUpForm = () => {
           onChange={(e) => setTermsAccepted(e.target.checked)}
           required
         />
-        <label htmlFor="termsConditions" className="text-gray-200 underline">
-          Please confirm you have read our terms and conditions
+        <label htmlFor="termsConditions" className="text-gray-200">
+          Please confirm you have read our <span className='underline'>Terms and Conditions</span>
         </label>
       </div>
-      <div className="mb-4">
-        <button
-          type="submit"
-          className="w-full mt-4 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-        >
-          Sign Up
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="w-full mb-4 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+      >
+        Sign Up
+      </button>
     </form>
   );
 };

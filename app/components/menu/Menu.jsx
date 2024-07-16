@@ -42,13 +42,13 @@ const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath, isDarkBa
               </button>
             </Link>
 
-            <Link href="/tokens" passHref>
+            <Link href="/shop" passHref>
               <button 
                 className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block" 
-                title='tokens'
-                onClick={() => handleLinkClick('/tokens')}
+                title='shop'
+                onClick={() => handleLinkClick('/shop')}
               >
-                Tokens
+                Shop
               </button>
             </Link>
 
@@ -59,16 +59,6 @@ const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath, isDarkBa
                 onClick={() => handleLinkClick('/about')}
               >
                 About
-              </button>
-            </Link>
-
-            <Link href="/help" passHref>
-              <button 
-                className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block" 
-                title='help'
-                onClick={() => handleLinkClick('/help')}
-              >
-                Help
               </button>
             </Link>
 
