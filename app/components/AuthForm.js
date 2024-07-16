@@ -1,16 +1,36 @@
 "use client";
 
 // components/AuthForm.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Link from 'next/link';
 import SignUpForm from './SignUpForm';
+import MyMeLogo from './MyMeLogo';
+import Menu from './menu/Menu';
 
 const AuthForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Initialize to false
   const [currentPath, setCurrentPath] = useState('/login');
+  const [isDarkBackground, setIsDarkBackground] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const threshold = 10; 
+      if (scrollY > threshold && !isDarkBackground) {
+        setIsDarkBackground(true);
+      } else if (scrollY <= threshold && isDarkBackground) {
+        setIsDarkBackground(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isDarkBackground]);
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
@@ -27,7 +47,7 @@ const AuthForm = () => {
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
       />
-      <form onSubmit={handleLoginSubmit} className="max-w-sm mx-auto mt-20 pt-5 pl-5 pr-5">
+      <form onSubmit={handleLoginSubmit} className="max-w-sm mx-auto mt-4 pt-5 pl-5 pr-5">
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm font-medium text-gray-200">Email</label>
           <input
@@ -62,6 +82,15 @@ const AuthForm = () => {
         </div>
       </form>
       <SignUpForm />
+
+      <MyMeLogo isDarkBackground={isDarkBackground} />
+      <Menu 
+        isLoggedIn={isLoggedIn} 
+        setIsLoggedIn={setIsLoggedIn} 
+        currentPath={currentPath} 
+        setCurrentPath={setCurrentPath} 
+        isDarkBackground={isDarkBackground} 
+      />
     </>
   );
 };
