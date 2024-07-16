@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import './menu.css';
 
-const MenuIcon = ({ onMenuToggle }) => {
+const MenuIcon = ({ onMenuToggle, isDarkBackground }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleContainerClick = () => {
     onMenuToggle();
     setIsClicked(prevState => !prevState);
   };
+
+  const logoColor = isDarkBackground ? 'bg-white' : 'bg-[#000110]';
 
   return (
     <button
@@ -16,11 +18,11 @@ const MenuIcon = ({ onMenuToggle }) => {
       onClick={handleContainerClick}
     >
       <div
-        className={`w-[40px] md:w-[60px] h-2 bg-[#000110] m-2 md:mt-3 rounded-full ${isClicked ? 'top-animation' : 'top-animation-reverse'}`}
+        className={`w-[40px] md:w-[60px] h-2 ${logoColor} m-2 md:mt-3 rounded-full ${isClicked ? 'top-animation' : 'top-animation-reverse'}`}
       ></div>
-      <div className='w-[40px] md:w-[60px] h-2 bg-[#000110] m-2 rounded-full'></div>
+      <div className={`w-[40px] md:w-[60px] h-2 ${logoColor} m-2 rounded-full`}></div>
       <div
-        className={`w-[40px] md:w-[60px] h-2 bg-[#000110] m-2 rounded-full ${isClicked ? 'bottom-animation' : 'bottom-animation-reverse'}`}
+        className={`w-[40px] md:w-[60px] h-2 ${logoColor} m-2 rounded-full ${isClicked ? 'bottom-animation' : 'bottom-animation-reverse'}`}
       ></div>
     </button>
   );

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import './menu.css';
 import MenuIcon from './MenuIcon';
 
-const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath }) => {
+const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath, isDarkBackground }) => {
   const [showMenuList, setShowMenuList] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
@@ -94,7 +94,7 @@ const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath }) => {
           </section>
         )}
       </div>
-      <MenuIcon onMenuToggle={handleMenuClick} />
+      <MenuIcon onMenuToggle={handleMenuClick} isDarkBackground={isDarkBackground} />
       {showLogoutConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
           <div className="bg-white p-4 md:p-6 rounded-lg shadow-lg">
