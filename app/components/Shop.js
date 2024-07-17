@@ -1,19 +1,14 @@
-// Home.js or App.js
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar'; 
-import Chat from './components/Chat';
-import Viewer from './components/Viewer';
-import Votes from './components/Votes';
-import CommentBox from './components/CommentBox';
-import ViewersOnline from './components/ViewersOnline';
-import MyMeLogo from './components/MyMeLogo';
-import Menu from './components/menu/Menu';
+import { useState, useEffect } from 'react';
+import Navbar from './Navbar'; 
+import MyMeLogo from './MyMeLogo';
+import Menu from './menu/Menu';
 
-const Home = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentPath, setCurrentPath] = useState('/');
+const Shop = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [currentPath, setCurrentPath] = useState('/shop');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
   useEffect(() => {
@@ -33,21 +28,22 @@ const Home = () => {
     };
   }, [isDarkBackground]);
 
-  return (
-    <div>
+  
+    return (
+      <>
+      <div>
       <Navbar 
         isLoggedIn={isLoggedIn} 
         setIsLoggedIn={setIsLoggedIn} 
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
       />
-      <main className="flex flex-col items-center justify-center lg:max-w-[65%] w-full mx-auto">
-        <Viewer />
-        <Votes />
-        <Chat />
-      </main>
-      <CommentBox />
-      <ViewersOnline />
+<div>
+        <h1 className='mt-4'>Shop</h1>
+        {/* Add profile details here */}
+        </div>
+
+      </div>
 
       <MyMeLogo isDarkBackground={isDarkBackground} />
       <Menu 
@@ -57,9 +53,9 @@ const Home = () => {
         setCurrentPath={setCurrentPath} 
         isDarkBackground={isDarkBackground} 
       />
-      
-    </div>
-  );
-};
-
-export default Home;
+      </>
+    );
+  };
+  
+  export default Shop;
+  

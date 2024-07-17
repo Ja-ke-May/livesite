@@ -32,13 +32,13 @@ const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath, isDarkBa
             className='fixed top-0 right-0 md:pr-2 md:pt-2 bg-gray-800/80 text-white text-xl md:text-2xl p-4 z-50 rounded-bl-3xl'
           >
             
-            <Link href="/Leaderboards" passHref>
+            <Link href="/stars" passHref>
               <button 
-                className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block mt-10 md:pt-2" 
-                title='leaderboards'
-                onClick={() => handleLinkClick('/Leaderboards')}
+                className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block mt-10 md:pt-4" 
+                title='stars'
+                onClick={() => handleLinkClick('/stars')}
               >
-                Leaderboards
+                Stars
               </button>
             </Link>
 
@@ -86,13 +86,13 @@ const Menu = ({ isLoggedIn, setIsLoggedIn, currentPath, setCurrentPath, isDarkBa
       </div>
       <MenuIcon onMenuToggle={handleMenuClick} isDarkBackground={isDarkBackground} />
       {showLogoutConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-          <div className="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl text-blue-900 text-center mb-4">Are you sure you want to log out?</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-[#000110] z-50">
+          <div className="p-4 md:p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl text-center mb-4">Are you sure you want to log out?</h2>
             <div className="flex justify-center">
               <button
                 onClick={() => setShowLogoutConfirm(false)}
-                className="px-4 py-2 bg-gray-200 text-blue-900 rounded-md mr-2 hover:bg-gray-300"
+                className="mr-2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
               >
                 Cancel
               </button>
