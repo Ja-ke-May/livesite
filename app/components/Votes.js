@@ -6,6 +6,7 @@ const Votes = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [overlayIcon, setOverlayIcon] = useState(null);
   const [stars, setStars] = useState([]);
+  const [clickedIcon, setClickedIcon] = useState(null);
 
   const handleClickCross = () => {
     if (slidePosition >= 0.5) {
@@ -13,6 +14,8 @@ const Votes = () => {
     } else {
       setSlidePosition(0);
     }
+    setClickedIcon('cross');
+    triggerPulse();
   };
 
   const handleClickStar = () => {
@@ -21,11 +24,19 @@ const Votes = () => {
     } else {
       setSlidePosition(100);
     }
+    setClickedIcon('star');
+    triggerPulse();
+  };
+
+  const triggerPulse = () => {
+    setIsPulsing(true);
+    setTimeout(() => {
+      setIsPulsing(false);
+    }, 500); // Duration of the pulse effect
   };
 
   useEffect(() => {
     if (slidePosition === 0 || slidePosition === 100) {
-      setIsPulsing(true);
       setShowOverlay(true);
 
       if (slidePosition === 0) {
@@ -43,7 +54,6 @@ const Votes = () => {
       }
 
       setTimeout(() => {
-        setIsPulsing(false);
         setShowOverlay(false);
         setStars([]); // Clear stars after animation
       }, 2000); // Adjust timing as needed
@@ -61,7 +71,7 @@ const Votes = () => {
               {stars.map((star, index) => (
                 <span
                   key={index}
-                  className="text-yellow-400 text-3xl absolute"
+                  className="brightness-125 text-3xl absolute"
                   style={{
                     left: star.left,
                     animation: `fall-${index} 2s linear forwards`,
@@ -76,7 +86,7 @@ const Votes = () => {
         </div>
       )}
       <span
-        className={`text-red-700 text-2xl pl-2 md:pl-10 cursor-pointer ${isPulsing ? 'animate-pulse' : ''}`}
+        className={`text-red-700 text-2xl pl-2 md:pl-10 cursor-pointer ${isPulsing && clickedIcon === 'cross' ? 'animate-pulse' : ''}`}
         onClick={handleClickCross}
       >
         ❌
@@ -91,7 +101,7 @@ const Votes = () => {
         </div>
       </div>
       <span
-        className={`text-yellow-400 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer ${isPulsing ? 'animate-pulse' : ''}`}
+        className={`text-yellow-400 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer ${isPulsing && clickedIcon === 'star' ? 'animate-pulse' : ''}`}
         onClick={handleClickStar}
       >
         ⭐
@@ -115,3 +125,4 @@ const Votes = () => {
 };
 
 export default Votes;
+
