@@ -93,7 +93,7 @@ const Votes = () => {
       </span>
       <div className="flex-1 ml-2">
         <div className="flex justify-center items-center relative">
-          <div className="h-4 w-full bg-gradient-to-r from-red-700 to-yellow-400 rounded"></div>
+          <div className="h-4 w-full bg-gradient-to-r from-red-700 to-yellow-400 brightness-125 rounded"></div>
           <div
             className="mt-2 h-6 md:h-10 bg-white rounded w-2 md:w-4 border border-black absolute top-0 transform -translate-y-2/4 left-0"
             style={{ left: `calc((100% - 4px) * ${slidePosition / 100})` }}
@@ -101,7 +101,7 @@ const Votes = () => {
         </div>
       </div>
       <span
-        className={`text-yellow-400 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer ${isPulsing && clickedIcon === 'star' ? 'animate-pulse' : ''}`}
+        className={`text-yellow-400 brightness-125 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer ${isPulsing && clickedIcon === 'star' ? 'animate-pulse' : ''}`}
         onClick={handleClickStar}
       >
         ⭐

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './Navbar';
+import Navbar from '../../components/Navbar';
 import Link from 'next/link';
 import SignUpForm from './SignUpForm';
-import MyMeLogo from './MyMeLogo';
-import Menu from './menu/Menu';
+import MyMeLogo from '../../components/MyMeLogo';
+import Menu from '../../components/menu/Menu';
 
 const AuthForm = () => {
   const [email, setEmail] = useState('');
@@ -115,7 +115,8 @@ const AuthForm = () => {
       />
 
       {showForgotPasswordModal && (
-        <div className="fixed inset-0 bg-[#000110] flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-[#000110]/80 flex items-center justify-center z-50">
+          
           <div className="p-6 bg-[#000110] rounded-lg shadow-lg max-w-sm w-full">
             <h2 className="text-lg font-medium mb-4">Reset Password</h2>
             <form onSubmit={handleForgotPasswordSubmit}>

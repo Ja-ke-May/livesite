@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const SignUpForm = () => {
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -103,7 +104,7 @@ const SignUpForm = () => {
           className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
-          maxLength={22}
+          maxLength={12}
           required
         />
       </div>
