@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Navbar from './Navbar'; 
-import MyMeLogo from './MyMeLogo';
-import Menu from './menu/Menu';
+import Navbar from '../../components/Navbar'; 
+import MyMeLogo from '../../components/MyMeLogo';
+import Menu from '../../components/menu/Menu';
 
 const Stars = () => {
 
@@ -41,7 +41,7 @@ const Stars = () => {
 <div>
         <h1 className='mt-4'>Stars</h1>
 
-        <h3>Longest Tine Live</h3>
+        <h3>Longest Time Live</h3>
         <h3>Most Time Live</h3>
         <h3>Most Supporters</h3>
         <h3>Top Commenters</h3> 

@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [currentPath, setCurrentPath] = useState('');
+  const [notificationCount, setNotificationCount] = useState(99); // Example notification count
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -43,6 +44,17 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     </Link>
   );
 
+  const renderProfileLink = () => (
+    <div className="relative flex items-center">
+      {renderLink('/profile', 'Profile')}
+      {notificationCount > 0 && (
+        <div className="absolute -top-2 -right-1 w-4 h-4 bg-red-700 text-xs text-white flex items-center justify-center rounded-[10%] hover:scale-150">
+          {notificationCount}
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <nav className="w-full flex justify-center bg-white top-0 pt-4 md:text-lg">
       {renderLink('/', 'Home')}
@@ -51,7 +63,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
       {currentPath === '/about' && renderLink('/about', 'About')}
       {currentPath === '/contact' && renderLink('/contact', 'Contact')}
       {isLoggedIn ? (
-        renderLink('/profile', 'Profile')
+        renderProfileLink()
       ) : (
         renderLink('/login', 'Log In')
       )}

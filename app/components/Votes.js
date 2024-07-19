@@ -7,10 +7,11 @@ const Votes = () => {
   const [overlayIcon, setOverlayIcon] = useState(null);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
+  const [slidePositionAmount, setSlidePositionAmount] = useState(1);
 
   const handleClickCross = () => {
     if (slidePosition >= 0.5) {
-      setSlidePosition(slidePosition - 0.5);
+      setSlidePosition(slidePosition - slidePositionAmount);
     } else {
       setSlidePosition(0);
     }
@@ -20,7 +21,7 @@ const Votes = () => {
 
   const handleClickStar = () => {
     if (slidePosition <= 99.5) {
-      setSlidePosition(slidePosition + 0.5);
+      setSlidePosition(slidePosition + slidePositionAmount);
     } else {
       setSlidePosition(100);
     }
@@ -32,12 +33,14 @@ const Votes = () => {
     setIsPulsing(true);
     setTimeout(() => {
       setIsPulsing(false);
-    }, 500); // Duration of the pulse effect
+    }, 1000);
   };
 
   useEffect(() => {
     if (slidePosition === 0 || slidePosition === 100) {
       setShowOverlay(true);
+      setSlidePosition(50)
+      setSlidePositionAmount(slidePositionAmount / 2)
 
       if (slidePosition === 0) {
         setOverlayIcon('❌');
@@ -55,8 +58,8 @@ const Votes = () => {
 
       setTimeout(() => {
         setShowOverlay(false);
-        setStars([]); // Clear stars after animation
-      }, 2000); // Adjust timing as needed
+        setStars([]); 
+      }, 2000); 
     }
   }, [slidePosition]);
 

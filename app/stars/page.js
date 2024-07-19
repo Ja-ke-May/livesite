@@ -1,4 +1,4 @@
-import Stars from "../components/Stars";
+import Stars from "./components/Stars";
 
 const StarsPage = () => <Stars />;
 
