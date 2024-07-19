@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [currentPath, setCurrentPath] = useState('');
-  const [notificationCount, setNotificationCount] = useState(99); // Example notification count
+  const [notificationCount, setNotificationCount] = useState(4); // Example notification count
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
