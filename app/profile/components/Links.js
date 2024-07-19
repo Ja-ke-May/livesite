@@ -39,7 +39,7 @@ const LinksSection = ({ links, handleAddLink, newLinkText, setNewLinkText, newLi
                   <img
                     src={link.imageUrl}
                     alt={link.text}
-                    className="h-8 w-8 mr-2 rounded-[10%]"
+                    className="h-8 w-8 m-2 rounded-[10%]"
                   />
                 )}
                 {link.text}
@@ -57,14 +57,14 @@ const LinksSection = ({ links, handleAddLink, newLinkText, setNewLinkText, newLi
 
         <div className="flex justify-center flex-col items-center">
           <button
-            className="bg-[#000110] m-4 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+            className="bg-[#000110] mb-4 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
             onClick={toggleAddLinkForm}
           >
             {showAddLinkForm ? 'Hide Add Link' : 'Add Link'}
           </button>
 
           {showAddLinkForm && (
-            <div className="flex flex-col items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
+            <div className="flex flex-col items-center space-y-2 w-full">
               <input
                 type="text"
                 className="bg-gray-800/80 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
@@ -74,7 +74,7 @@ const LinksSection = ({ links, handleAddLink, newLinkText, setNewLinkText, newLi
               />
               <input
                 type="text"
-                className="bg-gray-800/80 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+                className="bg-gray-800/80 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 mb-4"
                 placeholder="Link URL"
                 value={newLinkUrl}
                 onChange={(e) => setNewLinkUrl(e.target.value)}
@@ -82,11 +82,11 @@ const LinksSection = ({ links, handleAddLink, newLinkText, setNewLinkText, newLi
               <input
                 type="file"
                 accept="image/*"
-                className="bg-gray-800/80 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 max-w-[80%]"
+                className="bg-gray-800/80 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 mb-4"
                 onChange={handleImageChange}
               />
               <button
-                className="bg-[#000110] text-white px-4 py-2 rounded border border-green-600 shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700"
+                className="bg-[#000110] text-white px-4 py-2 rounded border border-green-600 shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 mt-4"
                 onClick={handleAddLinkClick}
               >
                 Confirm

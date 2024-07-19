@@ -9,6 +9,7 @@ import MyMeLogo from '../../components/MyMeLogo';
 import Menu from '../../components/menu/Menu';
 import LinksSection from './Links';
 import Support from './Support';
+
 const Profile = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [currentPath, setCurrentPath] = useState('/profile');
@@ -34,8 +35,8 @@ const Profile = () => {
     }
   }, []);
 
-  const handleUsernameChange = useCallback((event) => {
-    setUsername(event.target.value);
+  const handleUsernameChange = useCallback((newUsername) => {
+    setUsername(newUsername);
   }, []);
 
   const handleBioChange = useCallback((event) => {
