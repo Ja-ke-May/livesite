@@ -1,79 +1,80 @@
-
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from '../../components/Navbar';
 import ProfileInfo from './ProfileInfo';
-import ProfileStarResults from './ProfileStarResults';
+import ProfileStarResults from './StarResults';
 import RecentActivity from './RecentActivity';
 import MyMeLogo from '../../components/MyMeLogo';
 import Menu from '../../components/menu/Menu';
 import LinksSection from './Links';
 import Support from './Support';
-
 const Profile = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Example initial state
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [currentPath, setCurrentPath] = useState('/profile');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
-  const [profilePicture, setProfilePicture] = useState("/path-to-profile-pic.jpg"); // Initial profile picture URL
+  const [profilePicture, setProfilePicture] = useState("/vercel.svg");
   const [username, setUsername] = useState("Username");
-  const [bio, setBio] = useState("This is a brief bio about the user. It provides some background information and other relevant details.");
+  const [bio, setBio] = useState(`${username} is so cool.`);
   const [links, setLinks] = useState([
-    { id: 1, text: "Twitter", url: "https://twitter.com/username" },
-    { id: 2, text: "GitHub", url: "https://github.com/username" },
-    { id: 3, text: "LinkedIn", url: "https://linkedin.com/in/username" }
+    { id: 1, text: "Twitter", url: "https://twitter.com/username", imageUrl: 'vercel.svg' },
+    { id: 2, text: "GitHub", url: "https://github.com/username", imageUrl: 'vercel.svg' },
+    { id: 3, text: "LinkedIn", url: "https://linkedin.com/in/username", imageUrl: 'vercel.svg' }
   ]);
   const [newLinkText, setNewLinkText] = useState("");
   const [newLinkUrl, setNewLinkUrl] = useState("");
+  const [newLinkImage, setNewLinkImage] = useState("");
 
-  const handleFileChange = (event) => {
+  const handleFileChange = useCallback((event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfilePicture(reader.result);
-    };
     if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setProfilePicture(reader.result);
       reader.readAsDataURL(file);
     }
-  };
+  }, []);
 
-  const handleUsernameChange = (event) => {
+  const handleUsernameChange = useCallback((event) => {
     setUsername(event.target.value);
-  };
+  }, []);
 
-  const handleBioChange = (event) => {
+  const handleBioChange = useCallback((event) => {
     setBio(event.target.value);
-  };
+  }, []);
 
-  const handleAddLink = () => {
+  const handleAddLink = useCallback(() => {
     if (newLinkText && newLinkUrl) {
       const newLink = {
         id: links.length + 1,
         text: newLinkText,
-        url: newLinkUrl
+        url: newLinkUrl,
+        imageUrl: newLinkImage
       };
-      setLinks([...links, newLink]);
+      setLinks(prevLinks => [...prevLinks, newLink]);
       setNewLinkText("");
       setNewLinkUrl("");
+      setNewLinkImage("");
     }
-  };
+  }, [newLinkText, newLinkUrl, newLinkImage, links]);
+
+  const handleDeleteLink = useCallback((id) => {
+    setLinks(prevLinks => prevLinks.filter(link => link.id !== id));
+  }, []);
+
+  useEffect(() => {
+    setBio(`${username} is so cool.`);
+  }, [username]);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const threshold = 10; 
-      if (scrollY > threshold && !isDarkBackground) {
-        setIsDarkBackground(true);
-      } else if (scrollY <= threshold && isDarkBackground) {
-        setIsDarkBackground(false);
-      }
+      const threshold = 10;
+      setIsDarkBackground(scrollY > threshold);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isDarkBackground]);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -99,17 +100,18 @@ const Profile = () => {
           setNewLinkUrl={setNewLinkUrl}
         />
 
-        <Support 
-        username={username}
-        />
-
-<LinksSection
+        <Support username={username} />
+        
+        <LinksSection
           links={links}
           handleAddLink={handleAddLink}
           newLinkText={newLinkText}
           setNewLinkText={setNewLinkText}
           newLinkUrl={newLinkUrl}
           setNewLinkUrl={setNewLinkUrl}
+          newLinkImage={newLinkImage}
+          setNewLinkImage={setNewLinkImage}
+          handleDeleteLink={handleDeleteLink}
         />
         <ProfileStarResults />
         <RecentActivity />
