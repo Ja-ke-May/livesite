@@ -36,7 +36,7 @@ const LinksPopUp = forwardRef(({ visible, onClose, links, username }, ref) => {
       >
         &times;
       </button>
-      <h3 className="text-xl font-semibold mt-2 mb-4 text-center text-blue-400">{username} Links</h3>
+      <h3 className="text-xl font-semibold mt-4 mb-4 text-center text-blue-400">{username} Links</h3>
       <ul>
         {links.length > 0 ? (
           links.map((link) => (
