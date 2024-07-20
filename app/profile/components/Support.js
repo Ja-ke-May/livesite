@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const Support = ({ username }) => {
   const [isCircleYellow, setIsCircleYellow] = useState(false);
-  const [supportersCount, setSupportersCount] = useState(5); // Initial supporters count
+  const [supportersCount, setSupportersCount] = useState(0); // Initial supporters count
 
   const toggleCircleColor = () => {
     setIsCircleYellow(!isCircleYellow);
@@ -31,7 +31,7 @@ const Support = ({ username }) => {
         </h3>
         <p className="text-sm mt-4">
           It's completely free to show your support. Your username will show in
-          a supported user, and your recent activity.
+          a supported users, and your, recent activity.
         </p>
         <p className="text-md mt-4">Current supporters: <span className='text-xl text-yellow-400 brightness-125'>{supportersCount}</span></p>
       </div>

@@ -1,10 +1,20 @@
 import React, { useState, useCallback } from 'react';
 
-const LinksSection = ({ links, handleAddLink, newLinkText, setNewLinkText, newLinkUrl, setNewLinkUrl, newLinkImage, setNewLinkImage, handleDeleteLink }) => {
+const LinksSection = ({
+  links,
+  handleAddLink,
+  newLinkText,
+  setNewLinkText,
+  newLinkUrl,
+  setNewLinkUrl,
+  newLinkImage,
+  setNewLinkImage,
+  handleDeleteLink
+}) => {
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
 
   const toggleAddLinkForm = useCallback(() => {
-    setShowAddLinkForm(prev => !prev);
+    setShowAddLinkForm((prev) => !prev);
   }, []);
 
   const handleAddLinkClick = useCallback(() => {
@@ -25,7 +35,8 @@ const LinksSection = ({ links, handleAddLink, newLinkText, setNewLinkText, newLi
   return (
     <div className='flex justify-center'>
       <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 mt-4 w-full max-w-md md:max-w-2xl">
-        <h3 className="text-xl font-semibold mb-4 underline text-center">Links</h3>
+        <h3 className="text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]">Links</h3>
+        <p className='text-xs text-center'><span className='text-red-600'>Please note:</span> MyMe is not responsible for the content of external links found on user profiles. Only click on links from users you trust.</p>
         <div className="flex flex-wrap justify-center mb-4 text-xl md:text-2xl">
           {links.map((link) => (
             <div key={link.id} className="flex items-center mb-2 mx-2 text-white">
@@ -82,7 +93,7 @@ const LinksSection = ({ links, handleAddLink, newLinkText, setNewLinkText, newLi
               <input
                 type="file"
                 accept="image/*"
-                className="bg-gray-800/80 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 mb-4"
+                className="bg-gray-800/80 text-white rounded p-1 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 mb-4"
                 onChange={handleImageChange}
               />
               <button
