@@ -16,10 +16,10 @@ const Profile = () => {
   const [isDarkBackground, setIsDarkBackground] = useState(false);
   const [profilePicture, setProfilePicture] = useState("/vercel.svg");
   const [username, setUsername] = useState("Username");
-  const [bio, setBio] = useState(`${username} is so cool.`);
+  const [bio, setBio] = useState(`Hi, I'm ${username}! Welcome to my profile 😊`);
   const [links, setLinks] = useState([
     { id: 1, text: "Twitter", url: "https://twitter.com/username", imageUrl: 'vercel.svg' },
-    { id: 2, text: "GitHub", url: "https://github.com/username", imageUrl: 'vercel.svg' },
+    { id: 2, text: "Instagram", url: "https://instagram.com/username", imageUrl: 'vercel.svg' },
     { id: 3, text: "LinkedIn", url: "https://linkedin.com/in/username", imageUrl: 'vercel.svg' }
   ]);
   const [newLinkText, setNewLinkText] = useState("");
@@ -63,7 +63,7 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    setBio(`${username} is so cool.`);
+    setBio(`Hi, I'm ${username}! Welcome to my profile! 😊`);
   }, [username]);
 
   useEffect(() => {
@@ -90,15 +90,10 @@ const Profile = () => {
           profilePicture={profilePicture}
           username={username}
           bio={bio}
-          links={links}
           handleFileChange={handleFileChange}
           handleUsernameChange={handleUsernameChange}
           handleBioChange={handleBioChange}
-          handleAddLink={handleAddLink}
-          newLinkText={newLinkText}
-          setNewLinkText={setNewLinkText}
-          newLinkUrl={newLinkUrl}
-          setNewLinkUrl={setNewLinkUrl}
+          links={links}
         />
 
         <Support username={username} />
