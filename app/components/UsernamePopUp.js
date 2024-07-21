@@ -1,17 +1,19 @@
 import React, { useRef, useEffect, useState } from 'react';
 import LinksPopUp from './LinksPopUp';
 import SendTokensPopUp from './SendTokens';
+import ReportPopUp from './ReportPopUp';  // Import the ReportPopUp component
 import Link from 'next/link';
 
 const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
   const [isSupportStar, setIsSupportStar] = useState(false);
-  const [showLinksPopUp, setShowLinksPopUp] = useState(false);
-  const [showSendTokensPopUp, setShowSendTokensPopUp] = useState(false);
+  const [activePopUp, setActivePopUp] = useState(null); // State to manage active pop-up
   const popupRef = useRef(null);
 
   const toggleSupport = () => setIsSupportStar(!isSupportStar);
-  const toggleLinksPopUp = () => setShowLinksPopUp(!showLinksPopUp);
-  const toggleSendTokensPopUp = () => setShowSendTokensPopUp(!showSendTokensPopUp);
+
+  const handlePopUpToggle = (popUpName) => {
+    setActivePopUp((prev) => (prev === popUpName ? null : popUpName));
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -34,7 +36,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
   if (!visible) return null;
 
   return (
-    <div ref={popupRef} className="absolute bg-gray-800 p-2 rounded-[5%] shadow-lg" style={{ top: position.y, left: position.x }}>
+    <div ref={popupRef} className="absolute bg-gray-800 p-2 rounded-[5%] shadow-lg z-[101]" style={{ top: position.y, left: position.x }}>
       <button
         onClick={onClose}
         className="absolute top-0 right-2 text-white text-xl font-bold bg-transparent border-none cursor-pointer"
@@ -44,8 +46,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
       </button>
 
       <ul>
-
-      <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-4 ml-1 mr-1 mb-1">
+        <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-4 ml-1 mr-1 mb-1">
           <Link href="/profile" className="hover:text-gray-400">
             View Profile
           </Link>
@@ -53,7 +54,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
 
         <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center hover:text-yellow-400 hover:brightness-125">
           <button
-            onClick={toggleSendTokensPopUp}
+            onClick={() => handlePopUpToggle('sendTokens')}
             className="bg-transparent border-none cursor-pointer"
           >
             Send Tokens
@@ -72,20 +73,21 @@ const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
 
         <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center text-white hover:text-blue-600">
           <button
-            onClick={toggleLinksPopUp}
+            onClick={() => handlePopUpToggle('links')}
             className="bg-transparent border-none cursor-pointer"
           >
             Links
           </button>
         </li>
        
-       <li className='text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center text-red-400 hover:text-red-600'>
-        Report
-       </li>
+        <li className='text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center text-red-400 hover:text-red-600'>
+          <button onClick={() => handlePopUpToggle('report')}>Report</button>  {/* Button to toggle ReportPopUp */}
+        </li>
       </ul>
 
-      {showLinksPopUp && <LinksPopUp visible={showLinksPopUp} onClose={toggleLinksPopUp} links={links} username={username} />}
-      {showSendTokensPopUp && <SendTokensPopUp visible={showSendTokensPopUp} onClose={toggleSendTokensPopUp} />}
+      {activePopUp === 'links' && <LinksPopUp visible={activePopUp === 'links'} onClose={() => handlePopUpToggle('links')} links={links} username={username} />}
+      {activePopUp === 'sendTokens' && <SendTokensPopUp visible={activePopUp === 'sendTokens'} onClose={() => handlePopUpToggle('sendTokens')} />}
+      {activePopUp === 'report' && <ReportPopUp visible={activePopUp === 'report'} onClose={() => handlePopUpToggle('report')} username={username} />}
     </div>
   );
 };

@@ -34,9 +34,9 @@ const LinksSection = ({
 
   return (
     <div className='flex justify-center'>
-      <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 mt-4 w-full max-w-md md:max-w-2xl">
+      <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 mt-4 w-full max-w-md md:max-w-2xl ">
         <h3 className="text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]">Links</h3>
-        <p className='text-xs text-center'><span className='text-red-600'>Please note:</span> MyMe is not responsible for the content of external links found on user profiles. Only click on links from users you trust.</p>
+        <p className='text-xs text-center mb-4'><span className='text-red-600'>Please note:</span> MyMe.live is not responsible for the content of external links found on user profiles. Only click on links from users you trust.</p>
         <div className="flex flex-wrap justify-center mb-4 text-xl md:text-2xl">
           {links.map((link) => (
             <div key={link.id} className="flex items-center mb-2 mx-2 text-white">

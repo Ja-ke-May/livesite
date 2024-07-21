@@ -18,9 +18,9 @@ const Profile = () => {
   const [username, setUsername] = useState("Username");
   const [bio, setBio] = useState(`Hi, I'm ${username}! Welcome to my profile 😊`);
   const [links, setLinks] = useState([
-    { id: 1, text: "Twitter", url: "https://twitter.com/username", imageUrl: 'vercel.svg' },
-    { id: 2, text: "Instagram", url: "https://instagram.com/username", imageUrl: 'vercel.svg' },
-    { id: 3, text: "LinkedIn", url: "https://linkedin.com/in/username", imageUrl: 'vercel.svg' }
+    { id: 1, text: "YouTube", url: "https://youtube.com/username", imageUrl: 'vercel.svg' },
+    { id: 2, text: "Insta", url: "https://instagram.com/username", imageUrl: 'vercel.svg' },
+    { id: 3, text: "LinkedIn", url: "https://linkedin.com/in/username", imageUrl: 'vercel.svg' },
   ]);
   const [newLinkText, setNewLinkText] = useState("");
   const [newLinkUrl, setNewLinkUrl] = useState("");
