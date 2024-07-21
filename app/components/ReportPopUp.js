@@ -39,7 +39,7 @@ const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
     // Optionally close the pop-up after a short delay to allow the user to see the message
     setTimeout(() => {
       onClose();
-    }, 2000); // Delay of 2 seconds before closing
+    }, 1000); // Delay of 2 seconds before closing
   };
 
   if (!visible) return null;
