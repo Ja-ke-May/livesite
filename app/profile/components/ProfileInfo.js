@@ -64,7 +64,7 @@ const ProfileInfo = ({
 
           <div className=''>
             <p className="text-yellow-400 brightness-125 mt-2">Tokens: 1000</p>
-            <p className='text-sm text-gray-400'>(private to you)</p>
+            {/* <p className='text-sm text-gray-400'>(private to you)</p> */}
           </div>
         </div>
         <div className="flex flex-col items-center md:flex-row md:items-start mt-4">

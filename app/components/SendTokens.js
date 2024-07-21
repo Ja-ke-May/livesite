@@ -39,26 +39,30 @@ const SendTokensPopUp = forwardRef(({ visible, onClose }, ref) => {
   if (!visible) return null;
 
   return (
-    <div ref={popupRef} className="relative absolute right-0 top-0 bg-gray-800 p-4 rounded-[5%] shadow-lg mt-2 max-w-md w-full">
-      <h3 className="text-xl font-semibold mb-4 text-center text-yellow-400 brightness-125">Send Tokens</h3>
+    <div ref={popupRef} className="relative absolute right-0 top-0 bg-gray-800 p-4 rounded-[5%] shadow-lg mt-2 max-w-md w-full z-[101]">
+
+<button
+        onClick={onClose}
+        className="absolute top-0 right-2 text-white text-xl font-bold bg-transparent border-none cursor-pointer"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+
+      <h3 className="text-xl font-semibold mt-4 mb-4 text-center text-yellow-400 brightness-125">Send Tokens</h3>
       
-      <div className="relative w-full p-2 mb-4 rounded border border-blue-600 bg-gray-900 text-white text-center text-xl">
+      <div className="relative w-full p-2 mb-4 rounded border border-blue-600 bg-gray-900 text-white text-xl">
         <span>{tokenAmount}</span>
         <button
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+          className="absolute right-1 top-1/2 transform -translate-y-1/2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
           onClick={incrementTokenCount}
         >
           +
         </button>
       </div>
 
-      <div className="flex justify-between">
-        <button
-          className="mr-2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-          onClick={onClose}
-        >
-          Cancel
-        </button>
+      <div className="flex flex-row justify-end">
+        
         <button
           className="mr-2 py-2 px-4 border border-yellow-400 rounded-md shadow-sm text-sm font-medium text-white hover:text-[#000110] bg-gray-800/80 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 brightness-125"
           onClick={handleSendTokens}

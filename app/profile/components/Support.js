@@ -29,11 +29,11 @@ const Support = ({ username }) => {
             </span>
           )}
         </h3>
-        <p className="text-sm mt-4">
+        <p className="text-xs mt-4">
           It's completely free to show your support. Your username will show in
           a supported users, and your, recent activity.
         </p>
-        <p className="text-md mt-4">Current supporters: <span className='text-xl text-yellow-400 brightness-125'>{supportersCount}</span></p>
+        <p className="text-md mt-4">Supporters: <span className='text-xl text-yellow-400 brightness-125'>{supportersCount}</span></p>
       </div>
     </div>
   );
