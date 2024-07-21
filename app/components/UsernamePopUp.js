@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import LinksPopUp from './LinksPopUp';
 import SendTokensPopUp from './SendTokens';
-import ReportPopUp from './ReportPopUp';  // Import the ReportPopUp component
+import ReportPopUp from './ReportPopUp';
 import Link from 'next/link';
 
 const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
@@ -36,7 +36,11 @@ const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
   if (!visible) return null;
 
   return (
-    <div ref={popupRef} className="absolute bg-gray-800 p-2 rounded-[5%] shadow-lg z-[101]" style={{ top: position.y, left: position.x }}>
+    <div
+      ref={popupRef}
+      className="absolute bg-gray-800 p-2 rounded-[5%] shadow-lg z-[101]"
+      style={{ top: position.y, left: position.x }}
+    >
       <button
         onClick={onClose}
         className="absolute top-0 right-2 text-white text-xl font-bold bg-transparent border-none cursor-pointer"
@@ -61,11 +65,13 @@ const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
           </button>
         </li>
 
-        <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center text-white hover:text-yellow-400 brightness-125" onClick={toggleSupport}>
+        <li
+          className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center text-white hover:text-yellow-400 brightness-125"
+          onClick={toggleSupport}
+        >
           Support
           <span
             className={`inline-block ml-2 cursor-pointer ${isSupportStar ? 'text-yellow-400 brightness-125 text-3xl' : 'w-6 h-6 border-2 border-blue-400 rounded-md'}`}
-            onClick={toggleSupport}
           >
             {isSupportStar ? '⭐' : ''}
           </span>
@@ -79,15 +85,23 @@ const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
             Links
           </button>
         </li>
-       
+
         <li className='text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center text-red-400 hover:text-red-600'>
-          <button onClick={() => handlePopUpToggle('report')}>Report</button>  {/* Button to toggle ReportPopUp */}
+          <button onClick={() => handlePopUpToggle('report')}>
+            Report
+          </button>
         </li>
       </ul>
 
-      {activePopUp === 'links' && <LinksPopUp visible={activePopUp === 'links'} onClose={() => handlePopUpToggle('links')} links={links} username={username} />}
-      {activePopUp === 'sendTokens' && <SendTokensPopUp visible={activePopUp === 'sendTokens'} onClose={() => handlePopUpToggle('sendTokens')} />}
-      {activePopUp === 'report' && <ReportPopUp visible={activePopUp === 'report'} onClose={() => handlePopUpToggle('report')} username={username} />}
+      {activePopUp === 'links' && (
+        <LinksPopUp visible={activePopUp === 'links'} onClose={() => handlePopUpToggle('links')} links={links} username={username} />
+      )}
+      {activePopUp === 'sendTokens' && (
+        <SendTokensPopUp visible={activePopUp === 'sendTokens'} onClose={() => handlePopUpToggle('sendTokens')} />
+      )}
+      {activePopUp === 'report' && (
+        <ReportPopUp visible={activePopUp === 'report'} onClose={() => handlePopUpToggle('report')} username={username} />
+      )}
     </div>
   );
 };

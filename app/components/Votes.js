@@ -89,7 +89,7 @@ const Votes = () => {
         </div>
       )}
       <span
-        className={`text-red-700 text-2xl pl-2 md:pl-10 cursor-pointer ${isPulsing && clickedIcon === 'cross' ? 'animate-pulse' : ''}`}
+        className={`text-red-700 text-2xl pl-2 md:pl-10 brightness-125 cursor-pointer ${isPulsing && clickedIcon === 'cross' ? 'animate-pulse' : ''}`}
         onClick={handleClickCross}
       >
         ❌
