@@ -1,5 +1,36 @@
 import React, { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { signup } from '../../../utils/apiClient';
+
+// Utility functions
+const isValidUsername = (username) => /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]*$/.test(username);
+
+const validatePassword = (password) => {
+  const requirements = [
+    { regex: /.{6,}/, message: 'Password must be at least 6 characters long.' },
+    { regex: /[A-Z]/, message: 'Password must contain at least one uppercase letter.' },
+    { regex: /[a-z]/, message: 'Password must contain at least one lowercase letter.' },
+    { regex: /[0-9]/, message: 'Password must contain at least one number.' },
+    { regex: /[!@#$%^&*(),.?":{}|<>]/, message: 'Password must contain at least one special character.' },
+  ];
+
+  return requirements
+    .filter(({ regex }) => !regex.test(password))
+    .map(({ message }) => message);
+};
+
+const calculateAge = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  const dayDiff = today.getDate() - birthDate.getDate();
+
+  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+    age--;
+  }
+
+  return age;
+};
 
 const SignUpForm = () => {
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -8,12 +39,10 @@ const SignUpForm = () => {
   const [userName, setUserName] = useState('');
   const [dob, setDob] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessages, setErrorMessages] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
 
-  const userNameRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]*$/;
-
-  const handleSignUpSubmit = (event) => {
+  const handleSignUpSubmit = async (event) => {
     event.preventDefault();
 
     const errors = [];
@@ -24,53 +53,39 @@ const SignUpForm = () => {
     }
 
     // Validate username for allowed characters
-    if (!userNameRegex.test(userName)) {
+    if (!isValidUsername(userName)) {
       errors.push("Username can only contain letters, numbers, and special characters.");
     }
 
-    // Calculate age based on DOB
-    const today = new Date();
-    const birthDate = new Date(dob);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    const dayDiff = today.getDate() - birthDate.getDate();
-
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      age--;
-    }
-
+    // Validate age based on DOB
+    const age = calculateAge(dob);
     if (age < 18) {
       errors.push('You must be at least 18 years old to sign up.');
     }
 
+    // Validate password and confirm password
     if (signUpPassword !== confirmPassword) {
       errors.push('Passwords do not match.');
     }
 
-    // Password requirements
-    const passwordRequirements = [
-      { regex: /.{6,}/, message: 'Password must be at least 6 characters long.' },
-      { regex: /[A-Z]/, message: 'Password must contain at least one uppercase letter.' },
-      { regex: /[a-z]/, message: 'Password must contain at least one lowercase letter.' },
-      { regex: /[0-9]/, message: 'Password must contain at least one number.' },
-      { regex: /[!@#$%^&*(),.?":{}|<>]/, message: 'Password must contain at least one special character.' },
-    ];
-
-    for (const requirement of passwordRequirements) {
-      if (!requirement.regex.test(signUpPassword)) {
-        errors.push(requirement.message);
-      }
-    }
+    const passwordErrors = validatePassword(signUpPassword);
+    errors.push(...passwordErrors);
 
     if (errors.length > 0) {
-      setErrorMessage(errors.join(' '));
+      setErrorMessages(errors);
       setSuccessMessage('');
       return;
     }
 
-    // Handle sign-up logic here (simulated success message)
-    setSuccessMessage('Welcome to MyMe! Please check your email to activate your account.');
-    setErrorMessage('');
+    try {
+      const userData = { userName, signUpEmail, signUpPassword, dob };
+      await signup(userData);
+      setSuccessMessage('Welcome to MyMe! Please check your email to activate your account.');
+      setErrorMessages([]);
+    } catch (error) {
+      setErrorMessages([`Error: ${error.message}`]);
+      setSuccessMessage('');
+    }
 
     // Reset form fields
     setSignUpEmail('');
@@ -83,12 +98,14 @@ const SignUpForm = () => {
 
   return (
     <form onSubmit={handleSignUpSubmit} className="max-w-sm mx-auto mt-10 pl-5 pr-5">
-      <div className="flex justify-center align-center pt-5 text-lg font-bold text-gray-200">
+      <div className="flex justify-center items-center pt-5 text-lg font-bold text-gray-200">
         Sign Up
       </div>
-      {errorMessage && (
+      {errorMessages.length > 0 && (
         <div className="m-2 text-red-500 text-sm">
-          {errorMessage}
+          {errorMessages.map((msg, index) => (
+            <div key={index}>{msg}</div>
+          ))}
         </div>
       )}
       {successMessage && (
