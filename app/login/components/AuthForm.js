@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
-import Link from 'next/link';
 import SignUpForm from './SignUpForm';
 import MyMeLogo from '../../components/MyMeLogo';
 import Menu from '../../components/menu/Menu';
+import LogInForm from './LogInForm';
 
 const AuthForm = () => {
   const [email, setEmail] = useState('');
@@ -32,13 +32,6 @@ const AuthForm = () => {
     };
   }, [isDarkBackground]);
 
-  const handleLoginSubmit = (event) => {
-    event.preventDefault();
-    setIsLoggedIn(true);
-    setEmail('');
-    setPassword('');
-  };
-
   const handleForgotPasswordSubmit = (event) => {
     event.preventDefault();
     // Simulate reset password success
@@ -60,49 +53,13 @@ const AuthForm = () => {
           {successMessage}
         </div>
       )}
-      <form onSubmit={handleLoginSubmit} className="max-w-sm mx-auto mt-5 pl-5 pr-5">
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-200">Email</label>
-          <input
-            type="email"
-            id="email"
-            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-200">Password</label>
-          <input
-            type="password"
-            id="password"
-            className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        
-        <button 
-          type="button" 
-          onClick={() => setShowForgotPasswordModal(true)} 
-          className="text-gray-200 underline ml-4"
-        >
-          Forgot your password?
-        </button>
-        
-        <div className="mb-4">
-          <Link href="/profile">
-            <button
-              type="submit"
-              className="w-full mt-4 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-            >
-              Log In
-            </button>
-          </Link>
-        </div>
-      </form>
+      
+      <LogInForm 
+        setIsLoggedIn={setIsLoggedIn} 
+        showForgotPasswordModal={showForgotPasswordModal} 
+        setShowForgotPasswordModal={setShowForgotPasswordModal} 
+      />
+
       <SignUpForm />
 
       <MyMeLogo isDarkBackground={isDarkBackground} />
@@ -116,7 +73,6 @@ const AuthForm = () => {
 
       {showForgotPasswordModal && (
         <div className="fixed inset-0 bg-[#000110]/80 flex items-center justify-center z-50">
-          
           <div className="p-6 bg-[#000110] rounded-lg shadow-lg max-w-sm w-full">
             <h2 className="text-lg font-medium mb-4">Reset Password</h2>
             <form onSubmit={handleForgotPasswordSubmit}>
