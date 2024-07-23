@@ -12,6 +12,7 @@ const LogInForm = ({ setIsLoggedIn, setShowForgotPasswordModal }) => {
     try {
       // Normalize email to lowercase
       const normalizedEmail = email.toLowerCase();
+      console.log('Login attempt with email:', normalizedEmail);
       const data = await login({ email: normalizedEmail, password });
       // Store the token (e.g., in localStorage)
       localStorage.setItem('token', data.token);
@@ -19,6 +20,7 @@ const LogInForm = ({ setIsLoggedIn, setShowForgotPasswordModal }) => {
       setErrorMessage('');
       window.location.href = '/profile';  // Redirect to /profile after successful login
     } catch (error) {
+      console.error('Login error:', error.message);
       setErrorMessage(error.message || 'An unknown error occurred');
     }
   };

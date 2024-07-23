@@ -1,7 +1,6 @@
-// Home.js or App.js
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Navbar from './components/Navbar'; 
 import Chat from './components/Chat';
 import Viewer from './components/Viewer';
@@ -10,9 +9,10 @@ import CommentBox from './components/CommentBox';
 import ViewersOnline from './components/ViewersOnline';
 import MyMeLogo from './components/MyMeLogo';
 import Menu from './components/menu/Menu';
+import { AuthContext, AuthProvider } from '../utils/AuthContext';
 
-const Home = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState('');
+const HomeContent = () => {
+  const { isLoggedIn } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
@@ -37,7 +37,6 @@ const Home = () => {
     <div>
       <Navbar 
         isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn} 
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
       />
@@ -52,14 +51,18 @@ const Home = () => {
       <MyMeLogo isDarkBackground={isDarkBackground} />
       <Menu 
         isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn} 
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
         isDarkBackground={isDarkBackground} 
       />
-      
     </div>
   );
 };
+
+const Home = () => (
+  <AuthProvider>
+    <HomeContent />
+  </AuthProvider>
+);
 
 export default Home;

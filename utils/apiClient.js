@@ -1,5 +1,4 @@
 //apiClient.js
-
 const API_BASE_URL = 'http://localhost:5000';
 
 /**
@@ -20,8 +19,8 @@ export const signup = async (userData) => {
             },
             body: JSON.stringify({
                 userName: userData.userName,
-                email: userData.signUpEmail,
-                password: userData.signUpPassword,
+                email: userData.email,
+                password: userData.password,
                 dob: userData.dob,
             }),
         });
@@ -36,7 +35,6 @@ export const signup = async (userData) => {
         throw new Error(error.message || 'An unknown error occurred');
     }
 };
-
 
 /**
  * Logs in a user by sending their email and password to the backend.
@@ -64,8 +62,35 @@ export const login = async (credentials) => {
     }
 };
 
-
+/**
+ * Logs out the user by removing the token from local storage.
+ */
 export const logout = () => {
-    // Remove the token from local storage
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
+};
+
+/**
+ * Fetches the user's profile data.
+ * @returns {Promise<Object>} - The user data.
+ */
+export const fetchUserProfile = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/api/profile`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to fetch user profile');
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw new Error(error.message || 'An unknown error occurred');
+    }
 };

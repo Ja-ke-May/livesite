@@ -1,5 +1,6 @@
-"use client";
 // pages/LogIn.js
+"use client";
+
 import React from 'react';
 import AuthForm from './AuthForm';
 
