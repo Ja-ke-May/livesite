@@ -12,7 +12,7 @@ import MyMeLogo from './components/MyMeLogo';
 import Menu from './components/menu/Menu';
 
 const Home = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState('');
   const [currentPath, setCurrentPath] = useState('/');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
