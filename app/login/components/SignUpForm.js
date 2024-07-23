@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signup } from '../../../utils/apiClient';
 
 // Utility functions
@@ -32,6 +32,15 @@ const calculateAge = (dob) => {
   return age;
 };
 
+// Add debounce function
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
+  };
+};
+
 const SignUpForm = () => {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
@@ -41,6 +50,33 @@ const SignUpForm = () => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
+  const [usernameAvailable, setUsernameAvailable] = useState(true);
+  const [usernameChecking, setUsernameChecking] = useState(false);
+
+  // Function to check username availability
+  const checkUsernameAvailability = debounce(async (username) => {
+    if (username.trim() === '') {
+      setUsernameAvailable(true);
+      return;
+    }
+
+    setUsernameChecking(true);
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/check-username/${username}`);
+      const data = await response.json();
+      setUsernameAvailable(data.available);
+    } catch (error) {
+      console.error('Error checking username:', error);
+      setUsernameAvailable(false);
+    } finally {
+      setUsernameChecking(false);
+    }
+  }, 500); // Debounce delay of 500ms
+
+  useEffect(() => {
+    checkUsernameAvailability(userName);
+  }, [userName]);
 
   const handleSignUpSubmit = async (event) => {
     event.preventDefault();
@@ -55,6 +91,11 @@ const SignUpForm = () => {
     // Validate username for allowed characters
     if (!isValidUsername(userName)) {
       errors.push("Username can only contain letters, numbers, and special characters.");
+    }
+
+    // Check username availability
+    if (!usernameAvailable) {
+      errors.push('Username is already taken.');
     }
 
     // Validate age based on DOB
@@ -115,16 +156,20 @@ const SignUpForm = () => {
       )}
       <div className="mb-4">
         <label htmlFor="userName" className="block text-sm font-medium text-gray-200">Username</label>
+        {!usernameAvailable && (
+          <div className="text-red-500 text-sm mt-1">Username is already taken.</div>
+        )}
         <input
           type="text"
           id="userName"
-          className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm"
+          className={`text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm ${!usernameAvailable && 'border-red-500'}`}
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
           minLength={3}
           maxLength={12}
           required
         />
+        
       </div>
       <div className="mb-4">
         <label htmlFor="signUpEmail" className="block text-sm font-medium text-gray-200">Email</label>
