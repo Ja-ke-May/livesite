@@ -42,8 +42,8 @@ const debounce = (func, delay) => {
 };
 
 const SignUpForm = () => {
-  const [signUpEmail, setSignUpEmail] = useState('');
-  const [signUpPassword, setSignUpPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [dob, setDob] = useState('');
@@ -105,11 +105,11 @@ const SignUpForm = () => {
     }
 
     // Validate password and confirm password
-    if (signUpPassword !== confirmPassword) {
+    if (password !== confirmPassword) {
       errors.push('Passwords do not match.');
     }
 
-    const passwordErrors = validatePassword(signUpPassword);
+    const passwordErrors = validatePassword(password);
     errors.push(...passwordErrors);
 
     if (errors.length > 0) {
@@ -119,7 +119,7 @@ const SignUpForm = () => {
     }
 
     try {
-      const userData = { userName, signUpEmail, signUpPassword, dob };
+      const userData = { userName, email, password, dob };
       await signup(userData);
       setSuccessMessage('Welcome to MyMe! Please check your email to activate your account.');
       setErrorMessages([]);
@@ -129,8 +129,8 @@ const SignUpForm = () => {
     }
 
     // Reset form fields
-    setSignUpEmail('');
-    setSignUpPassword('');
+    setEmail('');
+    setPassword('');
     setConfirmPassword('');
     setUserName('');
     setDob('');
@@ -172,13 +172,13 @@ const SignUpForm = () => {
         
       </div>
       <div className="mb-4">
-        <label htmlFor="signUpEmail" className="block text-sm font-medium text-gray-200">Email</label>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-200">Email</label>
         <input
           type="email"
-          id="signUpEmail"
+          id="email"
           className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm"
-          value={signUpEmail}
-          onChange={(e) => setSignUpEmail(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
@@ -194,13 +194,13 @@ const SignUpForm = () => {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="signUpPassword" className="block text-sm font-medium text-gray-200">Password</label>
+        <label htmlFor="password" className="block text-sm font-medium text-gray-200">Password</label>
         <input
           type="password"
-          id="signUpPassword"
+          id="password"
           className="text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm"
-          value={signUpPassword}
-          onChange={(e) => setSignUpPassword(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>

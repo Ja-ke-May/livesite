@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useContext, useEffect, useCallback, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import ProfileInfo from './ProfileInfo';
 import ProfileStarResults from './StarResults';
@@ -9,22 +9,36 @@ import MyMeLogo from '../../components/MyMeLogo';
 import Menu from '../../components/menu/Menu';
 import LinksSection from './Links';
 import Support from './Support';
+import { fetchUserProfile } from '../../../utils/apiClient';
+import { AuthContext, AuthProvider } from '../../../utils/AuthContext';
 
-const Profile = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+const ProfileContent = () => {
+  const { isLoggedIn } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/profile');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
   const [profilePicture, setProfilePicture] = useState("/vercel.svg");
   const [username, setUsername] = useState("Username");
   const [bio, setBio] = useState(`Hi, I'm ${username}! Welcome to my profile 😊`);
-  const [links, setLinks] = useState([
-    { id: 1, text: "YouTube", url: "https://youtube.com/username", imageUrl: 'vercel.svg' },
-    { id: 2, text: "Insta", url: "https://instagram.com/username", imageUrl: 'vercel.svg' },
-    { id: 3, text: "LinkedIn", url: "https://linkedin.com/in/username", imageUrl: 'vercel.svg' },
-  ]);
+  const [links, setLinks] = useState([]);
   const [newLinkText, setNewLinkText] = useState("");
   const [newLinkUrl, setNewLinkUrl] = useState("");
   const [newLinkImage, setNewLinkImage] = useState("");
+
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        const userProfile = await fetchUserProfile();
+        setProfilePicture(userProfile.profilePicture || "/vercel.svg");
+        setUsername(userProfile.userName);
+        setBio(userProfile.bio || `Hi, I'm ${userProfile.userName}! Welcome to my profile 😊`);
+        setLinks(userProfile.links || []);
+      } catch (error) {
+        console.error('Failed to load user profile:', error);
+      }
+    };
+
+    loadUserProfile();
+  }, []);
 
   const handleFileChange = useCallback((event) => {
     const file = event.target.files[0];
@@ -81,7 +95,6 @@ const Profile = () => {
     <>
       <Navbar 
         isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn} 
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
       />
@@ -115,7 +128,6 @@ const Profile = () => {
       <MyMeLogo isDarkBackground={isDarkBackground} />
       <Menu 
         isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn} 
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
         isDarkBackground={isDarkBackground} 
@@ -123,5 +135,11 @@ const Profile = () => {
     </>
   );
 };
+
+const Profile = () => (
+  <AuthProvider>
+    <ProfileContent />
+  </AuthProvider>
+);
 
 export default Profile;

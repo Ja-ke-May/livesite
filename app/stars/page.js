@@ -1,5 +1,11 @@
 import Stars from "./components/Stars";
+import { AuthProvider } from '../../utils/AuthContext';
 
-const StarsPage = () => <Stars />;
+const StarsPage = () => 
+<AuthProvider>
+<Stars />
+    </AuthProvider>;
 
 export default StarsPage;
+
+

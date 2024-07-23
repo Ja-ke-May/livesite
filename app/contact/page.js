@@ -1,5 +1,9 @@
 import Contact from "../components/Contact";
+import { AuthProvider } from "@/utils/AuthContext";
 
-const ContactPage = () => <Contact />;
+const ContactPage = () => 
+<AuthProvider>
+    <Contact />
+    </AuthProvider>;
 
 export default ContactPage;

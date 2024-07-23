@@ -28,4 +28,6 @@ const MenuIcon = ({ onMenuToggle, isDarkBackground }) => {
   );
 };
 
+
+
 export default MenuIcon;

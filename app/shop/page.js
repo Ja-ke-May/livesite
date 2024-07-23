@@ -1,5 +1,9 @@
 import Shop from "../components/Shop";
+import { AuthProvider } from '../../utils/AuthContext';
 
-const ShopPage = () => <Shop />;
+const ShopPage= () => 
+<AuthProvider>
+<Shop />
+    </AuthProvider>;
 
 export default ShopPage;

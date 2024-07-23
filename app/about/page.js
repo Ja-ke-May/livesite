@@ -1,5 +1,9 @@
 import About from '../components/About';
+import { AuthProvider } from '@/utils/AuthContext';
 
-const AboutPage = () => <About />;
+const AboutPage = () => 
+<AuthProvider>
+    <About />
+    </AuthProvider>;
 
 export default AboutPage;

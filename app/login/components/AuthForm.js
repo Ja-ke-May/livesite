@@ -1,9 +1,12 @@
+//AuthForm.js 
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import SignUpForm from './SignUpForm';
 import MyMeLogo from '../../components/MyMeLogo';
 import Menu from '../../components/menu/Menu';
-import LogInForm from './LogInForm';
+import LogInForm from './LogInForm'; 
+import { AuthContext, AuthProvider } from '@/utils/AuthContext';
 
 const AuthForm = () => {
   const [email, setEmail] = useState('');
@@ -41,7 +44,8 @@ const AuthForm = () => {
   };
 
   return (
-    <>
+    <AuthProvider>
+          <>
       <Navbar 
         isLoggedIn={isLoggedIn} 
         setIsLoggedIn={setIsLoggedIn} 
@@ -105,6 +109,8 @@ const AuthForm = () => {
         </div>
       )}
     </>
+    </AuthProvider>
+
   );
 };
 

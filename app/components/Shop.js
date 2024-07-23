@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Navbar from './Navbar'; 
 import MyMeLogo from './MyMeLogo';
 import Menu from './menu/Menu';
+import { AuthContext } from '@/utils/AuthContext';
 
 const Shop = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const { isLoggedIn } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/shop');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
@@ -30,11 +31,11 @@ const Shop = () => {
 
   
     return (
+      
       <>
       <div>
       <Navbar 
         isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn} 
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
       />
@@ -48,12 +49,12 @@ const Shop = () => {
       <MyMeLogo isDarkBackground={isDarkBackground} />
       <Menu 
         isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn} 
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
         isDarkBackground={isDarkBackground} 
       />
       </>
+     
     );
   };
   
