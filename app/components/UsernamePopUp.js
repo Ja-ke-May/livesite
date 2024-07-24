@@ -4,12 +4,9 @@ import SendTokensPopUp from './SendTokens';
 import ReportPopUp from './ReportPopUp';
 import Link from 'next/link';
 
-const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
-  const [isSupportStar, setIsSupportStar] = useState(false);
-  const [activePopUp, setActivePopUp] = useState(null); // State to manage active pop-up
+const UsernamePopUp = ({ visible, onClose, links, username, position, supportersCount, isUserSupported, onToggleSupport }) => {
+  const [activePopUp, setActivePopUp] = useState(null);
   const popupRef = useRef(null);
-
-  const toggleSupport = () => setIsSupportStar(!isSupportStar);
 
   const handlePopUpToggle = (popUpName) => {
     setActivePopUp((prev) => (prev === popUpName ? null : popUpName));
@@ -67,13 +64,13 @@ const UsernamePopUp = ({ visible, onClose, links, username, position }) => {
 
         <li
           className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center text-white hover:text-yellow-400 brightness-125"
-          onClick={toggleSupport}
+          onClick={onToggleSupport}
         >
           Support
           <span
-            className={`inline-block ml-2 cursor-pointer ${isSupportStar ? 'text-yellow-400 brightness-125 text-3xl' : 'w-6 h-6 border-2 border-blue-400 rounded-md'}`}
+            className={`inline-block ml-2 cursor-pointer ${isUserSupported ? 'text-yellow-400 brightness-125 text-3xl' : 'w-6 h-6 border-2 border-blue-400 rounded-md'}`}
           >
-            {isSupportStar ? '⭐' : ''}
+            {isUserSupported ? '⭐' : ''}
           </span>
         </li>
 

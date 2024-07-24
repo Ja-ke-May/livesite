@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import UsernamePopUp from '../../components/UsernamePopUp';
+import { updateUsername, updateBio } from '../../../utils/apiClient';
 
-const ProfileInfo = ({
-  profilePicture,
-  username,
-  bio,
-  handleFileChange,
-  handleUsernameChange,
-  handleBioChange,
-  links,
-}) => {
+const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUsernameChange, handleBioChange, links, tokens, supportersCount, isUserSupported, onToggleSupport }) => {
   const [showUsernameInput, setShowUsernameInput] = useState(false);
   const [showBioInput, setShowBioInput] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
+  const [newBio, setNewBio] = useState(bio);
   const [usernameError, setUsernameError] = useState('');
+  const [fileError, setFileError] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
 
@@ -42,12 +37,47 @@ const ProfileInfo = ({
     }
   };
 
-  const confirmUsernameChange = () => {
+  const handleBioChangeInternal = (e) => {
+    const { value } = e.target;
+    setNewBio(value);
+  };
+
+  const confirmUsernameChange = async () => {
     if (newUsername.length >= 3) {
-      handleUsernameChange(newUsername);
-      setShowUsernameInput(false);
+      try {
+        const updatedUser = await updateUsername(newUsername);
+        handleUsernameChange(updatedUser.userName);
+        setShowUsernameInput(false);
+      } catch (error) {
+        setUsernameError(error.message);
+      }
     } else {
       setUsernameError('Username must be at least 3 characters long.');
+    }
+  };
+
+  const confirmBioChange = async () => {
+    try {
+      const updatedUser = await updateBio(newBio);
+      handleBioChange({ target: { value: updatedUser.bio } });
+      setShowBioInput(false);
+    } catch (error) {
+      console.error('Failed to update bio:', error);
+    }
+  };
+
+  const handleFileChangeInternal = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!validImageTypes.includes(file.type)) {
+        setFileError('Only JPEG, PNG, and GIF files are allowed.');
+        return;
+      }
+      setFileError('');
+      handleFileChange(e);
+    } else {
+      console.error('Failed to retrieve file from event');
     }
   };
 
@@ -55,21 +85,17 @@ const ProfileInfo = ({
     <div className="flex justify-center mt-4">
       <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 w-full max-w-lg">
         <div className="text-center relative">
-          <h2
-            className="text-2xl text-blue-400 font-bold cursor-pointer"
-            onClick={(e) => togglePopup(e)} // Ensure the event is passed
-          >
+          <h2 className="text-2xl text-blue-400 font-bold cursor-pointer" onClick={(e) => togglePopup(e)}>
             {username}
           </h2>
 
           <div className=''>
-            <p className="text-yellow-400 brightness-125 mt-2">Tokens: 1000</p>
-            {/* <p className='text-sm text-gray-400'>(private to you)</p> */}
+            <p className="text-yellow-400 brightness-125 mt-2">Tokens: {tokens}</p>
           </div>
         </div>
         <div className="flex flex-col items-center md:flex-row md:items-start mt-4">
           <img
-            src={profilePicture}
+            src={`data:image/jpeg;base64,${profilePicture}`}
             alt="Profile Picture"
             className="w-32 h-32 rounded-[10%] mb-4 md:mb-0 md:mr-6"
           />
@@ -90,7 +116,6 @@ const ProfileInfo = ({
               <input
                 type="text"
                 className="bg-gray-800/80 text-white px-4 py-2 rounded mb-2 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-                placeholder="username"
                 value={newUsername}
                 onChange={handleUsernameChangeInternal}
                 maxLength={12}
@@ -113,8 +138,9 @@ const ProfileInfo = ({
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={handleFileChange}
+            onChange={handleFileChangeInternal}
           />
+          {fileError && <p className="text-red-500 text-sm mb-2">{fileError}</p>}
 
           <button
             onClick={toggleBioInput}
@@ -123,18 +149,35 @@ const ProfileInfo = ({
             {showBioInput ? 'Hide Bio Input' : 'Change Bio'}
           </button>
           {showBioInput && (
-            <textarea
-              className="bg-gray-800/80 text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 break-words"
-              placeholder="New Bio"
-              value={bio}
-              onChange={handleBioChange}
-              maxLength={145}
-            />
+            <div className="flex flex-col items-center">
+              <textarea
+                className="bg-gray-800/80 text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+                value={newBio}
+                placeholder={bio}
+                onChange={handleBioChangeInternal}
+                maxLength={145}
+              />
+              <button
+                onClick={confirmBioChange}
+                className="bg-[#000110] text-white px-4 py-2 rounded border border-green-600 shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 mb-6"
+              >
+                Confirm Bio
+              </button>
+            </div>
           )}
         </div>
       </div>
 
-      <UsernamePopUp visible={showPopup} onClose={togglePopup} links={links} username={username} position={popupPosition} />
+      <UsernamePopUp 
+        visible={showPopup} 
+        onClose={togglePopup} 
+        links={links} 
+        username={username} 
+        position={popupPosition}
+        supportersCount={supportersCount}
+        isUserSupported={isUserSupported}
+        onToggleSupport={onToggleSupport}
+      />
     </div>
   );
 };
