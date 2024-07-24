@@ -7,22 +7,23 @@ import ProfileStarResults from './StarResults';
 import RecentActivity from './RecentActivity';
 import MyMeLogo from '../../components/MyMeLogo';
 import Menu from '../../components/menu/Menu';
-import LinksSection from './Links';
 import Support from './Support';
-import { fetchUserProfile } from '../../../utils/apiClient';
+import LinksSection from './Links';
+import { fetchUserProfile, fetchSupporters, toggleSupport, updateProfilePicture } from '../../../utils/apiClient';
 import { AuthContext, AuthProvider } from '../../../utils/AuthContext';
 
 const ProfileContent = () => {
   const { isLoggedIn } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/profile');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
-  const [profilePicture, setProfilePicture] = useState("/vercel.svg");
-  const [username, setUsername] = useState("Username");
-  const [bio, setBio] = useState(`Hi, I'm ${username}! Welcome to my profile 😊`);
+  const [profilePicture, setProfilePicture] = useState("");
+  const [username, setUsername] = useState('');
+  const [bio, setBio] = useState('');
   const [links, setLinks] = useState([]);
-  const [newLinkText, setNewLinkText] = useState("");
-  const [newLinkUrl, setNewLinkUrl] = useState("");
-  const [newLinkImage, setNewLinkImage] = useState("");
+  const [tokens, setTokens] = useState(0);
+
+  const [supportersCount, setSupportersCount] = useState(0);
+  const [isUserSupported, setIsUserSupported] = useState(false);
 
   useEffect(() => {
     const loadUserProfile = async () => {
@@ -32,6 +33,12 @@ const ProfileContent = () => {
         setUsername(userProfile.userName);
         setBio(userProfile.bio || `Hi, I'm ${userProfile.userName}! Welcome to my profile 😊`);
         setLinks(userProfile.links || []);
+        setTokens(userProfile.tokens || 0);
+
+        // Fetch supporters data
+        const supportersData = await fetchSupporters(userProfile.userName);
+        setSupportersCount(supportersData.supportersCount);
+        setIsUserSupported(supportersData.isUserSupported);
       } catch (error) {
         console.error('Failed to load user profile:', error);
       }
@@ -40,12 +47,36 @@ const ProfileContent = () => {
     loadUserProfile();
   }, []);
 
-  const handleFileChange = useCallback((event) => {
+  const handleToggleSupport = async () => {
+    // Optimistically update the UI
+    const newIsUserSupported = !isUserSupported;
+    const newSupportersCount = isUserSupported ? supportersCount - 1 : supportersCount + 1;
+    
+    setIsUserSupported(newIsUserSupported);
+    setSupportersCount(newSupportersCount);
+
+    try {
+      const data = await toggleSupport(username);
+      // Confirm the state with the actual response from the API
+      setIsUserSupported(data.isSupported);
+      setSupportersCount(data.supportersCount);
+    } catch (error) {
+      console.error('Failed to toggle support status:', error.message);
+      // Revert the optimistic update if the API call fails
+      setIsUserSupported(!newIsUserSupported);
+      setSupportersCount(supportersCount);
+    }
+  };
+
+  const handleFileChange = useCallback(async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setProfilePicture(reader.result);
-      reader.readAsDataURL(file);
+      try {
+        const response = await updateProfilePicture(file);
+        setProfilePicture(response.profilePicture);
+      } catch (error) {
+        console.error('Failed to update profile picture:', error);
+      }
     }
   }, []);
 
@@ -55,40 +86,6 @@ const ProfileContent = () => {
 
   const handleBioChange = useCallback((event) => {
     setBio(event.target.value);
-  }, []);
-
-  const handleAddLink = useCallback(() => {
-    if (newLinkText && newLinkUrl) {
-      const newLink = {
-        id: links.length + 1,
-        text: newLinkText,
-        url: newLinkUrl,
-        imageUrl: newLinkImage
-      };
-      setLinks(prevLinks => [...prevLinks, newLink]);
-      setNewLinkText("");
-      setNewLinkUrl("");
-      setNewLinkImage("");
-    }
-  }, [newLinkText, newLinkUrl, newLinkImage, links]);
-
-  const handleDeleteLink = useCallback((id) => {
-    setLinks(prevLinks => prevLinks.filter(link => link.id !== id));
-  }, []);
-
-  useEffect(() => {
-    setBio(`Hi, I'm ${username}! Welcome to my profile! 😊`);
-  }, [username]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const threshold = 10;
-      setIsDarkBackground(scrollY > threshold);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -107,21 +104,18 @@ const ProfileContent = () => {
           handleUsernameChange={handleUsernameChange}
           handleBioChange={handleBioChange}
           links={links}
+          tokens={tokens} 
+          supportersCount={supportersCount}   // Added prop
+          isUserSupported={isUserSupported}  // Added prop
+          onToggleSupport={handleToggleSupport}  // Added prop
         />
-
-        <Support username={username} />
-        
-        <LinksSection
-          links={links}
-          handleAddLink={handleAddLink}
-          newLinkText={newLinkText}
-          setNewLinkText={setNewLinkText}
-          newLinkUrl={newLinkUrl}
-          setNewLinkUrl={setNewLinkUrl}
-          newLinkImage={newLinkImage}
-          setNewLinkImage={setNewLinkImage}
-          handleDeleteLink={handleDeleteLink}
+        <Support 
+          username={username} 
+          supportersCount={supportersCount}
+          isUserSupported={isUserSupported}
+          onToggleSupport={handleToggleSupport}
         />
+        <LinksSection links={links} />
         <ProfileStarResults />
         <RecentActivity />
       </main>
