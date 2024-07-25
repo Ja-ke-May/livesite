@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import UsernamePopUp from '../../components/UsernamePopUp';
-import { updateUsername, updateBio } from '../../../utils/apiClient';
+import { updateUsername, updateBio } from '@/utils/apiClient';
 
 const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUsernameChange, handleBioChange, links, tokens, supportersCount, isUserSupported, onToggleSupport }) => {
   const [showUsernameInput, setShowUsernameInput] = useState(false);

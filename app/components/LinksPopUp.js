@@ -37,12 +37,12 @@ const LinksPopUp = forwardRef(({ visible, onClose, links, username }, ref) => {
         &times;
       </button>
       
-        <h3 className="text-xl font-semibold mt-4 mb-4 text-center text-blue-400">{username} Links</h3>
-        <div className='max-h-[400px] overflow-y-auto'>
+      <h3 className="text-xl font-semibold mt-4 mb-4 text-center text-blue-400">{username} Links</h3>
+      <div className='max-h-[400px] overflow-y-auto'>
         <ul>
           {links.length > 0 ? (
-            links.map((link) => (
-              <li key={link.id} className="flex items-center mb-2 text-white hover:text-blue-600">
+            links.map((link, index) => (
+              <li key={link.id || index} className="flex items-center mb-2 text-white hover:text-blue-600">
                 <a
                   href={link.url}
                   className="flex items-center"
@@ -51,7 +51,7 @@ const LinksPopUp = forwardRef(({ visible, onClose, links, username }, ref) => {
                 >
                   {link.imageUrl && (
                     <img
-                      src={link.imageUrl}
+                      src={`data:image/jpeg;base64,${link.imageUrl}`}
                       alt={link.text}
                       className="h-8 w-8 m-2 rounded-[10%]"
                     />

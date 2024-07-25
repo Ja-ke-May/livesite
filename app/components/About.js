@@ -7,8 +7,7 @@ import Menu from './menu/Menu';
 import { AuthContext } from '@/utils/AuthContext';
 
 const About = () => {
-
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/about');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
@@ -29,23 +28,20 @@ const About = () => {
     };
   }, [isDarkBackground]);
 
-  
-    return (
-    
-      <>
+  return (
+    <>
       <div>
-      <Navbar 
-        isLoggedIn={isLoggedIn}  
-        currentPath={currentPath} 
-        setCurrentPath={setCurrentPath} 
-      />
-<div>
-        <h1 className='mt-4'>About Us</h1>
-        {/* Add profile details here */}
+        <Navbar 
+          isLoggedIn={isLoggedIn}  
+          currentPath={currentPath} 
+          setCurrentPath={setCurrentPath} 
+          username={username}
+        />
+        <div>
+          <h1 className='mt-4'>About Us</h1>
+          {/* Add profile details here */}
         </div>
-
       </div>
-
       <MyMeLogo isDarkBackground={isDarkBackground} />
       <Menu 
         isLoggedIn={isLoggedIn}  
@@ -53,10 +49,8 @@ const About = () => {
         setCurrentPath={setCurrentPath} 
         isDarkBackground={isDarkBackground} 
       />
-      </>
-    
-    );
-  };
-  
-  export default About;
-  
+    </>
+  );
+};
+
+export default About;

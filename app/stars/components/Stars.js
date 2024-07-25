@@ -7,7 +7,7 @@ import Menu from '../../components/menu/Menu';
 import { AuthContext } from '@/utils/AuthContext';
 
 const Stars = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/stars');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
@@ -28,39 +28,37 @@ const Stars = () => {
     };
   }, [isDarkBackground]);
 
-  
-    return (
-      
-      <>
+  return (
+    <>
       <div>
-      <Navbar 
-        isLoggedIn={isLoggedIn} 
-        currentPath={currentPath} 
-        setCurrentPath={setCurrentPath} 
-      />
-<div>
-        <h1 className='mt-4'>Stars</h1>
-
-        <h3>Longest Time Live</h3>
+        <Navbar 
+          isLoggedIn={isLoggedIn}  
+          currentPath={currentPath} 
+          setCurrentPath={setCurrentPath} 
+          username={username}
+        />
+        <div>
+          <h1 className='mt-4'>Stars Leaderboards</h1>
+          
+          
+          <h3>Longest Time Live</h3>
         <h3>Most Time Live</h3>
         <h3>Most Supporters</h3>
         <h3>Top Commenters</h3> 
 
+
+
         </div>
-
       </div>
-
       <MyMeLogo isDarkBackground={isDarkBackground} />
       <Menu 
-        isLoggedIn={isLoggedIn} 
+        isLoggedIn={isLoggedIn}  
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
         isDarkBackground={isDarkBackground} 
       />
-      </>
-      
-    );
-  };
-  
-  export default Stars;
-  
+    </>
+  );
+};
+
+export default Stars;

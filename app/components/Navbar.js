@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Link from 'next/link';
+import { AuthContext } from '@/utils/AuthContext';
+import Menu from './menu/Menu'; 
 
-const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
+const Navbar = () => {
+  const { isLoggedIn, username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('');
   const [notificationCount, setNotificationCount] = useState(1); // Example notification count
 
@@ -20,33 +23,15 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     setCurrentPath(href);
   };
 
-  const getLabel = (href, defaultLabel) => {
-    if (currentPath === href) {
-      switch (href) {
-        case '/stars':
-          return 'Stars';
-        case '/shop':
-          return 'Shop';
-        case '/about':
-          return 'About';
-        case '/contact':
-          return 'Contact';
-        default:
-          return defaultLabel;
-      }
-    }
-    return defaultLabel;
-  };
-
   const renderLink = (href, defaultLabel) => (
     <Link href={href} className={isActive(href) ? activeLinkClasses : linkClasses} aria-label={defaultLabel} onClick={() => handleLinkClick(href)}>
-      {getLabel(href, defaultLabel)}
+      {defaultLabel}
     </Link>
   );
 
   const renderProfileLink = () => (
     <div className="relative flex items-center">
-      {renderLink('/profile', 'Profile')}
+      {username ? renderLink(`/profile/${username}`, 'Profile') : renderLink('/login', 'Log In')}
       {notificationCount > 0 && (
         <div className="absolute -top-2 -right-1 w-4 h-4 bg-red-700 text-xs text-white flex items-center justify-center rounded-[10%] hover:scale-150">
           {notificationCount}
@@ -56,17 +41,19 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   );
 
   return (
-    <nav className="w-full flex justify-center bg-white top-0 pt-4 md:text-lg">
-      {renderLink('/', 'Home')}
-      {currentPath === '/stars' && renderLink('/stars', 'Stars')}
-      {currentPath === '/shop' && renderLink('/shop', 'Shop')}
-      {currentPath === '/about' && renderLink('/about', 'About')}
-      {currentPath === '/contact' && renderLink('/contact', 'Contact')}
-      {isLoggedIn ? (
-        renderProfileLink()
-      ) : (
-        renderLink('/login', 'Log In')
-      )}
+    <nav className="w-full flex justify-center items-center bg-white top-0 pt-4 md:text-lg">
+      <div className="flex">
+        {renderLink('/', 'Home')}
+      </div>
+      <div className="flex">
+        {['/stars', '/shop', '/about', '/contact'].map((path) => (
+          currentPath === path && renderLink(path, path.charAt(1).toUpperCase() + path.slice(2))
+        ))}
+      </div>
+      <div className="flex">
+        {isLoggedIn ? renderProfileLink() : renderLink('/login', 'Log In')}
+      </div>
+      <Menu setCurrentPath={setCurrentPath} />
     </nav>
   );
 };
