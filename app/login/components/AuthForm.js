@@ -1,17 +1,14 @@
-//AuthForm.js 
-
-import React, { useState, useEffect } from 'react';
-import Navbar from '../../components/Navbar';
+import React, { useState, useEffect, useContext } from 'react';
+import Navbar from '@/app/components/Navbar';
 import SignUpForm from './SignUpForm';
-import MyMeLogo from '../../components/MyMeLogo';
-import Menu from '../../components/menu/Menu';
-import LogInForm from './LogInForm'; 
+import MyMeLogo from '@/app/components/MyMeLogo';
+import Menu from '@/app/components/menu/Menu';
+import LogInForm from './LogInForm';
 import { AuthContext, AuthProvider } from '@/utils/AuthContext';
 
-const AuthForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Initialize to false
+const AuthFormContent = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/login');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
@@ -21,7 +18,7 @@ const AuthForm = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const threshold = 10; 
+      const threshold = 10;
       if (scrollY > threshold && !isDarkBackground) {
         setIsDarkBackground(true);
       } else if (scrollY <= threshold && isDarkBackground) {
@@ -37,20 +34,18 @@ const AuthForm = () => {
 
   const handleForgotPasswordSubmit = (event) => {
     event.preventDefault();
-    // Simulate reset password success
     setSuccessMessage('Please check your email to reset your password.');
     setForgotPasswordEmail('');
     setShowForgotPasswordModal(false);
   };
 
   return (
-    <AuthProvider>
-          <>
+    <>
       <Navbar 
-        isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn} 
-        currentPath={currentPath} 
-        setCurrentPath={setCurrentPath} 
+        isLoggedIn={isLoggedIn}
+        username={username} // Pass the username to Navbar
+        currentPath={currentPath}
+        setCurrentPath={setCurrentPath}
       />
       {successMessage && (
         <div className="text-green-500 text-sm mt-5 flex justify-center">
@@ -59,20 +54,18 @@ const AuthForm = () => {
       )}
       
       <LogInForm 
-        setIsLoggedIn={setIsLoggedIn} 
-        showForgotPasswordModal={showForgotPasswordModal} 
-        setShowForgotPasswordModal={setShowForgotPasswordModal} 
+        setIsLoggedIn={setIsLoggedIn}
+        setShowForgotPasswordModal={setShowForgotPasswordModal}
       />
 
       <SignUpForm />
 
       <MyMeLogo isDarkBackground={isDarkBackground} />
-      <Menu 
-        isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn} 
-        currentPath={currentPath} 
-        setCurrentPath={setCurrentPath} 
-        isDarkBackground={isDarkBackground} 
+      <Menu
+        isLoggedIn={isLoggedIn}
+        currentPath={currentPath}
+        setCurrentPath={setCurrentPath}
+        isDarkBackground={isDarkBackground}
       />
 
       {showForgotPasswordModal && (
@@ -109,9 +102,13 @@ const AuthForm = () => {
         </div>
       )}
     </>
-    </AuthProvider>
-
   );
 };
+
+const AuthForm = () => (
+  <AuthProvider>
+    <AuthFormContent />
+  </AuthProvider>
+);
 
 export default AuthForm;

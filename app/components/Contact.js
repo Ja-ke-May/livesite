@@ -7,8 +7,7 @@ import Menu from './menu/Menu';
 import { AuthContext } from '@/utils/AuthContext';
 
 const Contact = () => {
-
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/contact');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
@@ -29,33 +28,34 @@ const Contact = () => {
     };
   }, [isDarkBackground]);
 
-  
-    return (
-      
-      <>
+  return (
+    <>
       <div>
-      <Navbar 
-        isLoggedIn={isLoggedIn}
-        currentPath={currentPath} 
-        setCurrentPath={setCurrentPath} 
-      />
-<div>
-        <h1 className='mt-4'>Contact</h1>
-        {/* Add profile details here */}
+        <Navbar 
+          isLoggedIn={isLoggedIn}  
+          currentPath={currentPath} 
+          setCurrentPath={setCurrentPath} 
+          username={username}
+        />
+        <div>
+          <h1 className='mt-4'>Contact</h1>
+          
+          
+      
+
+
+
         </div>
-
       </div>
-
       <MyMeLogo isDarkBackground={isDarkBackground} />
       <Menu 
-        isLoggedIn={isLoggedIn}
+        isLoggedIn={isLoggedIn}  
         currentPath={currentPath} 
         setCurrentPath={setCurrentPath} 
         isDarkBackground={isDarkBackground} 
       />
-      </>
-    );
-  };
-  
-  export default Contact;
-  
+    </>
+  );
+};
+
+export default Contact;

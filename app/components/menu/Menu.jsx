@@ -17,14 +17,11 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
   const handleLogout = () => {
     logout(); // Clear the authentication token
     
-    setShowLogoutConfirm(false); // Close the confirmation popup
-    setCurrentPath('/'); // Optionally update current path
-    window.location.href = '/'; // Redirect to the homepage
+    setShowLogoutConfirm(false); 
+    window.location.href = '/'; 
   };
 
-  const handleLinkClick = (href) => {
-    setCurrentPath(href);
-  };
+ 
 
   return (
     
@@ -39,7 +36,6 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
                 <button 
                   className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block mt-10 md:pt-4" 
                   title='stars'
-                  onClick={() => handleLinkClick('/stars')}
                 >
                   Stars
                 </button>
@@ -49,7 +45,6 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
                 <button 
                   className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block" 
                   title='shop'
-                  onClick={() => handleLinkClick('/shop')}
                 >
                   Shop
                 </button>
@@ -59,7 +54,6 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
                 <button 
                   className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block" 
                   title='about'
-                  onClick={() => handleLinkClick('/about')}
                 >
                   About
                 </button>
@@ -69,7 +63,6 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
                 <button 
                   className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block" 
                   title='contact'
-                  onClick={() => handleLinkClick('/contact')}
                 >
                   Contact
                 </button>

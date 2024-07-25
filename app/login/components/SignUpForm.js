@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { signup } from '../../../utils/apiClient';
+import { signup } from '@/utils/apiClient';
 
 // Utility functions
 const isValidUsername = (username) => /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]*$/.test(username);

@@ -1,197 +1,168 @@
+//apiClient.js 
+
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:5000';
 
+const getToken = () => localStorage.getItem('token');
+
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 // Signs up a new user by sending the user data to the backend.
 export const signup = async (userData) => {
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/signup`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to sign up');
-        }
-
-        return await response.json();
-    } catch (error) {
-        throw new Error(error.message || 'An unknown error occurred');
-    }
+  try {
+    const response = await axiosInstance.post('/api/signup', userData);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to sign up');
+  }
 };
 
-// Logs in a user by sending their email and password to the backend.
 export const login = async (credentials) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(credentials),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to log in');
-        }
-
-        return await response.json();
+      const response = await axiosInstance.post('/api/login', credentials);
+      const { token, username } = response.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('username', username); // Store username in local storage
+      return response.data;
     } catch (error) {
-        throw new Error(error.message || 'An unknown error occurred');
+      throw new Error(error.response?.data?.message || 'Failed to log in');
     }
-};
+  };  
 
 // Logs out the user by removing the token from local storage.
 export const logout = () => {
-    localStorage.removeItem('token');
+  localStorage.removeItem('token');
 };
 
-// Fetches the user's profile data.
-export const fetchUserProfile = async () => {
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/api/profile`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to fetch user profile');
-        }
-
-        return await response.json();
-    } catch (error) {
-        throw new Error(error.message || 'An unknown error occurred');
-    }
+// Fetches user profile.
+export const fetchUserProfile = async (username) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.get(`/api/profile/${username}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch user profile');
+  }
 };
 
 // Updates the user's username.
 export const updateUsername = async (newUsername) => {
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/api/profile/username`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userName: newUsername }),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to update username');
-        }
-
-        return await response.json();
-    } catch (error) {
-        throw new Error(error.message || 'An unknown error occurred');
-    }
+  try {
+    const token = getToken();
+    const response = await axiosInstance.put('/api/profile/username', { userName: newUsername }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to update username');
+  }
 };
 
 // Updates the user's bio.
 export const updateBio = async (newBio) => {
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/api/profile/bio`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ bio: newBio }),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to update bio');
-        }
-
-        return await response.json();
-    } catch (error) {
-        throw new Error(error.message || 'An unknown error occurred');
-    }
+  try {
+    const token = getToken();
+    const response = await axiosInstance.put('/api/profile/bio', { bio: newBio }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to update bio');
+  }
 };
 
 // Updates the user's profile picture.
 export const updateProfilePicture = async (profilePicture) => {
-    const formData = new FormData();
-    formData.append('profilePicture', profilePicture);
+  const formData = new FormData();
+  formData.append('profilePicture', profilePicture);
 
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/api/profile-picture`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: formData,
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to update profile picture');
-        }
-
-        return await response.json();
-    } catch (error) {
-        throw new Error(error.message || 'An unknown error occurred');
-    }
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post('/api/profile-picture', formData, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to update profile picture');
+  }
 };
 
 // Fetches supporters count and user support status.
 export const fetchSupporters = async (username) => {
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            throw new Error('No token found, please log in');
-        }
-
-        const response = await axios.get(`${API_BASE_URL}/api/supporters`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-            params: { username },
-        });
-
-        return response.data;
-    } catch (error) {
-        if (error.response) {
-            console.error('Error response from server:', error.response);
-        } else if (error.request) {
-            console.error('No response received:', error.request);
-        } else {
-            console.error('Error in setup:', error.message);
-        }
-        throw new Error(error.response?.data?.message || 'Failed to fetch supporters');
-    }
+  try {
+    const token = getToken();
+    const response = await axiosInstance.get('/api/supporters', {
+      headers: { 'Authorization': `Bearer ${token}` },
+      params: { username },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch supporters');
+  }
 };
 
 // Toggles the support status.
 export const toggleSupport = async (username) => {
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            throw new Error('No token found, please log in');
-        }
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post('/api/supporters/toggle', { username }, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to toggle support status');
+  }
+};
 
-        const response = await axios.post(`${API_BASE_URL}/api/supporters/toggle`, 
-            { username },
-            {
-                headers: { 'Authorization': `Bearer ${token}` },
-            }
-        );
-
-        return response.data;
-    } catch (error) {
-        if (error.response) {
-            console.error('Error response from server:', error.response);
-        } else if (error.request) {
-            console.error('No response received:', error.request);
-        } else {
-            console.error('Error in setup:', error.message);
-        }
-        throw new Error(error.response?.data?.message || 'Failed to toggle support status');
+// Add a new link.
+export const addLink = async (link) => {
+  try {
+    const token = getToken();
+    const formData = new FormData();
+    formData.append('text', link.text);
+    formData.append('url', link.url);
+    if (link.imageFile) {
+      formData.append('image', link.imageFile);
     }
+
+    const response = await axiosInstance.post('/api/profile/link', formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to add link');
+  }
+};
+
+// Delete a link.
+export const deleteLink = async (linkId) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.delete(`/api/profile/link/${linkId}`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to delete link');
+  }
 };

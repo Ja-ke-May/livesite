@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { login } from '../../../utils/apiClient';
+import { login } from '@/utils/apiClient';
 
 const LogInForm = ({ setIsLoggedIn, setShowForgotPasswordModal }) => {
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ const LogInForm = ({ setIsLoggedIn, setShowForgotPasswordModal }) => {
       localStorage.setItem('token', data.token);
       setIsLoggedIn(true);
       setErrorMessage('');
-      window.location.href = '/profile';  // Redirect to /profile after successful login
+      window.location.href = `/profile/${data.username}`; // Redirect to /profile/<username> after successful login
     } catch (error) {
       console.error('Login error:', error.message);
       setErrorMessage(error.message || 'An unknown error occurred');
