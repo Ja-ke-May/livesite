@@ -14,15 +14,16 @@ const RecentActivity = ({ recentActivity }) => {
         {[...recentActivity].reverse().slice(0, visibleCount).map((activity, index) => (
           <li key={index}>{activity}</li>
         ))}
-      </ul>
-      {visibleCount < recentActivity.length && (
+         {visibleCount < recentActivity.length && (
         <button
           onClick={handleLoadMore}
-          className="mt-4 px-4 py-2 bg-none text-white rounded-lg shadow-md"
+          className="mt-4 px-4 py-2 bg-[#000110] text-white rounded-lg shadow-md"
         >
           Load More
         </button>
       )}
+      </ul>
+     
     </div>
   );
 };

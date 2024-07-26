@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { addLink, deleteLink } from '../../../utils/apiClient';
 
-const LinksSection = ({ links, setLinks, isLoggedIn }) => {
+const LinksSection = ({ links = [], setLinks, isLoggedIn }) => {
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
   const [newLinkText, setNewLinkText] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
