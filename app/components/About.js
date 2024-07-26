@@ -2,31 +2,12 @@
 
 import { useState, useEffect, useContext } from 'react';
 import Navbar from './Navbar'; 
-import MyMeLogo from './MyMeLogo';
-import Menu from './menu/Menu';
 import { AuthContext } from '@/utils/AuthContext';
 
 const About = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/about');
-  const [isDarkBackground, setIsDarkBackground] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const threshold = 10; 
-      if (scrollY > threshold && !isDarkBackground) {
-        setIsDarkBackground(true);
-      } else if (scrollY <= threshold && isDarkBackground) {
-        setIsDarkBackground(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isDarkBackground]);
 
   return (
     <>
@@ -42,13 +23,7 @@ const About = () => {
           {/* Add profile details here */}
         </div>
       </div>
-      <MyMeLogo isDarkBackground={isDarkBackground} />
-      <Menu 
-        isLoggedIn={isLoggedIn}  
-        currentPath={currentPath} 
-        setCurrentPath={setCurrentPath} 
-        isDarkBackground={isDarkBackground} 
-      />
+      
     </>
   );
 };

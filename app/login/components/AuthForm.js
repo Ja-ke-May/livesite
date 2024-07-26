@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Navbar from '@/app/components/Navbar';
 import SignUpForm from './SignUpForm';
-import MyMeLogo from '@/app/components/MyMeLogo';
-import Menu from '@/app/components/menu/Menu';
 import LogInForm from './LogInForm';
 import { AuthContext, AuthProvider } from '@/utils/AuthContext';
 
@@ -10,27 +8,9 @@ const AuthFormContent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/login');
-  const [isDarkBackground, setIsDarkBackground] = useState(false);
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const threshold = 10;
-      if (scrollY > threshold && !isDarkBackground) {
-        setIsDarkBackground(true);
-      } else if (scrollY <= threshold && isDarkBackground) {
-        setIsDarkBackground(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isDarkBackground]);
 
   const handleForgotPasswordSubmit = (event) => {
     event.preventDefault();
@@ -60,13 +40,6 @@ const AuthFormContent = () => {
 
       <SignUpForm />
 
-      <MyMeLogo isDarkBackground={isDarkBackground} />
-      <Menu
-        isLoggedIn={isLoggedIn}
-        currentPath={currentPath}
-        setCurrentPath={setCurrentPath}
-        isDarkBackground={isDarkBackground}
-      />
 
       {showForgotPasswordModal && (
         <div className="fixed inset-0 bg-[#000110]/80 flex items-center justify-center z-50">
