@@ -2,7 +2,21 @@ import React, { useState } from 'react';
 import UsernamePopUp from '../../components/UsernamePopUp';
 import { updateUsername, updateBio } from '@/utils/apiClient';
 
-const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUsernameChange, handleBioChange, links, tokens, supportersCount, isUserSupported, onToggleSupport, isLoggedIn }) => {
+const ProfileInfo = ({
+  profilePicture,
+  username,
+  bio,
+  handleFileChange,
+  handleUsernameChange,
+  handleBioChange,
+  links,
+  tokens,
+  supportersCount,
+  isUserSupported,
+  onToggleSupport,
+  isLoggedIn,
+  loggedInUsername // Add this prop to get the logged-in username
+}) => {
   const [showUsernameInput, setShowUsernameInput] = useState(false);
   const [showBioInput, setShowBioInput] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
@@ -75,7 +89,11 @@ const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUs
         return;
       }
       setFileError('');
-      handleFileChange(e);
+      try {
+        await handleFileChange(e); // Ensure the file change event is passed to handleFileChange
+      } catch (error) {
+        console.error('Failed to update profile picture:', error);
+      }
     } else {
       console.error('Failed to retrieve file from event');
     }
@@ -88,14 +106,15 @@ const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUs
           <h2 className="text-2xl text-blue-400 font-bold cursor-pointer" onClick={(e) => togglePopup(e)}>
             {username}
           </h2>
-
-          <div className=''>
-            <p className="text-yellow-400 brightness-125 mt-2">Tokens: {tokens}</p>
-          </div>
+          {isLoggedIn && loggedInUsername === username && (
+            <div>
+              <p className="text-yellow-400 brightness-125 mt-2">Tokens: {tokens}</p>
+            </div>
+          )}
         </div>
         <div className="flex flex-col items-center md:flex-row md:items-start mt-4">
           <img
-            src={`data:image/jpeg;base64,${profilePicture}`}
+            src={profilePicture ? `data:image/jpeg;base64,${profilePicture}` : ''}
             alt="Profile Picture"
             className="w-32 h-32 rounded-[10%] mb-4 md:mb-0 md:mr-6"
           />
@@ -103,8 +122,7 @@ const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUs
             {bio}
           </p>
         </div>
-
-        {isLoggedIn && (
+        {isLoggedIn && loggedInUsername === username && (
           <div className="flex flex-col items-center mt-4">
             <button
               onClick={toggleUsernameInput}
@@ -130,7 +148,6 @@ const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUs
                 </button>
               </div>
             )}
-
             <label htmlFor="fileInput" className="text-center cursor-pointer bg-[#000110] text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
               Change Profile Picture
             </label>
@@ -142,7 +159,6 @@ const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUs
               onChange={handleFileChangeInternal}
             />
             {fileError && <p className="text-red-500 text-sm mb-2">{fileError}</p>}
-
             <button
               onClick={toggleBioInput}
               className="bg-[#000110] text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
@@ -168,7 +184,6 @@ const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUs
             )}
           </div>
         )}
-
         <UsernamePopUp 
           visible={showPopup} 
           onClose={togglePopup} 

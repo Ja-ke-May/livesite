@@ -21,8 +21,6 @@ const ProfileContent = ({ profileUsername }) => {
   const [recentActivity, setRecentActivity] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
- 
-
   useEffect(() => {
     if (!isInitialized) {
       return;
@@ -31,7 +29,7 @@ const ProfileContent = ({ profileUsername }) => {
     const loadUserProfile = async () => {
       try {
         const userProfile = await fetchUserProfile(profileUsername);
-        setProfilePicture(userProfile.profilePicture || "/vercel.svg");
+        setProfilePicture(userProfile.profilePicture);
         setBio(userProfile.bio || `Hi, I'm ${userProfile.userName}! Welcome to my profile 😊`);
         setLinks(userProfile.links || []);
         setTokens(userProfile.tokens || 0);
@@ -53,7 +51,7 @@ const ProfileContent = ({ profileUsername }) => {
       loadUserProfile();
     }
 
-    // Polling for recent activity updates every 8 seconds
+    // Polling for recent activity updates every 10 seconds
     const intervalId = setInterval(async () => {
       try {
         const recentActivityData = await fetchRecentActivity(profileUsername);
@@ -61,7 +59,7 @@ const ProfileContent = ({ profileUsername }) => {
       } catch (error) {
         console.error('Failed to fetch recent activity:', error);
       }
-    }, 8000);
+    }, 10000);
 
     return () => clearInterval(intervalId);
   }, [profileUsername, isInitialized]);
@@ -98,13 +96,15 @@ const ProfileContent = ({ profileUsername }) => {
       }
     }
   }, []);
+  
+  
 
   const handleBioChange = useCallback((event) => {
     setBio(event.target.value);
   }, []);
 
   if (isLoading || !isInitialized) {
-    return <div className='bg-[#000110] w-screen h-screen flex justify-center items-center'>Loading...</div>; // Show a loading state while the profile is being loaded
+    return <div><Navbar /><div className='bg-[#000110] w-screen h-screen flex justify-center items-center animate-pulse'>Loading...</div></div>; // Show a loading state while the profile is being loaded
   }
 
   return (
@@ -123,6 +123,7 @@ const ProfileContent = ({ profileUsername }) => {
           isUserSupported={isUserSupported}
           onToggleSupport={handleToggleSupport}
           isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} // Only allow changes if logged in user matches profile
+          loggedInUsername={loggedInUsername} // Pass the logged-in username
         />
         <Support 
           username={profileUsername} 

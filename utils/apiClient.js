@@ -86,22 +86,6 @@ export const updateBio = async (newBio) => {
   }
 };
 
-// Updates the user's profile picture.
-export const updateProfilePicture = async (profilePicture) => {
-  const formData = new FormData();
-  formData.append('profilePicture', profilePicture);
-
-  try {
-    const token = getToken();
-    const response = await axiosInstance.post('/api/profile-picture', formData, {
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to update profile picture');
-  }
-};
-
 // Fetches supporters count and user support status.
 export const fetchSupporters = async (username) => {
   try {
@@ -181,3 +165,22 @@ export const fetchRecentActivity = async (username) => {
   }
 };
 
+// Updates the user's profile picture.
+export const updateProfilePicture = async (file) => {
+  try {
+    const token = getToken();
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+
+    const response = await axiosInstance.post('/api/profile-picture', formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to update profile picture');
+  }
+};
