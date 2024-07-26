@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const RecentActivity = () => {
+const RecentActivity = ({ recentActivity }) => {
+  const [visibleCount, setVisibleCount] = useState(20);
+
+  const handleLoadMore = () => {
+    setVisibleCount((prevCount) => prevCount + 20);
+  };
+
   return (
-    <div className="bg-gray-800/80 rounded-lg shadow-md p-6 mt-4">
+    <div className="max-h-[400px] bg-gray-800/80 rounded-lg shadow-md p-6 mt-4">
       <h3 className="text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]">Recent Activity</h3>
-      <ul className="list-disc pl-5">
-        <li>You went live for 2 mins 30 seconds</li>
-        <li>User sent you tokens</li>
-        <li>User supported you</li>
+      <ul className="list-disc pl-5 overflow-y-auto max-h-[300px] max-x-full">
+        {[...recentActivity].reverse().slice(0, visibleCount).map((activity, index) => (
+          <li key={index}>{activity}</li>
+        ))}
       </ul>
+      {visibleCount < recentActivity.length && (
+        <button
+          onClick={handleLoadMore}
+          className="mt-4 px-4 py-2 bg-none text-white rounded-lg shadow-md"
+        >
+          Load More
+        </button>
+      )}
     </div>
   );
 };

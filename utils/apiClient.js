@@ -166,3 +166,18 @@ export const deleteLink = async (linkId) => {
     throw new Error('Failed to delete link');
   }
 };
+
+export const fetchRecentActivity = async (username) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.get(`/api/recent-activity/${username}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch recent activity');
+  }
+};
+

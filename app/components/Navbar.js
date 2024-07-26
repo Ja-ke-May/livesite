@@ -2,16 +2,28 @@ import React, { useEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import { AuthContext } from '@/utils/AuthContext';
 import Menu from './menu/Menu'; 
+import MyMeLogo from './MyMeLogo';
 
 const Navbar = () => {
-  const { isLoggedIn, username } = useContext(AuthContext);
+  const { isLoggedIn, username, notificationCount } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('');
-  const [notificationCount, setNotificationCount] = useState(1); // Example notification count
+  const [isDarkBackground, setIsDarkBackground] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setCurrentPath(window.location.pathname);
-    }
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const threshold = 10; 
+      setIsDarkBackground(scrollY > threshold);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
   }, []);
 
   const linkClasses = "bg-gray-800/80 text-white px-2 md:px-4 py-2 mx-1 md:mx-2 rounded-t-lg hover:bg-[#000110]";
@@ -24,7 +36,7 @@ const Navbar = () => {
   };
 
   const renderLink = (href, defaultLabel) => (
-    <Link href={href} className={isActive(href) ? activeLinkClasses : linkClasses} aria-label={defaultLabel} onClick={() => handleLinkClick(href)}>
+    <Link href={href} key={href} className={isActive(href) ? activeLinkClasses : linkClasses} aria-label={defaultLabel} onClick={() => handleLinkClick(href)}>
       {defaultLabel}
     </Link>
   );
@@ -53,7 +65,8 @@ const Navbar = () => {
       <div className="flex">
         {isLoggedIn ? renderProfileLink() : renderLink('/login', 'Log In')}
       </div>
-      <Menu setCurrentPath={setCurrentPath} />
+      <MyMeLogo isDarkBackground={isDarkBackground} />
+      <Menu setCurrentPath={setCurrentPath} isDarkBackground={isDarkBackground}/>
     </nav>
   );
 };

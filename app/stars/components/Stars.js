@@ -1,32 +1,13 @@
 "use client";
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import Navbar from '../../components/Navbar'; 
-import MyMeLogo from '../../components/MyMeLogo';
-import Menu from '../../components/menu/Menu';
 import { AuthContext } from '@/utils/AuthContext';
 
 const Stars = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/stars');
-  const [isDarkBackground, setIsDarkBackground] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const threshold = 10; 
-      if (scrollY > threshold && !isDarkBackground) {
-        setIsDarkBackground(true);
-      } else if (scrollY <= threshold && isDarkBackground) {
-        setIsDarkBackground(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isDarkBackground]);
+ 
 
   return (
     <>
@@ -50,13 +31,7 @@ const Stars = () => {
 
         </div>
       </div>
-      <MyMeLogo isDarkBackground={isDarkBackground} />
-      <Menu 
-        isLoggedIn={isLoggedIn}  
-        currentPath={currentPath} 
-        setCurrentPath={setCurrentPath} 
-        isDarkBackground={isDarkBackground} 
-      />
+      
     </>
   );
 };

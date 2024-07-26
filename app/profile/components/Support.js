@@ -1,8 +1,6 @@
-// Support.js
 import React from 'react';
 
 const Support = ({ username, supportersCount, isUserSupported, onToggleSupport }) => {
-
   return (
     <div className='flex justify-center'>
       <div className="bg-gray-800/80 rounded-lg shadow-md p-6 mt-4 text-center max-w-[85%]">

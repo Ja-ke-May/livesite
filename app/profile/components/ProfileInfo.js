@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import UsernamePopUp from '../../components/UsernamePopUp';
 import { updateUsername, updateBio } from '@/utils/apiClient';
 
-const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUsernameChange, handleBioChange, links, tokens, supportersCount, isUserSupported, onToggleSupport }) => {
+const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUsernameChange, handleBioChange, links, tokens, supportersCount, isUserSupported, onToggleSupport, isLoggedIn }) => {
   const [showUsernameInput, setShowUsernameInput] = useState(false);
   const [showBioInput, setShowBioInput] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
@@ -104,80 +104,82 @@ const ProfileInfo = ({ profilePicture, username, bio, handleFileChange, handleUs
           </p>
         </div>
 
-        <div className="flex flex-col items-center mt-4">
-          <button
-            onClick={toggleUsernameInput}
-            className="bg-[#000110] text-white px-4 py-2 rounded mb-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-          >
-            {showUsernameInput ? 'Hide Username Input' : 'Change Username'}
-          </button>
-          {showUsernameInput && (
-            <div className="flex flex-col items-center">
-              <input
-                type="text"
-                className="bg-gray-800/80 text-white px-4 py-2 rounded mb-2 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-                value={newUsername}
-                onChange={handleUsernameChangeInternal}
-                maxLength={12}
-              />
-              {usernameError && <p className="text-red-500 text-sm mb-2">{usernameError}</p>}
-              <button
-                onClick={confirmUsernameChange}
-                className="bg-[#000110] text-white px-4 py-2 rounded border border-green-600 shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 mb-6"
-              >
-                Confirm Username
-              </button>
-            </div>
-          )}
+        {isLoggedIn && (
+          <div className="flex flex-col items-center mt-4">
+            <button
+              onClick={toggleUsernameInput}
+              className="bg-[#000110] text-white px-4 py-2 rounded mb-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+            >
+              {showUsernameInput ? 'Hide Username Input' : 'Change Username'}
+            </button>
+            {showUsernameInput && (
+              <div className="flex flex-col items-center">
+                <input
+                  type="text"
+                  className="bg-gray-800/80 text-white px-4 py-2 rounded mb-2 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+                  value={newUsername}
+                  onChange={handleUsernameChangeInternal}
+                  maxLength={12}
+                />
+                {usernameError && <p className="text-red-500 text-sm mb-2">{usernameError}</p>}
+                <button
+                  onClick={confirmUsernameChange}
+                  className="bg-[#000110] text-white px-4 py-2 rounded border border-green-600 shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 mb-6"
+                >
+                  Confirm Username
+                </button>
+              </div>
+            )}
 
-          <label htmlFor="fileInput" className="text-center cursor-pointer bg-[#000110] text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
-            Change Profile Picture
-          </label>
-          <input
-            id="fileInput"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileChangeInternal}
-          />
-          {fileError && <p className="text-red-500 text-sm mb-2">{fileError}</p>}
+            <label htmlFor="fileInput" className="text-center cursor-pointer bg-[#000110] text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
+              Change Profile Picture
+            </label>
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChangeInternal}
+            />
+            {fileError && <p className="text-red-500 text-sm mb-2">{fileError}</p>}
 
-          <button
-            onClick={toggleBioInput}
-            className="bg-[#000110] text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-          >
-            {showBioInput ? 'Hide Bio Input' : 'Change Bio'}
-          </button>
-          {showBioInput && (
-            <div className="flex flex-col items-center">
-              <textarea
-                className="bg-gray-800/80 text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-                value={newBio}
-                placeholder={bio}
-                onChange={handleBioChangeInternal}
-                maxLength={145}
-              />
-              <button
-                onClick={confirmBioChange}
-                className="bg-[#000110] text-white px-4 py-2 rounded border border-green-600 shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 mb-6"
-              >
-                Confirm Bio
-              </button>
-            </div>
-          )}
-        </div>
+            <button
+              onClick={toggleBioInput}
+              className="bg-[#000110] text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+            >
+              {showBioInput ? 'Hide Bio Input' : 'Change Bio'}
+            </button>
+            {showBioInput && (
+              <div className="flex flex-col items-center">
+                <textarea
+                  className="bg-gray-800/80 text-white px-4 py-2 rounded mb-4 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+                  value={newBio}
+                  placeholder={bio}
+                  onChange={handleBioChangeInternal}
+                  maxLength={145}
+                />
+                <button
+                  onClick={confirmBioChange}
+                  className="bg-[#000110] text-white px-4 py-2 rounded border border-green-600 shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 mb-6"
+                >
+                  Confirm Bio
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        <UsernamePopUp 
+          visible={showPopup} 
+          onClose={togglePopup} 
+          links={links} 
+          username={username} 
+          position={popupPosition}
+          supportersCount={supportersCount}
+          isUserSupported={isUserSupported}
+          onToggleSupport={onToggleSupport}
+        />
       </div>
-
-      <UsernamePopUp 
-        visible={showPopup} 
-        onClose={togglePopup} 
-        links={links} 
-        username={username} 
-        position={popupPosition}
-        supportersCount={supportersCount}
-        isUserSupported={isUserSupported}
-        onToggleSupport={onToggleSupport}
-      />
     </div>
   );
 };
