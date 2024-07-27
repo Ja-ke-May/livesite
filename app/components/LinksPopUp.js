@@ -37,7 +37,7 @@ const LinksPopUp = forwardRef(({ visible, onClose, links, username }, ref) => {
         &times;
       </button>
       
-      <h3 className="text-xl font-semibold mt-4 mb-4 text-center text-blue-400">{username} Links</h3>
+      <h3 className="text-xl font-semibold mt-4 mb-4 text-center">{username}'s Links</h3>
       <div className='max-h-[400px] overflow-y-auto'>
         <ul>
           {links.length > 0 ? (
@@ -53,7 +53,7 @@ const LinksPopUp = forwardRef(({ visible, onClose, links, username }, ref) => {
                     <img
                       src={`data:image/jpeg;base64,${link.imageUrl}`}
                       alt={link.text}
-                      className="h-8 w-8 m-2 rounded-[10%]"
+                      className="max-h-8 max-w-8 m-2 rounded-[10%]"
                     />
                   )}
                   {link.text}

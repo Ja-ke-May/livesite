@@ -17,7 +17,7 @@ const RecentActivity = ({ recentActivity }) => {
          {visibleCount < recentActivity.length && (
         <button
           onClick={handleLoadMore}
-          className="mt-4 px-4 py-2 bg-[#000110] text-white rounded-lg shadow-md"
+          className="mt-4 px-4 py-2 bg-[#000110] text-white rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
         >
           Load More
         </button>

@@ -34,7 +34,7 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
             >
               <Link href="/stars" passHref>
                 <button 
-                  className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block mt-10 md:pt-4" 
+                  className="hover:text-yellow-400 hover:brightness-125 text-lg md:text-xl md:pl-4 md:pr-4 block mt-10 md:pt-4" 
                   title='stars'
                 >
                   Stars
@@ -74,7 +74,7 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
                 isLoggedIn && (
                   <button 
                     onClick={() => setShowLogoutConfirm(true)} 
-                    className="hover:text-gray-400 text-lg md:text-xl md:pl-4 md:pr-4 block" 
+                    className="text-red-400 hover:text-red-600 text-lg md:text-xl md:pl-4 md:pr-4 block" 
                     title='logout'
                   >
                     Log Out
@@ -92,7 +92,7 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
               <div className="flex justify-center">
                 <button
                   onClick={() => setShowLogoutConfirm(false)}
-                  className="mr-2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+                  className="mr-2 py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
                 >
                   Cancel
                 </button>

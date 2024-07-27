@@ -5,7 +5,7 @@ const Support = ({ username, supportersCount, isUserSupported, onToggleSupport }
     <div className='flex justify-center'>
       <div className="bg-gray-800/80 rounded-lg shadow-md p-6 mt-4 text-center max-w-[85%]">
         <h3 className="text-xl font-semibold mb-4">
-          Support <span className='text-blue-400 font-bold ml-1'>{username}</span>
+          Support <span className='font-bold'>{username}</span>
           {isUserSupported ? (
             <span
               className="inline-block ml-2 cursor-pointer text-yellow-400 brightness-125 text-3xl align-middle"
@@ -15,7 +15,7 @@ const Support = ({ username, supportersCount, isUserSupported, onToggleSupport }
             </span>
           ) : (
             <span
-              className="inline-block w-8 h-8 ml-2 border-2 border-blue-400 rounded-md cursor-pointer align-middle"
+              className="inline-block w-8 h-8 ml-2 border-2 border-white rounded-md cursor-pointer align-middle"
               onClick={onToggleSupport}
             >
             </span>
