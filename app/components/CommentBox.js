@@ -13,7 +13,7 @@ const CommentBox = () => {
       <div className="relative w-3/4 md:w-1/2">
         <input
           type="text"
-          className="border-2 border-blue-600 text-[#000110] rounded-md px-4 py-2 w-full focus:outline-none pr-12"
+          className="text-[#000110] rounded-md px-4 py-2 w-full focus:outline-none pr-12"
           placeholder="Log in to vote and comment"
           maxLength={maxLength}
           value={comment}
@@ -23,7 +23,7 @@ const CommentBox = () => {
           {maxLength - comment.length}
         </div>
       </div>
-      <button className="ml-2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
+      <button className="ml-2 py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
         SEND
       </button>
     </div>

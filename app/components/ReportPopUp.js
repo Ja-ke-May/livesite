@@ -56,7 +56,7 @@ const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
 
       {!submitted ? (
         <>
-          <h3 className="text-xl font-semibold mt-4 mb-4 text-center text-blue-400">Report {username}</h3>
+          <h3 className="text-xl font-semibold mt-4 mb-4 text-center">Report {username}</h3>
           <div className='max-h-[400px] overflow-y-auto'>
             <textarea
               className="w-full h-32 p-2 mb-4 border border-gray-600 rounded-md bg-gray-700 text-white resize-none"

@@ -51,10 +51,10 @@ const SendTokensPopUp = forwardRef(({ visible, onClose }, ref) => {
 
       <h3 className="text-xl font-semibold mt-4 mb-4 text-center text-yellow-400 brightness-125">Send Tokens</h3>
       
-      <div className="relative w-full p-2 mb-4 rounded border border-blue-600 bg-gray-900 text-white text-xl">
+      <div className="relative w-full p-2 mb-4 rounded bg-[#000110] text-white text-xl">
         <span>{tokenAmount}</span>
         <button
-          className="absolute right-1 top-1/2 transform -translate-y-1/2 py-2 px-4 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+          className="absolute right-1 top-1/2 transform -translate-y-1/2 py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
           onClick={incrementTokenCount}
         >
           +
@@ -64,7 +64,7 @@ const SendTokensPopUp = forwardRef(({ visible, onClose }, ref) => {
       <div className="flex flex-row justify-end">
         
         <button
-          className="mr-2 py-2 px-4 border border-yellow-400 rounded-md shadow-sm text-sm font-medium text-white hover:text-[#000110] bg-gray-800/80 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 brightness-125"
+          className="mr-2 py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white hover:text-[#000110] bg-[#000110] hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 brightness-125"
           onClick={handleSendTokens}
         >
           Send

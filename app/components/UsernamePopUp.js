@@ -68,7 +68,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
         >
           Support
           <span
-            className={`inline-block ml-2 cursor-pointer ${isUserSupported ? 'text-yellow-400 brightness-125 text-3xl' : 'w-6 h-6 border-2 border-blue-400 rounded-md'}`}
+            className={`inline-block ml-2 cursor-pointer ${isUserSupported ? 'text-yellow-400 brightness-125 text-3xl' : 'w-6 h-6 border-2 border-white rounded-md'}`}
           >
             {isUserSupported ? '⭐' : ''}
           </span>

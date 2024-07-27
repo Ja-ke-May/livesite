@@ -63,7 +63,7 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn }) => {
                   <img
                     src={`data:image/jpeg;base64,${link.imageUrl}`}
                     alt={link.text}
-                    className="h-8 w-8 m-2 rounded-[10%]"
+                    className="max-h-8 max-w-8 m-2 rounded-[10%]"
                   />
                 )}
                 {link.text}
@@ -84,7 +84,7 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn }) => {
         {isLoggedIn && (
           <div className="flex justify-center flex-col items-center">
             <button
-              className="bg-[#000110] mb-4 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+              className="bg-[#000110] mb-4 text-white px-4 py-2 rounded shadow-sm text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
               onClick={toggleAddLinkForm}
             >
               {showAddLinkForm ? 'Hide Add Link' : 'Add Link'}
@@ -94,14 +94,14 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn }) => {
               <div className="flex flex-col items-center space-y-2 w-full">
                 <input
                   type="text"
-                  className="bg-gray-800/80 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+                  className="bg-[#000110] text-white px-4 py-2 rounded shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
                   placeholder="Link Text"
                   value={newLinkText}
                   onChange={(e) => setNewLinkText(e.target.value)}
                 />
                 <input
                   type="text"
-                  className="bg-gray-800/80 text-white px-4 py-2 rounded border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 mb-4"
+                  className="bg-[#000110] text-white px-4 py-2 rounded shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 mb-4"
                   placeholder="Link URL"
                   value={newLinkUrl}
                   onChange={(e) => setNewLinkUrl(e.target.value)}
@@ -109,11 +109,11 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn }) => {
                 <input
                   type="file"
                   accept="image/*"
-                  className="bg-gray-800/80 text-white rounded p-1 border border-blue-600 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 mb-4"
+                  className="bg-[#000110] text-white rounded p-1 shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 mb-4"
                   onChange={handleImageChange}
                 />
                 <button
-                  className="bg-[#000110] text-white px-4 py-2 rounded border border-green-600 shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 mt-4"
+                  className="bg-[#000110] text-white px-4 py-2 rounded shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 mt-4"
                   onClick={handleAddLink}
                 >
                   Confirm
