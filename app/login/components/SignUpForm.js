@@ -168,6 +168,7 @@ const SignUpForm = () => {
           minLength={3}
           maxLength={12}
           required
+          autoComplete="new-username"
         />
         
       </div>
@@ -180,6 +181,7 @@ const SignUpForm = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoComplete="your-email"
         />
       </div>
       <div className="mb-4">
@@ -191,6 +193,7 @@ const SignUpForm = () => {
           value={dob}
           onChange={(e) => setDob(e.target.value)}
           required
+          autoComplete="date-of-birth"
         />
       </div>
       <div className="mb-4">
@@ -202,6 +205,7 @@ const SignUpForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          autoComplete="new-password"
         />
       </div>
       <div className="mb-4">
@@ -213,6 +217,7 @@ const SignUpForm = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
+          autoComplete="confirm-password"
         />
       </div>
       <div className="m-4">

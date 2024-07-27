@@ -1,29 +1,43 @@
-import React, { useState } from 'react';
-import { login } from '@/utils/apiClient';
+import React, { useState, useContext } from 'react';
+import { login as apiLogin } from '@/utils/apiClient';
+import { AuthContext } from '@/utils/AuthContext';
 
-const LogInForm = ({ setIsLoggedIn, setShowForgotPasswordModal }) => {
+const LogInForm = ({ setShowForgotPasswordModal }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useContext(AuthContext);
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     try {
       // Normalize email to lowercase
       const normalizedEmail = email.toLowerCase();
       console.log('Login attempt with email:', normalizedEmail);
-      const data = await login({ email: normalizedEmail, password });
-      // Store the token (e.g., in localStorage)
-      localStorage.setItem('token', data.token);
-      setIsLoggedIn(true);
+      const data = await apiLogin({ email: normalizedEmail, password });
+      // Store the token and username
+      login(data.token, data.username);
       setErrorMessage('');
       window.location.href = `/profile/${data.username}`; // Redirect to /profile/<username> after successful login
     } catch (error) {
       console.error('Login error:', error.message);
       setErrorMessage(error.message || 'An unknown error occurred');
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      
+        <div className='bg-[#000110] w-[100%] h-[100%] mt-10 flex justify-center items-center animate-pulse'>
+          Loading...
+        </div>
+      
+    );
+  }
 
   return (
     <>
