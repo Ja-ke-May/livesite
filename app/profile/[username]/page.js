@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useContext, useEffect, useCallback, useState } from 'react';
+import React, { useContext, useEffect, useCallback, useState, lazy, Suspense } from 'react';
 import Navbar from '@/app/components/Navbar';
-import ProfileInfo from '../components/ProfileInfo';
-import ProfileStarResults from '../components/StarResults';
-import RecentActivity from '../components/RecentActivity';
-import Support from '../components/Support';
-import LinksSection from '../components/Links';
 import { fetchUserProfile, fetchSupporters, toggleSupport, updateProfilePicture, fetchRecentActivity } from '@/utils/apiClient';
 import { AuthContext, AuthProvider } from '@/utils/AuthContext';
+
+const ProfileInfo = lazy(() => import('../components/ProfileInfo'));
+const ProfileStarResults = lazy(() => import('../components/StarResults'));
+const RecentActivity = lazy(() => import('../components/RecentActivity'));
+const Support = lazy(() => import('../components/Support'));
+const LinksSection = lazy(() => import('../components/Links'));
 
 const ProfileContent = ({ profileUsername }) => {
   const { isLoggedIn, username: loggedInUsername, isInitialized } = useContext(AuthContext);
@@ -96,44 +97,52 @@ const ProfileContent = ({ profileUsername }) => {
       }
     }
   }, []);
-  
-  
 
   const handleBioChange = useCallback((event) => {
     setBio(event.target.value);
   }, []);
 
   if (isLoading || !isInitialized) {
-    return <div><Navbar /><div className='bg-[#000110] w-screen h-screen flex justify-center items-center animate-pulse'>Loading...</div></div>; // Show a loading state while the profile is being loaded
+    return <div><Navbar /><div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div></div>; // Show a loading state while the profile is being loaded
   }
 
   return (
     <>
       <Navbar />
       <main className="max-w-4xl mx-auto p-4">
-        <ProfileInfo
-          profilePicture={profilePicture}
-          username={profileUsername}
-          bio={bio}
-          handleFileChange={handleFileChange}
-          handleBioChange={handleBioChange}
-          links={links}
-          tokens={tokens}
-          supportersCount={supportersCount}
-          isUserSupported={isUserSupported}
-          onToggleSupport={handleToggleSupport}
-          isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} // Only allow changes if logged in user matches profile
-          loggedInUsername={loggedInUsername} // Pass the logged-in username
-        />
-        <Support 
-          username={profileUsername} 
-          supportersCount={supportersCount}
-          isUserSupported={isUserSupported}
-          onToggleSupport={handleToggleSupport}
-        />
-        <LinksSection links={links} setLinks={setLinks} isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} />
-        <ProfileStarResults />
-        <RecentActivity recentActivity={recentActivity} />
+        <Suspense fallback={<div>Loading profile info...</div>}>
+          <ProfileInfo
+            profilePicture={profilePicture}
+            username={profileUsername}
+            bio={bio}
+            handleFileChange={handleFileChange}
+            handleBioChange={handleBioChange}
+            links={links}
+            tokens={tokens}
+            supportersCount={supportersCount}
+            isUserSupported={isUserSupported}
+            onToggleSupport={handleToggleSupport}
+            isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} // Only allow changes if logged in user matches profile
+            loggedInUsername={loggedInUsername} // Pass the logged-in username
+          />
+        </Suspense>
+        <Suspense fallback={<div>Loading support section...</div>}>
+          <Support 
+            username={profileUsername} 
+            supportersCount={supportersCount}
+            isUserSupported={isUserSupported}
+            onToggleSupport={handleToggleSupport}
+          />
+        </Suspense>
+        <Suspense fallback={<div>Loading links...</div>}>
+          <LinksSection links={links} setLinks={setLinks} isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} />
+        </Suspense>
+        <Suspense fallback={<div>Loading star results...</div>}>
+          <ProfileStarResults />
+        </Suspense>
+        <Suspense fallback={<div>Loading recent activity...</div>}>
+          <RecentActivity recentActivity={recentActivity} />
+        </Suspense>
       </main>
     </>
   );

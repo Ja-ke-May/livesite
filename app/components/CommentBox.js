@@ -9,7 +9,7 @@ const CommentBox = () => {
   };
 
   return (
-    <div className="fixed w-full flex justify-center bg-[#000110] bottom-0 md:text-lg mb-4 md:mb-6">
+    <div className="fixed w-full flex justify-center bg-[#000110] bottom-0 md:text-lg pb-8">
       <div className="relative w-3/4 md:w-1/2">
         <input
           type="text"
@@ -23,7 +23,7 @@ const CommentBox = () => {
           {maxLength - comment.length}
         </div>
       </div>
-      <button className="ml-2 py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
+      <button className="ml-2 mr-2 px-1 rounded-md shadow-sm text-sm font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700">
         SEND
       </button>
     </div>

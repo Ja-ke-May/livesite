@@ -58,7 +58,7 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose }, ref) => {
               <p className="text-sm mb-2">You have <span className="text-yellow-400 brightness-125">1</span> free Fast Pass</p>
               <button 
                 onClick={handleFastPassClick}
-                className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 max-w-[50%] mb-2 brightness-125"
+                className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] mb-2 brightness-125"
               >
                 Fast Pass
               </button>
@@ -86,13 +86,13 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose }, ref) => {
             <div className="flex justify-center space-x-4">
               <button
                 onClick={() => handleConfirmClose(false)}
-                className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 max-w-[50%]"
+                className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleConfirmClose(true)}
-                className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 max-w-[50%] brightness-125"
+                className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
               >
                 Confirm
               </button>
