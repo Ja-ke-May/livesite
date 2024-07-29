@@ -23,23 +23,22 @@ const ProfileContent = ({ profileUsername }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!isInitialized) {
-      return;
-    }
+    if (!isInitialized || !profileUsername) return;
 
     const loadUserProfile = async () => {
       try {
-        const userProfile = await fetchUserProfile(profileUsername);
+        const [userProfile, supportersData, recentActivityData] = await Promise.all([
+          fetchUserProfile(profileUsername),
+          fetchSupporters(profileUsername),
+          fetchRecentActivity(profileUsername)
+        ]);
+
         setProfilePicture(userProfile.profilePicture);
         setBio(userProfile.bio || `Hi, I'm ${userProfile.userName}! Welcome to my profile 😊`);
         setLinks(userProfile.links || []);
         setTokens(userProfile.tokens || 0);
-
-        const supportersData = await fetchSupporters(userProfile.userName);
         setSupportersCount(supportersData.supportersCount);
         setIsUserSupported(supportersData.isUserSupported);
-
-        const recentActivityData = await fetchRecentActivity(userProfile.userName);
         setRecentActivity(recentActivityData);
       } catch (error) {
         console.error('Failed to load user profile:', error);
@@ -48,9 +47,7 @@ const ProfileContent = ({ profileUsername }) => {
       }
     };
 
-    if (profileUsername) {
-      loadUserProfile();
-    }
+    loadUserProfile();
 
     // Polling for recent activity updates every 10 seconds
     const intervalId = setInterval(async () => {
@@ -60,12 +57,12 @@ const ProfileContent = ({ profileUsername }) => {
       } catch (error) {
         console.error('Failed to fetch recent activity:', error);
       }
-    }, 10000);
+    }, 10000); // Polling interval in milliseconds
 
     return () => clearInterval(intervalId);
   }, [profileUsername, isInitialized]);
 
-  const handleToggleSupport = async () => {
+  const handleToggleSupport = useCallback(async () => {
     const newIsUserSupported = !isUserSupported;
     const newSupportersCount = isUserSupported ? supportersCount - 1 : supportersCount + 1;
 
@@ -84,7 +81,7 @@ const ProfileContent = ({ profileUsername }) => {
       setIsUserSupported(!newIsUserSupported);
       setSupportersCount(supportersCount);
     }
-  };
+  }, [isUserSupported, supportersCount, profileUsername]);
 
   const handleFileChange = useCallback(async (event) => {
     const file = event.target.files[0];
@@ -103,14 +100,19 @@ const ProfileContent = ({ profileUsername }) => {
   }, []);
 
   if (isLoading || !isInitialized) {
-    return <div><Navbar /><div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div></div>; // Show a loading state while the profile is being loaded
+    return (
+      <div>
+        <Navbar />
+        <div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>
+      </div>
+    );
   }
 
   return (
     <>
       <Navbar />
       <main className="max-w-4xl mx-auto p-4">
-        <Suspense fallback={<div>Loading profile info...</div>}>
+        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
           <ProfileInfo
             profilePicture={profilePicture}
             username={profileUsername}
@@ -126,7 +128,7 @@ const ProfileContent = ({ profileUsername }) => {
             loggedInUsername={loggedInUsername} // Pass the logged-in username
           />
         </Suspense>
-        <Suspense fallback={<div>Loading support section...</div>}>
+        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
           <Support 
             username={profileUsername} 
             supportersCount={supportersCount}
@@ -134,13 +136,13 @@ const ProfileContent = ({ profileUsername }) => {
             onToggleSupport={handleToggleSupport}
           />
         </Suspense>
-        <Suspense fallback={<div>Loading links...</div>}>
+        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
           <LinksSection links={links} setLinks={setLinks} isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} />
         </Suspense>
-        <Suspense fallback={<div>Loading star results...</div>}>
+        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
           <ProfileStarResults />
         </Suspense>
-        <Suspense fallback={<div>Loading recent activity...</div>}>
+        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
           <RecentActivity recentActivity={recentActivity} />
         </Suspense>
       </main>
@@ -158,3 +160,4 @@ const ProfilePage = ({ params }) => {
 };
 
 export default ProfilePage;
+
