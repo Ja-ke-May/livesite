@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import Chat from './components/Chat';
 import Viewer from './components/Viewer';
 import Votes from './components/Votes';
-import CommentBox from './components/CommentBox';
+import CommentBox from './components/comments/CommentBox';
 import ViewersOnline from './components/ViewersOnline';
 import { AuthContext, AuthProvider } from '@/utils/AuthContext';
 
