@@ -1,6 +1,6 @@
 import React, { useImperativeHandle, useRef, forwardRef, useState } from 'react';
 
-const LiveQueuePopUp = forwardRef(({ visible, onClose }, ref) => {
+const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
   const popupRef = useRef(null);
   const confirmRef = useRef(null);
   const [confirmVisible, setConfirmVisible] = useState(false);
@@ -16,15 +16,15 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose }, ref) => {
   const handleConfirmClose = (confirm) => {
     setConfirmVisible(false);
     if (confirm) {
-      // Handle Fast Pass logic here
       console.log('Fast pass used');
+      onJoin(); // Show the preview button
       onClose(); // Close the main popup after confirmation
     }
   };
 
   const handleJoinForFreeClick = () => {
-    // Handle "Join for Free" logic here
-    console.log('user joined for free');
+    console.log('User joined for free');
+    onJoin(); // Show the preview button
     onClose(); // Close the main popup after joining for free
   };
 

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useRouter } from 'next/navigation';
 import UsernamePopUp from '../../components/UsernamePopUp';
 import { updateUsername, updateBio } from '@/utils/apiClient';
+import { AuthContext } from '@/utils/AuthContext';
 
 const ProfileInfo = ({
   profilePicture,
@@ -17,6 +19,8 @@ const ProfileInfo = ({
   isLoggedIn,
   loggedInUsername // Add this prop to get the logged-in username
 }) => {
+  const router = useRouter(); 
+  const { login } = useContext(AuthContext);
   const [showUsernameInput, setShowUsernameInput] = useState(false);
   const [showBioInput, setShowBioInput] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
@@ -61,7 +65,9 @@ const ProfileInfo = ({
       try {
         const updatedUser = await updateUsername(newUsername);
         handleUsernameChange(updatedUser.userName);
-        setShowUsernameInput(false);
+        setShowUsernameInput(false); 
+        login(localStorage.getItem('token'), updatedUser.userName); 
+        router.push(`/profile/${updatedUser.userName}`);
       } catch (error) {
         setUsernameError(error.message);
       }
