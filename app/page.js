@@ -5,7 +5,7 @@
 import React, { useContext } from 'react';
 import Navbar from './components/Navbar'; 
 import Chat from './components/Chat';
-import Viewer from './components/Viewer';
+import Viewer from './components/viewer/Viewer';
 import Votes from './components/Votes';
 import CommentBox from './components/comments/CommentBox';
 import ViewersOnline from './components/ViewersOnline';
