@@ -22,7 +22,7 @@ const CommentBox = () => {
   };
 
   return (
-    <div className="fixed w-full flex justify-center bg-[#000110] bottom-0 md:text-lg pb-8 pt-1">
+    <div className="fixed w-full flex justify-center bg-[#000110] bottom-0 md:text-lg pb-8">
       <div className="relative w-3/4 md:w-1/2">
         <input
           type="text"
