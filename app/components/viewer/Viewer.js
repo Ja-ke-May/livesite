@@ -46,9 +46,9 @@ const Viewer = () => {
 
   return (
     <>
-      <div className="mt-2 h-8 bg-yellow-400 w-full font-bold text-md md:text-md text-center text-[#000110] brightness-125">
+      <div className="mt-2 h-8 bg-yellow-400 w-full font-bold text-md md:text-md text-center text-[#000110] brightness-125 rounded">
         {state.isCameraOn ? (
-          <div className="relative w-full flex justify-center h-full">
+          <div className="relative w-full flex justify-center h-full ">
             <button
               onClick={stopVideo}
               className="absolute text-white border-2 border-red-700 pr-1 pl-1 h-full text-md md:text-md hover:bg-red-600 rounded bg-red-600"
@@ -75,7 +75,7 @@ const Viewer = () => {
           </>
         )}
       </div>
-      <div className="relative mt-2 h-[300px] md:h-[400px] lg:h-[500px] rounded text-center bg-gray-800/80 shadow-md w-full">
+      <div className="relative h-[300px] md:h-[400px] lg:h-[500px] rounded text-center bg-gray-800/80 shadow-md w-full">
         <h2 className="hidden">Viewer Component</h2>
         <video
           ref={videoRef}
