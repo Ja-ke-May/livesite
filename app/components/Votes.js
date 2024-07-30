@@ -64,7 +64,7 @@ const Votes = () => {
   }, [slidePosition]);
 
   return (
-    <div className="mt-4 w-full text-center flex justify-between items-center relative">
+    <div className="mt-1 w-full text-center flex justify-between items-center relative">
       {showOverlay && (
         <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
           {overlayIcon ? (
