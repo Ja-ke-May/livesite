@@ -75,7 +75,7 @@ const Viewer = () => {
           </>
         )}
       </div>
-      <div className="relative h-[360px] md:h-[400px] lg:h-[450px] rounded text-center bg-gray-800/80 shadow-md w-full">
+      <div className="relative mt-2 h-[300px] md:h-[400px] lg:h-[500px] rounded text-center bg-gray-800/80 shadow-md w-full">
         <h2 className="hidden">Viewer Component</h2>
         <video
           ref={videoRef}

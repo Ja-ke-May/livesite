@@ -78,7 +78,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose }, ref) => {
 
   return (
     <div className="fixed bg-[#000110]/80 inset-0 min-h-full flex items-center justify-center z-[102]">
-      <div className="bg-[#000110] p-4 rounded shadow-lg mt-2 max-w-md w-full relative rounded-[5%]">
+      <div className="bg-[#000110] p-4 rounded shadow-lg mt-2 max-w-md w-full relative rounded-[5%] z-[102]">
         <button
           onClick={() => handleConfirmClose(false)}
           className="absolute top-2 right-2 text-white text-xl font-bold bg-transparent border-none cursor-pointer"
