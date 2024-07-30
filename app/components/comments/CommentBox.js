@@ -22,11 +22,11 @@ const CommentBox = () => {
   };
 
   return (
-    <div className="fixed w-full flex justify-center bg-[#000110] bottom-0 md:text-lg pb-8">
+    <div className="fixed w-full flex justify-center bg-[#000110] bottom-0 md:text-lg pb-6">
       <div className="relative w-3/4 md:w-1/2">
         <input
           type="text"
-          className="text-[#000110] rounded-md px-4 py-2 w-full focus:outline-none pr-12"
+          className="text-[#000110] rounded-md px-4 py-2 w-full focus:outline-none pr-12 mt-1"
           placeholder="Log in to vote and comment"
           maxLength={maxLength}
           value={comment}
