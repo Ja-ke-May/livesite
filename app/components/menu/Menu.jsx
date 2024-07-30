@@ -87,12 +87,12 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
         <MenuIcon onMenuToggle={handleMenuClick} isDarkBackground={isDarkBackground} />
         {showLogoutConfirm && (
           <div className="fixed inset-0 flex items-center justify-center bg-[#000110]/80 z-50">
-            <div className="p-4 md:p-6 rounded-lg shadow-lg bg-gray-800/80">
+            <div className="p-4 md:p-6 rounded-lg shadow-lg bg-[#000110]/80">
               <h2 className="text-xl text-center mb-4">Are you sure you want to log out?</h2>
               <div className="flex justify-center">
                 <button
                   onClick={() => setShowLogoutConfirm(false)}
-                  className="mr-2 py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+                  className="mr-2 py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
                 >
                   Cancel
                 </button>

@@ -57,7 +57,7 @@ const SpeakerButton = () => {
       )}
       <button 
         onClick={handleClick}
-        className="ml-2 mr-0 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 z-[101]"
+        className="ml-2 mr-0 py-2 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 z-[101]"
       >
         🔊
       </button>

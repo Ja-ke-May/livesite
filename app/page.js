@@ -17,7 +17,7 @@ const HomeContent = () => {
   return (
     <div>
       <Navbar isLoggedIn={isLoggedIn} username={username} />
-      <main className="flex flex-col items-center justify-center lg:max-w-[65%] w-full mx-auto">
+      <main className="flex flex-col items-center justify-center lg:max-w-[60%] w-full mx-auto">
         <Viewer />
         <Votes />
         <Chat />
