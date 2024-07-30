@@ -35,7 +35,7 @@ const Timer = ({ isActive, onTimeout }) => {
   };
 
   return (
-    <div className="bg-[#000110]/20 z-[102] text-white text-md md:text-md">
+    <div className="bg-[#000110]/20 z-[100] text-white text-md md:text-md">
       {timer}s
     </div>
   );
