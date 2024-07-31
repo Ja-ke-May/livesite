@@ -7,6 +7,7 @@ const Viewer = () => {
     isPopUpOpen: false,
     isCameraOn: false,
     showPreviewButton: false,
+    isLive: false, // New state to manage live status
   });
   const videoRef = useRef(null);
   const streamRef = useRef(null);
@@ -36,13 +37,17 @@ const Viewer = () => {
       if (videoRef.current) {
         videoRef.current.srcObject = null;
       }
-      setState(prevState => ({ ...prevState, isCameraOn: false, showPreviewButton: false }));
+      setState(prevState => ({ ...prevState, isCameraOn: false, showPreviewButton: false, isLive: false }));
     }
   };
 
   const handlePreviewButtonClick = () => startVideo();
 
   const handleTimeout = () => stopVideo();
+
+  const handleGoLiveClick = () => {
+    setState(prevState => ({ ...prevState, isLive: true }));
+  };
 
   return (
     <>
@@ -59,7 +64,7 @@ const Viewer = () => {
         ) : state.showPreviewButton ? (
           <button
             onClick={handlePreviewButtonClick}
-            className="border-2 border-red-800 pr-1 pl-1 h-full text-md text-red-800 md:text-md hover:bg-yellow-600 rounded animate-pulse"
+            className="text-white border-2 border-red-700 pr-1 pl-1 h-full text-md md:text-md hover:bg-red-600 rounded bg-red-600 animate-pulse"
           >
             Preview Your Camera
           </button>
@@ -82,6 +87,17 @@ const Viewer = () => {
           autoPlay
           className="w-full h-full object-cover"
         />
+        {!state.isLive && state.isCameraOn && (
+
+          <div
+           
+            className="absolute inset-0 flex items-center justify-center items-center"
+          >
+            <button  onClick={handleGoLiveClick}
+            className="bg-green-600 text-white text-md md:text-lg font-bold rounded p-4 animate-pulse">GO LIVE</button>
+           
+          </div>
+        )}
       </div>
 
       <LiveQueuePopUp
@@ -89,10 +105,11 @@ const Viewer = () => {
         onClose={handleClosePopUp}
         onJoin={() => setState(prevState => ({ ...prevState, showPreviewButton: true }))}
       />
-      {state.isCameraOn && <Timer isActive={state.isCameraOn} onTimeout={handleTimeout} />}
+      {state.isLive && <Timer isActive={state.isLive} onTimeout={handleTimeout} />}
     </>
   );
 };
 
 export default Viewer;
+
 
