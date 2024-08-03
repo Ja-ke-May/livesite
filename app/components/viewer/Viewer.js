@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import LiveQueuePopUp from "./LiveQueuePopUp";
-import Timer from "./timer";
+import Timer from "./Timer";
 import io from "socket.io-client";
 import { AuthContext } from "@/utils/AuthContext";
 import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
-import Votes from "../Votes";
+import Votes from "./Votes";
 
 const Viewer = () => {
   const { username } = useContext(AuthContext);
@@ -24,11 +24,26 @@ const Viewer = () => {
   const streamRef = useRef(null);
   const peerConnections = useRef({});
   const socket = useRef(null);
+  const timerIntervalRef = useRef(null);
 
   useEffect(() => {
     initializeSocket();
     return () => cleanup();
   }, []);
+
+  useEffect(() => {
+    if (state.isLive && timer === 0) {
+      stopVideo();
+    } else if (state.isLive) {
+      timerIntervalRef.current = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(timerIntervalRef.current);
+    };
+  }, [state.isLive, timer]);
 
   const initializeSocket = () => {
     socket.current = io("http://localhost:5000");
@@ -215,7 +230,7 @@ const Viewer = () => {
 
   const handleGoLiveClick = () => {
     setState((prevState) => ({ ...prevState, isLive: true, isNext: false }));
-    setTimer(60); // Initialize timer to 60 seconds
+    setTimer(60);
     socket.current.emit("go-live"); // Emit the event when going live
     socket.current.emit("set-initial-vote", 50);
   };

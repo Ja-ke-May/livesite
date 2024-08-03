@@ -13,7 +13,7 @@ const Votes = ({ stopVideo }) => {
   const [slidePositionAmount, setSlidePositionAmount] = useState(5);
 
   useEffect(() => {
-    // Request the current slide position from the server
+    // Request the current slide position and amount from the server
     socket.emit('request-current-position');
 
     socket.on('vote-update', (newPosition) => {
@@ -24,6 +24,10 @@ const Votes = ({ stopVideo }) => {
       setSlidePosition(currentPosition);
     });
 
+    socket.on('current-slide-amount', (currentSlideAmount) => {
+      setSlidePositionAmount(currentSlideAmount);
+    });
+
     socket.on('go-live', () => {
       setSlidePosition(50); // Initialize the vote position to 50 when 'GO LIVE' is clicked
     });
@@ -31,6 +35,7 @@ const Votes = ({ stopVideo }) => {
     return () => {
       socket.off('vote-update');
       socket.off('current-position');
+      socket.off('current-slide-amount');
       socket.off('go-live');
     };
   }, []);
@@ -44,11 +49,15 @@ const Votes = ({ stopVideo }) => {
   };
 
   const handleClickStar = () => {
-    const newPosition = Math.min(slidePosition + slidePositionAmount, 100);
+    let newPosition = Math.min(slidePosition + slidePositionAmount, 100);
     setSlidePosition(newPosition);
     setClickedIcon('star');
     triggerPulse();
     socket.emit('vote', newPosition);
+
+    if (newPosition === 100) {
+      setSlidePositionAmount(prevAmount => prevAmount / 2);
+    }
   };
 
   const triggerPulse = () => {
@@ -59,27 +68,33 @@ const Votes = ({ stopVideo }) => {
   };
 
   useEffect(() => {
-    if (slidePosition === 0 || slidePosition === 100) {
+    if (slidePosition === 0) {
+      setShowOverlay(true);
+      setOverlayIcon('❌');
+      stopVideo();
+      socket.emit('stop-video');
+      
+
+      setTimeout(() => {
+        setSlidePosition(null);
+        setShowOverlay(false);
+        setStars([]);
+      }, 2000);
+
+      
+
+    } else if (slidePosition === 100) {
       setShowOverlay(true);
       setSlidePosition(50);
-      setSlidePositionAmount(5);
+      setOverlayIcon(null);
+      socket.emit('extend-timer', 60);
 
-      if (slidePosition === 0) {
-        setOverlayIcon('❌');
-        stopVideo();
-        socket.emit('stop-video');
-
-      } else {
-        setOverlayIcon(null);
-        socket.emit('extend-timer', 60);
-
-        for (let i = 0; i < 6; i++) {
-          const delay = i * 150;
-          setTimeout(() => {
-            const left = `${Math.random() * 100}%`;
-            setStars((prevStars) => [...prevStars, { left }]);
-          }, delay);
-        }
+      for (let i = 0; i < 6; i++) {
+        const delay = i * 150;
+        setTimeout(() => {
+          const left = `${Math.random() * 100}%`;
+          setStars((prevStars) => [...prevStars, { left }]);
+        }, delay);
       }
 
       setTimeout(() => {
@@ -87,10 +102,10 @@ const Votes = ({ stopVideo }) => {
         setStars([]);
       }, 2000);
     }
-  }, [slidePosition, stopVideo]); 
+  }, [slidePosition, stopVideo]);
 
   if (slidePosition === null) {
-    return <div>Nobody's live at the moment</div>; 
+    return <div>Nobody's live at the moment</div>;
   }
 
   return (
