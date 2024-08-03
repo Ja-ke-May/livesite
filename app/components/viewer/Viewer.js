@@ -19,7 +19,7 @@ const Viewer = () => {
     autoplayAllowed: true,
     liveUserId: null,
   });
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(60);
   const mainVideoRef = useRef(null);
   const streamRef = useRef(null);
   const peerConnections = useRef({});
