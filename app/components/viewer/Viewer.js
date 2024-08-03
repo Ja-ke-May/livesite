@@ -3,6 +3,9 @@ import LiveQueuePopUp from "./LiveQueuePopUp";
 import Timer from "./timer";
 import io from "socket.io-client";
 import { AuthContext } from "@/utils/AuthContext";
+import ViewerHeader from "./ViewerHeader";
+import ViewerMain from "./ViewerMain";
+import Votes from "../Votes";
 
 const Viewer = () => {
   const { username } = useContext(AuthContext);
@@ -16,6 +19,7 @@ const Viewer = () => {
     autoplayAllowed: true,
     liveUserId: null,
   });
+  const [timer, setTimer] = useState(0);
   const mainVideoRef = useRef(null);
   const streamRef = useRef(null);
   const peerConnections = useRef({});
@@ -29,10 +33,7 @@ const Viewer = () => {
   const initializeSocket = () => {
     socket.current = io("http://localhost:5000");
 
-    socket.current.on("live-users", (liveUsers) => {
-      console.log("Currently live users:", liveUsers);
-    });
-
+    socket.current.on("live-users", handleLiveUsers);
     socket.current.on("new-peer", handleNewPeer);
     socket.current.on("offer", handleOffer);
     socket.current.on("answer", handleAnswer);
@@ -40,6 +41,35 @@ const Viewer = () => {
     socket.current.on("peer-disconnected", handlePeerDisconnected);
     socket.current.on("go-live", handleGoLive);
     socket.current.on("main-feed", handleMainFeed);
+    socket.current.on("timer-update", handleTimerUpdate);
+    socket.current.on("timer-end", handleTimerEnd);
+    socket.current.on("extend-timer", handleExtendTimer);
+    socket.current.on("stop-video", handleStopVideo);
+  };
+
+  const handleTimerUpdate = (userId, newTimer) => {
+    if (userId === state.liveUserId) {
+      setTimer(newTimer);
+    }
+  };
+
+  const handleTimerEnd = (userId) => {
+    if (userId === state.liveUserId) {
+      setState((prevState) => ({ ...prevState, isLive: false }));
+      setTimer(0);
+    }
+  };
+
+  const handleExtendTimer = (additionalTime) => {
+    setTimer((prevTimer) => prevTimer + additionalTime);
+  };
+
+  const handleStopVideo = () => {
+    stopVideo();
+  };
+
+  const handleLiveUsers = (liveUsers) => {
+    console.log("Currently live users:", liveUsers);
   };
 
   const handleNewPeer = async (id) => {
@@ -183,68 +213,35 @@ const Viewer = () => {
 
   const handlePreviewButtonClick = () => startVideo();
 
-  const handleTimeout = () => stopVideo();
-
   const handleGoLiveClick = () => {
     setState((prevState) => ({ ...prevState, isLive: true, isNext: false }));
+    setTimer(60); // Initialize timer to 60 seconds
     socket.current.emit("go-live"); // Emit the event when going live
+    socket.current.emit("set-initial-vote", 50);
   };
 
   return (
     <>
-      <div className="mt-2 h-8 bg-yellow-400 w-full font-bold text-md md:text-md text-center text-[#000110] brightness-125 rounded">
-        {state.isCameraOn ? (
-          <div className="relative w-full flex justify-center h-full ">
-            <button
-              onClick={stopVideo}
-              className="absolute text-white border-2 border-red-700 pr-1 pl-1 h-full text-md md:text-md hover:bg-red-600 rounded bg-red-600"
-            >
-              Leave
-            </button>
-          </div>
-        ) : state.showPreviewButton ? (
-          <button
-            onClick={handlePreviewButtonClick}
-            className="text-white border-2 border-red-700 pr-1 pl-1 h-full text-md md:text-md hover:bg-red-600 rounded bg-red-600 animate-pulse"
-          >
-            Preview Your Camera
-          </button>
-        ) : (
-          <>
-            <p className="md:font-extrabold inline">Join the live queue</p>
-            <button
-              className="border-2 border-[#000110] pr-1 pl-1 m-1 text-sm md:text-md hover:bg-yellow-600 hover:brightness-125 rounded animate-pulse"
-              onClick={handleJoinClick}
-              disabled={state.inQueue}
-            >
-              JOIN
-            </button>
-          </>
-        )}
-      </div>
-      <div className="relative h-[300px] md:h-[350px] lg:h-[400px] rounded text-center bg-gray-800/80 shadow-md w-full">
-        <h2 className="hidden">Viewer Component</h2>
-        <video ref={mainVideoRef} autoPlay muted className="w-full h-full object-cover" />
-        {!state.isLive && state.isCameraOn && state.isNext && (
-          <div className="absolute inset-0 flex items-center justify-center items-center">
-            <button
-              onClick={handleGoLiveClick}
-              className="bg-green-600 text-white text-md md:text-lg font-bold rounded p-4 animate-pulse"
-            >
-              GO LIVE
-            </button>
-          </div>
-        )}
-      </div>
+      <ViewerHeader 
+        state={state} 
+        handleJoinClick={handleJoinClick} 
+        handlePreviewButtonClick={handlePreviewButtonClick} 
+        stopVideo={stopVideo} 
+      />
+      <ViewerMain 
+        mainVideoRef={mainVideoRef} 
+        state={state} 
+        handleGoLiveClick={handleGoLiveClick} 
+      />
       <LiveQueuePopUp
         visible={state.isPopUpOpen}
         onClose={handleClosePopUp}
         onJoin={() => setState((prevState) => ({ ...prevState, showPreviewButton: true }))}
       />
-      {state.isLive && <Timer isActive={state.isLive} onTimeout={handleTimeout} />}
+      <Timer timer={timer} />
+      <Votes stopVideo={stopVideo} />
     </>
   );
 };
 
 export default Viewer;
-

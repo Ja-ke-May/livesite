@@ -1,32 +1,54 @@
 import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 
-const Votes = () => {
-  const [slidePosition, setSlidePosition] = useState(50);
+const socket = io("http://localhost:5000");
+
+const Votes = ({ stopVideo }) => {
+  const [slidePosition, setSlidePosition] = useState(null);
   const [isPulsing, setIsPulsing] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [overlayIcon, setOverlayIcon] = useState(null);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
-  const [slidePositionAmount, setSlidePositionAmount] = useState(1);
+  const [slidePositionAmount, setSlidePositionAmount] = useState(5);
+
+  useEffect(() => {
+    // Request the current slide position from the server
+    socket.emit('request-current-position');
+
+    socket.on('vote-update', (newPosition) => {
+      setSlidePosition(newPosition);
+    });
+
+    socket.on('current-position', (currentPosition) => {
+      setSlidePosition(currentPosition);
+    });
+
+    socket.on('go-live', () => {
+      setSlidePosition(50); // Initialize the vote position to 50 when 'GO LIVE' is clicked
+    });
+
+    return () => {
+      socket.off('vote-update');
+      socket.off('current-position');
+      socket.off('go-live');
+    };
+  }, []);
 
   const handleClickCross = () => {
-    if (slidePosition >= 0.5) {
-      setSlidePosition(slidePosition - slidePositionAmount);
-    } else {
-      setSlidePosition(0);
-    }
+    const newPosition = Math.max(slidePosition - slidePositionAmount, 0);
+    setSlidePosition(newPosition);
     setClickedIcon('cross');
     triggerPulse();
+    socket.emit('vote', newPosition);
   };
 
   const handleClickStar = () => {
-    if (slidePosition <= 99.5) {
-      setSlidePosition(slidePosition + slidePositionAmount);
-    } else {
-      setSlidePosition(100);
-    }
+    const newPosition = Math.min(slidePosition + slidePositionAmount, 100);
+    setSlidePosition(newPosition);
     setClickedIcon('star');
     triggerPulse();
+    socket.emit('vote', newPosition);
   };
 
   const triggerPulse = () => {
@@ -39,16 +61,20 @@ const Votes = () => {
   useEffect(() => {
     if (slidePosition === 0 || slidePosition === 100) {
       setShowOverlay(true);
-      setSlidePosition(50)
-      setSlidePositionAmount(slidePositionAmount / 2)
+      setSlidePosition(50);
+      setSlidePositionAmount(5);
 
       if (slidePosition === 0) {
         setOverlayIcon('❌');
+        stopVideo();
+        socket.emit('stop-video');
+
       } else {
         setOverlayIcon(null);
+        socket.emit('extend-timer', 60);
 
-        for (let i = 0; i < 10; i++) {
-          const delay = i * 150; 
+        for (let i = 0; i < 6; i++) {
+          const delay = i * 150;
           setTimeout(() => {
             const left = `${Math.random() * 100}%`;
             setStars((prevStars) => [...prevStars, { left }]);
@@ -58,10 +84,14 @@ const Votes = () => {
 
       setTimeout(() => {
         setShowOverlay(false);
-        setStars([]); 
-      }, 2000); 
+        setStars([]);
+      }, 2000);
     }
-  }, [slidePosition]);
+  }, [slidePosition, stopVideo]); 
+
+  if (slidePosition === null) {
+    return <div>Nobody's live at the moment</div>; 
+  }
 
   return (
     <div className="mt-1 w-full text-center flex justify-between items-center relative">
@@ -98,7 +128,7 @@ const Votes = () => {
         <div className="flex justify-center items-center relative">
           <div className="h-4 w-full bg-gradient-to-r from-red-700 to-yellow-400 brightness-125 rounded"></div>
           <div
-            className="mt-2 h-6 md:h-10 bg-white rounded w-2 md:w-4 border border-black absolute top-0 transform -translate-y-2/4 left-0"
+            className="mt-2 h-6 md:h-10 bg-white rounded w-2 md:w-4 border border-black absolute top-0 transform -translate-y-2/4"
             style={{ left: `calc((100% - 4px) * ${slidePosition / 100})` }}
           ></div>
         </div>
@@ -128,4 +158,3 @@ const Votes = () => {
 };
 
 export default Votes;
-
