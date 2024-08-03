@@ -184,3 +184,15 @@ export const updateProfilePicture = async (file) => {
     throw new Error('Failed to update profile picture');
   }
 };
+
+
+// main 
+
+export const fetchOnlineUsers = async () => {
+  try {
+    const response = await axiosInstance.get('/api/online-users');
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch online users');
+  }
+};
