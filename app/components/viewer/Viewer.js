@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import LiveQueuePopUp from "./LiveQueuePopUp";
-import Timer from "./Timer";
+import Timer from "./LiveTimer";
 import io from "socket.io-client";
 import { AuthContext } from "@/utils/AuthContext";
 import ViewerHeader from "./ViewerHeader";
