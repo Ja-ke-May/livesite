@@ -29,7 +29,7 @@ const Votes = ({ stopVideo }) => {
     });
 
     socket.on('go-live', () => {
-      setSlidePosition(50); // Initialize the vote position to 50 when 'GO LIVE' is clicked
+      setSlidePosition(50); // Initialize the vote position to 50 when 'GO LIVE' is clicked 
     });
 
     return () => {
