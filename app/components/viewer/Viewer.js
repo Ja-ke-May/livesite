@@ -19,7 +19,7 @@ const Viewer = () => {
     autoplayAllowed: true,
     liveUserId: null,
   });
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState('');
   const mainVideoRef = useRef(null);
   const streamRef = useRef(null);
   const peerConnections = useRef({});
@@ -63,9 +63,7 @@ const Viewer = () => {
   };
 
   const handleTimerUpdate = (userId, newTimer) => {
-    if (userId === state.liveUserId) {
-      setTimer(newTimer);
-    }
+    setTimer(newTimer);
   };
 
   const handleTimerEnd = (userId) => {
@@ -253,8 +251,10 @@ const Viewer = () => {
         onClose={handleClosePopUp}
         onJoin={() => setState((prevState) => ({ ...prevState, showPreviewButton: true }))}
       />
-      <Timer timer={timer} />
+      {state.liveUserId && <Timer timer={timer} />}
       <Votes stopVideo={stopVideo} />
+      
+      
     </>
   );
 };
