@@ -25,6 +25,8 @@ const Viewer = () => {
   const peerConnections = useRef({});
   const socket = useRef(null);
   const timerIntervalRef = useRef(null);
+  const [slidePosition, setSlidePosition] = useState(null); 
+  const [slidePositionAmount, setSlidePositionAmount] = useState(5);
 
   useEffect(() => {
     initializeSocket();
@@ -221,6 +223,7 @@ const Viewer = () => {
         isNext: false,
       }));
       socket.current.emit("stop-live");
+      setSlidePosition(null); 
     }
   };
 
@@ -252,9 +255,15 @@ const Viewer = () => {
         onJoin={() => setState((prevState) => ({ ...prevState, showPreviewButton: true }))}
       />
       {state.liveUserId && <Timer timer={timer} />}
-      <Votes stopVideo={stopVideo} />
       
-      
+      <Votes 
+  stopVideo={stopVideo}
+  slidePosition={slidePosition}
+  slidePositionAmount={slidePositionAmount}
+  setSlidePosition={setSlidePosition}
+  setSlidePositionAmount={setSlidePositionAmount}
+  liveUserId={state.liveUserId}
+/>
     </>
   );
 };
