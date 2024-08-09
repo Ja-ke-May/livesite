@@ -25,7 +25,7 @@ const Viewer = () => {
   const peerConnections = useRef({});
   const socket = useRef(null);
   const timerIntervalRef = useRef(null);
-  const [slidePosition, setSlidePosition] = useState(null); 
+  const [slidePosition, setSlidePosition] = useState(50); 
   const [slidePositionAmount, setSlidePositionAmount] = useState(5);
 
   useEffect(() => {
