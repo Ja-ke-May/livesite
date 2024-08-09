@@ -3,17 +3,14 @@ import io from 'socket.io-client';
 
 const socket = io("http://localhost:5000");
 
-const Votes = ({ stopVideo }) => {
-  const [slidePosition, setSlidePosition] = useState(null);
+const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId }) => {
   const [isPulsing, setIsPulsing] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [overlayIcon, setOverlayIcon] = useState(null);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
-  const [slidePositionAmount, setSlidePositionAmount] = useState(5);
 
   useEffect(() => {
-    // Request the current slide position and amount from the server
     socket.emit('request-current-position');
 
     socket.on('vote-update', (newPosition) => {
@@ -29,7 +26,8 @@ const Votes = ({ stopVideo }) => {
     });
 
     socket.on('go-live', () => {
-      setSlidePosition(50); // Initialize the vote position to 50 when 'GO LIVE' is clicked 
+      setSlidePosition(50);
+      setSlidePositionAmount(5);
     });
 
     return () => {
@@ -38,7 +36,7 @@ const Votes = ({ stopVideo }) => {
       socket.off('current-slide-amount');
       socket.off('go-live');
     };
-  }, []);
+  }, [setSlidePosition, setSlidePositionAmount]);
 
   const handleClickCross = () => {
     const newPosition = Math.max(slidePosition - slidePositionAmount, 0);
@@ -73,16 +71,11 @@ const Votes = ({ stopVideo }) => {
       setOverlayIcon('❌');
       stopVideo();
       socket.emit('stop-video');
-      
 
       setTimeout(() => {
-        setSlidePosition(null);
         setShowOverlay(false);
         setStars([]);
       }, 2000);
-
-      
-
     } else if (slidePosition === 100) {
       setShowOverlay(true);
       setSlidePosition(50);
@@ -102,10 +95,10 @@ const Votes = ({ stopVideo }) => {
         setStars([]);
       }, 2000);
     }
-  }, [slidePosition, stopVideo]);
+  }, [slidePosition, stopVideo, setSlidePosition]);
 
-  if (slidePosition === null) {
-    return <div>Nobody's live at the moment</div>;
+  if (!liveUserId) {
+    return <div className='mt-2'>Nobody's live at the moment</div>;
   }
 
   return (
