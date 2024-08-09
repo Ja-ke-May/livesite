@@ -11,14 +11,20 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
   const [clickedIcon, setClickedIcon] = useState(null);
 
   useEffect(() => {
+    // When the component mounts, request the current position
     socket.emit('request-current-position');
 
+    // Set up event listeners
     socket.on('vote-update', (newPosition) => {
       setSlidePosition(newPosition);
     });
 
     socket.on('current-position', (currentPosition) => {
-      setSlidePosition(currentPosition);
+      if (currentPosition !== null && currentPosition !== undefined) {
+        setSlidePosition(currentPosition);
+      } else {
+        setSlidePosition(50); // Default to 50 if no current position is available
+      }
     });
 
     socket.on('current-slide-amount', (currentSlideAmount) => {
