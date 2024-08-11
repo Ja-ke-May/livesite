@@ -19,7 +19,10 @@ const Viewer = () => {
     autoplayAllowed: true,
     liveUserId: null,
   });
-  const [timer, setTimer] = useState('');
+  const [timer, setTimer] = useState(60);
+  const [showOverlay, setShowOverlay] = useState(false); 
+  const [overlayIcon, setOverlayIcon] = useState(null);
+
   const mainVideoRef = useRef(null);
   const streamRef = useRef(null);
   const peerConnections = useRef({});
@@ -37,11 +40,13 @@ const Viewer = () => {
     if (state.isLive && timer === 0) {
       stopVideo();
     } else if (state.isLive) {
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
       timerIntervalRef.current = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
     }
-
     return () => {
       clearInterval(timerIntervalRef.current);
     };
@@ -60,24 +65,37 @@ const Viewer = () => {
     socket.current.on("main-feed", handleMainFeed);
     socket.current.on("timer-update", handleTimerUpdate);
     socket.current.on("timer-end", handleTimerEnd);
-    socket.current.on("extend-timer", handleExtendTimer);
     socket.current.on("stop-video", handleStopVideo);
   };
 
+
+
+  useEffect(() => {
+    socket.current.on("timer-update", (userId, newTime) => {
+      if (userId === state.liveUserId) {
+        setTimer(newTime); 
+      }
+    });
+  
+    return () => {
+      socket.current.off("timer-update");
+    };
+  }, [state.liveUserId]);
+  
+  
+
   const handleTimerUpdate = (userId, newTimer) => {
+    clearInterval(timerIntervalRef.current);
     setTimer(newTimer);
   };
 
   const handleTimerEnd = (userId) => {
     if (userId === state.liveUserId) {
       setState((prevState) => ({ ...prevState, isLive: false }));
-      setTimer(0);
     }
   };
 
-  const handleExtendTimer = (additionalTime) => {
-    setTimer((prevTimer) => prevTimer + additionalTime);
-  };
+
 
   const handleStopVideo = () => {
     stopVideo();
@@ -88,7 +106,6 @@ const Viewer = () => {
   };
 
   const handleNewPeer = async (id) => {
-    console.log(`Handling new peer: ${id}`);
     if (!streamRef.current || id === socket.current.id) return;
     const peerConnection = createPeerConnection(id);
     streamRef.current.getTracks().forEach((track) => peerConnection.addTrack(track, streamRef.current));
@@ -98,7 +115,6 @@ const Viewer = () => {
   };
 
   const handleOffer = async (id, offer) => {
-    console.log(`Handling offer from ${id}`);
     if (id === socket.current.id) return;
     const peerConnection = createPeerConnection(id);
     await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
@@ -108,14 +124,12 @@ const Viewer = () => {
   };
 
   const handleAnswer = (id, answer) => {
-    console.log(`Handling answer from ${id}`);
     if (peerConnections.current[id]) {
       peerConnections.current[id].setRemoteDescription(new RTCSessionDescription(answer));
     }
   };
 
   const handleIceCandidate = (id, candidate) => {
-    console.log(`Handling ICE candidate from ${id}`);
     const candidateObj = new RTCIceCandidate(candidate);
     if (peerConnections.current[id]) {
       peerConnections.current[id].addIceCandidate(candidateObj).catch(console.error);
@@ -123,7 +137,6 @@ const Viewer = () => {
   };
 
   const handlePeerDisconnected = (id) => {
-    console.log(`Peer disconnected: ${id}`);
     if (peerConnections.current[id]) {
       peerConnections.current[id].close();
       delete peerConnections.current[id];
@@ -131,7 +144,6 @@ const Viewer = () => {
   };
 
   const handleGoLive = () => {
-    console.log("Go live");
     setState((prevState) => ({
       ...prevState,
       isNext: true,
@@ -140,37 +152,34 @@ const Viewer = () => {
   };
 
   const handleMainFeed = async (liveUserId) => {
-    console.log(`Main feed update: ${liveUserId}`);
+    setTimer(60); 
+    clearInterval(timerIntervalRef.current);
+    
     setState((prevState) => ({ ...prevState, liveUserId }));
     if (mainVideoRef.current && liveUserId) {
-      console.log(`Setting up peer connection to receive stream from: ${liveUserId}`);
       const peerConnection = createPeerConnection(liveUserId);
       peerConnection.ontrack = (event) => {
-        console.log("Received remote track", event.streams[0]);
         mainVideoRef.current.srcObject = event.streams[0];
         if (state.autoplayAllowed) {
           mainVideoRef.current.play().catch(console.error);
         }
       };
-      socket.current.emit("request-offer", liveUserId); // Request the offer from the live user
+      socket.current.emit("request-offer", liveUserId);
     }
   };
 
   const createPeerConnection = (id) => {
-    console.log(`Creating peer connection for ${id}`);
     const peerConnection = new RTCPeerConnection({
       iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
     });
 
     peerConnection.onicecandidate = (event) => {
       if (event.candidate) {
-        console.log(`Sending ICE candidate to ${id}`, event.candidate);
         socket.current.emit("ice-candidate", id, event.candidate);
       }
     };
 
     peerConnection.ontrack = (event) => {
-      console.log("On track event", event.streams[0]);
       if (mainVideoRef.current) {
         mainVideoRef.current.srcObject = event.streams[0];
         if (state.autoplayAllowed) {
@@ -222,8 +231,13 @@ const Viewer = () => {
         isLive: false,
         isNext: false,
       }));
+      clearInterval(timerIntervalRef.current);
       socket.current.emit("stop-live");
-      setSlidePosition(null); 
+      socket.current.emit("set-initial-vote", 50);
+      socket.current.emit("current-slide-amount", 5); 
+
+      
+
     }
   };
 
@@ -231,9 +245,19 @@ const Viewer = () => {
 
   const handleGoLiveClick = () => {
     setState((prevState) => ({ ...prevState, isLive: true, isNext: false }));
-    setTimer(60);
-    socket.current.emit("go-live"); // Emit the event when going live
+    
+    clearInterval(timerIntervalRef.current);
+    socket.current.emit("go-live"); 
     socket.current.emit("set-initial-vote", 50);
+    socket.current.emit("current-slide-amount", 5);
+  };
+
+  const triggerOverlay = (icon) => {
+    setOverlayIcon(icon);
+    setShowOverlay(true);
+    setTimeout(() => {
+      setShowOverlay(false);
+    }, 2000);
   };
 
   return (
@@ -257,13 +281,21 @@ const Viewer = () => {
       {state.liveUserId && <Timer timer={timer} />}
       
       <Votes 
-  stopVideo={stopVideo}
-  slidePosition={slidePosition}
-  slidePositionAmount={slidePositionAmount}
-  setSlidePosition={setSlidePosition}
-  setSlidePositionAmount={setSlidePositionAmount}
-  liveUserId={state.liveUserId}
-/>
+        stopVideo={stopVideo}
+        slidePosition={slidePosition}
+        slidePositionAmount={slidePositionAmount}
+        setSlidePosition={setSlidePosition}
+        setSlidePositionAmount={setSlidePositionAmount}
+        liveUserId={state.liveUserId}
+        triggerOverlay={triggerOverlay} 
+        socket={socket.current} 
+      />
+
+      {showOverlay && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          <span className="text-red-700 text-9xl animate-pulse">{overlayIcon}</span>
+        </div>
+      )}
     </>
   );
 };

@@ -1,48 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
 
-const socket = io("http://localhost:5000");
 
-const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId }) => {
+const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket }) => {
   const [isPulsing, setIsPulsing] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [overlayIcon, setOverlayIcon] = useState(null);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
 
   useEffect(() => {
-    // When the component mounts, request the current position
-    socket.emit('request-current-position');
+    if (socket) {
+      socket.emit('request-current-position');
 
-    // Set up event listeners
-    socket.on('vote-update', (newPosition) => {
-      setSlidePosition(newPosition);
-    });
+      socket.on('vote-update', (newPosition) => {
+        setSlidePosition(newPosition);
+      });
 
-    socket.on('current-position', (currentPosition) => {
-      if (currentPosition !== null && currentPosition !== undefined) {
-        setSlidePosition(currentPosition);
-      } else {
-        setSlidePosition(50); // Default to 50 if no current position is available
-      }
-    });
+      socket.on('current-position', (currentPosition) => {
+        if (currentPosition !== null && currentPosition !== undefined) {
+          setSlidePosition(currentPosition);
+        } else {
+          setSlidePosition(50);
+        }
+      });
 
-    socket.on('current-slide-amount', (currentSlideAmount) => {
-      setSlidePositionAmount(currentSlideAmount);
-    });
+      socket.on('current-slide-amount', (currentSlideAmount) => {
+        setSlidePositionAmount(currentSlideAmount);
+      });
 
-    socket.on('go-live', () => {
-      setSlidePosition(50);
-      setSlidePositionAmount(5);
-    });
+      socket.on('go-live', () => {
+        setSlidePosition(50);
+        setSlidePositionAmount(5);
+      });
 
-    return () => {
-      socket.off('vote-update');
-      socket.off('current-position');
-      socket.off('current-slide-amount');
-      socket.off('go-live');
-    };
-  }, [setSlidePosition, setSlidePositionAmount]);
+      return () => {
+        socket.off('vote-update');
+        socket.off('current-position');
+        socket.off('current-slide-amount');
+        socket.off('go-live');
+      };
+    }
+  }, [socket, setSlidePosition, setSlidePositionAmount]);
 
   const handleClickCross = () => {
     const newPosition = Math.max(slidePosition - slidePositionAmount, 0);
@@ -60,7 +56,8 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
     socket.emit('vote', newPosition);
 
     if (newPosition === 100) {
-      setSlidePositionAmount(prevAmount => prevAmount / 2);
+      setSlidePositionAmount(prevAmount => prevAmount / 2); 
+      socket.emit('timer-update', liveUserId, 60);
     }
   };
 
@@ -73,35 +70,29 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
 
   useEffect(() => {
     if (slidePosition === 0) {
-      setShowOverlay(true);
-      setOverlayIcon('❌');
+      triggerOverlay('❌'); // Trigger overlay with red cross
       stopVideo();
       socket.emit('stop-video');
-
-      setTimeout(() => {
-        setShowOverlay(false);
-        setStars([]);
-      }, 2000);
     } else if (slidePosition === 100) {
-      setShowOverlay(true);
       setSlidePosition(50);
-      setOverlayIcon(null);
-      socket.emit('extend-timer', 60);
-
-      for (let i = 0; i < 6; i++) {
-        const delay = i * 150;
-        setTimeout(() => {
-          const left = `${Math.random() * 100}%`;
-          setStars((prevStars) => [...prevStars, { left }]);
-        }, delay);
-      }
-
-      setTimeout(() => {
-        setShowOverlay(false);
-        setStars([]);
-      }, 2000);
+      triggerStars();
     }
-  }, [slidePosition, stopVideo, setSlidePosition]);
+  }, [slidePosition, stopVideo, setSlidePosition, triggerOverlay]);
+
+  const triggerStars = () => {
+    setStars([]);
+    for (let i = 0; i < 6; i++) {
+      const delay = i * 150;
+      setTimeout(() => {
+        const left = `${Math.random() * 90}%`;
+        setStars((prevStars) => [...prevStars, { left }]);
+      }, delay);
+    }
+
+    setTimeout(() => {
+      setStars([]);
+    }, 2000);
+  };
 
   if (!liveUserId) {
     return <div className='mt-2'>Nobody's live at the moment</div>;
@@ -109,29 +100,6 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
 
   return (
     <div className="mt-1 w-full text-center flex justify-between items-center relative">
-      {showOverlay && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-          {overlayIcon ? (
-            <span className="text-red-700 text-9xl animate-pulse">{overlayIcon}</span>
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              {stars.map((star, index) => (
-                <span
-                  key={index}
-                  className="brightness-125 text-3xl absolute"
-                  style={{
-                    left: star.left,
-                    animation: `fall-${index} 2s linear forwards`,
-                    zIndex: 100 - index,
-                  }}
-                >
-                  ⭐
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
       <span
         className={`text-red-700 text-2xl pl-2 md:pl-10 brightness-125 cursor-pointer ${isPulsing && clickedIcon === 'cross' ? 'animate-pulse' : ''}`}
         onClick={handleClickCross}
@@ -153,6 +121,25 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
       >
         ⭐
       </span>
+
+      {/* Falling Stars */}
+      {stars.length > 0 && (
+        <div className="absolute inset-0 pointer-events-none">
+          {stars.map((star, index) => (
+            <span
+              key={index}
+              className="brightness-125 text-3xl absolute"
+              style={{
+                left: star.left,
+                animation: `fall-${index} 2s linear forwards`,
+                zIndex: 100 - index,
+              }}
+            >
+              ⭐
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* CSS for animations */}
       <style>
