@@ -6,7 +6,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import Navbar from './components/Navbar'; 
 import Chat from './components/Chat';
 import Viewer from './components/viewer/Viewer';
-import Votes from './components/viewer/Votes';
 import CommentBox from './components/comments/CommentBox';
 import ViewersOnline from './components/ViewersOnline';
 import { AuthContext, AuthProvider } from '@/utils/AuthContext'; 
