@@ -46,28 +46,20 @@ const Viewer = () => {
     }, [username]);
 
     useEffect(() => {
-        if (state.isLive && timer === 0) {
-            console.log("Timer ended. Stopping video.");
-            stopVideo();
-            setState((prevState) => ({
-                ...prevState,
-                showPreviewButton: false,
-                isCameraOn: false,
-                isLive: false,
-                isNext: false,
-            }));
-        } else if (state.isLive) {
-            if (timerIntervalRef.current) {
-                clearInterval(timerIntervalRef.current);
+        if (state.isLive && state.liveUserId) {
+            if (timer === 0) {
+                stopVideo();
+                setState((prevState) => ({
+                    ...prevState,
+                    isLive: false,
+                    isCameraOn: false,
+                    showPreviewButton: false,
+                    isNext: false,
+                }));
             }
-            timerIntervalRef.current = setInterval(() => {
-                setTimer((prevTimer) => prevTimer - 1);
-            }, 1000);
         }
-        return () => {
-            clearInterval(timerIntervalRef.current);
-        };
-    }, [state.isLive, timer]);
+    }, [timer, state.isLive, state.liveUserId]);
+    
 
     const initializeSocket = () => {
         socket.current = io("http://localhost:5000");
@@ -129,19 +121,20 @@ const Viewer = () => {
 
     useEffect(() => {
         if (socket.current && state.liveUserId) {
-            socket.current.on("timer-update", (userId, newTime) => {
+            const handleTimerUpdate = (userId, newTime) => {
                 if (userId === state.liveUserId) {
                     setTimer(newTime);
                 }
-            });
+            };
+    
+            socket.current.on("timer-update", handleTimerUpdate);
+    
+            return () => {
+                socket.current.off("timer-update", handleTimerUpdate);
+            };
         }
-
-        return () => {
-            if (socket.current) {
-                socket.current.off("timer-update");
-            }
-        };
     }, [state.liveUserId]);
+    
 
     const handleTimerUpdate = (newTimer) => {
         console.log("Handling timer update. New timer value:", newTimer);
@@ -152,7 +145,7 @@ const Viewer = () => {
     const handleTimerEnd = (userId) => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
-            setState((prevState) => ({ ...prevState, isLive: false }));
+            setState((prevState) => ({ ...prevState, isLive: false, }));
         }
     };
 
@@ -258,11 +251,21 @@ const Viewer = () => {
     const cleanup = () => {
         console.log("Cleaning up Viewer component.");
         Object.values(peerConnections.current).forEach((pc) => pc.close());
-
+    
         if (socket.current) {
             socket.current.disconnect();
         }
+    
+        if (timerIntervalRef.current) {
+            clearInterval(timerIntervalRef.current);
+            timerIntervalRef.current = null;
+        }
     };
+    
+    useEffect(() => {
+        return () => cleanup();
+    }, []);
+    
 
     const handleJoinClick = () => {
         console.log("Handling join click.");
@@ -296,7 +299,7 @@ const Viewer = () => {
     };
 
     const stopVideo = () => {
-        console.log("Stopping video and resetting state.");
+        console.log("Stopping video and resetting state. Timer was:", timer);
         if (streamRef.current) {
             streamRef.current.getTracks().forEach((track) => track.stop());
             if (mainVideoRef.current) {
@@ -307,6 +310,7 @@ const Viewer = () => {
                 isCameraOn: false,
                 showPreviewButton: false,
                 isLive: false,
+                isNext: false,
             }));
             clearInterval(timerIntervalRef.current);
             socket.current.emit("stop-live");
@@ -314,18 +318,33 @@ const Viewer = () => {
             socket.current.emit("current-slide-amount", 5);
         }
     };
+    
 
     const handlePreviewButtonClick = () => startVideo();
 
     const handleGoLiveClick = () => {
+        if (!state.isLive) {
         console.log("User clicked 'Go Live'.");
+        clearInterval(timerIntervalRef.current); // Clear any existing interval
+        setTimer(60); // Reset timer
         setState((prevState) => ({ ...prevState, isLive: true, isNext: false }));
-
-        clearInterval(timerIntervalRef.current);
+    
+        timerIntervalRef.current = setInterval(() => {
+            setTimer((prevTimer) => {
+                if (prevTimer <= 1) {
+                    clearInterval(timerIntervalRef.current);
+                    stopVideo(); // Stop video when timer reaches 0
+                    return 0;
+                }
+                return prevTimer - 1;
+            });
+        }, 1000);
+    
         socket.current.emit("go-live", username); 
         socket.current.emit("set-initial-vote", 50);
         socket.current.emit("current-slide-amount", 5);
     };
+};
 
     const triggerOverlay = (icon) => {
         console.log("Triggering overlay with icon:", icon);
