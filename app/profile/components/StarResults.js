@@ -8,10 +8,9 @@ const ProfileStarResults = () => {
         <h4 className='text-yellow-400 brightness-125'>0</h4>
         <h3>Total Time Live</h3>
         <h4 className='text-yellow-400 brightness-125'>0</h4>
-        <h3>First comments</h3> 
+        <h3>Comments</h3> 
         <h4 className='text-yellow-400 brightness-125'>0</h4>
-        <h3>Last comments</h3> 
-        <h4 className='text-yellow-400 brightness-125'>0</h4>
+        
       
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useImperativeHandle, useRef, forwardRef, useState } from 'react';
 
-const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin, handleJoinClick }, ref) => {
+const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
   const popupRef = useRef(null);
   const confirmRef = useRef(null);
   const [confirmVisible, setConfirmVisible] = useState(false);
@@ -24,7 +24,6 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin, handleJoinClick }
 
   const handleJoinForFreeClick = () => {
     console.log('User joined for free');
-    handleJoinClick();
     onJoin(); // Show the preview button
     onClose(); // Close the main popup after joining for free
   };
