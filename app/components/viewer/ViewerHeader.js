@@ -10,7 +10,7 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
       setShowLoginAlert(true);
       setTimeout(() => {
         setShowLoginAlert(false);
-      }, 3000); // Hide the alert after 3 seconds
+      }, 2000); // Hide the alert after 3 seconds
     } else {
       handleJoinClick();
     }
@@ -22,10 +22,16 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
         <div className="relative w-full flex justify-center h-full ">
           <button
             onClick={stopVideo}
-            className="absolute text-white border-2 border-red-700 pr-1 pl-1 h-full text-md md:text-md hover:bg-red-600 rounded bg-red-600"
+            className="text-white border-2 border-red-700 pr-1 pl-1 h-full text-md md:text-md hover:bg-red-600 rounded bg-red-600"
           >
             Leave
           </button>
+          <button
+                        
+                        className="text-white border-2 border-green-700 pr-1 pl-1 h-full text-md md:text-md hover:bg-green-600 rounded bg-green-600"
+                    >
+                        View Live
+                    </button>
         </div>
       ) : state.showPreviewButton ? (
         <button
