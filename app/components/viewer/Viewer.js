@@ -31,7 +31,10 @@ const Viewer = () => {
     const [slidePosition, setSlidePosition] = useState(50);
     const [slidePositionAmount, setSlidePositionAmount] = useState(5); 
 
-   
+    useEffect(() => {
+        console.log("Current state in useEffect:", state);
+    }, [state]);
+    
 
     useEffect(() => {
         if (!username) {
@@ -85,6 +88,15 @@ const Viewer = () => {
         socket.current.on("timer-update", handleTimerUpdate);
         socket.current.on("timer-end", handleTimerEnd);
         socket.current.on("stop-video", handleStopVideo);
+
+        socket.current.on("go-live-prompt", () => {
+            console.log("Received 'go-live-prompt', setting isNext to true");
+            setState((prevState) => ({
+                ...prevState,
+                isNext: true,
+                isLive: false,
+            }));
+        });
 
         // Listen for current slide position and amount when the page loads
         socket.current.on("current-position", (position) => {
@@ -201,6 +213,7 @@ const Viewer = () => {
         console.log("Handling join queue. Resetting isNext to false.");
         setState((prevState) => ({
             ...prevState,
+            inQueue: true, 
             isNext: false,
             showPreviewButton: true,
         }));
@@ -269,7 +282,11 @@ const Viewer = () => {
 
     const handleJoinClick = () => {
         console.log("Handling join click.");
-        setState((prevState) => ({ ...prevState, isPopUpOpen: true }));
+        if (state.inQueue) {
+            console.log("User is already in the queue.");
+        } else {
+            setState((prevState) => ({ ...prevState, isPopUpOpen: true }));
+        }
     };
 
     const handleUserDecisionToJoinQueue = () => {
@@ -310,7 +327,8 @@ const Viewer = () => {
                 isCameraOn: false,
                 showPreviewButton: false,
                 isLive: false,
-                isNext: false,
+                isNext: false, 
+                inQueue: false,
             }));
             clearInterval(timerIntervalRef.current);
             socket.current.emit("stop-live");
@@ -361,7 +379,7 @@ const Viewer = () => {
                 state={state}
                 handleJoinClick={handleJoinClick}
                 handlePreviewButtonClick={handlePreviewButtonClick}
-                stopVideo={stopVideo}
+                stopVideo={stopVideo} 
             />
             <ViewerMain
                 mainVideoRef={mainVideoRef}
