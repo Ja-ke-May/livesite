@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket }) => {
+const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket, isInteractive }) => {
   const [isPulsing, setIsPulsing] = useState(false);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
@@ -41,6 +41,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
   }, [socket, setSlidePosition, setSlidePositionAmount]);
 
   const handleClickCross = () => {
+    if (!isInteractive) return;
     const newPosition = Math.max(slidePosition - slidePositionAmount, 0);
     setSlidePosition(newPosition);
     setClickedIcon('cross');
@@ -49,6 +50,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
   };
 
   const handleClickStar = () => {
+    if (!isInteractive) return;
     let newPosition = Math.min(slidePosition + slidePositionAmount, 100);
     setSlidePosition(newPosition);
     setClickedIcon('star');
@@ -102,7 +104,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
     <div className="mt-1 w-full text-center flex justify-between items-center relative">
       <span
         className={`text-red-700 text-2xl pl-2 md:pl-10 brightness-125 cursor-pointer ${isPulsing && clickedIcon === 'cross' ? 'animate-pulse' : ''}`}
-        onClick={handleClickCross}
+        onClick={isInteractive ? handleClickCross : null}
       >
         ❌
       </span>
@@ -117,7 +119,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
       </div>
       <span
         className={`text-yellow-400 brightness-125 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer ${isPulsing && clickedIcon === 'star' ? 'animate-pulse' : ''}`}
-        onClick={handleClickStar}
+        onClick={isInteractive ? handleClickStar : null}
       >
         ⭐
       </span>

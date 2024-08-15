@@ -30,23 +30,24 @@ const Viewer = () => {
     const timerIntervalRef = useRef(null);
     const [slidePosition, setSlidePosition] = useState(50);
     const [slidePositionAmount, setSlidePositionAmount] = useState(5); 
+    const [showQueueAlert, setShowQueueAlert] = useState(false);
 
     useEffect(() => {
         console.log("Current state in useEffect:", state);
     }, [state]);
-    
 
     useEffect(() => {
         if (!username) {
-            console.error("Username is not defined!");
-            return; // Early return if username is not defined
+            console.warn("Username is not defined, initializing as a guest.");
+        } else {
+            console.log("Username is available:", username);
         }
-
-        console.log("Username is available:", username);
+        
         initializeSocket();
-
+    
         return () => cleanup();
     }, [username]);
+    
 
     useEffect(() => {
         if (state.isLive && state.liveUserId) {
@@ -62,15 +63,20 @@ const Viewer = () => {
             }
         }
     }, [timer, state.isLive, state.liveUserId]);
-    
 
     const initializeSocket = () => {
         socket.current = io("http://localhost:5000");
 
         socket.current.on("connect", () => {
             console.log(`Connected with socket ID: ${socket.current.id}`);
-            console.log(`Registering username: ${username}`);
-            socket.current.emit("register-user", username);
+            
+            if (username) {
+                console.log(`Registering username: ${username}`);
+                socket.current.emit("register-user", username);
+            } else {
+                console.log("Connected as a guest.");
+                // Guests are connected but do not register a username
+            }
         });
 
         socket.current.on("join-queue", () => {
@@ -78,7 +84,6 @@ const Viewer = () => {
             handleJoinQueue();
         });
 
-        socket.current.on("live-users", handleLiveUsers);
         socket.current.on("new-peer", handleNewPeer);
         socket.current.on("offer", handleOffer);
         socket.current.on("answer", handleAnswer);
@@ -120,16 +125,7 @@ const Viewer = () => {
             }));
             console.log("Updated state after 'is-next' event:", { ...state, isNext });
         });
-
     };
-
-    useEffect(() => {
-        console.log("Current state in useEffect (username):", state);
-    }, [username]);
-
-    useEffect(() => {
-        console.log("Current state in useEffect (isNext):", state.isNext);
-    }, [state.isNext]);
 
     useEffect(() => {
         if (socket.current && state.liveUserId) {
@@ -146,7 +142,6 @@ const Viewer = () => {
             };
         }
     }, [state.liveUserId]);
-    
 
     const handleTimerUpdate = (newTimer) => {
         console.log("Handling timer update. New timer value:", newTimer);
@@ -157,17 +152,13 @@ const Viewer = () => {
     const handleTimerEnd = (userId) => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
-            setState((prevState) => ({ ...prevState, isLive: false, }));
+            setState((prevState) => ({ ...prevState, isLive: false }));
         }
     };
 
     const handleStopVideo = () => {
         console.log("Stopping video.");
         stopVideo();
-    };
-
-    const handleLiveUsers = (liveUsers) => {
-        console.log("Currently live users:", liveUsers);
     };
 
     const handleNewPeer = async (id) => {
@@ -282,8 +273,12 @@ const Viewer = () => {
 
     const handleJoinClick = () => {
         console.log("Handling join click.");
-        if (state.inQueue) {
-            console.log("User is already in the queue.");
+    
+        if (state.inQueue || state.isLive || state.liveUserId === username) {
+            setShowQueueAlert(true);
+            setTimeout(() => {
+                setShowQueueAlert(false);
+            }, 2000); // Hide the alert after 2 seconds
         } else {
             setState((prevState) => ({ ...prevState, isPopUpOpen: true }));
         }
@@ -336,36 +331,35 @@ const Viewer = () => {
             socket.current.emit("current-slide-amount", 5);
         }
     };
-    
 
     const handlePreviewButtonClick = () => startVideo();
 
     const handleGoLiveClick = () => {
         if (!state.isLive) {
-        console.log("User clicked 'Go Live'.");
-        clearInterval(timerIntervalRef.current); // Clear any existing interval
-        setTimer(60); // Reset timer
-        setState((prevState) => ({ ...prevState, isLive: true, isNext: false }));
+            console.log("User clicked 'Go Live'.");
+            clearInterval(timerIntervalRef.current); // Clear any existing interval
+            setTimer(60); // Reset timer
+            setState((prevState) => ({ ...prevState, isLive: true, isNext: false }));
     
-        timerIntervalRef.current = setInterval(() => {
-            setTimer((prevTimer) => {
-                if (prevTimer <= 1) {
-                    clearInterval(timerIntervalRef.current);
-                    stopVideo(); // Stop video when timer reaches 0
-                    return 0;
-                }
-                return prevTimer - 1;
-            });
-        }, 1000);
+            timerIntervalRef.current = setInterval(() => {
+                setTimer((prevTimer) => {
+                    if (prevTimer <= 1) {
+                        clearInterval(timerIntervalRef.current);
+                        stopVideo(); // Stop video when timer reaches 0
+                        return 0;
+                    }
+                    return prevTimer - 1;
+                });
+            }, 1000);
     
-        socket.current.emit("go-live", username); 
-        socket.current.emit("set-initial-vote", 50);
-        socket.current.emit("current-slide-amount", 5);
+            socket.current.emit("go-live", username); 
+            socket.current.emit("set-initial-vote", 50);
+            socket.current.emit("current-slide-amount", 5);
+        }
     };
-};
 
     const triggerOverlay = (icon) => {
-        console.log("Triggering overlay with icon:", icon);
+       
         setOverlayIcon(icon);
         setShowOverlay(true);
         setTimeout(() => {
@@ -380,6 +374,7 @@ const Viewer = () => {
                 handleJoinClick={handleJoinClick}
                 handlePreviewButtonClick={handlePreviewButtonClick}
                 stopVideo={stopVideo} 
+                showQueueAlert={showQueueAlert} 
             />
             <ViewerMain
                 mainVideoRef={mainVideoRef}
@@ -404,6 +399,7 @@ const Viewer = () => {
                     liveUserId={state.liveUserId || username}
                     triggerOverlay={triggerOverlay}
                     socket={socket.current}
+                    isInteractive={!!username} 
                 />
             ) : (
                 <div className='mt-2'>Nobody's live at the moment</div>

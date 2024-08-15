@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '@/utils/AuthContext';
 
-const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVideo}) => {
+const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVideo, showQueueAlert }) => {
   const { isLoggedIn } = useContext(AuthContext);
   const [showLoginAlert, setShowLoginAlert] = useState(false);
 
@@ -10,7 +10,7 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
       setShowLoginAlert(true);
       setTimeout(() => {
         setShowLoginAlert(false);
-      }, 2000); // Hide the alert after 3 seconds
+      }, 2000); // Hide the alert after 2 seconds
     } else {
       handleJoinClick();
     }
@@ -26,12 +26,6 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
           >
             Leave
           </button>
-          <button
-                        
-                        className="text-white border-2 border-green-700 pr-1 pl-1 h-full text-md md:text-md hover:bg-green-600 rounded bg-green-600"
-                    >
-                        View Live
-                    </button>
         </div>
       ) : state.showPreviewButton ? (
         <button
@@ -55,6 +49,12 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
       {showLoginAlert && (
         <div className='bg-white text-[#000110] w-full h-full flex justify-center items-center rounded absolute top-0'>
           Please log in
+        </div>
+      )}
+
+      {showQueueAlert && (
+        <div className='bg-white text-[#000110] w-full h-full flex justify-center items-center rounded absolute top-0'>
+          Already in queue
         </div>
       )}
     </div>
