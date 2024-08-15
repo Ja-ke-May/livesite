@@ -269,26 +269,88 @@ const Viewer = () => {
     useEffect(() => {
         return () => cleanup();
     }, []);
+
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            stopVideo();
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
     
 
     const handleJoinClick = () => {
         console.log("Handling join click.");
     
-        if (state.inQueue || state.isLive || state.liveUserId === username) {
+        if (state.inQueue) {
+            console.log("Alert: User is already in the queue.");
+            setShowQueueAlert(true);
+            setTimeout(() => {
+                setShowQueueAlert(false);
+            }, 2000); // Hide the alert after 2 seconds
+        } else if (state.isLive) {
+            console.log("Alert: User is currently live.");
+            setShowQueueAlert(true);
+            setTimeout(() => {
+                setShowQueueAlert(false);
+            }, 2000); // Hide the alert after 2 seconds
+        } else if (state.liveUserId === username) {
+            console.log("Alert: User is the current live user.");
             setShowQueueAlert(true);
             setTimeout(() => {
                 setShowQueueAlert(false);
             }, 2000); // Hide the alert after 2 seconds
         } else {
-            setState((prevState) => ({ ...prevState, isPopUpOpen: true }));
+            if (username) {
+                socket.current.emit("check-username", username, (exists) => {
+                    if (exists) {
+                        console.log("Alert: Username is already in the queue or currently live.");
+                        setShowQueueAlert(true);
+                        setTimeout(() => {
+                            setShowQueueAlert(false);
+                        }, 2000);
+                    } else {
+                        console.log("Username is available, opening pop-up to join the queue.");
+                        setState((prevState) => ({ ...prevState, isPopUpOpen: true }));
+                    }
+                });
+            } else {
+                console.log("No username provided, opening pop-up to join the queue.");
+                setState((prevState) => ({ ...prevState, isPopUpOpen: true }));
+            }
         }
     };
-
+    
     const handleUserDecisionToJoinQueue = () => {
-        console.log("User decided to join queue.");
-        setState((prevState) => ({ ...prevState, inQueue: true, showPreviewButton: true }));
-        socket.current.emit("join-queue", username); 
+        console.log("User decided to join the queue.");
+       
+    
+        if (username) {
+            socket.current.emit("check-username", username, (exists) => {
+                if (!exists) {
+                    console.log("Username is not in use, joining the queue.");
+                    setState((prevState) => ({ ...prevState, inQueue: true, showPreviewButton: true }));
+                    socket.current.emit("join-queue", username);
+                    
+                } else {
+                    console.log("Alert: Username is already in the queue or currently live.");
+                    setState((prevState) => ({ ...prevState, inQueue: false, showPreviewButton: false }));
+                    setShowQueueAlert(true);
+
+                    setTimeout(() => {
+                        setShowQueueAlert(false);
+                    }, 2000);
+                }
+            });
+
+          
+        }
     };
+    
 
     const handleClosePopUp = () => {
         console.log("Closing popup.");
