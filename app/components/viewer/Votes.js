@@ -74,6 +74,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
     if (slidePosition === 0) {
       triggerOverlay('❌'); // Trigger overlay with red cross
       stopVideo();
+      setSlidePosition(50);
       socket.emit('stop-video');
     } else if (slidePosition === 100) {
       setSlidePosition(50);
