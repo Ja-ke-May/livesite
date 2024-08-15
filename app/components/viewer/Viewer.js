@@ -31,6 +31,8 @@ const Viewer = () => {
     const [slidePosition, setSlidePosition] = useState(50);
     const [slidePositionAmount, setSlidePositionAmount] = useState(5); 
     const [showQueueAlert, setShowQueueAlert] = useState(false);
+    const [queuePosition, setQueuePosition] = useState(null);
+
 
     useEffect(() => {
         console.log("Current state in useEffect:", state);
@@ -63,6 +65,37 @@ const Viewer = () => {
             }
         }
     }, [timer, state.isLive, state.liveUserId]);
+
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.on("queue-position-update", (position) => {
+                console.log("Received queue-position-update event with position:", position);
+                setQueuePosition(position);
+                console.log("Queue position state updated to:", position);
+    
+                if (position === 1) {
+                    setState((prevState) => ({
+                        ...prevState,
+                        showPreviewButton: true,
+                    }));
+                } else {
+                    setState((prevState) => ({
+                        ...prevState,
+                        showPreviewButton: false,
+                    }));
+                }
+            });
+    
+            return () => {
+                socket.current.off("queue-position-update");
+            };
+        }
+    }, []);
+    
+    
+    useEffect(() => {
+        console.log("Queue Position updated:", queuePosition);
+    }, [queuePosition]);
 
     const initializeSocket = () => {
         socket.current = io("http://localhost:5000");
@@ -100,6 +133,7 @@ const Viewer = () => {
                 ...prevState,
                 isNext: true,
                 isLive: false,
+                showPreviewButton: true,
             }));
         });
 
@@ -125,7 +159,27 @@ const Viewer = () => {
             }));
             console.log("Updated state after 'is-next' event:", { ...state, isNext });
         });
+
+        socket.current.on("queue-position-update", (position) => {
+            console.log("Received queue-position-update event with position:", position);
+            setQueuePosition(position);
+            console.log("Queue position state updated to:", position);
+    
+            if (position === 1) {
+                setState((prevState) => ({
+                    ...prevState,
+                    showPreviewButton: true,
+                }));
+            } else {
+                setState((prevState) => ({
+                    ...prevState,
+                    showPreviewButton: false,
+                }));
+            }
+        });
+
     };
+    
 
     useEffect(() => {
         if (socket.current && state.liveUserId) {
@@ -206,9 +260,22 @@ const Viewer = () => {
             ...prevState,
             inQueue: true, 
             isNext: false,
-            showPreviewButton: true,
         }));
-    };
+      // Emit event to check user's position in the queue
+      if (username) {
+        socket.current.emit("check-queue-position", username, (position) => {
+            console.log("Position received from check-queue-position:", position);
+            setQueuePosition(position);
+            if (position === 1) {
+                // User is at the first position in the queue
+                setState((prevState) => ({
+                    ...prevState,
+                    showPreviewButton: true,
+                }));
+            }
+        });
+    }
+};
 
     const handleMainFeed = async (liveUserId) => {
         console.log("Handling main feed update. Live user ID:", liveUserId);
@@ -275,6 +342,7 @@ const Viewer = () => {
             stopVideo();
         };
 
+
         window.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
@@ -333,12 +401,12 @@ const Viewer = () => {
             socket.current.emit("check-username", username, (exists) => {
                 if (!exists) {
                     console.log("Username is not in use, joining the queue.");
-                    setState((prevState) => ({ ...prevState, inQueue: true, showPreviewButton: true }));
+                    setState((prevState) => ({ ...prevState, inQueue: true }));
                     socket.current.emit("join-queue", username);
                     
                 } else {
                     console.log("Alert: Username is already in the queue or currently live.");
-                    setState((prevState) => ({ ...prevState, inQueue: false, showPreviewButton: false }));
+                    setState((prevState) => ({ ...prevState, inQueue: false }));
                     setShowQueueAlert(true);
 
                     setTimeout(() => {
@@ -388,9 +456,10 @@ const Viewer = () => {
                 inQueue: false,
             }));
             clearInterval(timerIntervalRef.current);
-            socket.current.emit("stop-live");
+            socket.current.emit("stop-live", username);
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
+           
         }
     };
 
@@ -437,6 +506,7 @@ const Viewer = () => {
                 handlePreviewButtonClick={handlePreviewButtonClick}
                 stopVideo={stopVideo} 
                 showQueueAlert={showQueueAlert} 
+                queuePosition={queuePosition}
             />
             <ViewerMain
                 mainVideoRef={mainVideoRef}
