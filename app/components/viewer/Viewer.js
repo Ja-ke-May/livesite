@@ -470,7 +470,7 @@ const Viewer = () => {
             console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current); // Clear any existing interval
             setTimer(60); // Reset timer
-            setState((prevState) => ({ ...prevState, isLive: true, isNext: false }));
+            setState((prevState) => ({ ...prevState, isLive: true, isNext: true }));
     
             timerIntervalRef.current = setInterval(() => {
                 setTimer((prevTimer) => {
