@@ -508,11 +508,14 @@ const Viewer = () => {
                 showQueueAlert={showQueueAlert} 
                 queuePosition={queuePosition}
             />
+            <div className="group"> 
             <ViewerMain
                 mainVideoRef={mainVideoRef}
                 state={state}
                 handleGoLiveClick={handleGoLiveClick}
+                liveUserId={state.liveUserId || username}
             />
+            </div>
             <LiveQueuePopUp
                 visible={state.isPopUpOpen}
                 onClose={handleClosePopUp}

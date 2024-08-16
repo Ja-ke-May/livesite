@@ -13,6 +13,28 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
   };
 
   useEffect(() => {
+    if (visible && popupRef.current) {
+        const { innerWidth, innerHeight } = window;
+        const popupRect = popupRef.current.getBoundingClientRect();
+
+        let adjustedX = position.x;
+        let adjustedY = position.y;
+
+        if (popupRect.right > innerWidth) {
+            adjustedX = innerWidth - popupRect.width; 
+        }
+        if (popupRect.bottom > innerHeight) {
+            adjustedY = innerHeight - popupRect.height;
+        }
+
+        // Set the position directly
+        position.x = adjustedX;
+        position.y = adjustedY;
+    }
+}, [visible, position]);
+  
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
         onClose();
@@ -47,7 +69,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
       </button>
 
       <ul>
-        <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-4 ml-1 mr-1 mb-1">
+        <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-4 mr-1 mb-1">
           <Link href={`/profile/${username}`} className="hover:text-gray-400">
             View Profile
           </Link>
