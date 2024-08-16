@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-
 const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket, isInteractive }) => {
   const [isPulsing, setIsPulsing] = useState(false);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
+  const [hasVoted, setHasVoted] = useState(false); 
+  const [showBuyVotePrompt, setShowBuyVotePrompt] = useState(false);  // Added this state
 
   useEffect(() => {
     if (socket) {
@@ -42,24 +43,35 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
 
   const handleClickCross = () => {
     if (!isInteractive) return;
-    const newPosition = Math.max(slidePosition - slidePositionAmount, 0);
-    setSlidePosition(newPosition);
-    setClickedIcon('cross');
-    triggerPulse();
-    socket.emit('vote', newPosition);
+    if (hasVoted) {
+      promptBuyVote();
+    } else {
+      const newPosition = Math.max(slidePosition - slidePositionAmount, 0);
+      setSlidePosition(newPosition);
+      setClickedIcon('cross');
+      triggerPulse();
+      socket.emit('vote', newPosition);
+      setHasVoted(true);
+    }
   };
 
   const handleClickStar = () => {
     if (!isInteractive) return;
-    let newPosition = Math.min(slidePosition + slidePositionAmount, 100);
-    setSlidePosition(newPosition);
-    setClickedIcon('star');
-    triggerPulse();
-    socket.emit('vote', newPosition);
+    if (hasVoted) {
+      promptBuyVote();
+    } else {
+      let newPosition = Math.min(slidePosition + slidePositionAmount, 100);
+      setSlidePosition(newPosition);
+      setClickedIcon('star');
+      triggerPulse();
+      socket.emit('vote', newPosition);
+      setHasVoted(true);
 
-    if (newPosition === 100) {
-      setSlidePositionAmount(prevAmount => prevAmount / 2); 
-      socket.emit('timer-update', liveUserId, 60);
+      if (newPosition === 100) {
+        setSlidePositionAmount(prevAmount => prevAmount / 2); 
+        socket.emit('timer-update', liveUserId, 60);
+        setHasVoted(false);
+      }
     }
   };
 
@@ -68,6 +80,10 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
     setTimeout(() => {
       setIsPulsing(false);
     }, 1000);
+  };
+
+  const promptBuyVote = () => {
+    setShowBuyVotePrompt(true);
   };
 
   useEffect(() => {
@@ -100,6 +116,35 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
   if (!liveUserId) {
     return <div className='mt-2'>Nobody's live at the moment</div>;
   }
+
+  if (showBuyVotePrompt) {
+    return (
+      <div className="mt-2">
+        <div className="flex justify-center items-center">
+          <span>Buy 1 vote for 1 token?</span>
+
+          <button
+            className="ml-1 px-1 rounded-md shadow-sm border border-white font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+            onClick={() => setShowBuyVotePrompt(false)}
+          >
+            No
+          </button>
+
+          <button
+            className="ml-1 px-1 rounded-md shadow-sm border border-white font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+            onClick={() => {
+              setHasVoted(false);
+              setShowBuyVotePrompt(false);
+            }}
+          >
+            Yes
+          </button>
+          
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="mt-1 w-full text-center flex justify-between items-center relative">
