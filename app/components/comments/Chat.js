@@ -18,7 +18,7 @@ const Chat = ({ socket }) => {
   
 
   return (
-    <div className="h-full bottom-0 mb-20 mt-2 text-center rounded bg-[#000110] shadow-md p-4 md:p-6 w-full">
+    <div className="h-full bottom-0 mb-20 text-center mt-2 rounded bg-[#000110] shadow-md pl-4 pb-4 pr-4 md:pl-6 md:pb-6 md:pr-6 w-full">
       <h1 className="hidden mt-2">Live Chat</h1>
 
       {/* Render all comments */}

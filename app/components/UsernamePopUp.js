@@ -57,7 +57,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
   return (
     <div
       ref={popupRef}
-      className="absolute bg-gray-800 p-2 rounded-[5%] shadow-lg z-[101]"
+      className="absolute bg-[#000110] p-2 rounded-[5%] shadow-lg z-[101]"
       style={{ top: position.y, left: position.x }}
     >
       <button
