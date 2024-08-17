@@ -112,7 +112,7 @@ const ProfileContent = ({ profileUsername }) => {
     <>
       <Navbar />
       <main className="max-w-4xl mx-auto p-4">
-        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
+        <Suspense>
           <ProfileInfo
             profilePicture={profilePicture}
             username={profileUsername}
@@ -128,7 +128,7 @@ const ProfileContent = ({ profileUsername }) => {
             loggedInUsername={loggedInUsername} // Pass the logged-in username
           />
         </Suspense>
-        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
+        <Suspense>
           <Support 
             username={profileUsername} 
             supportersCount={supportersCount}
@@ -136,13 +136,13 @@ const ProfileContent = ({ profileUsername }) => {
             onToggleSupport={handleToggleSupport}
           />
         </Suspense>
-        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
+        <Suspense>
           <LinksSection links={links} setLinks={setLinks} isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} />
         </Suspense>
-        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
+        <Suspense>
           <ProfileStarResults />
         </Suspense>
-        <Suspense fallback={<div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>}>
+        <Suspense>
           <RecentActivity recentActivity={recentActivity} />
         </Suspense>
       </main>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SpeakerButton from './speakerButton';
 
-const CommentBox = () => {
+const CommentBox = ({ isLoggedIn, username, socket }) => {
   const [comment, setComment] = useState('');
   const maxLength = 55;
 
@@ -9,10 +9,30 @@ const CommentBox = () => {
     setComment(e.target.value);
   };
 
-  const handleCommentSubmit = () => {
-    // Add your comment submission logic here
-    console.log('Comment submitted:', comment);
-    setComment(''); // Clear the input after submission
+  const handleCommentSubmit = async () => {
+    if (isLoggedIn && comment.trim() !== '') {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:5000/api/comments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ comment: comment.trim(), username }), // Include username in the request
+        });
+  
+        if (response.ok) {
+          console.log('Comment submitted:', comment);
+          socket.emit('new-comment', { username, comment }); // Emit to server with username
+          setComment(''); // Clear the input field
+        } else {
+          console.error('Failed to submit comment');
+        }
+      } catch (error) {
+        console.error('Error submitting comment:', error);
+      }
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -27,25 +47,31 @@ const CommentBox = () => {
         <input
           type="text"
           className="text-[#000110] rounded-md px-4 py-2 w-full focus:outline-none pr-12 mt-1"
-          placeholder="Log in to vote and comment"
+          placeholder={isLoggedIn ? '' : 'Log in to vote/comment'}
           maxLength={maxLength}
           value={comment}
           onChange={handleCommentChange}
-          onKeyDown={handleKeyDown} // Add this line to listen for the Enter key press
+          onKeyDown={handleKeyDown}
+          disabled={!isLoggedIn}
         />
-        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
-          {maxLength - comment.length}
-        </div>
+        {isLoggedIn && (
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
+            {maxLength - comment.length}
+          </div>
+        )}
       </div>
-     
+
       <button
-        className="ml-1 px-1 rounded-md shadow-sm text-sm font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-        onClick={handleCommentSubmit} // Call the submit function on button click
+        className={`ml-1 px-1 rounded-md shadow-sm text-sm font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 ${
+          !isLoggedIn && 'opacity-50 cursor-not-allowed'
+        }`}
+        onClick={handleCommentSubmit}
+        disabled={!isLoggedIn}
       >
         SEND
       </button>
 
-      <SpeakerButton />
+      <SpeakerButton isLoggedIn={isLoggedIn} />
     </div>
   );
 };
