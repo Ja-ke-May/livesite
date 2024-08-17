@@ -4,16 +4,20 @@
 
 import React, { useContext, useState, useEffect } from 'react';
 import Navbar from './components/Navbar'; 
-import Chat from './components/Chat';
+import Chat from './components/comments/Chat';
 import Viewer from './components/viewer/Viewer';
 import CommentBox from './components/comments/CommentBox';
 import ViewersOnline from './components/ViewersOnline';
 import { AuthContext, AuthProvider } from '@/utils/AuthContext'; 
 import Over18 from './components/Over18';
+import io from 'socket.io-client';
+
 
 const HomeContent = () => {
   const { isLoggedIn, username, isInitialized } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false);
+
+  const socket = io('http://localhost:5000'); 
 
   useEffect(() => {
     if (isInitialized && !isLoggedIn) {
@@ -44,9 +48,9 @@ const HomeContent = () => {
       <main className="flex flex-col items-center justify-center lg:max-w-[60%] w-full mx-auto">
         <Viewer />
         
-        <Chat />
+        <Chat isLoggedIn={isLoggedIn} username={username} socket={socket} />
       </main>
-      <CommentBox />
+      <CommentBox isLoggedIn={isLoggedIn} username={username} socket={socket} />
       <ViewersOnline />
     </div>
   );

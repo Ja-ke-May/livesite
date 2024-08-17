@@ -16,7 +16,7 @@ const ViewersOnline = () => {
 
     fetchViewers();
 
-    const interval = setInterval(fetchViewers, 10000); // Update every 10 seconds
+    const interval = setInterval(fetchViewers, 10000); 
     return () => clearInterval(interval);
   }, []);
 
