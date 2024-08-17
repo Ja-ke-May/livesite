@@ -39,7 +39,7 @@ const SendTokensPopUp = forwardRef(({ visible, onClose }, ref) => {
   if (!visible) return null;
 
   return (
-    <div ref={popupRef} className="relative absolute right-0 top-0 bg-gray-800 p-4 rounded-[5%] shadow-lg mt-2 max-w-md w-full z-[101]">
+    <div ref={popupRef} className="relative absolute right-0 top-0 bg-[#000110] p-4 rounded-[5%] shadow-lg mt-2 max-w-md w-full z-[101]">
 
 <button
         onClick={onClose}
