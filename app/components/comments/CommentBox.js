@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SpeakerButton from './SpeakerButton';
+import SpeakerButton from './speakerButton';
 
 const CommentBox = ({ isLoggedIn, username, socket }) => {
   const [comment, setComment] = useState('');
