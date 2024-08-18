@@ -71,7 +71,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
       <ul>
         <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-4 mr-1 mb-1">
           <Link href={`/profile/${username}`} className="hover:text-gray-400">
-            View Profile
+            {username}'s Profile
           </Link>
         </li>
 
