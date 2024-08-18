@@ -94,7 +94,11 @@ const Viewer = () => {
     
     
     useEffect(() => {
-        console.log("Queue Position updated:", queuePosition);
+        const intervalId = setInterval(() => {
+            console.log("Queue Position updated:", queuePosition);
+        }, 10000);
+        
+        return () => clearInterval(intervalId);
     }, [queuePosition]);
 
     const initializeSocket = () => {
@@ -151,15 +155,7 @@ const Viewer = () => {
             setState((prevState) => ({ ...prevState, isNext: true }));
         });
 
-        socket.current.on("is-next", (isNext) => {
-            console.log("Received 'is-next' event with value:", isNext);
-            setState((prevState) => ({
-                ...prevState,
-                isNext: isNext,
-            }));
-            console.log("Updated state after 'is-next' event:", { ...state, isNext });
-        });
-
+      
         socket.current.on("queue-position-update", (position) => {
             console.log("Received queue-position-update event with position:", position);
             setQueuePosition(position);
@@ -402,7 +398,7 @@ const Viewer = () => {
                 if (!exists) {
                     console.log("Username is not in use, joining the queue.");
                     setState((prevState) => ({ ...prevState, inQueue: true }));
-                    socket.current.emit("join-queue", username, isFastPass);
+                    socket.current.emit("join-queue", { username, isFastPass }); 
                     
                 } else {
                     console.log("Alert: Username is already in the queue or currently live.");
@@ -520,6 +516,7 @@ const Viewer = () => {
                 visible={state.isPopUpOpen}
                 onClose={handleClosePopUp}
                 onJoin={handleUserDecisionToJoinQueue}
+                queuePosition={queuePosition}
             />
             {state.liveUserId && <Timer timer={timer} />}
 

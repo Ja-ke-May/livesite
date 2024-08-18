@@ -131,7 +131,7 @@ const handleToggleSupport = useCallback(async () => {
       )}
 
       {/* Conditionally render the "GO LIVE" button when the user is prompted to go live */}
-      {state.isCameraOn && state.isNext && !state.isLive && !state.liveUserId && (
+      {state.isCameraOn && !state.isLive && !state.liveUserId && (
         <div className="absolute inset-0 flex items-center justify-center">
           <button
             onClick={handleGoLiveClick}
