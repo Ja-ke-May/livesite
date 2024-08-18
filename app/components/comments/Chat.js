@@ -3,12 +3,26 @@ import UserCommentBox from './UserCommentBox';
 
 const Chat = ({ socket }) => {
   const [comments, setComments] = useState([]);
+
+  const formatTime = () => {
+    const date = new Date();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
  
   useEffect(() => {
     
     socket.on('new-comment', (comment) => {
       console.log('Received new comment:', comment); 
-      setComments((prevComments) => [comment, ...prevComments]);
+
+      const time = formatTime();
+
+     
+      setComments((prevComments) => [
+        { ...comment, time }, 
+        ...prevComments
+      ]);
     });
   
     return () => {
@@ -24,7 +38,11 @@ const Chat = ({ socket }) => {
       {/* Render all comments */}
       <div className="overflow-y-auto max-h-[600px]">
         {comments.map((c, index) => (
-          <UserCommentBox key={index} username={c.username} comment={c.comment} />
+          <UserCommentBox 
+          key={index} 
+          username={c.username} 
+          comment={c.comment}
+          time={c.time} />
         ))}
       </div>
     </div>

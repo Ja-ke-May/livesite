@@ -1,9 +1,12 @@
 import React, { useImperativeHandle, useRef, forwardRef, useState } from 'react';
+import { deductTokens } from '@/utils/apiClient';
 
 const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
   const popupRef = useRef(null);
   const confirmRef = useRef(null);
   const [confirmVisible, setConfirmVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useImperativeHandle(ref, () => ({
     contains: (element) => popupRef.current && popupRef.current.contains(element),
@@ -13,13 +16,23 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
     setConfirmVisible(true);
   };
 
-  const handleConfirmClose = (confirm) => {
-    setConfirmVisible(false);
+  const handleConfirmClose = async (confirm) => {
+    setLoading(true);
+    
     if (confirm) {
-      console.log('Fast pass used');
-      onJoin(); // Show the preview button
-      onClose(); // Close the main popup after confirmation
+      try {
+        await deductTokens(100); 
+        console.log('100 tokens deducted for Fast Pass');
+        onJoin(true); 
+        onClose(); 
+      } catch (error) {
+        console.error("You don't have enough tokens:", error);
+      setErrorMessage(error.message || "You don't have enough tokens");
+      } finally {
+        setLoading(false); 
+      }
     }
+    setConfirmVisible(false);
   };
 
   const handleJoinForFreeClick = () => {
@@ -53,9 +66,9 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
               >
                 Join for Free
               </button>
-              <p className="ml-2">Est time: <span className="">20m</span></p>
+              <p className="ml-2">Est time: <span className="text-yellow-400 brightness-125 mb-10">20m</span></p>
               <br />
-              <p className="text-sm mb-2">You have <span className="text-yellow-400 brightness-125">1</span> free Fast Pass</p>
+              {/* <p className="text-sm mb-2">You have <span className="text-yellow-400 brightness-125">1</span> free Fast Pass</p> */}
               <button 
                 onClick={handleFastPassClick}
                 className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] mb-2 brightness-125"
@@ -82,7 +95,7 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
               &times;
             </button>
             <h3 className="text-xl font-semibold mt-4 mb-6 text-center">Fast Pass Confirmation</h3>
-            <p className="text-center text-white mb-6">A fast pass will cost you <span className='text-yellow-400 brightness-125'>0 tokens</span>, are you sure you want to continue?</p>
+            <p className="text-center text-white mb-6">A fast pass will cost you <span className='text-yellow-400 brightness-125'>100 tokens</span>, are you sure you want to continue?</p>
             <div className="flex justify-center space-x-4">
               <button
                 onClick={() => handleConfirmClose(false)}
@@ -92,7 +105,8 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
               </button>
               <button
                 onClick={() => handleConfirmClose(true)}
-                className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
+                disabled={loading}
+                className={`hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125 ${loading ? 'animate-pulse bg-yellow-400 text-[#000110]' : ''}`}
               >
                 Confirm
               </button>

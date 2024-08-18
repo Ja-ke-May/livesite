@@ -2,16 +2,9 @@ import React, { useState, useCallback } from 'react';
 import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
-const formatTime = () => {
-  const date = new Date();
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
-};
 
-const UserCommentBox = ({ username, comment, chatContainerRef }) => {
-  const time = formatTime();
-
+const UserCommentBox = ({ username, comment, time }) => {
+  
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 }); // Re-add the popupPosition state
   const [links, setLinks] = useState([]);

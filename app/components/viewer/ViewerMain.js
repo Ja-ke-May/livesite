@@ -25,6 +25,14 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, nextUsername, live
     }
   }, [volume, mainVideoRef]);
 
+  useEffect(() => {
+    // Check if liveUserId is null and the user is first in the queue
+    if (!liveUserId && state.userPosition === 1) {
+      // Update isNext to true
+      state.isNext = true;
+    }
+  }, [liveUserId, state.userPosition, state]);
+
   const handleUnmuteClick = () => {
     setIsMuted(false);
     setShowVolumeControls(true);
@@ -123,7 +131,7 @@ const handleToggleSupport = useCallback(async () => {
       )}
 
       {/* Conditionally render the "GO LIVE" button when the user is prompted to go live */}
-      {state.isCameraOn && state.isNext && !state.isLive && (
+      {state.isCameraOn && state.isNext && !state.isLive && !state.liveUserId && (
         <div className="absolute inset-0 flex items-center justify-center">
           <button
             onClick={handleGoLiveClick}

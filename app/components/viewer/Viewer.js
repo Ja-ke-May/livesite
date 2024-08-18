@@ -393,7 +393,7 @@ const Viewer = () => {
         }
     };
     
-    const handleUserDecisionToJoinQueue = () => {
+    const handleUserDecisionToJoinQueue = (isFastPass = false) => {
         console.log("User decided to join the queue.");
        
     
@@ -402,7 +402,7 @@ const Viewer = () => {
                 if (!exists) {
                     console.log("Username is not in use, joining the queue.");
                     setState((prevState) => ({ ...prevState, inQueue: true }));
-                    socket.current.emit("join-queue", username);
+                    socket.current.emit("join-queue", username, isFastPass);
                     
                 } else {
                     console.log("Alert: Username is already in the queue or currently live.");
