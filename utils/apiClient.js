@@ -196,3 +196,39 @@ export const fetchOnlineUsers = async () => {
     throw new Error('Failed to fetch online users');
   }
 };
+
+// Send Tokens
+
+export const sendTokens = async (recipientUsername, tokenAmount) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post('/api/send-tokens', {
+      recipientUsername,
+      tokenAmount
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to send tokens');
+  }
+};
+
+// Deduct Tokens
+export const deductTokens = async (amount) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post('/api/deduct-tokens', {
+      amount
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to deduct tokens');
+  }
+};

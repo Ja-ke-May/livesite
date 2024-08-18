@@ -116,7 +116,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
         <LinksPopUp visible={activePopUp === 'links'} onClose={() => handlePopUpToggle('links')} links={links} username={username} />
       )}
       {activePopUp === 'sendTokens' && (
-        <SendTokensPopUp visible={activePopUp === 'sendTokens'} onClose={() => handlePopUpToggle('sendTokens')} />
+        <SendTokensPopUp recipientUsername={username} visible={activePopUp === 'sendTokens'} onClose={() => handlePopUpToggle('sendTokens')} />
       )}
       {activePopUp === 'report' && (
         <ReportPopUp visible={activePopUp === 'report'} onClose={() => handlePopUpToggle('report')} username={username} />
