@@ -1,14 +1,29 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '@/utils/AuthContext';
 
 const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVideo, showQueueAlert, queuePosition }) => {
   const { isLoggedIn } = useContext(AuthContext);
   const [showLoginAlert, setShowLoginAlert] = useState(false);
 
+  useEffect(() => {
+    let timer;
+    if (queuePosition === 1 && state.inQueue && !state.isCameraOn) {
+      timer = setTimeout(() => {
+        window.location.reload();
+      }, 60000); // refresh after 60 sec if preview button not clicked
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [queuePosition, state.inQueue, state.isCameraOn]);
+
   const onJoinClick = () => {
     if (!isLoggedIn) {
       setShowLoginAlert(true);
-      setTimeout(() => setShowLoginAlert(false), 2000); // Hide the alert after 2 seconds
+      setTimeout(() => setShowLoginAlert(false), 2000); 
     } else {
       handleJoinClick();
     }
@@ -21,7 +36,7 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
   );
 
   return (
-    <div className="mt-2 h-8 bg-yellow-400 w-full font-bold text-md md:text-md text-center text-[#000110] brightness-125 rounded relative">
+    <div className="mt-2 mb-2 h-8 bg-yellow-400 w-full font-bold text-md md:text-md text-center text-[#000110] brightness-125 rounded relative">
       {state.isCameraOn ? (
         <div className="w-full flex justify-center h-full">
           <button
