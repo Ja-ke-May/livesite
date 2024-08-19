@@ -13,6 +13,7 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
   const [isUserSupported, setIsUserSupported] = useState(false);  
   const [loadingLinks, setLoadingLinks] = useState(false);  
   const [recentActivity, setRecentActivity] = useState([]);
+  const [profilePicture, setProfilePicture] = useState(null);
   const usernameRef = useRef(null);
 
   useEffect(() => {
@@ -33,6 +34,21 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
     }
   }, [liveUserId, state.userPosition, state]);
 
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      if (upNext) {
+        try {
+          const userProfile = await fetchUserProfile(upNext);
+          setProfilePicture(userProfile.profilePicture || null);
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
+        }
+      }
+    };
+
+    fetchProfilePicture();
+  }, [upNext]);
+
   const handleUnmuteClick = () => {
     setIsMuted(false);
     setShowVolumeControls(true);
@@ -49,21 +65,21 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
     setVolume(e.target.value);
   };
 
-  const togglePopup = async () => {
+  const togglePopup = async (userId) => {
     setShowPopup(true);
-    setPopupPosition({ x: 0, y: 0 }); 
+    setPopupPosition({ x: 0, y: 0 });
 
     if (!showPopup) {
         try {
             setLoadingLinks(true);
 
             const [userProfile, supportersData] = await Promise.all([
-                fetchUserProfile(state.liveUserId),
-                fetchSupporters(state.liveUserId)
+                fetchUserProfile(userId),
+                fetchSupporters(userId)
             ]);
 
             setLinks(userProfile.links || []);
-            setIsUserSupported(supportersData.isUserSupported); 
+            setIsUserSupported(supportersData.isUserSupported);
         } catch (error) {
             console.error('Failed to fetch user data:', error);
         } finally {
@@ -102,7 +118,7 @@ const handleToggleSupport = useCallback(async () => {
           <span
             ref={usernameRef}
             className="font-bold cursor-pointer"
-            onClick={togglePopup}
+            onClick={() => togglePopup(state.liveUserId)} 
           >
             {state.liveUserId}
           </span>
@@ -124,10 +140,33 @@ const handleToggleSupport = useCallback(async () => {
       )}
 
          {/* Display the "Up Next" user when no one is live */}
-         {!state.liveUserId && !state.isCameraOn && (
-        <div className="absolute inset-0 flex items-center justify-center bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
-          <p className="text-white">Up Next: <span className="font-bold">{upNext}</span></p>
+         {!state.liveUserId && !state.isCameraOn && upNext && (
+          <div>
+        <div className="absolute inset-0 flex flex-col text-center items-center justify-center bg-[#000110] text-white text-sm md:text-md xl:text-lg p-2 rounded">
+          <p onClick={() => togglePopup(upNext)} className="text-white">Up Next: <span className="font-bold">{upNext}</span></p>
+          
+          {profilePicture && (
+            <img
+              src={`data:image/jpeg;base64,${profilePicture}`}
+              alt="Profile Picture"
+              className="max-w-40 max-h-40 rounded-[10%] mt-2"
+            />
+          )}
         </div>
+         <div>
+         {showPopup && (
+           <UsernamePopUp 
+             visible={showPopup} 
+             onClose={togglePopup} 
+             username={upNext} 
+             position={popupPosition}
+             links={links}  // Pass the fetched links
+             isUserSupported={isUserSupported}  // Pass the supported status
+             onToggleSupport={handleToggleSupport} 
+           />
+         )}
+       </div>
+       </div>
       )}
 
       {/* Conditionally render the "GO LIVE" button when the user is prompted to go live */}
