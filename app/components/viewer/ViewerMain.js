@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
-const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, nextUsername, liveUserId }) => {
+const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [showVolumeControls, setShowVolumeControls] = useState(false);
   const [volume, setVolume] = useState(0.5); 
@@ -16,8 +16,8 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, nextUsername, live
   const usernameRef = useRef(null);
 
   useEffect(() => {
-    console.log("nextUsername updated:", nextUsername);
-  }, [nextUsername]);
+    console.log("upNext updated:", upNext);
+  }, [upNext]);
 
   useEffect(() => {
     if (mainVideoRef.current) {
@@ -123,15 +123,15 @@ const handleToggleSupport = useCallback(async () => {
         </div>
       )}
 
-      {/* Display the "Up Next" user */}
-      {nextUsername && (
+         {/* Display the "Up Next" user when no one is live */}
+         {!state.liveUserId && !state.isCameraOn && (
         <div className="absolute inset-0 flex items-center justify-center bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
-          <p className="text-white">Next Live User... <span className="font-bold">{nextUsername}</span></p>
+          <p className="text-white">Up Next: <span className="font-bold">{upNext}</span></p>
         </div>
       )}
 
       {/* Conditionally render the "GO LIVE" button when the user is prompted to go live */}
-      {state.isCameraOn && state.isNext && !state.isLive && !state.liveUserId && (
+      {state.isCameraOn && !state.isLive && !state.liveUserId && (
         <div className="absolute inset-0 flex items-center justify-center">
           <button
             onClick={handleGoLiveClick}

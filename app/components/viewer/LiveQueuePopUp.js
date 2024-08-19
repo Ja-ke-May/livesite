@@ -66,7 +66,7 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
               >
                 Join for Free
               </button>
-              <p className="ml-2">Est time: <span className="text-yellow-400 brightness-125 mb-10">20m</span></p>
+              {/* <p className="ml-2">Est time: <span className="text-yellow-400 brightness-125 mb-10">20m</span></p> */}
               <br />
               {/* <p className="text-sm mb-2">You have <span className="text-yellow-400 brightness-125">1</span> free Fast Pass</p> */}
               <button 
@@ -75,7 +75,7 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
               >
                 Fast Pass
               </button>
-              <p className="ml-2">Est time: <span className="text-yellow-400 brightness-125 mb-10">2m</span></p>
+              {/* <p className="ml-2">Est time: <span className="text-yellow-400 brightness-125 mb-10">2m</span></p> */}
             </div>
           </div>
         </div>
