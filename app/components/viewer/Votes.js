@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
+import { deductTokens, sendTokens } from '@/utils/apiClient';
 
 const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket, isInteractive }) => {
   const [isPulsing, setIsPulsing] = useState(false);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
   const [hasVoted, setHasVoted] = useState(false); 
-  const [showBuyVotePrompt, setShowBuyVotePrompt] = useState(false);  // Added this state
+  const [showBuyVotePrompt, setShowBuyVotePrompt] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (socket) {
@@ -71,6 +73,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
         setSlidePositionAmount(prevAmount => prevAmount / 2); 
         socket.emit('timer-update', liveUserId, 60);
         setHasVoted(false);
+        handleRewardUser();
       }
     }
   };
@@ -84,6 +87,19 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
 
   const promptBuyVote = () => {
     setShowBuyVotePrompt(true);
+  };
+
+  const handleBuyVote = async () => {
+    
+    try {
+      setLoading(true);
+      await deductTokens(1); 
+      setShowBuyVotePrompt(false); 
+      setHasVoted(false);
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to deduct tokens:', error);
+    }
   };
 
   useEffect(() => {
@@ -113,6 +129,17 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
     }, 2000);
   };
 
+  const handleRewardUser = async () => {
+    if (liveUserId) {
+      try {
+        await sendTokens(liveUserId, 100);
+        console.log(`Sent 100 tokens to ${liveUserId}`);
+      } catch (error) {
+        console.error('Failed to send tokens:', error);
+      }
+    }
+  };
+
   if (!liveUserId) {
     return <div className='mt-2'>Nobody's live at the moment</div>;
   }
@@ -124,18 +151,15 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
           <span>Buy 1 vote for 1 token?</span>
 
           <button
-            className="ml-1 px-1 rounded-md shadow-sm border border-white font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+            className="hover:bg-blue-700 text-white px-1 ml-2 rounded-md shadow-sm bg-[#0000110] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 max-w-[50%]"
             onClick={() => setShowBuyVotePrompt(false)}
           >
             No
           </button>
 
           <button
-            className="ml-1 px-1 rounded-md shadow-sm border border-white font-medium text-white bg-[#000110] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
-            onClick={() => {
-              setHasVoted(false);
-              setShowBuyVotePrompt(false);
-            }}
+            className={`hover:bg-yellow-400 hover:text-[#000110] px-1 ml-1 rounded-md shadow-sm bg-[#0000110] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125 ${loading ? 'animate-pulse bg-yellow-400 text-[#000110]' : ''}`}
+            onClick={handleBuyVote}
           >
             Yes
           </button>

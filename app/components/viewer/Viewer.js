@@ -94,14 +94,15 @@ const Viewer = () => {
         }
     }, []);
     
-    
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            console.log("Queue Position updated:", queuePosition);
-        }, 10000);
+        if (state.inQueue) {
+            const intervalId = setInterval(() => {
+                console.log("Queue Position updated:", queuePosition);
+            }, 10000);
         
-        return () => clearInterval(intervalId);
-    }, [queuePosition]);
+            return () => clearInterval(intervalId);
+        }
+    }, [state.inQueue, queuePosition]);
 
     const initializeSocket = () => {
         socket.current = io("http://localhost:5000");
