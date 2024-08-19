@@ -32,7 +32,9 @@ const Viewer = () => {
     const [slidePositionAmount, setSlidePositionAmount] = useState(5); 
     const [showQueueAlert, setShowQueueAlert] = useState(false);
     const [queuePosition, setQueuePosition] = useState(null);
+    const [nextUsername, setNextUsername] = useState(null);
 
+ 
 
     useEffect(() => {
         console.log("Current state in useEffect:", state);
@@ -130,6 +132,11 @@ const Viewer = () => {
         socket.current.on("timer-update", handleTimerUpdate);
         socket.current.on("timer-end", handleTimerEnd);
         socket.current.on("stop-video", handleStopVideo);
+
+        socket.current.on("up-next-update", (nextUser) => {
+            console.log("Received up-next-update event with next user:", nextUser);
+            setNextUsername(nextUser);  
+        });
 
         socket.current.on("go-live-prompt", () => {
             console.log("Received 'go-live-prompt', setting isNext to true");
@@ -510,6 +517,7 @@ const Viewer = () => {
                 state={state}
                 handleGoLiveClick={handleGoLiveClick}
                 liveUserId={state.liveUserId || username}
+                upNext={nextUsername}
             />
             </div>
             <LiveQueuePopUp
@@ -517,6 +525,7 @@ const Viewer = () => {
                 onClose={handleClosePopUp}
                 onJoin={handleUserDecisionToJoinQueue}
                 queuePosition={queuePosition}
+                
             />
             {state.liveUserId && <Timer timer={timer} />}
 
