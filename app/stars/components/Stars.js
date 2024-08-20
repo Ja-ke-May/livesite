@@ -23,9 +23,9 @@ const Stars = () => {
           
           
           <h3>Longest Time Live</h3>
-        <h3>Most Time Live</h3>
-        <h3>Most Supporters</h3>
-        <h3>Top Commenters</h3> 
+        <h3>Total Time Live</h3>
+        <h3>Supporters</h3>
+        <h3>Comments</h3> 
 
 
 
