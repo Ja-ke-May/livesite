@@ -1,4 +1,4 @@
-//apiClient.js 
+// apiClient.js 
 
 import axios from 'axios';
 
@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
 // Signs up a new user by sending the user data to the backend.
 export const signup = async (userData) => {
   try {
-    const response = await axiosInstance.post('/api/signup', userData);
+    const response = await axiosInstance.post('/signup', userData);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Failed to sign up');
@@ -25,7 +25,7 @@ export const signup = async (userData) => {
 
 export const login = async (credentials) => {
     try {
-      const response = await axiosInstance.post('/api/login', credentials);
+      const response = await axiosInstance.post('/login', credentials);
       const { token, username } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('username', username); // Store username in local storage
@@ -45,7 +45,7 @@ export const logout = () => {
 export const fetchUserProfile = async (username) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.get(`/api/profile/${username}`, {
+    const response = await axiosInstance.get(`/profile/${username}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -60,7 +60,7 @@ export const fetchUserProfile = async (username) => {
 export const updateUsername = async (newUsername) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.put('/api/profile/username', { userName: newUsername }, {
+    const response = await axiosInstance.put('/profile/username', { userName: newUsername }, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -75,7 +75,7 @@ export const updateUsername = async (newUsername) => {
 export const updateBio = async (newBio) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.put('/api/profile/bio', { bio: newBio }, {
+    const response = await axiosInstance.put('/profile/bio', { bio: newBio }, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -90,7 +90,7 @@ export const updateBio = async (newBio) => {
 export const fetchSupporters = async (username) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.get('/api/supporters', {
+    const response = await axiosInstance.get('/supporters', {
       headers: { 'Authorization': `Bearer ${token}` },
       params: { username },
     });
@@ -104,7 +104,7 @@ export const fetchSupporters = async (username) => {
 export const toggleSupport = async (username) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.post('/api/supporters/toggle', { username }, {
+    const response = await axiosInstance.post('/supporters/toggle', { username }, {
       headers: { 'Authorization': `Bearer ${token}` },
     });
     return response.data;
@@ -124,7 +124,7 @@ export const addLink = async (link) => {
       formData.append('image', link.imageFile);
     }
 
-    const response = await axiosInstance.post('/api/profile/link', formData, {
+    const response = await axiosInstance.post('/profile/link', formData, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'
@@ -141,7 +141,7 @@ export const addLink = async (link) => {
 export const deleteLink = async (linkId) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.delete(`/api/profile/link/${linkId}`, {
+    const response = await axiosInstance.delete(`/profile/link/${linkId}`, {
       headers: { 'Authorization': `Bearer ${token}` },
     });
 
@@ -154,7 +154,7 @@ export const deleteLink = async (linkId) => {
 export const fetchRecentActivity = async (username) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.get(`/api/recent-activity/${username}`, {
+    const response = await axiosInstance.get(`/recent-activity/${username}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -172,7 +172,7 @@ export const updateProfilePicture = async (file) => {
     const formData = new FormData();
     formData.append('profilePicture', file);
 
-    const response = await axiosInstance.post('/api/profile-picture', formData, {
+    const response = await axiosInstance.post('/profile-picture', formData, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'
@@ -190,7 +190,7 @@ export const updateProfilePicture = async (file) => {
 
 export const fetchOnlineUsers = async () => {
   try {
-    const response = await axiosInstance.get('/api/online-users');
+    const response = await axiosInstance.get('/online-users');
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch online users');
@@ -202,7 +202,7 @@ export const fetchOnlineUsers = async () => {
 export const sendTokens = async (recipientUsername, tokenAmount) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.post('/api/send-tokens', {
+    const response = await axiosInstance.post('/send-tokens', {
       recipientUsername,
       tokenAmount
     }, {
@@ -220,7 +220,7 @@ export const sendTokens = async (recipientUsername, tokenAmount) => {
 export const deductTokens = async (amount) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.post('/api/deduct-tokens', {
+    const response = await axiosInstance.post('/deduct-tokens', {
       amount
     }, {
       headers: {
