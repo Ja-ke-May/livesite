@@ -105,7 +105,11 @@ const Viewer = () => {
     }, [state.inQueue, queuePosition]);
 
     const initializeSocket = () => {
-        socket.current = io("https://livesite-backend.onrender.com");
+        const socket = io('https://livesite-backend.onrender.com', {
+            withCredentials: true,
+            transports: ['websocket', 'polling'],
+          });
+          
 
         socket.current.on("connect", () => {
             console.log(`Connected with socket ID: ${socket.current.id}`);
