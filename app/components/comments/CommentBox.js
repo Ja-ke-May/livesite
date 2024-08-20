@@ -13,7 +13,7 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
     if (isLoggedIn && comment.trim() !== '') {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/api/comments', {
+        const response = await fetch('https://livesite-backend.onrender.com/comments', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

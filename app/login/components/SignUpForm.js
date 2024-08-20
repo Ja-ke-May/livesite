@@ -63,7 +63,7 @@ const SignUpForm = () => {
     setUsernameChecking(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/check-username/${username}`);
+      const response = await fetch(`https://livesite-backend.onrender.com/api/check-username/${username}`);
       const data = await response.json();
       setUsernameAvailable(data.available);
     } catch (error) {

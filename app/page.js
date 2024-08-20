@@ -17,7 +17,7 @@ const HomeContent = () => {
   const { isLoggedIn, username, isInitialized } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false);
 
-  const socket = io('http://localhost:5000'); 
+  const socket = io('https://livesite-backend.onrender.com'); 
 
   useEffect(() => {
     if (isInitialized && !isLoggedIn) {
