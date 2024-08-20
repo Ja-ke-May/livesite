@@ -105,7 +105,7 @@ const Viewer = () => {
     }, [state.inQueue, queuePosition]);
 
     const initializeSocket = () => {
-        const socket = io('http://localhost:5000', {
+        const socket = io('https://livesite-backend.onrender.com', {
             withCredentials: true,
             transports: ['websocket', 'polling'],
           });
