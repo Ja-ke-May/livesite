@@ -14,6 +14,7 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
   const [loadingLinks, setLoadingLinks] = useState(false);  
   const [recentActivity, setRecentActivity] = useState([]);
   const [profilePicture, setProfilePicture] = useState(null);
+  const goLiveTimerRef = useRef(null);
   const usernameRef = useRef(null);
 
   useEffect(() => {
@@ -27,13 +28,14 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
   }, [volume, mainVideoRef]);
 
   useEffect(() => {
-    // Check if liveUserId is null and the user is first in the queue
-    if (!liveUserId && state.userPosition === 1) {
-      // Update isNext to true
-      state.isNext = true;
+    if (!liveUserId && state.userPosition === 1 && !state.isNext) {
+      setState(prevState => ({
+        ...prevState,
+        isNext: true,
+      }));
     }
-  }, [liveUserId, state.userPosition, state]);
-
+  }, [liveUserId, state.userPosition, state.isNext]);
+  
   useEffect(() => {
     const fetchProfilePicture = async () => {
       if (upNext) {
@@ -104,7 +106,26 @@ const handleToggleSupport = useCallback(async () => {
     console.error('Failed to toggle support status:', error.message);
     setIsUserSupported(!newIsUserSupported);
   }
-}, [isUserSupported, liveUserId]);
+}, [isUserSupported, liveUserId]); 
+
+useEffect(() => {
+  if (state.isCameraOn && !state.isLive && !state.liveUserId) {
+    goLiveTimerRef.current = setTimeout(() => {
+      window.location.reload(); 
+    }, 30000);
+  } else {
+    if (goLiveTimerRef.current) {
+      clearTimeout(goLiveTimerRef.current);
+    }
+  }
+
+  return () => {
+    if (goLiveTimerRef.current) {
+      clearTimeout(goLiveTimerRef.current);
+    }
+  };
+}, [state.isCameraOn, state.isLive, state.liveUserId]);
+
 
   return (
     <div className="relative h-[300px] md:h-[400px] lg:h-[500px] rounded text-center bg-gray-800/80 shadow-md w-full group">
@@ -173,8 +194,11 @@ const handleToggleSupport = useCallback(async () => {
       {state.isCameraOn && !state.isLive && !state.liveUserId && (
         <div className="absolute inset-0 flex items-center justify-center">
           <button
-            onClick={handleGoLiveClick}
-            className="bg-green-600 text-white text-md md:text-lg font-bold rounded p-4 animate-pulse"
+           onClick={() => {
+            clearTimeout(goLiveTimerRef.current); 
+            handleGoLiveClick();
+          }}
+           className="bg-green-600 text-white text-md md:text-lg font-bold rounded p-4 animate-pulse"
           >
             GO LIVE
           </button>
