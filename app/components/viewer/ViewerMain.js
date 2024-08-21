@@ -197,8 +197,8 @@ useEffect(() => {
         <div className="absolute inset-0 flex items-center justify-center">
           <button
            onClick={() => {
-            clearTimeout(goLiveTimerRef.current),
-            handleGoLiveClick
+            clearTimeout(goLiveTimerRef.current);
+            handleGoLiveClick()
           }}
            className="bg-green-600 text-white text-md md:text-lg font-bold rounded p-4 animate-pulse"
           >
