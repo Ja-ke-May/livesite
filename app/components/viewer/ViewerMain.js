@@ -40,10 +40,12 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
     const fetchProfilePicture = async () => {
       if (upNext) {
         try {
+          setProfilePicture(null);
           const userProfile = await fetchUserProfile(upNext);
           setProfilePicture(userProfile.profilePicture || null);
         } catch (error) {
           console.error('Failed to fetch user profile:', error);
+          setProfilePicture(null);
         }
       }
     };
@@ -195,8 +197,8 @@ useEffect(() => {
         <div className="absolute inset-0 flex items-center justify-center">
           <button
            onClick={() => {
-            clearTimeout(goLiveTimerRef.current); 
-            handleGoLiveClick();
+            clearTimeout(goLiveTimerRef.current),
+            handleGoLiveClick
           }}
            className="bg-green-600 text-white text-md md:text-lg font-bold rounded p-4 animate-pulse"
           >
