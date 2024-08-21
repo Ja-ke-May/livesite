@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
-import { deductTokens, sendTokens } from '@/utils/apiClient';
+import { deductTokens, awardTokens } from '@/utils/apiClient';
 
 const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket, isInteractive }) => {
   const [isPulsing, setIsPulsing] = useState(false);
@@ -133,10 +133,10 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
   const handleRewardUser = async () => {
     if (liveUserId) {
       try {
-        await sendTokens(liveUserId, 100);
+        await awardTokens(liveUserId, 100);
         console.log(`Sent 100 tokens to ${liveUserId}`);
       } catch (error) {
-        console.error('Failed to send tokens:', error);
+        console.error('Failed to award tokens:', error);
       }
     }
   };
