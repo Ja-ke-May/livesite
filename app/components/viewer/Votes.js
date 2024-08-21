@@ -176,7 +176,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
       <span
         className={`text-red-700 text-2xl pl-2 md:pl-10 brightness-125 cursor-pointer ${isPulsing && clickedIcon === 'cross' ? 'animate-pulse' : ''}`}
         style={{ opacity: isInteractive ? 1 : 0.5 }}
-        onClick={isInteractive ? handleClickCross : null}
+        onClick={!isInteractive ? handleClickCross : null}
       >
         ❌
       </span>
@@ -192,7 +192,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
       <span
         className={`text-yellow-400 brightness-125 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer ${isPulsing && clickedIcon === 'star' ? 'animate-pulse' : ''}`}
         style={{ opacity: isInteractive ? 1 : 0.5 }} 
-        onClick={isInteractive ? handleClickStar : null}
+        onClick={!isInteractive ? handleClickStar : null}
       >
         ⭐
       </span>
