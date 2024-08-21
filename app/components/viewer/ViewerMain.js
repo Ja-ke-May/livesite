@@ -196,7 +196,7 @@ useEffect(() => {
           <button
            onClick={() => {
             clearTimeout(goLiveTimerRef.current); 
-            handleGoLiveClick;
+            handleGoLiveClick();
           }}
            className="bg-green-600 text-white text-md md:text-lg font-bold rounded p-4 animate-pulse"
           >
