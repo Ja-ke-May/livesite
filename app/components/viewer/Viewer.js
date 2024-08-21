@@ -227,8 +227,8 @@ const Viewer = () => {
 
     const handleMainFeed = async (liveUserId) => {
         console.log("Handling main feed update. Live user ID:", liveUserId);
-        setTimer(60);
         clearInterval(timerIntervalRef.current);
+        setTimer(60);
 
         setState((prevState) => ({ ...prevState, liveUserId }));
         if (mainVideoRef.current && liveUserId) {
