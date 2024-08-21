@@ -9,6 +9,8 @@ import Votes from "./Votes";
 
 const Viewer = () => {
     const { username } = useContext(AuthContext);
+    const isGuest = !username;
+    
     const [state, setState] = useState({
         isPopUpOpen: false,
         isCameraOn: false,
@@ -34,82 +36,26 @@ const Viewer = () => {
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);
 
- 
-
     useEffect(() => {
         console.log("Current state in useEffect:", state);
     }, [state]);
 
     useEffect(() => {
-        if (!username) {
-            console.warn("Username is not defined, initializing as a guest.");
+        if (isGuest) {
+            console.warn("User is a guest, limited features available.");
         } else {
-            console.log("Username is available:", username);
+            console.log("Authenticated user:", username);
+            initializeSocket();
         }
-        
-        initializeSocket();
     
         return () => cleanup();
     }, [username]);
-    
-
-    useEffect(() => {
-        if (state.isLive && state.liveUserId) {
-            if (timer === 0) {
-                stopVideo();
-                setState((prevState) => ({
-                    ...prevState,
-                    isLive: false,
-                    isCameraOn: false,
-                    showPreviewButton: false,
-                    isNext: false,
-                }));
-            }
-        }
-    }, [timer, state.isLive, state.liveUserId]);
-
-    useEffect(() => {
-        if (socket.current) {
-            socket.current.on("queue-position-update", (position) => {
-                console.log("Received queue-position-update event with position:", position);
-                setQueuePosition(position);
-                console.log("Queue position state updated to:", position);
-    
-                if (position === 1) {
-                    setState((prevState) => ({
-                        ...prevState,
-                        showPreviewButton: true,
-                    }));
-                } else {
-                    setState((prevState) => ({
-                        ...prevState,
-                        showPreviewButton: false,
-                    }));
-                }
-            });
-    
-            return () => {
-                socket.current.off("queue-position-update");
-            };
-        }
-    }, []);
-    
-    useEffect(() => {
-        if (state.inQueue) {
-            const intervalId = setInterval(() => {
-                console.log("Queue Position updated:", queuePosition);
-            }, 10000);
-        
-            return () => clearInterval(intervalId);
-        }
-    }, [state.inQueue, queuePosition]);
 
     const initializeSocket = () => {
-        const socket = io('https://localhost:3000', {
+        socket.current = io('https://livesite-backend.onrender.com', {
             withCredentials: true,
             transports: ['websocket', 'polling'],
-          });
-          
+        });
 
         socket.current.on("connect", () => {
             console.log(`Connected with socket ID: ${socket.current.id}`);
@@ -119,7 +65,6 @@ const Viewer = () => {
                 socket.current.emit("register-user", username);
             } else {
                 console.log("Connected as a guest.");
-                // Guests are connected but do not register a username
             }
         });
 
@@ -167,7 +112,6 @@ const Viewer = () => {
             setState((prevState) => ({ ...prevState, isNext: true }));
         });
 
-      
         socket.current.on("queue-position-update", (position) => {
             console.log("Received queue-position-update event with position:", position);
             setQueuePosition(position);
@@ -185,9 +129,7 @@ const Viewer = () => {
                 }));
             }
         });
-
     };
-    
 
     useEffect(() => {
         if (socket.current && state.liveUserId) {
@@ -269,21 +211,19 @@ const Viewer = () => {
             inQueue: true, 
             isNext: false,
         }));
-      // Emit event to check user's position in the queue
-      if (username) {
-        socket.current.emit("check-queue-position", username, (position) => {
-            console.log("Position received from check-queue-position:", position);
-            setQueuePosition(position);
-            if (position === 1) {
-                // User is at the first position in the queue
-                setState((prevState) => ({
-                    ...prevState,
-                    showPreviewButton: true,
-                }));
-            }
-        });
-    }
-};
+        if (username) {
+            socket.current.emit("check-queue-position", username, (position) => {
+                console.log("Position received from check-queue-position:", position);
+                setQueuePosition(position);
+                if (position === 1) {
+                    setState((prevState) => ({
+                        ...prevState,
+                        showPreviewButton: true,
+                    }));
+                }
+            });
+        }
+    };
 
     const handleMainFeed = async (liveUserId) => {
         console.log("Handling main feed update. Live user ID:", liveUserId);
@@ -353,7 +293,6 @@ const Viewer = () => {
             stopVideo();
         };
 
-
         window.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
@@ -370,19 +309,19 @@ const Viewer = () => {
             setShowQueueAlert(true);
             setTimeout(() => {
                 setShowQueueAlert(false);
-            }, 2000); // Hide the alert after 2 seconds
+            }, 2000);
         } else if (state.isLive) {
             console.log("Alert: User is currently live.");
             setShowQueueAlert(true);
             setTimeout(() => {
                 setShowQueueAlert(false);
-            }, 2000); // Hide the alert after 2 seconds
+            }, 2000); 
         } else if (state.liveUserId === username) {
             console.log("Alert: User is the current live user.");
             setShowQueueAlert(true);
             setTimeout(() => {
                 setShowQueueAlert(false);
-            }, 2000); // Hide the alert after 2 seconds
+            }, 2000); 
         } else {
             if (username) {
                 socket.current.emit("check-username", username, (exists) => {
@@ -425,8 +364,6 @@ const Viewer = () => {
                     }, 2000);
                 }
             });
-
-          
         }
     };
     
@@ -470,7 +407,6 @@ const Viewer = () => {
             socket.current.emit("stop-live", username);
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
-           
         }
     };
 
@@ -479,15 +415,15 @@ const Viewer = () => {
     const handleGoLiveClick = () => {
         if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
-            clearInterval(timerIntervalRef.current); // Clear any existing interval
-            setTimer(60); // Reset timer
+            clearInterval(timerIntervalRef.current);
+            setTimer(60);
             setState((prevState) => ({ ...prevState, isLive: true, isNext: true }));
     
             timerIntervalRef.current = setInterval(() => {
                 setTimer((prevTimer) => {
                     if (prevTimer <= 1) {
                         clearInterval(timerIntervalRef.current);
-                        stopVideo(); // Stop video when timer reaches 0
+                        stopVideo();
                         return 0;
                     }
                     return prevTimer - 1;
@@ -501,7 +437,6 @@ const Viewer = () => {
     };
 
     const triggerOverlay = (icon) => {
-       
         setOverlayIcon(icon);
         setShowOverlay(true);
         setTimeout(() => {
@@ -537,7 +472,6 @@ const Viewer = () => {
             />
             {state.liveUserId && <Timer timer={timer} />}
 
-            {/* Show Votes to everyone only when someone is live */}
             {state.isLive || state.liveUserId ? (
                 <Votes
                     stopVideo={stopVideo}
