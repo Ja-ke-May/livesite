@@ -104,9 +104,10 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
 
   useEffect(() => {
     if (slidePosition === 0) {
-      triggerOverlay('❌'); // Trigger overlay with red cross
+      triggerOverlay('❌'); 
       stopVideo();
       setSlidePosition(50);
+      liveUserId(null);
       socket.emit('stop-video');
     } else if (slidePosition === 100) {
       setSlidePosition(50);
