@@ -55,6 +55,10 @@ const Viewer = () => {
         socket.current = io('https://livesite-backend.onrender.com', {
             withCredentials: true,
             transports: ['websocket', 'polling'],
+            reconnection: true,
+            reconnectionAttempts: Infinity, 
+            reconnectionDelay: 1000, 
+            reconnectionDelayMax: 5000, 
         });
 
         socket.current.on("connect", () => {
