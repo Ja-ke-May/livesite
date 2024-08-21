@@ -232,3 +232,22 @@ export const deductTokens = async (amount) => {
     throw new Error(error.response?.data?.message || 'Failed to deduct tokens');
   }
 };
+
+// Award Tokens to a User
+export const awardTokens = async (username, amount) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post('/award-tokens', {
+      username,
+      amount
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to award tokens');
+  }
+};
+
