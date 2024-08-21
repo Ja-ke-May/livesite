@@ -1,4 +1,4 @@
-// apiClient.js 
+// apiClient.js
 
 import axios from 'axios';
 
