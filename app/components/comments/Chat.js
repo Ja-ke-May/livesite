@@ -12,24 +12,24 @@ const Chat = ({ socket }) => {
   };
  
   useEffect(() => {
-    
-    socket.on('new-comment', (comment) => {
-      console.log('Received new comment:', comment); 
-
-      const time = formatTime();
-
-     
-      setComments((prevComments) => [
-        { ...comment, time }, 
-        ...prevComments
-      ]);
-    });
-  
-    return () => {
-      socket.disconnect();
+    // Listen for new comments from the server
+    const handleNewComment = (comment) => {
+        console.log('Received new comment:', comment); 
+        const time = formatTime();
+        setComments((prevComments) => [
+            { ...comment, time }, 
+            ...prevComments
+        ]);
     };
-  }, [socket]);
-  
+
+    socket.on('new-comment', handleNewComment);
+
+    return () => {
+        // Cleanup: only remove the specific event listener, don't disconnect the socket unless necessary
+        socket.off('new-comment', handleNewComment);
+    };
+}, [socket]);
+
 
   return (
     <div className="h-full bottom-0 mb-20 text-center mt-2 rounded bg-[#000110] shadow-md pl-4 pb-4 pr-4 md:pl-6 md:pb-6 md:pr-6 w-full">
