@@ -433,6 +433,9 @@ const Viewer = () => {
     const handlePreviewButtonClick = () => startVideo();
 
     const handleGoLiveClick = () => {
+
+        cleanup();
+        
         if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current);
