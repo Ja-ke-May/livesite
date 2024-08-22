@@ -409,7 +409,7 @@ const Viewer = () => {
     };
 
     const stopVideo = () => {
-        cleanup();
+        
         console.log("Stopping video and resetting state. Timer was:", timer);
         if (streamRef.current) {
             streamRef.current.getTracks().forEach((track) => track.stop());
