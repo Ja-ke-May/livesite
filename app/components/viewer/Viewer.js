@@ -191,7 +191,7 @@ const Viewer = () => {
     const handleTimerEnd = (userId) => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
-            setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null }));
+            setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, inQueue: false, isCameraOn: false, showPreviewButton: false, }));
             stopVideo();
         }
     };
@@ -575,6 +575,10 @@ const Viewer = () => {
         }, 2000);
     };
 
+    const handleZeroVotes = () => {
+        stopVideo(); 
+      };
+
     return (
         <>
             <ViewerHeader
@@ -605,7 +609,7 @@ const Viewer = () => {
 
             {state.isLive || state.liveUserId ? (
                 <Votes
-                    stopVideo={stopVideo}
+                onZeroVotes={handleZeroVotes}
                     slidePosition={slidePosition}
                     slidePositionAmount={slidePositionAmount}
                     setSlidePosition={setSlidePosition}
