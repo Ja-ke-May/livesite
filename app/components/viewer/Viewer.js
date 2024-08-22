@@ -191,7 +191,6 @@ const Viewer = () => {
     const handleTimerEnd = (userId) => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
-            setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, inQueue: false, isCameraOn: false, showPreviewButton: false, }));
             stopVideo();
         }
     };
