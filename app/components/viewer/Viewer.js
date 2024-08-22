@@ -543,11 +543,16 @@ const Viewer = () => {
             });
           }
 
-        if (!state.isLive) {
+          if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current);
             setTimer(60);
-            setState((prevState) => ({ ...prevState, isLive: true, isNext: true, liveUserId: username, }));
+            setState((prevState) => ({ 
+                ...prevState, 
+                isLive: true, 
+                isNext: true, 
+                liveUserId: username 
+            }));
     
             timerIntervalRef.current = setInterval(() => {
                 setTimer((prevTimer) => {
