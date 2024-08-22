@@ -85,7 +85,23 @@ const Viewer = () => {
         socket.current.on("main-feed", handleMainFeed);
         socket.current.on("timer-update", handleTimerUpdate);
         socket.current.on("timer-end", handleTimerEnd);
-        socket.current.on("stop-live", handleStopVideo);
+        socket.current.on("", ); 
+
+        socket.current.on("stop-live", () => {
+            console.log("Received 'stop-live'");
+            setState((prevState) => ({
+                ...prevState,
+                isPopUpOpen: false,
+        isCameraOn: false,
+        showPreviewButton: false,
+        isLive: false,
+        inQueue: false,
+        isNext: false,
+        autoplayAllowed: true,
+        liveUserId: null,
+            }));
+            handleStopVideo()
+        });
 
         socket.current.on("up-next-update", (nextUser) => {
             console.log("Received up-next-update event with next user:", nextUser);
