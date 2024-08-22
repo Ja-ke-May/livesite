@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
-const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId }) => {
+const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId, stopVideo }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [showVolumeControls, setShowVolumeControls] = useState(false);
   const [volume, setVolume] = useState(0.5); 
@@ -127,6 +127,12 @@ useEffect(() => {
     }
   };
 }, [state.isCameraOn, state.isLive, state.liveUserId]);
+
+useEffect(() => {
+  if (state.isCameraOn === false && mainVideoRef.current && mainVideoRef.current.srcObject) {
+    stopVideo();
+  }
+}, [state.isCameraOn, stopVideo, mainVideoRef]);
 
 
   return (

@@ -330,24 +330,20 @@ const Viewer = () => {
         console.log("Handling main feed update. Live user ID:", liveUserId);
         clearInterval(timerIntervalRef.current);
         setTimer(60);
-    
-        if (liveUserId) {
-            setState((prevState) => ({ ...prevState, liveUserId }));
-            if (mainVideoRef.current) {
-                const peerConnection = createPeerConnection(liveUserId);
-                peerConnection.ontrack = (event) => {
-                    mainVideoRef.current.srcObject = event.streams[0];
-                    if (state.autoplayAllowed) {
-                        mainVideoRef.current.play().catch(console.error);
-                    }
-                };
-                socket.current.emit("request-offer", liveUserId);
-            }
-        } else {
-            handleStopVideo();
+
+        setState((prevState) => ({ ...prevState, liveUserId }));
+        if (mainVideoRef.current && liveUserId) {
+            const peerConnection = createPeerConnection(liveUserId);
+            peerConnection.ontrack = (event) => {
+                mainVideoRef.current.srcObject = event.streams[0];
+                if (state.autoplayAllowed) {
+                    mainVideoRef.current.play().catch(console.error);
+                }
+            };
+            socket.current.emit("request-offer", liveUserId);
         }
     };
-    
+
     const createPeerConnection = (id) => {
         const peerConnection = new RTCPeerConnection({
             iceServers: [
@@ -595,6 +591,7 @@ const Viewer = () => {
                 handleGoLiveClick={handleGoLiveClick}
                 liveUserId={state.liveUserId || username}
                 upNext={nextUsername}
+                stopVideo={stopVideo}
             />
             </div>
             <LiveQueuePopUp
