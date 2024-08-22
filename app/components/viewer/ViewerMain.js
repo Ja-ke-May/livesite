@@ -130,7 +130,7 @@ useEffect(() => {
 
 
   return (
-    <div className="relative h-[300px] md:h-[350px] lg:h-[450px] rounded text-center bg-gray-800/80 shadow-md w-full group">
+    <div className="relative h-[300px] md:h-[340px] lg:h-[400px] rounded text-center bg-gray-800/80 shadow-md w-full group">
       <h2 className="hidden">Live Viewer Component</h2>
       <video ref={mainVideoRef} autoPlay muted={isMuted} className="w-full h-full object-cover" />
 
