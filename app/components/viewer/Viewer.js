@@ -537,12 +537,7 @@ const Viewer = () => {
 
     const handleGoLiveClick = () => {
 
-        if (streamRef.current) {
-            streamRef.current.getTracks().forEach(track => {
-              peerConnections.current[liveUserId].addTrack(track, streamRef.current);
-            });
-          }
-
+       
           if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current);
