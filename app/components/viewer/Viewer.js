@@ -409,6 +409,7 @@ const Viewer = () => {
     };
 
     const stopVideo = () => {
+        cleanup();
         console.log("Stopping video and resetting state. Timer was:", timer);
         if (streamRef.current) {
             streamRef.current.getTracks().forEach((track) => track.stop());
@@ -434,8 +435,6 @@ const Viewer = () => {
 
     const handleGoLiveClick = () => {
 
-        cleanup();
-        
         if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current);
