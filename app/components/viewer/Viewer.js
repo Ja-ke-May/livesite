@@ -541,6 +541,7 @@ const Viewer = () => {
                     triggerOverlay={triggerOverlay}
                     socket={socket.current}
                     isInteractive={!!username} 
+                    username={username}
                 />
             ) : (
                 <div className='mt-2'>Nobody's live at the moment</div>
