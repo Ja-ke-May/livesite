@@ -85,7 +85,7 @@ const Viewer = () => {
         socket.current.on("main-feed", handleMainFeed);
         socket.current.on("timer-update", handleTimerUpdate);
         socket.current.on("timer-end", handleTimerEnd);
-        socket.current.on("stop-video", handleStopVideo);
+        socket.current.on("stop-live", handleStopVideo);
 
         socket.current.on("up-next-update", (nextUser) => {
             console.log("Received up-next-update event with next user:", nextUser);
