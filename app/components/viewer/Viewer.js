@@ -194,7 +194,24 @@ const Viewer = () => {
     const handleStopVideo = () => {
         console.log("Stopping video.");
         stopVideo();
+        Object.values(peerConnections.current).forEach((pc) => {
+            pc.close();
+            delete peerConnections.current[pc];
+        });
+        mainVideoRef.current.srcObject = null;
+        socket.current.emit("stop-live", username);
+        setState({
+            isPopUpOpen: false,
+            isCameraOn: false,
+            showPreviewButton: false,
+            isLive: false,
+            inQueue: false,
+            isNext: false,
+            autoplayAllowed: true,
+            liveUserId: null,
+        });
     };
+    
 
     const handleNewPeer = async (id) => {
         if (!streamRef.current || id === socket.current.id) return;
@@ -209,9 +226,10 @@ const Viewer = () => {
         if (id === socket.current.id) return;
         try {
             const peerConnection = createPeerConnection(id);
-            
-            if (peerConnection.signalingState === "stable") {
+    
+            if (peerConnection.signalingState === "stable" || peerConnection.signalingState === "have-local-offer") {
                 await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+                handleRemoteDescriptionSet(peerConnection); 
                 const answer = await peerConnection.createAnswer();
                 await peerConnection.setLocalDescription(answer);
                 socket.current.emit("answer", id, answer);
@@ -229,6 +247,7 @@ const Viewer = () => {
         if (peerConnection && peerConnection.signalingState === "have-local-offer") {
             try {
                 await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+                handleRemoteDescriptionSet(peerConnection);
             } catch (error) {
                 console.error("Error handling answer:", error);
             }
@@ -240,13 +259,31 @@ const Viewer = () => {
     const handleIceCandidate = (id, candidate) => {
         const peerConnection = peerConnections.current[id];
         
-        if (peerConnection && peerConnection.remoteDescription && peerConnection.remoteDescription.type) {
+        if (!peerConnection) return;
+    
+        if (peerConnection.remoteDescription && peerConnection.remoteDescription.type) {
             const candidateObj = new RTCIceCandidate(candidate);
             peerConnection.addIceCandidate(candidateObj).catch(console.error);
         } else {
-            console.warn("Cannot add ICE candidate, remote description is not set.");
+            // Buffer the ICE candidate
+            if (!peerConnection.iceCandidateBuffer) {
+                peerConnection.iceCandidateBuffer = [];
+            }
+            peerConnection.iceCandidateBuffer.push(candidate);
+            console.warn("Buffered ICE candidate, remote description is not set yet.");
         }
     };
+
+    const handleRemoteDescriptionSet = (peerConnection) => {
+        if (peerConnection.iceCandidateBuffer) {
+            peerConnection.iceCandidateBuffer.forEach(candidate => {
+                peerConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch(console.error);
+            });
+            delete peerConnection.iceCandidateBuffer;
+        }
+    };
+    
+    
     
 
     const handlePeerDisconnected = (id) => {
