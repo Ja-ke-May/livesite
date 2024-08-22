@@ -108,7 +108,7 @@ const Votes = ({ stopVideo, slidePosition, slidePositionAmount, setSlidePosition
       stopVideo();
       setSlidePosition(50);
       liveUserId(null);
-      socket.emit('stop-video');
+      socket.emit('stop-live');
     } else if (slidePosition === 100) {
       setSlidePosition(50);
       triggerStars();
