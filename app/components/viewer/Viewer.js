@@ -116,6 +116,17 @@ const Viewer = () => {
             setState((prevState) => ({ ...prevState, isNext: true }));
         });
 
+        socket.current.on("cleanup-connections", () => {
+            Object.values(peerConnections.current).forEach((pc) => {
+                pc.close();
+                delete peerConnections.current[pc];
+            });
+        
+            mainVideoRef.current.srcObject = null;
+            console.log("Cleaned up all connections");
+        });
+        
+
         socket.current.on("queue-position-update", (position) => {
             console.log("Received queue-position-update event with position:", position);
             setQueuePosition(position);
@@ -180,12 +191,17 @@ const Viewer = () => {
 
     const handleOffer = async (id, offer) => {
         if (id === socket.current.id) return;
-        const peerConnection = createPeerConnection(id);
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
-        const answer = await peerConnection.createAnswer();
-        await peerConnection.setLocalDescription(answer);
-        socket.current.emit("answer", id, answer);
+        try {
+            const peerConnection = createPeerConnection(id);
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            socket.current.emit("answer", id, answer);
+        } catch (error) {
+            console.error("Error handling offer:", error);
+        }
     };
+    
 
     const handleAnswer = (id, answer) => {
         if (peerConnections.current[id]) {
