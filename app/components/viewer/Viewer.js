@@ -191,7 +191,25 @@ const Viewer = () => {
     const handleTimerEnd = (userId) => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
+            
+            // Stop the video stream
             stopVideo();
+    
+            // Reset the state to its initial values
+            setState({
+                isPopUpOpen: false,
+                isCameraOn: false,
+                showPreviewButton: false,
+                isLive: false,
+                inQueue: false,
+                isNext: false,
+                autoplayAllowed: true,
+                liveUserId: null,
+            });
+    
+            // Clear the timer
+            clearInterval(timerIntervalRef.current);
+            setTimer(60);
         }
     };
 
@@ -575,7 +593,9 @@ const Viewer = () => {
     };
 
     const handleZeroVotes = () => {
-        stopVideo(); 
+        if (slidePosition <= 0){
+            stopVideo(); 
+        }
       };
 
     return (
