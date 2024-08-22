@@ -330,20 +330,24 @@ const Viewer = () => {
         console.log("Handling main feed update. Live user ID:", liveUserId);
         clearInterval(timerIntervalRef.current);
         setTimer(60);
-
-        setState((prevState) => ({ ...prevState, liveUserId }));
-        if (mainVideoRef.current && liveUserId) {
-            const peerConnection = createPeerConnection(liveUserId);
-            peerConnection.ontrack = (event) => {
-                mainVideoRef.current.srcObject = event.streams[0];
-                if (state.autoplayAllowed) {
-                    mainVideoRef.current.play().catch(console.error);
-                }
-            };
-            socket.current.emit("request-offer", liveUserId);
+    
+        if (liveUserId) {
+            setState((prevState) => ({ ...prevState, liveUserId }));
+            if (mainVideoRef.current) {
+                const peerConnection = createPeerConnection(liveUserId);
+                peerConnection.ontrack = (event) => {
+                    mainVideoRef.current.srcObject = event.streams[0];
+                    if (state.autoplayAllowed) {
+                        mainVideoRef.current.play().catch(console.error);
+                    }
+                };
+                socket.current.emit("request-offer", liveUserId);
+            }
+        } else {
+            handleStopVideo();
         }
     };
-
+    
     const createPeerConnection = (id) => {
         const peerConnection = new RTCPeerConnection({
             iceServers: [
