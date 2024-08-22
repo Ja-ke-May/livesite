@@ -478,8 +478,7 @@ const Viewer = () => {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
           .then((stream) => {
             if (mainVideoRef.current) {
-              mainVideoRef.current.srcObject = stream;
-              mainVideoRef.current.muted = isMuted; 
+              mainVideoRef.current.srcObject = stream;  
             }
             streamRef.current = stream;
             setState((prevState) => ({ ...prevState, isCameraOn: true }));
