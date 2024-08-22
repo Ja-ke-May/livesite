@@ -591,7 +591,6 @@ const Viewer = () => {
                 handleGoLiveClick={handleGoLiveClick}
                 liveUserId={state.liveUserId || username}
                 upNext={nextUsername}
-                stopVideo={stopVideo}
             />
             </div>
             <LiveQueuePopUp
