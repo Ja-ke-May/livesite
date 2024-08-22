@@ -79,7 +79,11 @@ const Viewer = () => {
 
         socket.current.on("new-peer", handleNewPeer);
         socket.current.on("offer", handleOffer);
-        socket.current.on("answer", handleAnswer);
+
+        socket.current.on("answer", (id, answer) => {
+            handleAnswer(id, answer);
+        });
+          
         socket.current.on("ice-candidate", handleIceCandidate);
         socket.current.on("peer-disconnected", handlePeerDisconnected);
         socket.current.on("main-feed", handleMainFeed);
@@ -212,7 +216,6 @@ const Viewer = () => {
         });
     };
     
-
     const handleNewPeer = async (id) => {
         if (!streamRef.current || id === socket.current.id) return;
         const peerConnection = createPeerConnection(id);
@@ -220,7 +223,8 @@ const Viewer = () => {
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
         socket.current.emit("offer", id, offer);
-    };
+      };
+      
 
     const handleOffer = async (id, offer) => {
         if (id === socket.current.id) return;
@@ -242,19 +246,23 @@ const Viewer = () => {
     };
 
     const handleAnswer = async (id, answer) => {
+    try {
         const peerConnection = peerConnections.current[id];
         
         if (peerConnection && peerConnection.signalingState === "have-local-offer") {
-            try {
-                await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-                handleRemoteDescriptionSet(peerConnection);
-            } catch (error) {
-                console.error("Error handling answer:", error);
-            }
+            // Set the remote description using the answer
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+            console.log(`Successfully set remote description for peer: ${id}`);
+            
+            // Optionally handle any buffered ICE candidates
+            handleRemoteDescriptionSet(peerConnection);
         } else {
-            console.warn("Peer connection is not in the correct state to accept an answer.");
+            console.warn(`Peer connection is not in the correct state to accept an answer for peer: ${id}`);
         }
-    };
+    } catch (error) {
+        console.error(`Error handling answer for peer: ${id}`, error);
+    }
+};
 
     const handleIceCandidate = (id, candidate) => {
         const peerConnection = peerConnections.current[id];
@@ -467,46 +475,74 @@ const Viewer = () => {
     };
 
     const startVideo = () => {
-        console.log("Starting video.");
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then((stream) => {
-                if (mainVideoRef.current) {
-                    mainVideoRef.current.srcObject = stream;
-                }
-                streamRef.current = stream;
-                setState((prevState) => ({ ...prevState, isCameraOn: true }));
-            })
-            .catch((error) => {
-                alert("Unable to access the camera. Please check your device settings.");
-            });
-    };
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          .then((stream) => {
+            if (mainVideoRef.current) {
+              mainVideoRef.current.srcObject = stream;
+              mainVideoRef.current.muted = isMuted; 
+            }
+            streamRef.current = stream;
+            setState((prevState) => ({ ...prevState, isCameraOn: true }));
+          })
+          .catch((error) => {
+            alert("Unable to access the camera. Please check your device settings.");
+          });
+      };
 
     const stopVideo = () => {
-        
         console.log("Stopping video and resetting state. Timer was:", timer);
+    
+        // Check if the stream exists before trying to stop it
         if (streamRef.current) {
+            // Stop all tracks of the current stream
             streamRef.current.getTracks().forEach((track) => track.stop());
-            if (mainVideoRef.current) {
-                mainVideoRef.current.srcObject = null;
-            }
-            setState((prevState) => ({
-                ...prevState,
-                isCameraOn: false,
-                showPreviewButton: false,
-                isLive: false,
-                isNext: false, 
-                inQueue: false,
-            }));
+            streamRef.current = null; // Clear the stream reference
+        }
+    
+        // Clear the video element's source
+        if (mainVideoRef.current) {
+            mainVideoRef.current.srcObject = null;
+        }
+    
+        // Clear any active peer connections
+        Object.values(peerConnections.current).forEach((pc) => {
+            pc.close();
+        });
+        peerConnections.current = {}; // Reset peer connections
+    
+        // Clear the timer interval if it exists
+        if (timerIntervalRef.current) {
             clearInterval(timerIntervalRef.current);
+            timerIntervalRef.current = null;
+        }
+    
+        // Emit socket events after all local cleanup
+        if (socket.current) {
             socket.current.emit("stop-live", username);
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
         }
+    
+        // Reset the state
+        setState((prevState) => ({
+            ...prevState,
+            isCameraOn: false,
+            showPreviewButton: false,
+            isLive: false,
+            isNext: false,
+            inQueue: false,
+        }));
     };
-
+    
     const handlePreviewButtonClick = () => startVideo();
 
     const handleGoLiveClick = () => {
+
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach(track => {
+              peerConnections.current[liveUserId].addTrack(track, streamRef.current);
+            });
+          }
 
         if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
