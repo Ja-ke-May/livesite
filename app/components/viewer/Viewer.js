@@ -500,17 +500,17 @@ const Viewer = () => {
             mainVideoRef.current.srcObject = null;
         }
     
-        // Close all peer connections related to the current user's broadcasting
-        if (isLiveUser) {
-            Object.values(peerConnections.current).forEach((pc) => {
-                if (pc.signalingState !== "closed") {
-                    pc.close();
-                    console.log("Closed peer connection");
+          // Detach media tracks from peer connections but don't close them
+    if (isLiveUser) {
+        Object.values(peerConnections.current).forEach((pc) => {
+            pc.getSenders().forEach(sender => {
+                if (sender.track) {
+                    sender.track.stop();
+                    pc.removeTrack(sender);
+                    console.log("Stopped and removed media track from peer connection");
                 }
             });
-            peerConnections.current = {};
-    
-    
+        });
             if (socket.current) {
                 socket.current.emit("stop-live", username);
                 socket.current.emit("set-initial-vote", 50);
