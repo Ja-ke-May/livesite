@@ -339,6 +339,7 @@ const Viewer = () => {
     
         if (mainVideoRef.current) {
             mainVideoRef.current.srcObject = null;
+            mainVideoRef.current.style.backgroundColor = 'transparent';
             
             if (liveUserId) {
                 const peerConnection = createPeerConnection(liveUserId);
