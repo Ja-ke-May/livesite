@@ -42,7 +42,8 @@ const Viewer = () => {
 
     useEffect(() => {
         if (isGuest) {
-            console.warn("User is a guest, limited features available.");
+            console.log("User is a guest, limited features available.");
+            initializeSocket();
         } else {
             console.log("Authenticated user:", username);
             initializeSocket();
