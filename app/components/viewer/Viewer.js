@@ -488,7 +488,10 @@ const Viewer = () => {
     
         // Stop all media tracks and clear the stream reference
         if (streamRef.current) {
-            streamRef.current.getTracks().forEach((track) => track.stop());
+            streamRef.current.getTracks().forEach((track) => {
+                track.stop();
+                console.log(`Stopped track: ${track.kind}`);
+            });
             streamRef.current = null;
         }
     
@@ -500,9 +503,13 @@ const Viewer = () => {
         // Close all peer connections related to the current user's broadcasting
         if (isLiveUser) {
             Object.values(peerConnections.current).forEach((pc) => {
-                pc.close();
+                if (pc.signalingState !== "closed") {
+                    pc.close();
+                    console.log("Closed peer connection");
+                }
             });
             peerConnections.current = {};
+    
     
             if (socket.current) {
                 socket.current.emit("stop-live", username);
