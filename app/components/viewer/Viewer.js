@@ -137,10 +137,7 @@ const Viewer = () => {
         });
 
         socket.current.on("cleanup-connections", () => {
-            Object.values(peerConnections.current).forEach((pc) => {
-                pc.close();
-                delete peerConnections.current[pc];
-            });
+            
         
             mainVideoRef.current.srcObject = null;
             console.log("Cleaned up all connections");
