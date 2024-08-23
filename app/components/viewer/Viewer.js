@@ -213,10 +213,6 @@ const Viewer = () => {
     const handleStopVideo = () => {
         console.log("Stopping video.");
        
-        Object.values(peerConnections.current).forEach((pc) => {
-            pc.close();
-            delete peerConnections.current[pc];
-        });
         mainVideoRef.current.srcObject = null;
         socket.current.emit("stop-live", username);
         setState({
@@ -389,7 +385,7 @@ const Viewer = () => {
 
     const cleanup = () => {
         console.log("Cleaning up Viewer component.");
-        Object.values(peerConnections.current).forEach((pc) => pc.close());
+       
     
         if (socket.current) {
             socket.current.disconnect();
@@ -533,6 +529,7 @@ const Viewer = () => {
         Object.values(peerConnections.current).forEach((pc) => {
             pc.close();
         });
+
         peerConnections.current = {}; // Reset peer connections
     
         // Clear the timer interval if it exists
