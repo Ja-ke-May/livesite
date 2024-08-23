@@ -88,16 +88,8 @@ const Viewer = () => {
         socket.current.on("peer-disconnected", handlePeerDisconnected);
         socket.current.on("main-feed", handleMainFeed);
         socket.current.on("timer-update", handleTimerUpdate);
-
-        socket.current.on("timer-end", () => { 
-            console.log("Received 'timer-end'");
-            setState({
-                isLive: false,
-            });
-            handleTimerEnd;
-        });
-
-        socket.current.on("", ); 
+        socket.current.on("timer-end", handleTimerEnd);
+        
 
         socket.current.on("stop-live", () => {
             console.log("Received 'stop-live'");
@@ -205,10 +197,12 @@ const Viewer = () => {
     
             // Reset the state to its initial values
             setState({
-                
+                isPopUpOpen: false,
                 isCameraOn: false,
+                showPreviewButton: false,
                 isLive: false,
-                
+                inQueue: false,
+                isNext: false,
                 autoplayAllowed: true,
                 liveUserId: null,
             });
