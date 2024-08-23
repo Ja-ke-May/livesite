@@ -631,7 +631,7 @@ const Viewer = () => {
             />
             {state.liveUserId && <Timer timer={timer} />}
 
-            {state.isLive || state.liveUserId ? (
+            {state.liveUserId ? (
                 <Votes
                 onZeroVotes={handleZeroVotes}
                     slidePosition={slidePosition}
