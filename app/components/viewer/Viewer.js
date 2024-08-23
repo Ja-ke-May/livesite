@@ -192,8 +192,7 @@ const Viewer = () => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
             
-            // Stop the video stream
-            stopVideo();
+          
     
             // Reset the state to its initial values
             setState({
@@ -206,6 +205,9 @@ const Viewer = () => {
                 autoplayAllowed: true,
                 liveUserId: null,
             });
+
+              // Stop the video stream
+              stopVideo();
     
             // Clear the timer
             clearInterval(timerIntervalRef.current);
