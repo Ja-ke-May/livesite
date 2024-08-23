@@ -88,7 +88,22 @@ const Viewer = () => {
         socket.current.on("peer-disconnected", handlePeerDisconnected);
         socket.current.on("main-feed", handleMainFeed);
         socket.current.on("timer-update", handleTimerUpdate);
-        socket.current.on("timer-end", handleTimerEnd);
+
+        socket.current.on("timer-end", () => { 
+            console.log("Received 'timer-end'");
+            setState({
+                isPopUpOpen: false,
+                isCameraOn: false,
+                showPreviewButton: false,
+                isLive: false,
+                inQueue: false,
+                isNext: false,
+                autoplayAllowed: true,
+                liveUserId: null,
+            });
+            handleTimerEnd;
+        });
+
         socket.current.on("", ); 
 
         socket.current.on("stop-live", () => {
