@@ -320,22 +320,23 @@ const Viewer = () => {
         setTimer(60);
     
         setState((prevState) => ({ ...prevState, liveUserId }));
+
         if (mainVideoRef.current && liveUserId) {
             const peerConnection = createPeerConnection(liveUserId);
             peerConnection.ontrack = (event) => {
-                mainVideoRef.current.srcObject = event.streams[0];
-                mainVideoRef.current.onloadedmetadata = async () => {
-                    try {
-                        await mainVideoRef.current.play();
-                    } catch (error) {
-                        console.error("Error trying to play video:", error);
-                    }
-                };
+                const stream = event.streams[0];
+
+               
+            mainVideoRef.current.srcObject = stream;
+            mainVideoRef.current.onloadeddata = () => {
+                mainVideoRef.current.play().catch((error) => {
+                    console.error("Error trying to play video:", error);
+                });
             };
-            socket.current.emit("request-offer", liveUserId);
-        }
-    };
-    
+        };
+        socket.current.emit("request-offer", liveUserId);
+    }
+};
     
 
     const createPeerConnection = (id) => {
