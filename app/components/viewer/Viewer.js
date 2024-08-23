@@ -188,8 +188,11 @@ const Viewer = () => {
         setTimer(newTimer);
     };
 
-    const handleTimerEnd = () => {
-   
+    const handleTimerEnd = (userId) => {
+        if (userId === state.liveUserId) {
+            console.log("Timer ended for live user:", userId);
+            
+          
     
             // Reset the state to its initial values
             setState({
