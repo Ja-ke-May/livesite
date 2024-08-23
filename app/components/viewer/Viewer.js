@@ -89,16 +89,7 @@ const Viewer = () => {
         socket.current.on("main-feed", handleMainFeed);
         socket.current.on("timer-update", handleTimerUpdate);
 
-        socket.current.on("timer-end", () => { 
-            console.log("Received 'timer-end'");
-            setState({
-                isCameraOn: false,
-                isLive: false,
-                autoplayAllowed: true,
-                liveUserId: null,
-            });
-            handleTimerEnd;
-        });
+        socket.current.on("timer-end", handleTimerEnd);
 
         socket.current.on("", ); 
 
