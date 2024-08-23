@@ -146,6 +146,20 @@ const Viewer = () => {
             mainVideoRef.current.srcObject = null;
             console.log("Cleaned up all connections");
         });
+
+        socket.current.on("reset-state", () => {
+            console.log("Received 'reset-state' event, resetting the user's state.");
+            setState({
+                isPopUpOpen: false,
+                isCameraOn: false,
+                showPreviewButton: false,
+                isLive: false,
+                inQueue: false,
+                isNext: false,
+                autoplayAllowed: true,
+                liveUserId: null,
+            });
+        });
         
 
         socket.current.on("queue-position-update", (position) => {
