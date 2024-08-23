@@ -89,22 +89,24 @@ const Viewer = () => {
         socket.current.on("main-feed", handleMainFeed);
         socket.current.on("timer-update", handleTimerUpdate);
         socket.current.on("timer-end", handleTimerEnd);
-        socket.current.on("", ); 
 
         socket.current.on("stop-live", () => {
             console.log("Received 'stop-live'");
-            setState((prevState) => ({
-                ...prevState,
-                isPopUpOpen: false,
-        isCameraOn: false,
-        showPreviewButton: false,
-        isLive: false,
-        inQueue: false,
-        isNext: false,
-        autoplayAllowed: true,
-        liveUserId: null,
-            }));
-            handleStopVideo()
+            // Only reset state if the live user matches
+            if (state.liveUserId === username) {
+                setState((prevState) => ({
+                    ...prevState,
+                    isPopUpOpen: false,
+                    isCameraOn: false,
+                    showPreviewButton: false,
+                    isLive: false,
+                    inQueue: false,
+                    isNext: false,
+                    autoplayAllowed: true,
+                    liveUserId: null,
+                }));
+                handleStopVideo();
+            }
         });
 
         socket.current.on("up-next-update", (nextUser) => {
@@ -122,7 +124,6 @@ const Viewer = () => {
             }));
         });
 
-        // Listen for current slide position and amount when the page loads
         socket.current.on("current-position", (position) => {
             setSlidePosition(position);
         });
@@ -192,29 +193,24 @@ const Viewer = () => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
             setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, }));
-            stopVideo();
+            stopVideo(true);
         }
     };
 
     const handleStopVideo = () => {
         console.log("Stopping video.");
-        stopVideo();
-        Object.values(peerConnections.current).forEach((pc) => {
-            pc.close();
-            delete peerConnections.current[pc];
-        });
-        mainVideoRef.current.srcObject = null;
-        socket.current.emit("stop-live", username);
-        setState({
-            isPopUpOpen: false,
-            isCameraOn: false,
-            showPreviewButton: false,
-            isLive: false,
-            inQueue: false,
-            isNext: false,
-            autoplayAllowed: true,
-            liveUserId: null,
-        });
+    
+        // Only proceed if the current user is the live user
+        if (state.liveUserId === username) {
+            stopVideo(false, true); // The second argument `true` indicates the live user is stopping the video.
+            Object.values(peerConnections.current).forEach((pc) => {
+                pc.close();
+                delete peerConnections.current[pc];
+            });
+            mainVideoRef.current.srcObject = null;
+        } else {
+            console.log("Stop video called, but user is not the current live user. No state reset will occur.");
+        }
     };
     
     const handleNewPeer = async (id) => {
@@ -225,7 +221,6 @@ const Viewer = () => {
         await peerConnection.setLocalDescription(offer);
         socket.current.emit("offer", id, offer);
       };
-      
 
     const handleOffer = async (id, offer) => {
         if (id === socket.current.id) return;
@@ -247,23 +242,21 @@ const Viewer = () => {
     };
 
     const handleAnswer = async (id, answer) => {
-    try {
-        const peerConnection = peerConnections.current[id];
-        
-        if (peerConnection && peerConnection.signalingState === "have-local-offer") {
-            // Set the remote description using the answer
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-            console.log(`Successfully set remote description for peer: ${id}`);
+        try {
+            const peerConnection = peerConnections.current[id];
             
-            // Optionally handle any buffered ICE candidates
-            handleRemoteDescriptionSet(peerConnection);
-        } else {
-            console.warn(`Peer connection is not in the correct state to accept an answer for peer: ${id}`);
+            if (peerConnection && peerConnection.signalingState === "have-local-offer") {
+                await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+                console.log(`Successfully set remote description for peer: ${id}`);
+                
+                handleRemoteDescriptionSet(peerConnection);
+            } else {
+                console.warn(`Peer connection is not in the correct state to accept an answer for peer: ${id}`);
+            }
+        } catch (error) {
+            console.error(`Error handling answer for peer: ${id}`, error);
         }
-    } catch (error) {
-        console.error(`Error handling answer for peer: ${id}`, error);
-    }
-};
+    };
 
     const handleIceCandidate = (id, candidate) => {
         const peerConnection = peerConnections.current[id];
@@ -274,7 +267,6 @@ const Viewer = () => {
             const candidateObj = new RTCIceCandidate(candidate);
             peerConnection.addIceCandidate(candidateObj).catch(console.error);
         } else {
-            // Buffer the ICE candidate
             if (!peerConnection.iceCandidateBuffer) {
                 peerConnection.iceCandidateBuffer = [];
             }
@@ -291,9 +283,6 @@ const Viewer = () => {
             delete peerConnection.iceCandidateBuffer;
         }
     };
-    
-    
-    
 
     const handlePeerDisconnected = (id) => {
         console.log(`Peer disconnected with ID: ${id}`);
@@ -489,57 +478,52 @@ const Viewer = () => {
           });
       };
 
-    const stopVideo = () => {
+    const stopVideo = (isTimerEnd = false, isLiveUser = false) => {
         console.log("Stopping video and resetting state. Timer was:", timer);
     
         // Check if the stream exists before trying to stop it
         if (streamRef.current) {
-            // Stop all tracks of the current stream
             streamRef.current.getTracks().forEach((track) => track.stop());
-            streamRef.current = null; // Clear the stream reference
+            streamRef.current = null;
         }
     
-        // Clear the video element's source
         if (mainVideoRef.current) {
             mainVideoRef.current.srcObject = null;
         }
     
-        // Clear any active peer connections
         Object.values(peerConnections.current).forEach((pc) => {
             pc.close();
         });
-        peerConnections.current = {}; // Reset peer connections
+        peerConnections.current = {}; 
     
-        // Clear the timer interval if it exists
-        if (timerIntervalRef.current) {
-            clearInterval(timerIntervalRef.current);
-            timerIntervalRef.current = null;
-        }
-    
-        // Emit socket events after all local cleanup
-        if (socket.current) {
+        if (isLiveUser && socket.current) {
             socket.current.emit("stop-live", username);
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
+    
+            setState({
+                isPopUpOpen: false,
+                isCameraOn: false,
+                showPreviewButton: false,
+                isLive: false,
+                inQueue: false,
+                isNext: false,
+                autoplayAllowed: true,
+                liveUserId: null,
+            });
+    
+            if (isTimerEnd) {
+                console.log("Resetting state because the timer ended.");
+            }
+        } else {
+            console.log("Stop video called, but no state reset will occur as the user is not the live user.");
         }
-    
-        // Reset the state
-        setState((prevState) => ({
-            ...prevState,
-            isCameraOn: false,
-            showPreviewButton: false,
-            isLive: false,
-            isNext: false,
-            inQueue: false,
-        }));
     };
-    
+
     const handlePreviewButtonClick = () => startVideo();
 
     const handleGoLiveClick = () => {
-
-       
-          if (!state.isLive) {
+        if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current);
             setTimer(60);
@@ -577,7 +561,7 @@ const Viewer = () => {
 
     const handleZeroVotes = () => {
         stopVideo(); 
-      };
+    };
 
     return (
         <>
@@ -590,26 +574,25 @@ const Viewer = () => {
                 queuePosition={queuePosition}
             />
             <div className="group"> 
-            <ViewerMain
-                mainVideoRef={mainVideoRef}
-                state={state}
-                handleGoLiveClick={handleGoLiveClick}
-                liveUserId={state.liveUserId || username}
-                upNext={nextUsername}
-            />
+                <ViewerMain
+                    mainVideoRef={mainVideoRef}
+                    state={state}
+                    handleGoLiveClick={handleGoLiveClick}
+                    liveUserId={state.liveUserId || username}
+                    upNext={nextUsername}
+                />
             </div>
             <LiveQueuePopUp
                 visible={state.isPopUpOpen}
                 onClose={handleClosePopUp}
                 onJoin={handleUserDecisionToJoinQueue}
                 queuePosition={queuePosition}
-                
             />
             {state.liveUserId && <Timer timer={timer} />}
 
             {state.isLive || state.liveUserId ? (
                 <Votes
-                onZeroVotes={handleZeroVotes}
+                    onZeroVotes={handleZeroVotes}
                     slidePosition={slidePosition}
                     slidePositionAmount={slidePositionAmount}
                     setSlidePosition={setSlidePosition}
