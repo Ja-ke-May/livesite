@@ -91,21 +91,7 @@ const Viewer = () => {
         socket.current.on("timer-end", handleTimerEnd);
         
 
-        socket.current.on("stop-live", () => {
-            console.log("Received 'stop-live'");
-            setState((prevState) => ({
-                ...prevState,
-                isPopUpOpen: false,
-        isCameraOn: false,
-        showPreviewButton: false,
-        isLive: false,
-        inQueue: false,
-        isNext: false,
-        autoplayAllowed: true,
-        liveUserId: null,
-            }));
-            handleStopVideo()
-        });
+        socket.current.on("stop-live", handleStopVideo);
 
         socket.current.on("up-next-update", (nextUser) => {
             console.log("Received up-next-update event with next user:", nextUser);
@@ -135,12 +121,6 @@ const Viewer = () => {
             console.log("Received 'go-live' event");
             setState((prevState) => ({ ...prevState, isNext: true }));
         });
-
-        socket.current.on("cleanup-connections", () => {
-            mainVideoRef.current.srcObject = null;
-            console.log("Cleaned up all connections");
-        });
-        
 
         socket.current.on("queue-position-update", (position) => {
             console.log("Received queue-position-update event with position:", position);
@@ -511,6 +491,7 @@ const Viewer = () => {
             isLive: false,
             isNext: false,
             inQueue: false,
+            liveUserId: null,
         }));
     
         // Check if the stream exists before trying to stop it
