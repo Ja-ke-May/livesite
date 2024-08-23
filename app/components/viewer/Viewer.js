@@ -336,9 +336,6 @@ const Viewer = () => {
         setTimer(60);
     
         setState((prevState) => ({ ...prevState, liveUserId }));
-    
-        if (mainVideoRef.current) {
-            mainVideoRef.current.srcObject = null;
             
             if (liveUserId) {
                 const peerConnection = createPeerConnection(liveUserId);
