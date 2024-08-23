@@ -137,8 +137,6 @@ const Viewer = () => {
         });
 
         socket.current.on("cleanup-connections", () => {
-            
-        
             mainVideoRef.current.srcObject = null;
             console.log("Cleaned up all connections");
         });
