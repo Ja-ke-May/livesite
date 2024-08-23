@@ -208,12 +208,10 @@ const Viewer = () => {
     
             // Reset the state to its initial values
             setState({
-                isPopUpOpen: false,
+                
                 isCameraOn: false,
-                showPreviewButton: false,
                 isLive: false,
-                inQueue: false,
-                isNext: false,
+                
                 autoplayAllowed: true,
                 liveUserId: null,
             });
