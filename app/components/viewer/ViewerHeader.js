@@ -35,12 +35,17 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
     </div>
   );
 
+  const onLeaveClick = () => {
+    stopVideo();
+    window.location.reload(); 
+  };
+
   return (
     <div className="mt-2 mb-2 h-8 bg-yellow-400 w-full font-bold text-md md:text-md text-center text-[#000110] brightness-125 rounded relative">
       {state.isCameraOn ? (
         <div className="w-full flex justify-center h-full">
           <button
-            onClick={stopVideo}
+            onClick={onLeaveClick}
             className="text-white border-2 border-red-700 px-2 h-full text-md md:text-md hover:bg-red-600 rounded bg-red-600"
           >
             Leave
