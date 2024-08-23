@@ -92,12 +92,8 @@ const Viewer = () => {
         socket.current.on("timer-end", () => { 
             console.log("Received 'timer-end'");
             setState({
-                isPopUpOpen: false,
                 isCameraOn: false,
-                showPreviewButton: false,
                 isLive: false,
-                inQueue: false,
-                isNext: false,
                 autoplayAllowed: true,
                 liveUserId: null,
             });
