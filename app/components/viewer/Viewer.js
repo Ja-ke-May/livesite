@@ -217,7 +217,7 @@ const Viewer = () => {
 
     const handleStopVideo = () => {
         console.log("Stopping video.");
-        stopVideo();
+       
         Object.values(peerConnections.current).forEach((pc) => {
             pc.close();
             delete peerConnections.current[pc];
@@ -234,6 +234,7 @@ const Viewer = () => {
             autoplayAllowed: true,
             liveUserId: null,
         });
+        stopVideo();
     };
     
     const handleNewPeer = async (id) => {
@@ -510,6 +511,16 @@ const Viewer = () => {
 
     const stopVideo = () => {
         console.log("Stopping video and resetting state. Timer was:", timer);
+
+         // Reset the state
+         setState((prevState) => ({
+            ...prevState,
+            isCameraOn: false,
+            showPreviewButton: false,
+            isLive: false,
+            isNext: false,
+            inQueue: false,
+        }));
     
         // Check if the stream exists before trying to stop it
         if (streamRef.current) {
@@ -542,15 +553,7 @@ const Viewer = () => {
             socket.current.emit("current-slide-amount", 5);
         }
     
-        // Reset the state
-        setState((prevState) => ({
-            ...prevState,
-            isCameraOn: false,
-            showPreviewButton: false,
-            isLive: false,
-            isNext: false,
-            inQueue: false,
-        }));
+       
     };
     
     const handlePreviewButtonClick = () => startVideo();
