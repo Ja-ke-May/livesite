@@ -525,13 +525,6 @@ const Viewer = () => {
             mainVideoRef.current.srcObject = null;
         }
     
-        // Clear any active peer connections
-        Object.values(peerConnections.current).forEach((pc) => {
-            pc.close();
-        });
-
-        peerConnections.current = {}; // Reset peer connections
-    
         // Clear the timer interval if it exists
         if (timerIntervalRef.current) {
             clearInterval(timerIntervalRef.current);
