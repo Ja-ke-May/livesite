@@ -207,8 +207,19 @@ const Viewer = () => {
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
         socket.current.emit("offer", id, offer);
-      };
-
+    
+        // Ready state check before playing
+        mainVideoRef.current.onloadedmetadata = async () => {
+            if (mainVideoRef.current.readyState >= 3) { // `3` corresponds to HAVE_FUTURE_DATA or greater
+                try {
+                    await mainVideoRef.current.play();
+                } catch (error) {
+                    console.error("Error trying to play video:", error);
+                }
+            }
+        };
+    };
+    
     const handleOffer = async (id, offer) => {
         if (id === socket.current.id) return;
         try {
@@ -307,19 +318,24 @@ const Viewer = () => {
         console.log("Handling main feed update. Live user ID:", liveUserId);
         clearInterval(timerIntervalRef.current);
         setTimer(60);
-
+    
         setState((prevState) => ({ ...prevState, liveUserId }));
         if (mainVideoRef.current && liveUserId) {
             const peerConnection = createPeerConnection(liveUserId);
             peerConnection.ontrack = (event) => {
                 mainVideoRef.current.srcObject = event.streams[0];
-                if (state.autoplayAllowed) {
-                    mainVideoRef.current.play().catch(console.error);
-                }
+                mainVideoRef.current.onloadedmetadata = async () => {
+                    try {
+                        await mainVideoRef.current.play();
+                    } catch (error) {
+                        console.error("Error trying to play video:", error);
+                    }
+                };
             };
             socket.current.emit("request-offer", liveUserId);
         }
     };
+    
     
 
     const createPeerConnection = (id) => {
@@ -466,38 +482,40 @@ const Viewer = () => {
           });
       };
 
-    const stopVideo = (isTimerEnd = false, isLiveUser = false) => {
-        console.log("Stopping video and resetting state. Timer was:", timer);
+      const stopVideo = (isTimerEnd = false, isLiveUser = false) => {
+        console.log("Stopping video for the live user. Timer was:", timer);
     
-        // Check if the stream exists before trying to stop it
+        // Stop all media tracks and clear the stream reference
         if (streamRef.current) {
             streamRef.current.getTracks().forEach((track) => track.stop());
             streamRef.current = null;
         }
     
-        if (mainVideoRef.current) {
-            mainVideoRef.current = null;
+        // Clear the user's own video feed but keep the video element available for viewing others
+        if (mainVideoRef.current && state.liveUserId === username) {
+            mainVideoRef.current.srcObject = null;
         }
     
-        Object.values(peerConnections.current).forEach((pc) => {
-            pc.close();
-        });
-        peerConnections.current = {}; 
+        // Close all peer connections related to the current user's broadcasting
+        if (isLiveUser) {
+            Object.values(peerConnections.current).forEach((pc) => {
+                pc.close();
+            });
+            peerConnections.current = {};
     
-        if (isLiveUser && socket.current) {
-            socket.current.emit("stop-live", username);
-            socket.current.emit("set-initial-vote", 50);
-            socket.current.emit("current-slide-amount", 5);
+            if (socket.current) {
+                socket.current.emit("stop-live", username);
+                socket.current.emit("set-initial-vote", 50);
+                socket.current.emit("current-slide-amount", 5);
+            }
     
             setState((prevState) => ({
                 ...prevState,
-                isPopUpOpen: false,
                 isCameraOn: false,
                 showPreviewButton: false,
                 isLive: false,
                 inQueue: false,
                 isNext: false,
-                autoplayAllowed: true,
                 liveUserId: null,
             }));
     
@@ -505,14 +523,16 @@ const Viewer = () => {
                 console.log("Resetting state because the timer ended.");
             }
         } else {
-            console.log("Stop video called, but no state reset will occur as the user is not the live user.");
+            console.log("Stop video called, but the user is not the current live user.");
         }
-   // Clean up any remaining intervals
-   if (timerIntervalRef.current) {
-    clearInterval(timerIntervalRef.current);
-    timerIntervalRef.current = null;
-}
-};
+    
+        // Clean up any remaining intervals
+        if (timerIntervalRef.current) {
+            clearInterval(timerIntervalRef.current);
+            timerIntervalRef.current = null;
+        }
+    };
+    
 
     const handlePreviewButtonClick = () => startVideo();
 
