@@ -15,7 +15,7 @@ const Viewer = () => {
         isPopUpOpen: false,
         isCameraOn: false,
         showPreviewButton: false,
-        isLive: false,
+        isLive: false,  
         inQueue: false,
         isNext: false,
         autoplayAllowed: true,
@@ -93,20 +93,8 @@ const Viewer = () => {
 
         socket.current.on("stop-live", () => {
             console.log("Received 'stop-live'");
-            // Only reset state if the live user matches
             if (state.liveUserId === username) {
-                setState((prevState) => ({
-                    ...prevState,
-                    isPopUpOpen: false,
-                    isCameraOn: false,
-                    showPreviewButton: false,
-                    isLive: false,
-                    inQueue: false,
-                    isNext: false,
-                    autoplayAllowed: true,
-                    liveUserId: null,
-                }));
-                handleStopVideo();
+                stopVideo(false, true); // Stop video and reset state if the user is live
             }
         });
 
@@ -208,26 +196,10 @@ const Viewer = () => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
             setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, }));
-            stopVideo(true);
+            stopVideo(true, true); 
         }
     };
 
-    const handleStopVideo = () => {
-        console.log("Stopping video.");
-    
-        // Only proceed if the current user is the live user
-        if (state.liveUserId === username) {
-            stopVideo(false, true); // The second argument `true` indicates the live user is stopping the video.
-            Object.values(peerConnections.current).forEach((pc) => {
-                pc.close();
-                delete peerConnections.current[pc];
-            });
-            mainVideoRef.current.srcObject = null;
-        } else {
-            console.log("Stop video called, but user is not the current live user. No state reset will occur.");
-        }
-    };
-    
     const handleNewPeer = async (id) => {
         if (!streamRef.current || id === socket.current.id) return;
         const peerConnection = createPeerConnection(id);
@@ -504,7 +476,7 @@ const Viewer = () => {
         }
     
         if (mainVideoRef.current) {
-            mainVideoRef.current.srcObject = null;
+            mainVideoRef.current = null;
         }
     
         Object.values(peerConnections.current).forEach((pc) => {
@@ -517,7 +489,8 @@ const Viewer = () => {
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
     
-            setState({
+            setState((prevState) => ({
+                ...prevState,
                 isPopUpOpen: false,
                 isCameraOn: false,
                 showPreviewButton: false,
@@ -526,7 +499,7 @@ const Viewer = () => {
                 isNext: false,
                 autoplayAllowed: true,
                 liveUserId: null,
-            });
+            }));
     
             if (isTimerEnd) {
                 console.log("Resetting state because the timer ended.");
@@ -534,7 +507,12 @@ const Viewer = () => {
         } else {
             console.log("Stop video called, but no state reset will occur as the user is not the live user.");
         }
-    };
+   // Clean up any remaining intervals
+   if (timerIntervalRef.current) {
+    clearInterval(timerIntervalRef.current);
+    timerIntervalRef.current = null;
+}
+};
 
     const handlePreviewButtonClick = () => startVideo();
 
