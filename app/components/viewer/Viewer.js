@@ -36,37 +36,6 @@ const Viewer = () => {
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);
 
-    const disconnectAndReconnectUser = () => {
-        if (socket.current) {
-            socket.current.disconnect();
-    
-            Object.values(peerConnections.current).forEach((pc) => {
-                pc.close();
-            });
-            peerConnections.current = {}; 
-        
-            setTimeout(() => {
-                initializeSocket(); 
-                
-                waitForSocketConnection(socket.current).then(() => {
-                    if (username) {
-                        socket.current.emit("register-user", username); 
-                    }
-                    console.log(`Reconnected user: ${username}`);
-                });
-            }, 1000); 
-        }
-    };
-    
-    const waitForSocketConnection = (socket) => {
-        return new Promise((resolve) => {
-            socket.on("connect", () => {
-                resolve();
-            });
-        });
-    };
-
-    
     useEffect(() => {
         console.log("Current state in useEffect:", state);
     }, [state]);
@@ -138,7 +107,7 @@ const Viewer = () => {
                     liveUserId: null,
                 }));
                 stopVideo();
-                disconnectAndReconnectUser();
+                window.location.reload(); 
             }
         });
 
