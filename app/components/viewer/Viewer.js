@@ -323,6 +323,15 @@ const Viewer = () => {
     const handleMainFeed = async (liveUserId) => {
         console.log("Handling main feed update. Live user ID:", liveUserId);
     
+        if (state.liveUserId && (state.liveUserId !== liveUserId || !liveUserId)) {
+            // If the current user was live and is now being replaced or there's no one in the queue
+            if (username === state.liveUserId) {
+                console.log(`Reloading window for user: ${username} as they are no longer live`);
+                window.location.reload();
+                return; // Stop further execution as the window will reload
+            } 
+        }
+    
         // Clear the previous timer if there's any
         clearInterval(timerIntervalRef.current);
         setTimer(60);
@@ -350,7 +359,6 @@ const Viewer = () => {
             if (mainVideoRef.current) {
                 mainVideoRef.current.pause();
                 mainVideoRef.current.srcObject = null;
-                stopVideo();
             }
         }
     };
