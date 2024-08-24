@@ -113,8 +113,6 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       if (previousLiveUserIdRef.current === username && nextUsername !== username) {
         window.location.reload(2000);
       }
-
-      socket.emit("stop-live", username);
     } else if (slidePosition === 100) {
       setSlidePosition(50);
       triggerStars();
