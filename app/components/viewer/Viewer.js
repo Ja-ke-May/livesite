@@ -488,9 +488,11 @@ const Viewer = ({ reloadViewer }) => {
     const stopVideo = (isTimerEnd = false, isLiveUser = false) => {
         console.log("Stopping video and resetting state. Timer was:", timer);
     
-        // Check if the stream exists before trying to stop it
         if (streamRef.current) {
-            streamRef.current.getTracks().forEach((track) => track.stop());
+            streamRef.current.getTracks().forEach((track) => {
+                track.stop();  // Stop each track to ensure the camera is turned off
+                console.log(`Track of kind ${track.kind} stopped.`);
+            });
             streamRef.current = null;
         }
     
