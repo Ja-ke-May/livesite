@@ -104,16 +104,22 @@ const Votes = ({ onZeroVotes, slidePosition, slidePositionAmount, setSlidePositi
 
   useEffect(() => {
     if (slidePosition === 0) {
-      triggerOverlay('❌'); 
-      onZeroVotes();
-      setSlidePosition(50);
-      liveUserId(null);
-      socket.emit("stop-live", username);
+        triggerOverlay('❌'); 
+        onZeroVotes();
+        setSlidePosition(50);
+
+        if (username === liveUserId) {
+            window.location.reload(); 
+        } else {
+            liveUserId(null);
+            socket.emit("stop-live", username);
+        }
     } else if (slidePosition === 100) {
-      setSlidePosition(50);
-      triggerStars();
+        setSlidePosition(50);
+        triggerStars();
     }
-  }, [slidePosition, onZeroVotes, setSlidePosition, triggerOverlay]);
+}, [slidePosition, onZeroVotes, setSlidePosition, triggerOverlay, liveUserId, username, socket]);
+
 
   const triggerStars = () => {
     setStars([]);
