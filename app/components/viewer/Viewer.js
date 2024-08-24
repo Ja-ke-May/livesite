@@ -120,8 +120,6 @@ const Viewer = () => {
 
         socket.current.on("go-live-prompt", () => {
             console.log("Received 'go-live-prompt', setting isNext to true");
-            setSlidePosition(50);
-            setSlidePositionAmount(5);
             setState((prevState) => ({
                 ...prevState,
                 isNext: true,
@@ -140,8 +138,6 @@ const Viewer = () => {
 
         socket.current.on("go-live", () => {
             console.log("Received 'go-live' event");
-            setSlidePosition(50);
-            setSlidePositionAmount(5);
             setState((prevState) => ({ ...prevState, isNext: true }));
         });
 
@@ -577,7 +573,7 @@ const Viewer = () => {
                     return prevTimer - 1;
                 });
             }, 1000);
-
+            
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
             socket.current.emit("go-live", username); 
