@@ -52,6 +52,25 @@ const Viewer = () => {
         return () => cleanup();
     }, [username]);
 
+    // Disconnect live user and recconect after going live
+    useEffect(() => {
+        if (state.liveUserId === null && username) {
+            console.log("Live user ID is null, disconnecting and reconnecting to reset state");
+    
+            if (socket.current) {
+                socket.current.disconnect();
+                setTimeout(() => {
+                    socket.current.connect();
+                    socket.current.emit("register-user", username);
+    
+                  
+                    initializeSocketListeners();
+                }, 1000); 
+            }
+        }
+    }, [state.liveUserId, username]);
+    
+
     const initializeSocket = () => {
         socket.current = io('https://livesite-backend.onrender.com', {
             withCredentials: true,
