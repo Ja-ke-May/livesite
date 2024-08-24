@@ -519,6 +519,7 @@ const Viewer = () => {
         } else {
             console.log("Stop video called, but no state reset will occur as the user is not the live user.");
         }
+        window.location.reload(); 
     };
 
     const handlePreviewButtonClick = () => startVideo();
