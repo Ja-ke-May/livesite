@@ -111,7 +111,9 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       stopVideo(true);
 
       if (previousLiveUserIdRef.current === username && nextUsername !== username) {
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000); // 2000ms delay (2 seconds)
       }
 
       socket.emit("stop-live", username);

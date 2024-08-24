@@ -6,7 +6,6 @@ import { AuthContext } from "@/utils/AuthContext";
 import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
-import next from "next";
 
 const Viewer = () => {
     const { username } = useContext(AuthContext);
