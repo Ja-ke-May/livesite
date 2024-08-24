@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '@/utils/AuthContext';
 
-const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVideo, showQueueAlert, queuePosition }) => {
+const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVideo, showQueueAlert, queuePosition, reloadViewer }) => {
   const { isLoggedIn } = useContext(AuthContext);
   const [showLoginAlert, setShowLoginAlert] = useState(false);
 
@@ -36,8 +36,8 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
   );
 
   const onLeaveClick = () => {
-    stopVideo();
-    window.location.reload(); 
+      stopVideo();
+      reloadViewer();
   };
 
   return (
