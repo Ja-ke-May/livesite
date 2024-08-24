@@ -7,7 +7,7 @@ import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
 
-const Viewer = ({ key, reloadViewer }) => {
+const Viewer = ({ reloadViewer }) => {
     const { username } = useContext(AuthContext);
     const isGuest = !username;
     
@@ -576,7 +576,6 @@ const Viewer = ({ key, reloadViewer }) => {
                 stopVideo={stopVideo} 
                 showQueueAlert={showQueueAlert} 
                 queuePosition={queuePosition}
-                key={viewerKey} 
                 reloadViewer={reloadViewer}
             />
             <div className="group"> 

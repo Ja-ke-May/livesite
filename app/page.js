@@ -18,13 +18,18 @@ const HomeContent = () => {
   const [showOver18, setShowOver18] = useState(false); 
   const [viewerKey, setViewerKey] = useState(0);
 
-  const socket = io('https://livesite-backend.onrender.com', {
-    reconnection: true,
-    reconnectionAttempts: 1000, 
-    reconnectionDelay: 1000, 
-    reconnectionDelayMax: 5000, 
-  });
-   
+  useEffect(() => {
+    const socket = io('https://livesite-backend.onrender.com', {
+      reconnection: true,
+      reconnectionAttempts: 1000,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+    });
+  
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (isInitialized && !isLoggedIn) {
