@@ -17,12 +17,12 @@ const HomeContent = () => {
   const { isLoggedIn, username, isInitialized } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false);
 
-  // const socket = io('https://livesite-backend.onrender.com', {
-  //   reconnection: true,
-  //   reconnectionAttempts: 1000, 
-  //   reconnectionDelay: 1000, 
-  //   reconnectionDelayMax: 5000, 
-  // });
+  const socket = io('https://livesite-backend.onrender.com', {
+    reconnection: true,
+    reconnectionAttempts: 1000, 
+    reconnectionDelay: 1000, 
+    reconnectionDelayMax: 5000, 
+  });
    
 
   useEffect(() => {
