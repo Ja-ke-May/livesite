@@ -64,7 +64,7 @@ const Viewer = () => {
                     socket.current.emit("register-user", username);
     
                   
-                    initializeSocketListeners();
+                    initializeSocket();
                 }, 1000); 
             }
         }
