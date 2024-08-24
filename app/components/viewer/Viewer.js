@@ -321,21 +321,37 @@ const Viewer = () => {
     };
 
     const handleMainFeed = async (liveUserId) => {
-        stopVideo(); 
         console.log("Handling main feed update. Live user ID:", liveUserId);
+    
+        // Clear the previous timer if there's any
         clearInterval(timerIntervalRef.current);
         setTimer(60);
-
-        setState((prevState) => ({ ...prevState, liveUserId }));
-        if (mainVideoRef.current && liveUserId) {
-            const peerConnection = createPeerConnection(liveUserId);
-            peerConnection.ontrack = (event) => {
-                mainVideoRef.current.srcObject = event.streams[0];
-                if (state.autoplayAllowed) {
-                    mainVideoRef.current.play().catch(console.error);
-                }
-            };
-            socket.current.emit("request-offer", liveUserId);
+    
+        if (liveUserId) {
+            // Update state with the new live user ID
+            setState((prevState) => ({ ...prevState, liveUserId }));
+    
+            // If there's a live user, start the video stream
+            if (mainVideoRef.current) {
+                const peerConnection = createPeerConnection(liveUserId);
+                peerConnection.ontrack = (event) => {
+                    mainVideoRef.current.srcObject = event.streams[0];
+                    if (state.autoplayAllowed) {
+                        mainVideoRef.current.play().catch(console.error);
+                    }
+                };
+                socket.current.emit("request-offer", liveUserId);
+            }
+        } else {
+            // If no one is live, clear the video stream
+            console.log("No one is live, stopping video playback.");
+            setState((prevState) => ({ ...prevState, liveUserId: null }));
+    
+            if (mainVideoRef.current) {
+                mainVideoRef.current.pause();
+                mainVideoRef.current.srcObject = null;
+                stopVideo();
+            }
         }
     };
     
