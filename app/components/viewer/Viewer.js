@@ -106,7 +106,7 @@ const Viewer = () => {
                     autoplayAllowed: true,
                     liveUserId: null,
                 }));
-                handleStopVideo();
+                stopVideo();
             }
         });
 
@@ -209,22 +209,6 @@ const Viewer = () => {
             console.log("Timer ended for live user:", userId);
             setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, }));
             stopVideo(true);
-        }
-    };
-
-    const handleStopVideo = () => {
-        console.log("Stopping video.");
-    
-        // Only proceed if the current user is the live user
-        if (state.liveUserId === username) {
-            stopVideo(false, true); // The second argument true indicates the live user is stopping the video.
-            Object.values(peerConnections.current).forEach((pc) => {
-                pc.close();
-                delete peerConnections.current[pc];
-            });
-            mainVideoRef.current.srcObject = null;
-        } else {
-            console.log("Stop video called, but user is not the current live user. No state reset will occur.");
         }
     };
     
