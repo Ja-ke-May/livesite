@@ -7,7 +7,9 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
   const [clickedIcon, setClickedIcon] = useState(null);
   const [hasVoted, setHasVoted] = useState(false); 
   const [showBuyVotePrompt, setShowBuyVotePrompt] = useState(false); 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); 
+
+  const previousLiveUserIdRef = useRef(null);
 
   useEffect(() => {
     if (socket) {
@@ -108,16 +110,17 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       setSlidePosition(50);
       stopVideo(true, true); 
 
-      if (username === liveUserId) {
+      if (previousLiveUserIdRef.current === username) {
         window.location.reload();
       }
-      
+
       socket.emit("stop-live", username);
     } else if (slidePosition === 100) {
       setSlidePosition(50);
       triggerStars();
     }
-  }, [slidePosition, setSlidePosition, triggerOverlay, socket, username]);
+    previousLiveUserIdRef.current = liveUserId;
+  }, [slidePosition, setSlidePosition, triggerOverlay, socket, username, liveUserId]);
 
   const triggerStars = () => {
     setStars([]);
