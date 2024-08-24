@@ -7,7 +7,7 @@ import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
 
-const Viewer = ({ reloadViewer }) => {
+const Viewer = () => {
     const { username } = useContext(AuthContext);
     const isGuest = !username;
     
@@ -212,9 +212,7 @@ const Viewer = ({ reloadViewer }) => {
 
             stopVideo(true);
             
-            if (reloadViewer) {
-                reloadViewer();
-            }
+            
         }
       
     };
@@ -323,36 +321,21 @@ const Viewer = ({ reloadViewer }) => {
     };
 
     const handleMainFeed = async (liveUserId) => {
+        stopVideo(); 
         console.log("Handling main feed update. Live user ID:", liveUserId);
-    
-        // Clear the previous timer if there's any
         clearInterval(timerIntervalRef.current);
         setTimer(60);
-    
-        if (liveUserId) {
-            // Update state with the new live user ID
-            setState((prevState) => ({ ...prevState, liveUserId }));
-    
-            // If there's a live user, start the video stream
-            if (mainVideoRef.current) {
-                const peerConnection = createPeerConnection(liveUserId);
-                peerConnection.ontrack = (event) => {
-                    if (state.autoplayAllowed) {
-                        mainVideoRef.current.srcObject = event.streams[0];
-                        mainVideoRef.current.play().catch(console.error);
-                    }
-                };
-                socket.current.emit("request-offer", liveUserId);
-            }
-        } else {
-            // If no one is live, clear the video stream
-            console.log("No one is live, stopping video playback.");
-            setState((prevState) => ({ ...prevState, liveUserId: null }));
-    
-            if (mainVideoRef.current) {
-                mainVideoRef.current.pause();
-                mainVideoRef.current.srcObject = null;
-            }
+
+        setState((prevState) => ({ ...prevState, liveUserId }));
+        if (mainVideoRef.current && liveUserId) {
+            const peerConnection = createPeerConnection(liveUserId);
+            peerConnection.ontrack = (event) => {
+                mainVideoRef.current.srcObject = event.streams[0];
+                if (state.autoplayAllowed) {
+                    mainVideoRef.current.play().catch(console.error);
+                }
+            };
+            socket.current.emit("request-offer", liveUserId);
         }
     };
     
@@ -501,7 +484,7 @@ const Viewer = ({ reloadViewer }) => {
           });
       };
 
-    const stopVideo = (isTimerEnd = false, isLiveUser = false) => {
+      const stopVideo = (isTimerEnd = false, isLiveUser = false) => {
         console.log("Stopping video and resetting state. Timer was:", timer);
     
         if (streamRef.current) {
@@ -543,8 +526,9 @@ const Viewer = ({ reloadViewer }) => {
         } else {
             console.log("Stop video called, but no state reset will occur as the user is not the live user.");
         }
-        window.location.reload(); 
+        console.log("Video stopped successfully.");
     };
+    
 
     const handlePreviewButtonClick = () => startVideo();
 
@@ -594,7 +578,6 @@ const Viewer = ({ reloadViewer }) => {
                 stopVideo={stopVideo} 
                 showQueueAlert={showQueueAlert} 
                 queuePosition={queuePosition}
-                reloadViewer={reloadViewer}
             />
             <div className="group"> 
                 <ViewerMain
@@ -624,7 +607,7 @@ const Viewer = ({ reloadViewer }) => {
                     socket={socket.current}
                     isInteractive={!!username} 
                     username={username}
-                    reloadViewer={reloadViewer}
+
                 />
             ) : (
                 <div className='mt-2'>Nobody's live at the moment</div>

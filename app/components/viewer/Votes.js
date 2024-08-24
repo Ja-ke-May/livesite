@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import { deductTokens, awardTokens } from '@/utils/apiClient';
 
-const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket, isInteractive, username, reloadViewer }) => {
+const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket, isInteractive, username }) => {
   const [isPulsing, setIsPulsing] = useState(false);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
@@ -106,8 +106,8 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
     if (slidePosition === 0) {
       triggerOverlay('❌'); 
       setSlidePosition(50);
+      stopVideo()
       socket.emit("stop-live", username);
-      reloadViewer();
     } else if (slidePosition === 100) {
       setSlidePosition(50);
       triggerStars();

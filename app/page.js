@@ -16,7 +16,6 @@ import io from 'socket.io-client';
 const HomeContent = () => {
   const { isLoggedIn, username, isInitialized } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false); 
-  const [viewerKey, setViewerKey] = useState(0);
 
   const socket = io('https://livesite-backend.onrender.com', {
     reconnection: true,
@@ -45,10 +44,6 @@ const HomeContent = () => {
     }
   };
 
-  const reloadViewer = () => {
-    setViewerKey(prevKey => prevKey + 1);
-  };
-
   if (showOver18) {
     return <Over18 onConfirm={handleOver18Confirm} />;
   }
@@ -57,7 +52,7 @@ const HomeContent = () => {
     <div>
       <Navbar isLoggedIn={isLoggedIn} username={username} />
       <main className="flex flex-col items-center justify-center lg:max-w-[60%] w-full mx-auto">
-        <Viewer key={viewerKey} reloadViewer={reloadViewer} />
+        <Viewer />
         
         <Chat isLoggedIn={isLoggedIn} username={username} socket={socket} />
       </main>
