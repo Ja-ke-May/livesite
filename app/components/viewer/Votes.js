@@ -116,7 +116,9 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
 
   useEffect(() => {
     if (slidePosition === 0) {
-      triggerOverlay('❌'); 
+      setTimeout(() => {
+        triggerOverlay('❌');
+    }, 2000);
       setSlidePosition(50);
       stopVideo(true);
 
