@@ -628,7 +628,6 @@ const Viewer = () => {
                     isInteractive={!!username} 
                     username={username}
                     nextUsername={nextUsername}
-                    stopVideo={stopVideo}
                 />
             ) : (
                 <div className='mt-2'>Nobody's live at the moment</div>
