@@ -210,9 +210,6 @@ const Viewer = () => {
             console.log("Timer ended for live user:", userId);
             setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, }));
             stopVideo(true);
-            if (userId === username) {
-                window.location.reload(); 
-            }
         }
     };
     
