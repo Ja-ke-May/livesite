@@ -52,8 +52,8 @@ const Viewer = () => {
         return () => cleanup();
     }, [username]);
 
-    // Disconnect live user and recconect after going live
-    useEffect(() => {
+     // Disconnect live user and recconect after going live
+     useEffect(() => {
         if (state.liveUserId === null && username) {
             console.log("Live user ID is null, disconnecting and reconnecting to reset state");
     
@@ -337,33 +337,26 @@ const Viewer = () => {
         console.log("Handling main feed update. Live user ID:", liveUserId);
         clearInterval(timerIntervalRef.current);
         setTimer(60);
-        
+    
         setState((prevState) => ({ ...prevState, liveUserId }));
+
+        if (mainVideoRef.current && liveUserId) {
+            const peerConnection = createPeerConnection(liveUserId);
+            peerConnection.ontrack = (event) => {
+                const stream = event.streams[0];
+
+               
+            mainVideoRef.current.srcObject = stream;
+            mainVideoRef.current.onloadeddata = () => {
+                mainVideoRef.current.play().catch((error) => {
+                    console.error("Error trying to play video:", error);
+                });
+            };
+        };
+        socket.current.emit("request-offer", liveUserId);
+    }
+};
     
-        if (mainVideoRef.current) {
-            if (mainVideoRef.current.srcObject) {
-                // Stop previous video stream
-                mainVideoRef.current.pause();
-                mainVideoRef.current.srcObject = null;
-                console.log("Previous video stream stopped");
-            }
-    
-            if (liveUserId) {
-                const peerConnection = createPeerConnection(liveUserId);
-                peerConnection.ontrack = (event) => {
-                    const stream = event.streams[0];
-                    mainVideoRef.current.srcObject = stream;
-                    mainVideoRef.current.onloadeddata = () => {
-                        mainVideoRef.current.play().catch((error) => {
-                            console.error("Error trying to play video:", error);
-                        });
-                    };
-                };
-                socket.current.emit("request-offer", liveUserId);
-            }
-        }
-    };
-     
 
     const createPeerConnection = (id) => {
         const peerConnection = new RTCPeerConnection({
@@ -514,31 +507,22 @@ const Viewer = () => {
     
         // Stop all media tracks and clear the stream reference
         if (streamRef.current) {
-            streamRef.current.getTracks().forEach((track) => {
-                track.stop();
-                console.log(`Stopped track: ${track.kind}`);
-            });
+            streamRef.current.getTracks().forEach((track) => track.stop());
             streamRef.current = null;
         }
     
         // Clear the user's own video feed but keep the video element available for viewing others
         if (mainVideoRef.current && state.liveUserId === username) {
-            mainVideoRef.current.pause();
             mainVideoRef.current.srcObject = null;
-            console.log("Cleared the video element");
         }
     
-          // Detach media tracks from peer connections but don't close them
-    if (isLiveUser) {
-        Object.values(peerConnections.current).forEach((pc) => {
-            pc.getSenders().forEach(sender => {
-                if (sender.track) {
-                    sender.track.stop();
-                    pc.removeTrack(sender);
-                    console.log("Stopped and removed media track from peer connection");
-                }
+        // Close all peer connections related to the current user's broadcasting
+        if (isLiveUser) {
+            Object.values(peerConnections.current).forEach((pc) => {
+                pc.close();
             });
-        });
+            peerConnections.current = {};
+    
             if (socket.current) {
                 socket.current.emit("stop-live", username);
                 socket.current.emit("set-initial-vote", 50);
