@@ -573,10 +573,11 @@ const Viewer = () => {
                     return prevTimer - 1;
                 });
             }, 1000);
-    
-            socket.current.emit("go-live", username); 
+            
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
+            socket.current.emit("go-live", username); 
+            
         }
     };
 

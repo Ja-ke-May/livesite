@@ -188,7 +188,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
         <div className="flex justify-center items-center relative">
           <div className="h-4 w-full bg-gradient-to-r from-red-700 to-yellow-400 brightness-125 rounded"></div>
           <div
-            className="mt-2 h-6 md:h-10 bg-white rounded w-2 md:w-4 border border-black absolute top-0 transform -translate-y-2/4"
+            className="mt-2 h-6 md:h-10 bg-white rounded w-2 md:w-4 border border-black absolute top-0 transform -translate-y-2/4 transition-all duration-200 linear"
             style={{ left: `calc((100% - 4px) * ${slidePosition / 100})` }}
           ></div>
         </div>
