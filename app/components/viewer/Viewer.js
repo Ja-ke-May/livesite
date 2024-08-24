@@ -212,7 +212,10 @@ const Viewer = () => {
 
             stopVideo(true);
             
-            
+            if (username === userId) {
+                // Reload the window for the user who was just live
+                window.location.reload();
+            }
         }
       
     };
@@ -321,45 +324,21 @@ const Viewer = () => {
     };
 
     const handleMainFeed = async (liveUserId) => {
+       
         console.log("Handling main feed update. Live user ID:", liveUserId);
-    
-        if (state.liveUserId && (state.liveUserId !== liveUserId || !liveUserId)) {
-            // If the current user was live and is now being replaced or there's no one in the queue
-            if (username === state.liveUserId) {
-                console.log(`Reloading window for user: ${username} as they are no longer live`);
-                window.location.reload();
-                return; // Stop further execution as the window will reload
-            } 
-        }
-    
-        // Clear the previous timer if there's any
         clearInterval(timerIntervalRef.current);
         setTimer(60);
-    
-        if (liveUserId) {
-            // Update state with the new live user ID
-            setState((prevState) => ({ ...prevState, liveUserId }));
-    
-            // If there's a live user, start the video stream
-            if (mainVideoRef.current) {
-                const peerConnection = createPeerConnection(liveUserId);
-                peerConnection.ontrack = (event) => {
-                    mainVideoRef.current.srcObject = event.streams[0];
-                    if (state.autoplayAllowed) {
-                        mainVideoRef.current.play().catch(console.error);
-                    }
-                };
-                socket.current.emit("request-offer", liveUserId);
-            }
-        } else {
-            // If no one is live, clear the video stream
-            console.log("No one is live, stopping video playback.");
-            setState((prevState) => ({ ...prevState, liveUserId: null }));
-    
-            if (mainVideoRef.current) {
-                mainVideoRef.current.pause();
-                mainVideoRef.current.srcObject = null;
-            }
+
+        setState((prevState) => ({ ...prevState, liveUserId }));
+        if (mainVideoRef.current && liveUserId) {
+            const peerConnection = createPeerConnection(liveUserId);
+            peerConnection.ontrack = (event) => {
+                mainVideoRef.current.srcObject = event.streams[0];
+                if (state.autoplayAllowed) {
+                    mainVideoRef.current.play().catch(console.error);
+                }
+            };
+            socket.current.emit("request-offer", liveUserId);
         }
     };
     
