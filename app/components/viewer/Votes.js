@@ -111,9 +111,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       stopVideo(true);
 
       if (previousLiveUserIdRef.current === username && nextUsername !== username) {
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000); // 2000ms delay (2 seconds)
+        window.location.reload(2000);
       }
 
       socket.emit("stop-live", username);
@@ -122,7 +120,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       triggerStars();
     }
     previousLiveUserIdRef.current = liveUserId;
-  }, [slidePosition, setSlidePosition, triggerOverlay, socket, username, liveUserId, nextUsername]);
+  }, [slidePosition, setSlidePosition, triggerOverlay, socket, username, liveUserId, nextUsername, stopVideo]);
 
   const triggerStars = () => {
     setStars([]);
