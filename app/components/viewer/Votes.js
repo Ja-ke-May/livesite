@@ -112,7 +112,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       setSlidePosition(50);
       triggerStars();
     }
-  }, [slidePosition, reloadViewer, setSlidePosition, triggerOverlay, socket, username]);
+  }, [slidePosition, setSlidePosition, triggerOverlay, socket, username]);
 
   const triggerStars = () => {
     setStars([]);
