@@ -173,7 +173,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
   return (
     <div className="mt-1 w-full text-center flex justify-between items-center relative">
       <span
-        className={`text-red-700 text-2xl pl-2 md:pl-10 brightness-125 cursor-pointer ${isPulsing && clickedIcon === 'cross' ? 'animate-pulse' : ''} ${isInteractive ? 'opacity-100' : 'opacity-10'}`}
+        className={`text-red-700 text-2xl pl-2 md:pl-10 brightness-125 cursor-pointer ${isPulsing && clickedIcon === 'cross' ? 'animate-pulse' : ''} ${isInteractive ? 'opacity-100' : 'opacity-50'}`}
         onClick={isInteractive ? handleClickCross : null}
       >
         ❌
@@ -188,7 +188,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
         </div>
       </div>
       <span
-        className={`text-yellow-400 brightness-125 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer ${isPulsing && clickedIcon === 'star' ? 'animate-pulse' : ''} ${isInteractive ? 'opacity-100' : 'opacity-10'}`}
+        className={`text-yellow-400 brightness-125 text-3xl pl-2 pr-2 md:pr-10 cursor-pointer ${isPulsing && clickedIcon === 'star' ? 'animate-pulse' : ''} ${isInteractive ? 'opacity-100' : 'opacity-50'}`}
         onClick={isInteractive ? handleClickStar : null}
       >
         ⭐
