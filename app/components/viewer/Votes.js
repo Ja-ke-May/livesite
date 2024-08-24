@@ -45,6 +45,16 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
     }
   }, [socket, setSlidePosition, setSlidePositionAmount]);
 
+  useEffect(() => {
+    if (liveUserId === null) {
+      setSlidePosition(50);
+      setSlidePositionAmount(5);
+    } else if (liveUserId) {
+      setSlidePosition(50);
+      setSlidePositionAmount(5);
+    }
+  }, [liveUserId, setSlidePosition, setSlidePositionAmount]);
+
   const handleClickCross = () => {
     if (!isInteractive) return;
     if (hasVoted) {
