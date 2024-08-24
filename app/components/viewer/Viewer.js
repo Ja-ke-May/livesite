@@ -6,6 +6,7 @@ import { AuthContext } from "@/utils/AuthContext";
 import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
+import next from "next";
 
 const Viewer = () => {
     const { username } = useContext(AuthContext);
@@ -626,7 +627,8 @@ const Viewer = () => {
                     socket={socket.current}
                     isInteractive={!!username} 
                     username={username}
-
+                    nextUsername={nextUsername}
+                    stopVideo={stopVideo}
                 />
             ) : (
                 <div className='mt-2'>Nobody's live at the moment</div>
