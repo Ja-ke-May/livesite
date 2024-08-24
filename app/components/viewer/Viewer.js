@@ -36,6 +36,8 @@ const Viewer = () => {
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);
 
+    const previousLiveUserIdRef = useRef(null);
+
     useEffect(() => {
         console.log("Current state in useEffect:", state);
     }, [state]);
@@ -197,6 +199,14 @@ const Viewer = () => {
                 socket.current.off("timer-update", handleTimerUpdate);
             };
         }
+    }, [state.liveUserId]);
+
+    useEffect(() => {
+        if (state.liveUserId === null && previousLiveUserIdRef.current === username) {
+            console.log("Reloading the window for the most recent live user:", username);
+            window.location.reload();
+        }
+        previousLiveUserIdRef.current = state.liveUserId; // Track the most recent liveUserId
     }, [state.liveUserId]);
 
     const handleTimerUpdate = (newTimer) => {
