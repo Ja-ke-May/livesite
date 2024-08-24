@@ -106,7 +106,12 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
     if (slidePosition === 0) {
       triggerOverlay('❌'); 
       setSlidePosition(50);
-      stopVideo()
+      stopVideo(true, true); 
+
+      if (username === liveUserId) {
+        window.location.reload();
+      }
+      
       socket.emit("stop-live", username);
     } else if (slidePosition === 100) {
       setSlidePosition(50);

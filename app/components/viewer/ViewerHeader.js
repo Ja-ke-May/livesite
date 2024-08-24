@@ -36,9 +36,9 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
   );
 
   const onLeaveClick = () => {
-      stopVideo();
+    stopVideo();
+    window.location.reload();
   };
-
   return (
     <div className="mt-2 mb-2 h-8 bg-yellow-400 w-full font-bold text-md md:text-md text-center text-[#000110] brightness-125 rounded relative">
       {state.isCameraOn ? (
