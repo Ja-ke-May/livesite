@@ -202,12 +202,13 @@ const Viewer = () => {
     }, [state.liveUserId]);
 
     useEffect(() => {
-        if (state.liveUserId === null && previousLiveUserIdRef.current === username) {
+        if (state.liveUserId === null && previousLiveUserIdRef.current === username && previousLiveUserIdRef.current !== null) {
             console.log("Reloading the window for the most recent live user:", username);
             window.location.reload();
         }
+    
         previousLiveUserIdRef.current = state.liveUserId; // Track the most recent liveUserId
-    }, [state.liveUserId]);
+    }, [state.liveUserId, username]);
 
     const handleTimerUpdate = (newTimer) => {
         console.log("Handling timer update. New timer value:", newTimer);
