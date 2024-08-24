@@ -7,7 +7,7 @@ import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
 
-const Viewer = () => {
+const Viewer = ({ reloadViewer }) => {
     const { username } = useContext(AuthContext);
     const isGuest = !username;
     
@@ -209,8 +209,14 @@ const Viewer = () => {
         if (userId === state.liveUserId) {
             console.log("Timer ended for live user:", userId);
             setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, }));
+
             stopVideo(true);
+            
+            if (reloadViewer) {
+                reloadViewer();
+            }
         }
+      
     };
     
     const handleNewPeer = async (id) => {
@@ -561,10 +567,6 @@ const Viewer = () => {
         }, 2000);
     };
 
-    const handleZeroVotes = () => {
-        stopVideo(); 
-    };
-
     return (
         <>
             <ViewerHeader
@@ -574,6 +576,7 @@ const Viewer = () => {
                 stopVideo={stopVideo} 
                 showQueueAlert={showQueueAlert} 
                 queuePosition={queuePosition}
+                reloadViewer={reloadViewer}
             />
             <div className="group"> 
                 <ViewerMain
@@ -594,7 +597,6 @@ const Viewer = () => {
 
             {state.liveUserId ? (
                 <Votes
-                    onZeroVotes={handleZeroVotes}
                     slidePosition={slidePosition}
                     slidePositionAmount={slidePositionAmount}
                     setSlidePosition={setSlidePosition}
@@ -604,6 +606,7 @@ const Viewer = () => {
                     socket={socket.current}
                     isInteractive={!!username} 
                     username={username}
+                    reloadViewer={reloadViewer}
                 />
             ) : (
                 <div className='mt-2'>Nobody's live at the moment</div>
