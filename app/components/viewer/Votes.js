@@ -47,13 +47,16 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
 
   useEffect(() => {
     if (liveUserId === null) {
-      setSlidePosition(50);
-      setSlidePositionAmount(5);
+        setSlidePosition(50);
+        setSlidePositionAmount(5);
     } else if (liveUserId) {
-      setSlidePosition(50);
-      setSlidePositionAmount(5);
+        setSlidePosition(50);
+        setSlidePositionAmount(5);
+        setClickedIcon(null);
+        setHasVoted(false);
+        setIsPulsing(false);
     }
-  }, [liveUserId, setSlidePosition, setSlidePositionAmount]);
+}, [liveUserId, setSlidePosition, setSlidePositionAmount]);
 
   const handleClickCross = () => {
     if (!isInteractive) return;
@@ -116,13 +119,17 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
 
   useEffect(() => {
     if (slidePosition === 0) {
-      triggerOverlay('❌'); 
+      if (previousLiveUserIdRef.current !== liveUserId) {
+        triggerOverlay('❌');
+    }
       setSlidePosition(50);
       stopVideo(true);
 
       if (previousLiveUserIdRef.current === username && nextUsername !== username) {
-        window.location.reload(2000);
-      }
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000); 
+    }
     } else if (slidePosition === 100) {
       setSlidePosition(50);
       triggerStars();
