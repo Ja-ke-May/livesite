@@ -209,7 +209,9 @@ const Viewer = () => {
             nextUsername !== username // Prevent refresh if the user is the next live user
         ) {
             console.log("Reloading the window for the most recent live user:", username);
-            window.location.reload();
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         }
     
         previousLiveUserIdRef.current = state.liveUserId; // Track the most recent liveUserId
