@@ -33,7 +33,7 @@ const ProfileContent = ({ profileUsername }) => {
           fetchRecentActivity(profileUsername)
         ]);
 
-        setProfilePicture(response.profilePicture ? `data:image/jpeg;base64,${response.profilePicture}` : '/images/logo.jpg');
+        setProfilePicture(userProfile.profilePicture ? `data:image/jpeg;base64,${userProfile.profilePicture}` : '/images/logo.jpg');
         setBio(userProfile.bio || `Hi, I'm ${userProfile.userName}! Welcome to my profile 😊`);
         setLinks(userProfile.links || []);
         setTokens(userProfile.tokens || 0);
