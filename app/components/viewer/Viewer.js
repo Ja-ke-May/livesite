@@ -37,12 +37,15 @@ const Viewer = () => {
     const previousLiveUserIdRef = useRef(null);
 
     useEffect(() => {
+        console.log("Current state in useEffect:", state);
     }, [state]);
 
     useEffect(() => {
         if (isGuest) {
+            console.log("User is a guest, limited features available.");
             initializeSocket();
         } else {
+            console.log("Authenticated user:", username);
             initializeSocket();
         }
     
@@ -60,13 +63,18 @@ const Viewer = () => {
         });
 
         socket.current.on("connect", () => {
+            console.log(`Connected with socket ID: ${socket.current.id}`);
             
             if (username) {
+                console.log(`Registering username: ${username}`);
                 socket.current.emit("register-user", username);
-            } 
+            } else {
+                console.log("Connected as a guest.");
+            }
         });
 
         socket.current.on("join-queue", () => {
+            console.log("Received join-queue event");
             handleJoinQueue();
         });
 
@@ -84,6 +92,8 @@ const Viewer = () => {
         socket.current.on("timer-end", handleTimerEnd);
 
         socket.current.on("stop-live", () => {
+            console.log("Received 'stop-live'");
+            // Only reset state if the live user matches
             if (state.liveUserId === username) {
                 setState((prevState) => ({
                     ...prevState,
@@ -102,10 +112,12 @@ const Viewer = () => {
         });
 
         socket.current.on("up-next-update", (nextUser) => {
+            console.log("Received up-next-update event with next user:", nextUser);
             setNextUsername(nextUser);  
         });
 
         socket.current.on("go-live-prompt", () => {
+            console.log("Received 'go-live-prompt', setting isNext to true");
             setState((prevState) => ({
                 ...prevState,
                 isNext: true,
@@ -123,6 +135,7 @@ const Viewer = () => {
         });
 
         socket.current.on("go-live", () => {
+            console.log("Received 'go-live' event");
             setState((prevState) => ({ ...prevState, isNext: true }));
         });
 
@@ -133,9 +146,11 @@ const Viewer = () => {
             });
         
             mainVideoRef.current.srcObject = null;
+            console.log("Cleaned up all connections");
         });
 
         socket.current.on("reset-state", () => {
+            console.log("Received 'reset-state' event, resetting the user's state.");
             setState({
                 isPopUpOpen: false,
                 isCameraOn: false,
@@ -150,7 +165,9 @@ const Viewer = () => {
         
 
         socket.current.on("queue-position-update", (position) => {
+            console.log("Received queue-position-update event with position:", position);
             setQueuePosition(position);
+            console.log("Queue position state updated to:", position);
     
             if (position === 1) {
                 setState((prevState) => ({
@@ -187,25 +204,32 @@ const Viewer = () => {
             state.liveUserId === null && 
             previousLiveUserIdRef.current === username && 
             previousLiveUserIdRef.current !== null &&
-            nextUsername !== username 
+            nextUsername !== username // Prevent refresh if the user is the next live user
         ) {
-            window.location.reload();
+            console.log("Reloading the window for the most recent live user:", username);
+            
+                window.location.reload();
+           
         }
-        previousLiveUserIdRef.current = state.liveUserId; 
+    
+        previousLiveUserIdRef.current = state.liveUserId; // Track the most recent liveUserId
     }, [state.liveUserId, username, nextUsername]);
 
     const handleTimerUpdate = (newTimer) => {
+        console.log("Handling timer update. New timer value:", newTimer);
         clearInterval(timerIntervalRef.current);
         setTimer(newTimer);
     };
 
     const handleTimerEnd = (userId) => {
         if (userId === state.liveUserId) {
+            console.log("Timer ended for live user:", userId);
             setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, }));
 
             stopVideo(true);
             
             if (username === userId) {
+                // Reload the window for the user who was just live
                 window.location.reload();
             }
         }
@@ -245,7 +269,9 @@ const Viewer = () => {
             const peerConnection = peerConnections.current[id];
             
             if (peerConnection && peerConnection.signalingState === "have-local-offer") {
-                await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));                
+                await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+                console.log(`Successfully set remote description for peer: ${id}`);
+                
                 handleRemoteDescriptionSet(peerConnection);
             } else {
                 console.warn(`Peer connection is not in the correct state to accept an answer for peer: ${id}`);
@@ -282,6 +308,7 @@ const Viewer = () => {
     };
 
     const handlePeerDisconnected = (id) => {
+        console.log(`Peer disconnected with ID: ${id}`);
         const peerConnection = peerConnections.current[id];
         
         if (peerConnection) {
@@ -292,6 +319,7 @@ const Viewer = () => {
     
 
     const handleJoinQueue = () => {
+        console.log("Handling join queue. Resetting isNext to false.");
         setState((prevState) => ({
             ...prevState,
             inQueue: true, 
@@ -299,6 +327,7 @@ const Viewer = () => {
         }));
         if (username) {
             socket.current.emit("check-queue-position", username, (position) => {
+                console.log("Position received from check-queue-position:", position);
                 setQueuePosition(position);
                 if (position === 1) {
                     setState((prevState) => ({
@@ -312,6 +341,7 @@ const Viewer = () => {
 
     const handleMainFeed = async (liveUserId) => {
        
+        console.log("Handling main feed update. Live user ID:", liveUserId);
         clearInterval(timerIntervalRef.current);
         setTimer(60);
 
@@ -357,6 +387,7 @@ const Viewer = () => {
     };
 
     const cleanup = () => {
+        console.log("Cleaning up Viewer component.");
         Object.values(peerConnections.current).forEach((pc) => pc.close());
     
         if (socket.current) {
@@ -374,7 +405,7 @@ const Viewer = () => {
     }, []);
 
     useEffect(() => {
-        const handleBeforeUnload = () => {
+        const handleBeforeUnload = (event) => {
             stopVideo();
         };
 
@@ -387,18 +418,22 @@ const Viewer = () => {
     
 
     const handleJoinClick = () => {
+        console.log("Handling join click.");
     
         if (state.inQueue) {
+            console.log("Alert: User is already in the queue.");
             setShowQueueAlert(true);
             setTimeout(() => {
                 setShowQueueAlert(false);
             }, 2000);
         } else if (state.isLive) {
+            console.log("Alert: User is currently live.");
             setShowQueueAlert(true);
             setTimeout(() => {
                 setShowQueueAlert(false);
             }, 2000); 
         } else if (state.liveUserId === username) {
+            console.log("Alert: User is the current live user.");
             setShowQueueAlert(true);
             setTimeout(() => {
                 setShowQueueAlert(false);
@@ -407,30 +442,36 @@ const Viewer = () => {
             if (username) {
                 socket.current.emit("check-username", username, (exists) => {
                     if (exists) {
+                        console.log("Alert: Username is already in the queue or currently live.");
                         setShowQueueAlert(true);
                         setTimeout(() => {
                             setShowQueueAlert(false);
                         }, 2000);
                     } else {
+                        console.log("Username is available, opening pop-up to join the queue.");
                         setState((prevState) => ({ ...prevState, isPopUpOpen: true }));
                     }
                 });
             } else {
+                console.log("No username provided, opening pop-up to join the queue.");
                 setState((prevState) => ({ ...prevState, isPopUpOpen: true }));
             }
         }
     };
     
     const handleUserDecisionToJoinQueue = (isFastPass = false) => {
+        console.log("User decided to join the queue.");
        
     
         if (username) {
             socket.current.emit("check-username", username, (exists) => {
                 if (!exists) {
+                    console.log("Username is not in use, joining the queue.");
                     setState((prevState) => ({ ...prevState, inQueue: true }));
                     socket.current.emit("join-queue", { username, isFastPass }); 
                     
                 } else {
+                    console.log("Alert: Username is already in the queue or currently live.");
                     setState((prevState) => ({ ...prevState, inQueue: false }));
                     setShowQueueAlert(true);
 
@@ -444,6 +485,7 @@ const Viewer = () => {
     
 
     const handleClosePopUp = () => {
+        console.log("Closing popup.");
         setState((prevState) => ({ ...prevState, isPopUpOpen: false }));
     };
 
@@ -461,11 +503,13 @@ const Viewer = () => {
           });
       };
 
-      const stopVideo = ( isLiveUser = false) => {
+      const stopVideo = (isTimerEnd = false, isLiveUser = false) => {
+        console.log("Stopping video and resetting state. Timer was:", timer);
     
         if (streamRef.current) {
             streamRef.current.getTracks().forEach((track) => {
-                track.stop();  
+                track.stop();  // Stop each track to ensure the camera is turned off
+                console.log(`Track of kind ${track.kind} stopped.`);
             });
             streamRef.current = null;
         }
@@ -494,8 +538,14 @@ const Viewer = () => {
                 autoplayAllowed: true,
                 liveUserId: null,
             });
+    
+            if (isTimerEnd) {
+                console.log("Resetting state because the timer ended.");
+            }
         } else {
+            console.log("Stop video called, but no state reset will occur as the user is not the live user.");
         }
+        console.log("Video stopped successfully.");
     };
     
 
@@ -503,6 +553,7 @@ const Viewer = () => {
 
     const handleGoLiveClick = () => {
         if (!state.isLive) {
+            console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current);
             setTimer(60);
             setState((prevState) => ({ 
