@@ -248,9 +248,9 @@ export const awardTokens = async (username, amount) => {
 export const reportUser = async (username, reportText) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.post('/report', {
+    const response = await axiosInstance.post('/report', { 
       username,
-      reportText,
+      content: reportText, 
     }, {
       headers: {
         'Authorization': `Bearer ${token}`,
