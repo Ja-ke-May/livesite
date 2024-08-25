@@ -14,8 +14,8 @@ const UserCommentBox = ({ username, comment, time }) => {
 
   const togglePopup = () => {
     const fixedPosition = {
-      x: 20, 
-      y: window.innerHeight - 300, 
+      x: 0, 
+      y: 0, 
     };
     setPopupPosition(fixedPosition); 
     setShowPopup(!showPopup);
