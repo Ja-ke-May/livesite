@@ -11,7 +11,6 @@ const SendTokensPopUp = forwardRef(({ visible, onClose, recipientUsername }, ref
     contains: (element) => popupRef.current.contains(element),
   }));
 
-  // Function to increment the token amount
   const incrementTokenCount = () => {
     setTokenAmount(prev => prev + 1);
   };
@@ -21,7 +20,6 @@ const SendTokensPopUp = forwardRef(({ visible, onClose, recipientUsername }, ref
     try {
       setErrorMessage('');
       await sendTokens(recipientUsername, tokenAmount);
-      console.log(`Sent ${tokenAmount} tokens to ${recipientUsername}`);
       onClose();
     } catch (error) {
       console.error('Failed to send:', error);

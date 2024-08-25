@@ -14,14 +14,11 @@ const LogInForm = ({ setShowForgotPasswordModal }) => {
     setIsLoading(true);
 
     try {
-      // Normalize email to lowercase
       const normalizedEmail = email.toLowerCase();
-      console.log('Login attempt with email:', normalizedEmail);
       const data = await apiLogin({ email: normalizedEmail, password });
-      // Store the token and username
       login(data.token, data.username);
       setErrorMessage('');
-      window.location.href = `/profile/${data.username}`; // Redirect to /profile/<username> after successful login
+      window.location.href = `/profile/${data.username}`; 
     } catch (error) {
       console.error('Login error:', error.message);
       setErrorMessage(error.message || 'An unknown error occurred');

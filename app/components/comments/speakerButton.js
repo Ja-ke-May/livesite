@@ -16,10 +16,7 @@ const SpeakerButton = ({ isLoggedIn }) => {
     popupRef.current.openPopup();
   };
 
-  const handlePopupClose = (confirm) => {
-    if (confirm) {
-      console.log(`${action} confirmed, costs 100 tokens`);
-    }
+  const handlePopupClose = () => {
     setAction(null);
   };
 

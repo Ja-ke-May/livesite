@@ -19,13 +19,12 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-          body: JSON.stringify({ comment: comment.trim(), username }), // Include username in the request
+          body: JSON.stringify({ comment: comment.trim(), username }), 
         });
   
         if (response.ok) {
-          console.log('Comment submitted:', comment);
-          socket.emit('new-comment', { username, comment }); // Emit to server with username
-          setComment(''); // Clear the input field
+          socket.emit('new-comment', { username, comment });
+          setComment(''); 
         } else {
           console.error('Failed to submit comment');
         }

@@ -22,7 +22,6 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
     if (confirm) {
       try {
         await deductTokens(100); 
-        console.log('100 tokens deducted for Fast Pass');
         onJoin(true); 
         onClose(); 
       } catch (error) {
@@ -36,9 +35,8 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
   };
 
   const handleJoinForFreeClick = () => {
-    console.log('User joined for free');
-    onJoin(); // Show the preview button
-    onClose(); // Close the main popup after joining for free
+    onJoin(); 
+    onClose(); 
   };
 
   if (!visible && !confirmVisible) return null;

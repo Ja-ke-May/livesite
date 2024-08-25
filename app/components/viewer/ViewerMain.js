@@ -18,7 +18,6 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
   const usernameRef = useRef(null);
 
   useEffect(() => {
-    console.log("upNext updated:", upNext);
   }, [upNext]);
 
   useEffect(() => {
@@ -134,7 +133,6 @@ useEffect(() => {
       <h2 className="hidden">Live Viewer Component</h2>
       <video ref={mainVideoRef} autoPlay muted={isMuted} className="w-full h-full object-cover" />
 
-      {/* Display the live user's username */}
       {state.liveUserId && (
         <div>
           <div className="absolute top-2 left-2 bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
@@ -153,8 +151,8 @@ useEffect(() => {
               onClose={togglePopup} 
               username={state.liveUserId} 
               position={popupPosition}
-              links={links}  // Pass the fetched links
-              isUserSupported={isUserSupported}  // Pass the supported status
+              links={links} 
+              isUserSupported={isUserSupported} 
               onToggleSupport={handleToggleSupport} 
             />
           )}
@@ -162,7 +160,6 @@ useEffect(() => {
         </div>
       )}
 
-         {/* Display the "Up Next" user when no one is live */}
          {!state.liveUserId && !state.isCameraOn && upNext && (
           <div>
         <div className="absolute inset-0 flex flex-col text-center items-center justify-center bg-[#000110] text-white text-sm md:text-md xl:text-lg p-2 rounded">
@@ -183,8 +180,8 @@ useEffect(() => {
              onClose={togglePopup} 
              username={upNext} 
              position={popupPosition}
-             links={links}  // Pass the fetched links
-             isUserSupported={isUserSupported}  // Pass the supported status
+             links={links}  
+             isUserSupported={isUserSupported}  
              onToggleSupport={handleToggleSupport} 
            />
          )}
@@ -192,7 +189,6 @@ useEffect(() => {
        </div>
       )}
 
-      {/* Conditionally render the "GO LIVE" button when the user is prompted to go live */}
       {state.isCameraOn && !state.isLive && !state.liveUserId && (
         <div className="absolute inset-0 flex items-center justify-center">
           <button
@@ -207,7 +203,6 @@ useEffect(() => {
         </div>
       )}
 
-      {/* Unmute Button */}
       {state.liveUserId && isMuted && (
         <button
           onClick={handleUnmuteClick}
@@ -217,7 +212,6 @@ useEffect(() => {
         </button>
       )}
 
-      {/* Volume Controls */}
       {state.liveUserId && showVolumeControls && (
         <div
           className={`absolute bottom-4 right-4 bg-none text-md rounded p-2 transition-opacity duration-300 ${

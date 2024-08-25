@@ -124,9 +124,9 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       stopVideo(true);
 
       if (previousLiveUserIdRef.current === username && nextUsername !== username) {
-        setTimeout(() => {
+        
             window.location.reload();
-        }, 2000); 
+       
     }
     } else if (slidePosition === 100) {
       setSlidePosition(50);

@@ -10,7 +10,7 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
     if (queuePosition === 1 && state.inQueue && !state.isCameraOn) {
       timer = setTimeout(() => {
         window.location.reload();
-      }, 30000); // refresh after 30 sec if preview button not clicked
+      }, 30000); 
     }
 
     return () => {

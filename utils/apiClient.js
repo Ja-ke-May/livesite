@@ -1,5 +1,3 @@
-// apiClient.js
-
 import axios from 'axios';
 
 const API_BASE_URL = 'https://livesite-backend.onrender.com';
@@ -13,7 +11,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// Signs up a new user by sending the user data to the backend.
 export const signup = async (userData) => {
   try {
     const response = await axiosInstance.post('/signup', userData);
@@ -28,20 +25,18 @@ export const login = async (credentials) => {
       const response = await axiosInstance.post('/login', credentials);
       const { token, username } = response.data;
       localStorage.setItem('token', token);
-      localStorage.setItem('username', username); // Store username in local storage
+      localStorage.setItem('username', username);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to log in');
     }
   };  
 
-// Logs out the user by removing the token from local storage.
 export const logout = () => {
   localStorage.removeItem('token');
 };
 
 
-// Fetches user profile.
 export const fetchUserProfile = async (username) => {
   try {
     const token = getToken();
@@ -56,7 +51,7 @@ export const fetchUserProfile = async (username) => {
   }
 };
 
-// Updates the user's username.
+
 export const updateUsername = async (newUsername) => {
   try {
     const token = getToken();
@@ -71,7 +66,7 @@ export const updateUsername = async (newUsername) => {
   }
 };
 
-// Updates the user's bio.
+
 export const updateBio = async (newBio) => {
   try {
     const token = getToken();
@@ -86,7 +81,7 @@ export const updateBio = async (newBio) => {
   }
 };
 
-// Fetches supporters count and user support status.
+
 export const fetchSupporters = async (username) => {
   try {
     const token = getToken();
@@ -100,7 +95,7 @@ export const fetchSupporters = async (username) => {
   }
 };
 
-// Toggles the support status.
+
 export const toggleSupport = async (username) => {
   try {
     const token = getToken();
@@ -113,7 +108,7 @@ export const toggleSupport = async (username) => {
   }
 };
 
-// Add a new link.
+
 export const addLink = async (link) => {
   try {
     const token = getToken();
@@ -137,7 +132,7 @@ export const addLink = async (link) => {
   }
 };
 
-// Delete a link.
+
 export const deleteLink = async (linkId) => {
   try {
     const token = getToken();
@@ -165,7 +160,7 @@ export const fetchRecentActivity = async (username) => {
   }
 };
 
-// Updates the user's profile picture.
+
 export const updateProfilePicture = async (file) => {
   try {
     const token = getToken();
@@ -186,7 +181,6 @@ export const updateProfilePicture = async (file) => {
 };
 
 
-// main 
 
 export const fetchOnlineUsers = async () => {
   try {
@@ -197,7 +191,7 @@ export const fetchOnlineUsers = async () => {
   }
 };
 
-// Send Tokens
+
 
 export const sendTokens = async (recipientUsername, tokenAmount) => {
   try {
@@ -216,7 +210,7 @@ export const sendTokens = async (recipientUsername, tokenAmount) => {
   }
 };
 
-// Deduct Tokens
+
 export const deductTokens = async (amount) => {
   try {
     const token = getToken();
@@ -233,7 +227,7 @@ export const deductTokens = async (amount) => {
   }
 };
 
-// Award Tokens to a User
+
 export const awardTokens = async (username, amount) => {
   try {
     const token = getToken();

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { signup } from '@/utils/apiClient';
 
-// Utility functions
 const isValidUsername = (username) => /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]*$/.test(username);
 
 const validatePassword = (password) => {
@@ -32,7 +31,6 @@ const calculateAge = (dob) => {
   return age;
 };
 
-// Add debounce function
 const debounce = (func, delay) => {
   let timer;
   return (...args) => {
@@ -53,7 +51,6 @@ const SignUpForm = () => {
   const [usernameAvailable, setUsernameAvailable] = useState(true);
   const [usernameChecking, setUsernameChecking] = useState(false);
 
-  // Function to check username availability
   const checkUsernameAvailability = debounce(async (username) => {
     if (username.trim() === '') {
       setUsernameAvailable(true);
@@ -72,7 +69,7 @@ const SignUpForm = () => {
     } finally {
       setUsernameChecking(false);
     }
-  }, 500); // Debounce delay of 500ms
+  }, 500); 
 
   useEffect(() => {
     checkUsernameAvailability(userName);
@@ -83,28 +80,23 @@ const SignUpForm = () => {
 
     const errors = [];
 
-    // Validate terms acceptance
     if (!termsAccepted) {
       errors.push('Please accept the terms and conditions.');
     }
 
-    // Validate username for allowed characters
     if (!isValidUsername(userName)) {
       errors.push("Username can only contain letters, numbers, and special characters.");
     }
 
-    // Check username availability
     if (!usernameAvailable) {
       errors.push('Username is already taken.');
     }
 
-    // Validate age based on DOB
     const age = calculateAge(dob);
     if (age < 18) {
       errors.push('You must be at least 18 years old to sign up.');
     }
 
-    // Validate password and confirm password
     if (password !== confirmPassword) {
       errors.push('Passwords do not match.');
     }
@@ -128,7 +120,6 @@ const SignUpForm = () => {
       setSuccessMessage('');
     }
 
-    // Reset form fields
     setEmail('');
     setPassword('');
     setConfirmPassword('');
