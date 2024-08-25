@@ -87,9 +87,10 @@ const ProfileContent = ({ profileUsername }) => {
     if (file) {
       try {
         const response = await updateProfilePicture(file);
-        setProfilePicture(response.profilePicture || '/images/logo.jpg');
+        setProfilePicture(response.profilePicture ? `data:image/jpeg;base64,${response.profilePicture}` : '/images/logo.jpg');
       } catch (error) {
         console.error('Failed to update profile picture:', error);
+        setProfilePicture('/images/logo.jpg');
       }
     }
   }, []);
