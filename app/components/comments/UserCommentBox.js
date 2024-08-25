@@ -62,12 +62,12 @@ const UserCommentBox = ({ username, comment, time }) => {
   return (
     <>
       <div className="relative"> 
-        <div className="flex flex-col bg-gray-800/80 text-white p-2 m-2 lg:m-4 lg:p-4 rounded-md shadow-md z-[100]">
-          <div className='flex max-w-[100%] break-words overflow-wrap'>
+        <div className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]">
+          <div className='flex max-w-[100%] overflow-wrap'>
             <h3 id={`username-${username}`} className="font-bold cursor-pointer" onClick={togglePopup}>
               {username}
             </h3>
-            <p className="ml-2 break-word">{comment}</p>
+            <p className="ml-2 break-words break-word">{comment}</p>
           </div>
           <div className="flex justify-end mt-2">
             <h4 className="text-gray-400 text-xs">{time}</h4>
