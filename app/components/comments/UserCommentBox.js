@@ -67,7 +67,7 @@ const UserCommentBox = ({ username, comment, time }) => {
             <h3 id={`username-${username}`} className="text-md font-bold cursor-pointer" onClick={togglePopup}>
               {username}
             </h3>
-            <p className="text-sm text-left ml-2 break-words break-all">{comment}</p>
+            <p className="text-sm text-left mt-2 ml-2 break-words break-all">{comment}</p>
           </div>
           <div className="flex justify-end">
             <h4 className="text-gray-400 text-xs">{time}</h4>
