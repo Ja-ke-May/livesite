@@ -600,6 +600,7 @@ const Viewer = () => {
                     handleGoLiveClick={handleGoLiveClick}
                     liveUserId={state.liveUserId || username}
                     upNext={nextUsername}
+                    username={username}
                 />
             </div>
             <LiveQueuePopUp
