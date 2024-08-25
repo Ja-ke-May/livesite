@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
-const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId }) => {
+const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId, username }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [showVolumeControls, setShowVolumeControls] = useState(false);
   const [volume, setVolume] = useState(0.5); 
@@ -67,6 +67,15 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
   const handleVolumeChange = (e) => {
     setVolume(e.target.value);
   };
+
+  useEffect(() => {
+    if (username === liveUserId) {
+      setVolume(0);
+      if (mainVideoRef.current) {
+        mainVideoRef.current.volume = 0;
+      }
+    }
+  }, [username, liveUserId, mainVideoRef]);
 
   const togglePopup = async (userId) => {
     setShowPopup(true);
