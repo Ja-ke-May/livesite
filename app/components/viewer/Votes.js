@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import { deductTokens, awardTokens } from '@/utils/apiClient';
 
-const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, triggerOverlay, socket, isInteractive, username, nextUsername, stopVideo }) => {
+const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, socket, isInteractive, username, nextUsername, stopVideo }) => {
   const [isPulsing, setIsPulsing] = useState(false);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
@@ -119,9 +119,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
 
   useEffect(() => {
     if (slidePosition === 0) {
-      if (previousLiveUserIdRef.current !== liveUserId) {
-        triggerOverlay('❌');
-    }
+     
       setSlidePosition(50);
       stopVideo(true);
 
@@ -135,7 +133,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       triggerStars();
     }
     previousLiveUserIdRef.current = liveUserId;
-  }, [slidePosition, setSlidePosition, triggerOverlay, socket, username, liveUserId, nextUsername, stopVideo]);
+  }, [slidePosition, setSlidePosition, socket, username, liveUserId, nextUsername, stopVideo]);
 
   const triggerStars = () => {
     setStars([]);

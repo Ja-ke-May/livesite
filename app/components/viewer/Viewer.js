@@ -22,8 +22,6 @@ const Viewer = () => {
         liveUserId: null,
     });
     const [timer, setTimer] = useState(60);
-    const [showOverlay, setShowOverlay] = useState(false);
-    const [overlayIcon, setOverlayIcon] = useState(null);
 
     const mainVideoRef = useRef(null);
     const streamRef = useRef(null);
@@ -583,13 +581,7 @@ const Viewer = () => {
         }
     };
 
-    const triggerOverlay = (icon) => {
-        setOverlayIcon(icon);
-        setShowOverlay(true);
-        setTimeout(() => {
-            setShowOverlay(false);
-        }, 2000);
-    };
+ 
 
     return (
         <>
@@ -625,7 +617,6 @@ const Viewer = () => {
                     setSlidePosition={setSlidePosition}
                     setSlidePositionAmount={setSlidePositionAmount}
                     liveUserId={state.liveUserId || username}
-                    triggerOverlay={triggerOverlay}
                     socket={socket.current}
                     isInteractive={!!username} 
                     username={username}
@@ -636,11 +627,6 @@ const Viewer = () => {
                 <div className='mt-2'>Nobody's live at the moment</div>
             )}
 
-            {showOverlay && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-                    <span className="text-red-700 text-9xl animate-pulse">{overlayIcon}</span>
-                </div>
-            )}
         </>
     );
 };
