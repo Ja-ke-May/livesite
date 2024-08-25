@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
+
 const UserCommentBox = ({ username, comment, time }) => {
   
   const [showPopup, setShowPopup] = useState(false);
@@ -12,18 +13,13 @@ const UserCommentBox = ({ username, comment, time }) => {
   const [recentActivity, setRecentActivity] = useState([]);
 
   const togglePopup = () => {
-    const positioningBox = document.getElementById('positioning-box');
-    if (positioningBox) {
-      const rect = positioningBox.getBoundingClientRect();
-      const fixedPosition = {
-        x: rect.left, 
-        y: rect.top,
-      };
-      setPopupPosition(fixedPosition);
-    }
-  
+    const fixedPosition = {
+      x: 20, 
+      y: window.innerHeight - 200, 
+    };
+    setPopupPosition(fixedPosition); 
     setShowPopup(!showPopup);
-  
+
     if (!showPopup) {
       loadData();
     }
@@ -66,7 +62,7 @@ const UserCommentBox = ({ username, comment, time }) => {
   return (
     <>
       <div className="relative"> 
-        <div id="positioning-box" className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]">
+        <div className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]">
           <div className='flex max-w-[100%] overflow-wrap'>
             <h3 id={`username-${username}`} className="font-bold cursor-pointer" onClick={togglePopup}>
               {username}
@@ -79,8 +75,8 @@ const UserCommentBox = ({ username, comment, time }) => {
         </div>
       </div>
 
-      {showPopup && (
-        <div style={{ position: 'absolute', top: popupPosition.y, left: popupPosition.x }}>
+      <div>
+        {showPopup && (
           <UsernamePopUp
             visible={showPopup}
             onClose={togglePopup}
@@ -89,9 +85,10 @@ const UserCommentBox = ({ username, comment, time }) => {
             links={links}
             isUserSupported={isUserSupported}
             onToggleSupport={handleToggleSupport}
+            style={{ position: 'fixed', bottom: '200px', left: '20px' }} 
           />
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };
