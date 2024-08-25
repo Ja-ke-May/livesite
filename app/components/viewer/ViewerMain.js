@@ -41,10 +41,10 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
         try {
           setProfilePicture(null);
           const userProfile = await fetchUserProfile(upNext);
-          setProfilePicture(userProfile.profilePicture || null);
+          setProfilePicture(userProfile.profilePicture ? `data:image/jpeg;base64,${userProfile.profilePicture}` : '/images/logo.jpg');
         } catch (error) {
           console.error('Failed to fetch user profile:', error);
-          setProfilePicture(null);
+          setProfilePicture('/images/logo.jpg');  
         }
       }
     };
@@ -176,7 +176,7 @@ useEffect(() => {
           
           {profilePicture && (
             <img
-              src={`data:image/jpeg;base64,${profilePicture}`}
+              src={profilePicture}
               alt="Profile Picture"
               className="max-w-40 max-h-40 rounded-[10%] mt-2"
             />
