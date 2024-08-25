@@ -13,7 +13,7 @@ const LinksSection = lazy(() => import('../components/Links'));
 
 const ProfileContent = ({ profileUsername }) => {
   const { isLoggedIn, username: loggedInUsername, isInitialized } = useContext(AuthContext);
-  const [profilePicture, setProfilePicture] = useState("");
+  const [profilePicture, setProfilePicture] = useState("/images/logo.jpg");
   const [bio, setBio] = useState('');
   const [links, setLinks] = useState([]);
   const [tokens, setTokens] = useState(0);
@@ -33,7 +33,7 @@ const ProfileContent = ({ profileUsername }) => {
           fetchRecentActivity(profileUsername)
         ]);
 
-        setProfilePicture(userProfile.profilePicture || "../../images/logo.jpg");
+        setProfilePicture(userProfile.profilePicture || "/images/logo.jpg");
         setBio(userProfile.bio || `Hi, I'm ${userProfile.userName}! Welcome to my profile 😊`);
         setLinks(userProfile.links || []);
         setTokens(userProfile.tokens || 0);
@@ -87,7 +87,7 @@ const ProfileContent = ({ profileUsername }) => {
     if (file) {
       try {
         const response = await updateProfilePicture(file);
-        setProfilePicture(response.profilePicture);
+        setProfilePicture(response.profilePicture || '/images/logo.jpg');
       } catch (error) {
         console.error('Failed to update profile picture:', error);
       }
