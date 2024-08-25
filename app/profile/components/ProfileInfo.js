@@ -120,7 +120,7 @@ const ProfileInfo = ({
         </div>
         <div className="flex flex-col items-center md:flex-row md:items-start mt-4">
           <img
-            src={profilePicture ? `data:image/jpeg;base64,${profilePicture}` : 'images/logo.jpg'}
+            src={profilePicture ? `data:image/jpeg;base64,${profilePicture}` : '../../../images/logo.jpg'}
             alt="Profile Picture"
             className="max-w-60 max-h-60 rounded-[10%] mb-4 md:mb-0 md:mr-6"
           />
