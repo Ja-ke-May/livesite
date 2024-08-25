@@ -28,8 +28,8 @@ const Viewer = () => {
     const peerConnections = useRef({});
     const socket = useRef(null);
     const timerIntervalRef = useRef(null);
-    const [slidePosition, setSlidePosition] = useState('');
-    const [slidePositionAmount, setSlidePositionAmount] = useState(''); 
+    const [slidePosition, setSlidePosition] = useState(50);
+    const [slidePositionAmount, setSlidePositionAmount] = useState(5); 
     const [showQueueAlert, setShowQueueAlert] = useState(false);
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);
@@ -201,6 +201,34 @@ const Viewer = () => {
             };
         }
     }, [state.liveUserId]); 
+
+    useEffect(() => {
+        if (state.liveUserId) {
+            socket.current.emit("request-current-position", state.liveUserId);
+
+            socket.current.on("vote-update", (newPosition) => {
+                setSlidePosition(newPosition);
+            });
+
+            socket.current.on("current-position", (currentPosition) => {
+                if (currentPosition !== null && currentPosition !== undefined) {
+                    setSlidePosition(currentPosition);
+                } else {
+                    setSlidePosition(50);
+                }
+            });
+
+            socket.current.on("current-slide-amount", (currentSlideAmount) => {
+                setSlidePositionAmount(currentSlideAmount);
+            });
+
+            return () => {
+                socket.current.off("vote-update");
+                socket.current.off("current-position");
+                socket.current.off("current-slide-amount");
+            };
+        }
+    }, [state.liveUserId, socket.current]);
 
     useEffect(() => {
         if (
