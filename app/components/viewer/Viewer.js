@@ -68,6 +68,9 @@ const Viewer = () => {
             if (username) {
                 console.log(`Registering username: ${username}`);
                 socket.current.emit("register-user", username);
+                if (state.liveUserId) {
+                    socket.current.emit("request-current-position", state.liveUserId);
+                }
             } else {
                 console.log("Connected as a guest.");
             }
@@ -197,7 +200,7 @@ const Viewer = () => {
                 socket.current.off("timer-update", handleTimerUpdate);
             };
         }
-    }, [state.liveUserId]);
+    }, [state.liveUserId]); 
 
     useEffect(() => {
         if (
