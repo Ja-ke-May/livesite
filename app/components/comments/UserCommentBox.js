@@ -13,17 +13,23 @@ const UserCommentBox = ({ username, comment, time }) => {
   const [recentActivity, setRecentActivity] = useState([]);
 
   const togglePopup = () => {
-    const fixedPosition = {
-      x: 0, 
-      y: 0, 
-    };
-    setPopupPosition(fixedPosition); 
+    const positioningBox = document.getElementById('positioning-box');
+    if (positioningBox) {
+      const rect = positioningBox.getBoundingClientRect();
+      const fixedPosition = {
+        x: rect.left, 
+        y: rect.top,
+      };
+      setPopupPosition(fixedPosition);
+    }
+  
     setShowPopup(!showPopup);
-
+  
     if (!showPopup) {
       loadData();
     }
   };
+  
 
   const loadData = async () => {
     try {
@@ -62,7 +68,7 @@ const UserCommentBox = ({ username, comment, time }) => {
   return (
     <>
       <div className="relative"> 
-        <div className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]">
+        <div id="positioning-box" className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]">
           <div className='flex max-w-[100%] overflow-wrap'>
             <h3 id={`username-${username}`} className="font-bold cursor-pointer" onClick={togglePopup}>
               {username}
@@ -76,19 +82,20 @@ const UserCommentBox = ({ username, comment, time }) => {
       </div>
 
       <div>
-        {showPopup && (
-          <UsernamePopUp
-            visible={showPopup}
-            onClose={togglePopup}
-            username={username}
-            position={popupPosition}
-            links={links}
-            isUserSupported={isUserSupported}
-            onToggleSupport={handleToggleSupport}
-            style={{ position: 'fixed', bottom: '200px', left: '20px' }} 
-          />
-        )}
-      </div>
+  {showPopup && (
+    <UsernamePopUp
+      visible={showPopup}
+      onClose={togglePopup}
+      username={username}
+      position={popupPosition}
+      links={links}
+      isUserSupported={isUserSupported}
+      onToggleSupport={handleToggleSupport}
+      style={{ position: 'fixed', top: popupPosition.y, left: popupPosition.x }} 
+    />
+  )}
+</div>
+
     </>
   );
 };
