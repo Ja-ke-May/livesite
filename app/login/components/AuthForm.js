@@ -23,7 +23,7 @@ const AuthFormContent = () => {
     <>
       <Navbar 
         isLoggedIn={isLoggedIn}
-        username={username} // Pass the username to Navbar
+        username={username}
         currentPath={currentPath}
         setCurrentPath={setCurrentPath}
       />

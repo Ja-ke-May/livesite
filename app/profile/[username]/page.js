@@ -49,7 +49,6 @@ const ProfileContent = ({ profileUsername }) => {
 
     loadUserProfile();
 
-    // Polling for recent activity updates every 10 seconds
     const intervalId = setInterval(async () => {
       try {
         const recentActivityData = await fetchRecentActivity(profileUsername);
@@ -57,7 +56,7 @@ const ProfileContent = ({ profileUsername }) => {
       } catch (error) {
         console.error('Failed to fetch recent activity:', error);
       }
-    }, 10000); // Polling interval in milliseconds
+    }, 10000); 
 
     return () => clearInterval(intervalId);
   }, [profileUsername, isInitialized]);
@@ -124,8 +123,8 @@ const ProfileContent = ({ profileUsername }) => {
             supportersCount={supportersCount}
             isUserSupported={isUserSupported}
             onToggleSupport={handleToggleSupport}
-            isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} // Only allow changes if logged in user matches profile
-            loggedInUsername={loggedInUsername} // Pass the logged-in username
+            isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} 
+            loggedInUsername={loggedInUsername} 
           />
         </Suspense>
         <Suspense>

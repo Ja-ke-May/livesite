@@ -5,7 +5,7 @@ import MenuIcon from './MenuIcon';
 import { logout } from '../../../utils/apiClient'; 
 import { AuthProvider, AuthContext } from '@/utils/AuthContext';
 
-const Menu = ({ setCurrentPath, isDarkBackground }) => {
+const Menu = ({ isDarkBackground }) => {
   const { isLoggedIn, isLoading } = useContext(AuthContext);
   const [showMenuList, setShowMenuList] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -15,7 +15,7 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
   };
 
   const handleLogout = () => {
-    logout(); // Clear the authentication token
+    logout(); 
     
     setShowLogoutConfirm(false); 
     window.location.href = '/'; 
@@ -69,7 +69,7 @@ const Menu = ({ setCurrentPath, isDarkBackground }) => {
               </Link>
 
               {isLoading ? (
-                <div>Loading...</div> // Show a loading indicator while auth status is being checked
+                <div>Loading...</div> 
               ) : (
                 isLoggedIn && (
                   <button 

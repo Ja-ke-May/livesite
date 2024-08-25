@@ -3,7 +3,7 @@ import React, { useImperativeHandle, useRef, useEffect, forwardRef, useState } f
 const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
   const popupRef = useRef(null);
   const [reportText, setReportText] = useState('');
-  const [submitted, setSubmitted] = useState(false); // New state for tracking submission
+  const [submitted, setSubmitted] = useState(false); 
 
   useImperativeHandle(ref, () => ({
     contains: (element) => popupRef.current && popupRef.current.contains(element),
@@ -28,18 +28,13 @@ const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
   }, [visible, onClose]);
 
   const handleReportSubmit = () => {
-    // Handle the report submission logic here
-    console.log('Reporting:', username);
-    console.log('Report Details:', reportText);
 
-    // Set the submission state to true and clear the input field
     setSubmitted(true);
     setReportText('');
 
-    // Optionally close the pop-up after a short delay to allow the user to see the message
     setTimeout(() => {
       onClose();
-    }, 1000); // Delay of 2 seconds before closing
+    }, 1000); 
   };
 
   if (!visible) return null;

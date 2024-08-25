@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useContext } from 'react';
 import Navbar from './Navbar'; 
-import MyMeLogo from './MyMeLogo';
 import { AuthContext } from '@/utils/AuthContext';
 
 const Shop = () => {

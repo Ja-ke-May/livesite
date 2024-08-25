@@ -17,7 +17,7 @@ const ProfileInfo = ({
   isUserSupported,
   onToggleSupport,
   isLoggedIn,
-  loggedInUsername // Add this prop to get the logged-in username
+  loggedInUsername 
 }) => {
   const router = useRouter(); 
   const { login } = useContext(AuthContext);
@@ -96,7 +96,7 @@ const ProfileInfo = ({
       }
       setFileError('');
       try {
-        await handleFileChange(e); // Ensure the file change event is passed to handleFileChange
+        await handleFileChange(e); 
       } catch (error) {
         console.error('Failed to update profile picture:', error);
       }

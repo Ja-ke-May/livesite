@@ -6,7 +6,7 @@ import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity }
 const UserCommentBox = ({ username, comment, time }) => {
   
   const [showPopup, setShowPopup] = useState(false);
-  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 }); // Re-add the popupPosition state
+  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 }); 
   const [links, setLinks] = useState([]);
   const [isUserSupported, setIsUserSupported] = useState(false);
   const [loadingLinks, setLoadingLinks] = useState(false);
@@ -14,10 +14,10 @@ const UserCommentBox = ({ username, comment, time }) => {
 
   const togglePopup = () => {
     const fixedPosition = {
-      x: 20, // 20px from the left edge of the screen
-      y: window.innerHeight - 200, // 20px from the bottom edge of the screen
+      x: 20, 
+      y: window.innerHeight - 200, 
     };
-    setPopupPosition(fixedPosition); // Correctly set the position
+    setPopupPosition(fixedPosition); 
     setShowPopup(!showPopup);
 
     if (!showPopup) {
@@ -87,7 +87,7 @@ const UserCommentBox = ({ username, comment, time }) => {
             links={links}
             isUserSupported={isUserSupported}
             onToggleSupport={handleToggleSupport}
-            style={{ position: 'fixed', bottom: '200px', left: '20px' }} // Ensure absolute positioning
+            style={{ position: 'fixed', bottom: '200px', left: '20px' }} 
           />
         )}
       </div>

@@ -27,7 +27,6 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
             adjustedY = innerHeight - popupRect.height;
         }
 
-        // Set the position directly
         position.x = adjustedX;
         position.y = adjustedY;
     }
