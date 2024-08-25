@@ -63,7 +63,7 @@ const UserCommentBox = ({ username, comment, time }) => {
     <>
       <div className="relative"> 
         <div className="flex flex-col bg-gray-800/80 text-white p-2 m-2 lg:m-4 lg:p-4 rounded-md shadow-md z-[100]">
-          <div className="flex justify-between items-start">
+          <div>
             <h3 id={`username-${username}`} className="font-bold cursor-pointer" onClick={togglePopup}>
               {username}
             </h3>
