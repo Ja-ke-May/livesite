@@ -64,10 +64,10 @@ const UserCommentBox = ({ username, comment, time }) => {
       <div className="relative"> 
         <div className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]">
           <div className='flex max-w-[100%] overflow-wrap'>
-            <h3 id={`username-${username}`} className="font-bold cursor-pointer" onClick={togglePopup}>
+            <h3 id={`username-${username}`} className="text-md font-bold cursor-pointer" onClick={togglePopup}>
               {username}
             </h3>
-            <p className="text-left ml-2 break-words break-all">{comment}</p>
+            <p className="text-sm text-left ml-2 break-words break-all">{comment}</p>
           </div>
           <div className="flex justify-end">
             <h4 className="text-gray-400 text-xs">{time}</h4>
