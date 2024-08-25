@@ -245,3 +245,19 @@ export const awardTokens = async (username, amount) => {
   }
 };
 
+export const reportUser = async (username, reportText) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post('/report', {
+      username,
+      reportText,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to submit report');
+  }
+};

@@ -1,9 +1,12 @@
 import React, { useImperativeHandle, useRef, useEffect, forwardRef, useState } from 'react';
+import { reportUser } from '@/utils/apiClient';
 
 const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
   const popupRef = useRef(null);
   const [reportText, setReportText] = useState('');
-  const [submitted, setSubmitted] = useState(false); 
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);  
 
   useImperativeHandle(ref, () => ({
     contains: (element) => popupRef.current && popupRef.current.contains(element),
@@ -27,14 +30,20 @@ const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
     };
   }, [visible, onClose]);
 
-  const handleReportSubmit = () => {
-
-    setSubmitted(true);
-    setReportText('');
-
-    setTimeout(() => {
-      onClose();
-    }, 1000); 
+  const handleReportSubmit = async () => {
+    setLoading(true);
+    setError(null);  
+    try {
+      await reportUser(username, reportText);
+      setSubmitted(true);
+      setReportText('');
+      setTimeout(() => onClose(), 1000);
+    } catch (error) {
+      setError('Failed to submit report. Please try again.');
+      console.error('Failed to submit report:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!visible) return null;
@@ -62,14 +71,18 @@ const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
             <button
               onClick={handleReportSubmit}
               className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              disabled={loading}  // Disable button while loading
             >
-              Report
+              {loading ? 'Submitting...' : 'Report'}
             </button>
+            {error && (
+              <p className="text-red-500 mt-2 text-center">{error}</p>  // Display error message if any
+            )}
           </div>
         </>
       ) : (
         <div className="text-center text-white mt-4">
-          <p>Thank you</p>
+          <p>Thank you for your report.</p>
         </div>
       )}
     </div>
