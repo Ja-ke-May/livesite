@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
-
 const UserCommentBox = ({ username, comment, time }) => {
   
   const [showPopup, setShowPopup] = useState(false);
@@ -29,7 +28,6 @@ const UserCommentBox = ({ username, comment, time }) => {
       loadData();
     }
   };
-  
 
   const loadData = async () => {
     try {
@@ -81,21 +79,19 @@ const UserCommentBox = ({ username, comment, time }) => {
         </div>
       </div>
 
-      <div>
-  {showPopup && (
-    <UsernamePopUp
-      visible={showPopup}
-      onClose={togglePopup}
-      username={username}
-      position={popupPosition}
-      links={links}
-      isUserSupported={isUserSupported}
-      onToggleSupport={handleToggleSupport}
-      style={{ position: 'fixed', top: popupPosition.y, left: popupPosition.x }} 
-    />
-  )}
-</div>
-
+      {showPopup && (
+        <div style={{ position: 'absolute', top: popupPosition.y, left: popupPosition.x }}>
+          <UsernamePopUp
+            visible={showPopup}
+            onClose={togglePopup}
+            username={username}
+            position={popupPosition}
+            links={links}
+            isUserSupported={isUserSupported}
+            onToggleSupport={handleToggleSupport}
+          />
+        </div>
+      )}
     </>
   );
 };
