@@ -35,7 +35,7 @@ const Viewer = () => {
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);
 
-    const [liveDuration, setLiveDuration] = useState(0); 
+    const liveStartTime = useRef(null);
     const liveDurationIntervalRef = useRef(null);
 
     const previousLiveUserIdRef = useRef(null);
@@ -55,32 +55,6 @@ const Viewer = () => {
     
         return () => cleanup();
     }, [username]);
-
-    useEffect(() => {
-        if (state.liveUserId === username && !liveDurationIntervalRef.current) {
-            // Start tracking live duration
-            console.log("Starting live duration tracking for user:", username);
-            setLiveDuration(0);
-            liveDurationIntervalRef.current = setInterval(() => {
-                setLiveDuration((prevDuration) => prevDuration + 1);
-            }, 1000);
-        } 
-        else if (state.liveUserId !== username && liveDurationIntervalRef.current) {
-            // Stop tracking and record the duration when the user stops being live
-            console.log("Stopping live duration tracking for user:", username);
-            clearInterval(liveDurationIntervalRef.current);
-            liveDurationIntervalRef.current = null;
-
-            if (liveDuration > 0) {
-                updateLiveDuration(username, liveDuration)
-                    .then(() => console.log('Live duration updated successfully'))
-                    .catch((error) => console.error('Failed to update live duration', error));
-            }
-            setLiveDuration(0);
-        }
-
-        previousLiveUserIdRef.current = state.liveUserId;
-    }, [state.liveUserId, username, liveDuration]);
     
     const initializeSocket = () => {
         socket.current = io('https://livesite-backend.onrender.com', {
@@ -436,7 +410,7 @@ const Viewer = () => {
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
-            stopVideo();
+            stopVideo(true, true);
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
@@ -568,6 +542,17 @@ const Viewer = () => {
                 autoplayAllowed: true,
                 liveUserId: null,
             });
+
+             
+        if (liveDurationIntervalRef.current) {
+            clearInterval(liveDurationIntervalRef.current);
+            liveDurationIntervalRef.current = null;
+
+            const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
+            updateLiveDuration(username, finalDuration)
+                .then(() => console.log('Final live duration updated successfully.'))
+                .catch(error => console.error('Error updating final live duration:', error));
+        }
     
             if (isTimerEnd) {
                 console.log("Resetting state because the timer ended.");
@@ -603,6 +588,15 @@ const Viewer = () => {
                     return prevTimer - 1;
                 });
             }, 1000);
+
+            // Start tracking live duration
+            liveStartTime.current = Date.now();
+            liveDurationIntervalRef.current = setInterval(() => {
+                const currentDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
+                updateLiveDuration(username, currentDuration)
+                    .then(() => console.log('Live duration updated successfully.'))
+                    .catch(error => console.error('Error updating live duration:', error));
+            }, 10000);  // Update the duration every 10 seconds
             
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
