@@ -59,11 +59,13 @@ const Viewer = () => {
     useEffect(() => {
         if (state.liveUserId === username && !liveDurationIntervalRef.current) {
             console.log("Starting live duration tracking for user:", username);
-            
             setLiveDuration(0); 
             liveDurationIntervalRef.current = setInterval(() => {
-                setLiveDuration((prevDuration) => prevDuration + 1);
-                console.log("Live duration:", liveDuration); 
+                setLiveDuration((prevDuration) => {
+                    const newDuration = prevDuration + 1;
+                    console.log("Live duration:", newDuration); 
+                    return newDuration;
+                });
             }, 1000);
         } else if (state.liveUserId === null && liveDurationIntervalRef.current) {
             console.log("Stopping live duration tracking for user:", username);
@@ -75,25 +77,13 @@ const Viewer = () => {
             if (username && liveDuration > 0) {
                 console.log("Updating live duration for:", username, liveDuration);
                 updateLiveDuration(username, liveDuration)
-                  .then(() => console.log('Live duration updated successfully'))
-                  .catch((error) => console.error('Failed to update live duration', error));
+                    .then(() => console.log('Live duration updated successfully'))
+                    .catch((error) => console.error('Failed to update live duration', error));
             }
     
             setLiveDuration(0);
         }
     }, [state.liveUserId, username, liveDuration]);
-    
-    useEffect(() => {
-        if (state.liveUserId !== previousLiveUserIdRef.current) {
-            if (liveDurationIntervalRef.current) {
-                clearInterval(liveDurationIntervalRef.current);
-                liveDurationIntervalRef.current = null;
-            }
-    
-            setLiveDuration(0);
-        }
-        previousLiveUserIdRef.current = state.liveUserId;
-    }, [state.liveUserId]);
     
    
     
