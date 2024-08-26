@@ -61,15 +61,7 @@ const Viewer = () => {
             console.log("Starting live duration tracking for user:", username);
             
             setLiveDuration(0);
-
-            if (username && liveDuration > 0) {
-                console.log(`User ${username} was live for ${liveDuration} seconds`);
-                updateLiveDuration(username, liveDuration)
-                    .then(() => console.log('Live duration updated successfully'))
-                    .catch((error) => console.error('Failed to update live duration', error));
-            }
     
-            
             liveDurationIntervalRef.current = setInterval(() => {
                 setLiveDuration((prevDuration) => {
                     const newDuration = prevDuration + 1;
@@ -82,12 +74,17 @@ const Viewer = () => {
             clearInterval(liveDurationIntervalRef.current);
             liveDurationIntervalRef.current = null;
     
-           
-            setLiveDuration(0);
+            if (username && liveDuration > 0) {
+                console.log(`User ${username} was live for ${liveDuration} seconds`);
+                updateLiveDuration(username, liveDuration)
+                    .then(() => console.log('Live duration updated successfully'))
+                    .catch((error) => console.error('Failed to update live duration', error));
+            }
+    
+            setLiveDuration(0); 
         }
     }, [state.liveUserId, state.isCameraOn, username, liveDuration]);
     
-   
     
     const initializeSocket = () => {
         socket.current = io('https://livesite-backend.onrender.com', {
