@@ -22,10 +22,7 @@ const Stars = () => {
           <h1 className='mt-4'>Stars Leaderboards</h1>
           
           
-          <h3>Longest Time Live</h3>
-        <h3>Total Time Live</h3>
-        <h3>Supporters</h3>
-        <h3>Comments</h3> 
+          <h3>Coming soon...</h3>
 
 
 

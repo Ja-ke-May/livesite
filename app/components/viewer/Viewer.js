@@ -6,6 +6,7 @@ import { AuthContext } from "@/utils/AuthContext";
 import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
+import { updateLiveDuration } from "@/utils/apiClient";
 
 const Viewer = () => {
     const { username } = useContext(AuthContext);
@@ -34,6 +35,9 @@ const Viewer = () => {
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);
 
+    const [liveDuration, setLiveDuration] = useState(0); 
+    const liveDurationIntervalRef = useRef(null);
+
     const previousLiveUserIdRef = useRef(null);
 
     useEffect(() => {
@@ -51,6 +55,28 @@ const Viewer = () => {
     
         return () => cleanup();
     }, [username]);
+
+    useEffect(() => {
+        if (state.liveUserId === username && !liveDurationIntervalRef.current) {
+           
+            liveDurationIntervalRef.current = setInterval(() => {
+                setLiveDuration((prevDuration) => prevDuration + 1);
+            }, 1000);
+        } else if (state.liveUserId === null && liveDurationIntervalRef.current) {
+            
+            clearInterval(liveDurationIntervalRef.current);
+            liveDurationIntervalRef.current = null;
+    
+            console.log(`User ${username} was live for ${liveDuration} seconds`);
+    
+            updateLiveDuration(username, liveDuration)
+              .then(() => console.log('Live duration updated successfully'))
+              .catch((error) => console.error('Failed to update live duration', error));
+    
+            setLiveDuration(0);
+        }
+    }, [state.liveUserId, username, liveDuration]);
+    
 
     const initializeSocket = () => {
         socket.current = io('https://livesite-backend.onrender.com', {

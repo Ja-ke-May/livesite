@@ -20,6 +20,9 @@ const ProfileContent = ({ profileUsername }) => {
   const [supportersCount, setSupportersCount] = useState(0);
   const [isUserSupported, setIsUserSupported] = useState(false);
   const [recentActivity, setRecentActivity] = useState([]);
+  const [totalLiveDuration, setTotalLiveDuration] = useState(0); 
+  const [longestLiveDuration, setLongestLiveDuration] = useState(0);
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -40,6 +43,8 @@ const ProfileContent = ({ profileUsername }) => {
         setSupportersCount(supportersData.supportersCount);
         setIsUserSupported(supportersData.isUserSupported);
         setRecentActivity(recentActivityData);
+        setTotalLiveDuration(userProfile.totalLiveDuration || 0); 
+        setLongestLiveDuration(userProfile.longestLiveDuration || 0); 
       } catch (error) {
         console.error('Failed to load user profile:', error);
       } finally {
@@ -140,7 +145,10 @@ const ProfileContent = ({ profileUsername }) => {
           <LinksSection links={links} setLinks={setLinks} isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} />
         </Suspense>
         <Suspense>
-          <ProfileStarResults />
+        <ProfileStarResults 
+            totalLiveDuration={totalLiveDuration} 
+            longestLiveDuration={longestLiveDuration} 
+          />
         </Suspense>
         <Suspense>
           <RecentActivity recentActivity={recentActivity} />
