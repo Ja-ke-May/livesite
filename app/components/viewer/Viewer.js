@@ -57,34 +57,30 @@ const Viewer = () => {
     }, [username]);
 
     useEffect(() => {
-        if (state.liveUserId === username && state.isCameraOn && !liveDurationIntervalRef.current) {
+        if (state.liveUserId === username && !liveDurationIntervalRef.current) {
+            // Start tracking live duration
             console.log("Starting live duration tracking for user:", username);
-            
             setLiveDuration(0);
-    
             liveDurationIntervalRef.current = setInterval(() => {
-                setLiveDuration((prevDuration) => {
-                    const newDuration = prevDuration + 1;
-                    console.log("Live duration:", newDuration);
-                    return newDuration;
-                });
+                setLiveDuration((prevDuration) => prevDuration + 1);
             }, 1000);
-        } else if ((state.liveUserId !== username || !state.isCameraOn) && liveDurationIntervalRef.current) {
+        } 
+        else if (state.liveUserId !== username && liveDurationIntervalRef.current) {
+            // Stop tracking and record the duration when the user stops being live
             console.log("Stopping live duration tracking for user:", username);
             clearInterval(liveDurationIntervalRef.current);
             liveDurationIntervalRef.current = null;
-    
-            if (username && liveDuration > 0) {
-                console.log(`User ${username} was live for ${liveDuration} seconds`);
+
+            if (liveDuration > 0) {
                 updateLiveDuration(username, liveDuration)
                     .then(() => console.log('Live duration updated successfully'))
                     .catch((error) => console.error('Failed to update live duration', error));
             }
-    
-            setLiveDuration(0); 
+            setLiveDuration(0);
         }
-    }, [state.liveUserId, state.isCameraOn, username, liveDuration]);
-    
+
+        previousLiveUserIdRef.current = state.liveUserId;
+    }, [state.liveUserId, username, liveDuration]);
     
     const initializeSocket = () => {
         socket.current = io('https://livesite-backend.onrender.com', {

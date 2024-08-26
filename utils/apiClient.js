@@ -261,6 +261,7 @@ export const reportUser = async (username, reportText) => {
     throw new Error(error.response?.data?.message || 'Failed to submit report');
   }
 };
+
 export const updateLiveDuration = async (username, liveDuration) => {
   try {
     console.log('Sending to backend:', { username, liveDuration }); 
