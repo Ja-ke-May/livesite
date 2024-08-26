@@ -544,14 +544,15 @@ const Viewer = () => {
             });
 
              
-            if (liveStartTime.current) {
-                const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
-                updateLiveDuration(username, finalDuration)
-                    .then(() => console.log('Final live duration updated successfully.'))
-                    .catch(error => console.error('Error updating final live duration:', error));
-                liveStartTime.current = null;
-            }
-    
+        if (liveDurationIntervalRef.current) {
+            clearInterval(liveDurationIntervalRef.current);
+            liveDurationIntervalRef.current = null;
+
+            const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
+            updateLiveDuration(username, finalDuration)
+                .then(() => console.log('Final live duration updated successfully.'))
+                .catch(error => console.error('Error updating final live duration:', error));
+        }
     
             if (isTimerEnd) {
                 console.log("Resetting state because the timer ended.");
@@ -588,7 +589,14 @@ const Viewer = () => {
                 });
             }, 1000);
 
+            // Start tracking live duration
             liveStartTime.current = Date.now();
+            liveDurationIntervalRef.current = setInterval(() => {
+                const currentDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
+                updateLiveDuration(username, currentDuration)
+                    .then(() => console.log('Live duration updated successfully.'))
+                    .catch(error => console.error('Error updating live duration:', error));
+            });  
             
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
