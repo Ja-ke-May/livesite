@@ -57,25 +57,24 @@ const Viewer = () => {
     }, [username]);
 
     useEffect(() => {
-        if (state.liveUserId === username && !liveDurationIntervalRef.current) {
+        if (state.liveUserId === username && state.isCameraOn && !liveDurationIntervalRef.current) {
             console.log("Starting live duration tracking for user:", username);
-            setLiveDuration(0); 
+            
+            setLiveDuration(0);
             liveDurationIntervalRef.current = setInterval(() => {
                 setLiveDuration((prevDuration) => {
                     const newDuration = prevDuration + 1;
-                    console.log("Live duration:", newDuration); 
+                    console.log("Live duration:", newDuration);
                     return newDuration;
                 });
             }, 1000);
-        } else if (state.liveUserId === null && liveDurationIntervalRef.current) {
+        } else if ((state.liveUserId !== username || !state.isCameraOn) && liveDurationIntervalRef.current) {
             console.log("Stopping live duration tracking for user:", username);
             clearInterval(liveDurationIntervalRef.current);
             liveDurationIntervalRef.current = null;
     
-            console.log(`User ${username} was live for ${liveDuration} seconds`);
-    
             if (username && liveDuration > 0) {
-                console.log("Updating live duration for:", username, liveDuration);
+                console.log(`User ${username} was live for ${liveDuration} seconds`);
                 updateLiveDuration(username, liveDuration)
                     .then(() => console.log('Live duration updated successfully'))
                     .catch((error) => console.error('Failed to update live duration', error));
@@ -83,7 +82,7 @@ const Viewer = () => {
     
             setLiveDuration(0);
         }
-    }, [state.liveUserId, username, liveDuration]);
+    }, [state.liveUserId, state.isCameraOn, username, liveDuration]);
     
    
     
