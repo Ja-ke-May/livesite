@@ -389,7 +389,9 @@ const Viewer = () => {
     };
 
     const cleanup = () => {
-        console.log("Cleaning up Viewer component.");
+        console.log("Cleaning up Viewer component."); 
+        stopLiveDurationTracking(); 
+        
         Object.values(peerConnections.current).forEach((pc) => pc.close());
     
         if (socket.current) {
@@ -408,6 +410,7 @@ const Viewer = () => {
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
+            stopLiveDurationTracking(); 
             stopVideo(true, true);
         };
 
@@ -540,20 +543,6 @@ const Viewer = () => {
                 autoplayAllowed: true,
                 liveUserId: null,
             });
-
-                        // Calculate the live duration and send it to the backend
-                        if (startTime) {
-                            const endTime = Date.now();
-                            const liveDuration = Math.floor((endTime - startTime) / 1000); // Duration in seconds
-            
-                            try {
-                                updateLiveDuration(username, liveDuration);
-                                console.log(`Live duration of ${liveDuration} seconds updated for ${username}`);
-                            } catch (error) {
-                                console.error('Failed to update live duration:', error);
-                            }
-                        }
-            
     
             if (isTimerEnd) {
                 console.log("Resetting state because the timer ended.");
@@ -567,11 +556,30 @@ const Viewer = () => {
 
     const handlePreviewButtonClick = () => startVideo();
 
+    const startLiveDurationTracking = () => {
+        setStartTime(Date.now());
+    };
+    
+    const stopLiveDurationTracking = async () => {
+        if (startTime) {
+            const endTime = Date.now();
+            const liveDuration = Math.floor((endTime - startTime) / 1000); // Duration in seconds
+    
+            try {
+                await updateLiveDuration(username, liveDuration);
+                console.log(`Live duration of ${liveDuration} seconds updated for ${username}`);
+            } catch (error) {
+                console.error('Failed to update live duration:', error);
+            }
+        }
+    };
+    
+
     const handleGoLiveClick = () => {
         if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current);
-            setStartTime(Date.now()); 
+            startLiveDurationTracking();
             setTimer(60);
             setState((prevState) => ({ 
                 ...prevState, 
@@ -583,7 +591,8 @@ const Viewer = () => {
             timerIntervalRef.current = setInterval(() => {
                 setTimer((prevTimer) => {
                     if (prevTimer <= 1) {
-                        clearInterval(timerIntervalRef.current);
+                        clearInterval(timerIntervalRef.current); 
+                        stopLiveDurationTracking();
                         stopVideo();
                         return 0;
                     }
