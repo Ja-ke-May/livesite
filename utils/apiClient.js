@@ -261,22 +261,3 @@ export const reportUser = async (username, reportText) => {
     throw new Error(error.response?.data?.message || 'Failed to submit report');
   }
 };
-
-export const updateLiveDuration = async (username, liveDuration) => {
-  try {
-    console.log('Sending to backend:', { username, liveDuration }); 
-    const token = getToken();
-    const response = await axiosInstance.post('/profile/live-duration', {
-      username,
-      liveDuration
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error updating live duration:', error.response?.data);
-    throw new Error(error.response?.data?.message || 'Failed to update live duration');
-  }
-};
