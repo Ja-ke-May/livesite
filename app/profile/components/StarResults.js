@@ -1,12 +1,18 @@
 import React from 'react';
 
 const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration }) => {
-  
+
   const formatDuration = (duration) => {
     const hours = Math.floor(duration / 3600);
     const minutes = Math.floor((duration % 3600) / 60);
     const seconds = duration % 60;
-    return `${hours}h ${minutes}m ${seconds}s`;
+
+    // Format with leading zeros
+    const formattedHours = hours > 0 ? `${String(hours).padStart(2, '0')}h ` : '';
+    const formattedMinutes = minutes > 0 || hours > 0 ? `${String(minutes).padStart(2, '0')}m ` : '';
+    const formattedSeconds = `${String(seconds).padStart(2, '0')}s`;
+
+    return `${formattedHours}${formattedMinutes}${formattedSeconds}`.trim();
   };
 
   return (
