@@ -55,6 +55,21 @@ const Viewer = () => {
     
         return () => cleanup();
     }, [username]);
+
+    useEffect(() => {
+        if (state.isLive) {
+            liveStartTime.current = Date.now(); 
+        } else if (liveStartTime.current && previousLiveUserIdRef.current === username && state.liveUserId !== username) {
+            const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
+            updateLiveDuration(username, finalDuration)
+                .then(() => console.log('Final live duration updated successfully.'))
+                .catch(error => console.error('Error updating final live duration:', error));
+            liveStartTime.current = null;  
+        }
+    
+        previousLiveUserIdRef.current = state.liveUserId;
+    }, [state.isLive, state.liveUserId, username]);
+    
     
     const initializeSocket = () => {
         socket.current = io('https://livesite-backend.onrender.com', {
@@ -531,6 +546,13 @@ const Viewer = () => {
             socket.current.emit("stop-live", username);
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
+
+            if (liveStartTime.current) {
+                const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
+                updateLiveDuration(username, finalDuration)
+                    .then(() => console.log('Final live duration updated successfully.'))
+                    .catch(error => console.error('Error updating final live duration:', error));
+            }
     
             setState({
                 isPopUpOpen: false,
@@ -542,7 +564,6 @@ const Viewer = () => {
                 autoplayAllowed: true,
                 liveUserId: null,
             });
-
     
             if (isTimerEnd) {
                 console.log("Resetting state because the timer ended.");
@@ -568,35 +589,26 @@ const Viewer = () => {
                 liveUserId: username 
             }));
     
-        // Record the start time of the live session
-        liveStartTime.current = Date.now();
-        
-        // Start the timer countdown
-        timerIntervalRef.current = setInterval(() => {
-            setTimer((prevTimer) => {
-                if (prevTimer <= 1) {
-                    clearInterval(timerIntervalRef.current);
+            timerIntervalRef.current = setInterval(() => {
+                setTimer((prevTimer) => {
+                    if (prevTimer <= 1) {
+                        clearInterval(timerIntervalRef.current);
+                        stopVideo();
+                        return 0;
+                    }
+                    return prevTimer - 1;
+                });
+            }, 1000);
 
-                    // Calculate the final live duration
-                    const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
-                    updateLiveDuration(username, finalDuration)
-                        .then(() => console.log('Final live duration updated successfully.'))
-                        .catch(error => console.error('Error updating final live duration:', error));
-
-                    // Additional logic to handle when the timer ends
-                    handleTimerEnd();
-
-                    return 0;
-                }
-                return prevTimer - 1;
-            });
-        }, 1000);
-        
-        socket.current.emit("set-initial-vote", 50);
-        socket.current.emit("current-slide-amount", 5);
-        socket.current.emit("go-live", username); 
-    }
-};
+            // Start tracking live duration
+            liveStartTime.current = Date.now();
+            
+            socket.current.emit("set-initial-vote", 50);
+            socket.current.emit("current-slide-amount", 5);
+            socket.current.emit("go-live", username); 
+            
+        }
+    };
 
  
 
