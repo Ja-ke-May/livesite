@@ -36,7 +36,6 @@ const Viewer = () => {
     const [nextUsername, setNextUsername] = useState(null);
 
     const liveStartTime = useRef(null);
-    const liveDurationIntervalRef = useRef(null);
 
     const previousLiveUserIdRef = useRef(null);
 
@@ -553,7 +552,7 @@ const Viewer = () => {
 
             liveStartTime.current = null; // Reset start time
         }
-        
+
             if (isTimerEnd) {
                 console.log("Resetting state because the timer ended.");
             }
