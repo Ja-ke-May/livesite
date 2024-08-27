@@ -596,7 +596,7 @@ const Viewer = () => {
                 updateLiveDuration(username, currentDuration)
                     .then(() => console.log('Live duration updated successfully.'))
                     .catch(error => console.error('Error updating live duration:', error));
-            }, 10000);  // Update the duration every 10 seconds
+            }, 1000);  // Update the duration every second
             
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
