@@ -543,16 +543,6 @@ const Viewer = () => {
                 liveUserId: null,
             });
 
-             
-        if (liveDurationIntervalRef.current) {
-            clearInterval(liveDurationIntervalRef.current);
-            liveDurationIntervalRef.current = null;
-
-            const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
-            updateLiveDuration(username, finalDuration)
-                .then(() => console.log('Final live duration updated successfully.'))
-                .catch(error => console.error('Error updating final live duration:', error));
-        }
     
             if (isTimerEnd) {
                 console.log("Resetting state because the timer ended.");
@@ -578,37 +568,35 @@ const Viewer = () => {
                 liveUserId: username 
             }));
     
-            timerIntervalRef.current = setInterval(() => {
-                setTimer((prevTimer) => {
-                    if (prevTimer <= 1) {
-                        clearInterval(timerIntervalRef.current);
-                        stopVideo();
-                        return 0;
-                    }
-                    return prevTimer - 1;
-                });
-            }, 1000);
-
-             // Start tracking live duration
+        // Record the start time of the live session
         liveStartTime.current = Date.now();
-        let previousDurationSent = 0;  // Track the previous duration sent
-        liveDurationIntervalRef.current = setInterval(() => {
-            const currentDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
-            const incrementalDuration = currentDuration - previousDurationSent;
-            previousDurationSent = currentDuration;  // Update the previous duration sent
-
-            // Send only the incremental duration
-            updateLiveDuration(username, incrementalDuration)
-                .then(() => console.log('Incremental live duration updated successfully.'))
-                .catch(error => console.error('Error updating incremental live duration:', error));
-        }, 1000);  // Update the duration every second
         
-            socket.current.emit("set-initial-vote", 50);
-            socket.current.emit("current-slide-amount", 5);
-            socket.current.emit("go-live", username); 
-            
-        }
-    };
+        // Start the timer countdown
+        timerIntervalRef.current = setInterval(() => {
+            setTimer((prevTimer) => {
+                if (prevTimer <= 1) {
+                    clearInterval(timerIntervalRef.current);
+
+                    // Calculate the final live duration
+                    const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
+                    updateLiveDuration(username, finalDuration)
+                        .then(() => console.log('Final live duration updated successfully.'))
+                        .catch(error => console.error('Error updating final live duration:', error));
+
+                    // Additional logic to handle when the timer ends
+                    handleTimerEnd();
+
+                    return 0;
+                }
+                return prevTimer - 1;
+            });
+        }, 1000);
+        
+        socket.current.emit("set-initial-vote", 50);
+        socket.current.emit("current-slide-amount", 5);
+        socket.current.emit("go-live", username); 
+    }
+};
 
  
 
