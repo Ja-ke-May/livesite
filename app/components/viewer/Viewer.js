@@ -23,6 +23,7 @@ const Viewer = () => {
         liveUserId: null,
     });
     const [timer, setTimer] = useState(60);
+    const [startTime, setStartTime] = useState(null);
 
     const mainVideoRef = useRef(null);
     const streamRef = useRef(null);
@@ -34,9 +35,6 @@ const Viewer = () => {
     const [showQueueAlert, setShowQueueAlert] = useState(false);
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);
-
-    const liveStartTime = useRef(null);
-    const liveDurationIntervalRef = useRef(null);
 
     const previousLiveUserIdRef = useRef(null);
 
@@ -543,16 +541,19 @@ const Viewer = () => {
                 liveUserId: null,
             });
 
-             
-        if (liveDurationIntervalRef.current) {
-            clearInterval(liveDurationIntervalRef.current);
-            liveDurationIntervalRef.current = null;
-
-            const finalDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
-            updateLiveDuration(username, finalDuration)
-                .then(() => console.log('Final live duration updated successfully.'))
-                .catch(error => console.error('Error updating final live duration:', error));
-        }
+                        // Calculate the live duration and send it to the backend
+                        if (startTime) {
+                            const endTime = Date.now();
+                            const liveDuration = Math.floor((endTime - startTime) / 1000); // Duration in seconds
+            
+                            try {
+                                updateLiveDuration(username, liveDuration);
+                                console.log(`Live duration of ${liveDuration} seconds updated for ${username}`);
+                            } catch (error) {
+                                console.error('Failed to update live duration:', error);
+                            }
+                        }
+            
     
             if (isTimerEnd) {
                 console.log("Resetting state because the timer ended.");
@@ -570,6 +571,7 @@ const Viewer = () => {
         if (!state.isLive) {
             console.log("User clicked 'Go Live'.");
             clearInterval(timerIntervalRef.current);
+            setStartTime(Date.now()); 
             setTimer(60);
             setState((prevState) => ({ 
                 ...prevState, 
@@ -588,15 +590,6 @@ const Viewer = () => {
                     return prevTimer - 1;
                 });
             }, 1000);
-
-            // Start tracking live duration
-            liveStartTime.current = Date.now();
-            liveDurationIntervalRef.current = setInterval(() => {
-                const currentDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
-                updateLiveDuration(username, currentDuration)
-                    .then(() => console.log('Live duration updated successfully.'))
-                    .catch(error => console.error('Error updating live duration:', error));
-            }, 1000);  // Update the duration every second
             
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
