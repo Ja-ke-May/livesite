@@ -559,6 +559,19 @@ const Viewer = () => {
     const startLiveDurationTracking = () => {
         setStartTime(Date.now());
     };
+
+    useEffect(() => {
+        const handleBeforeUnload = async (event) => {
+            await stopLiveDurationTracking();
+        };
+    
+        window.addEventListener('beforeunload', handleBeforeUnload);
+    
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [startTime]);
+    
     
     const stopLiveDurationTracking = async () => {
         if (startTime) {
