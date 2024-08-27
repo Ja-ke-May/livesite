@@ -589,15 +589,20 @@ const Viewer = () => {
                 });
             }, 1000);
 
-            // Start tracking live duration
-            liveStartTime.current = Date.now();
-            liveDurationIntervalRef.current = setInterval(() => {
-                const currentDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
-                updateLiveDuration(username, currentDuration)
-                    .then(() => console.log('Live duration updated successfully.'))
-                    .catch(error => console.error('Error updating live duration:', error));
-            }, 1000);  // Update the duration every second
-            
+             // Start tracking live duration
+        liveStartTime.current = Date.now();
+        let previousDurationSent = 0;  // Track the previous duration sent
+        liveDurationIntervalRef.current = setInterval(() => {
+            const currentDuration = Math.floor((Date.now() - liveStartTime.current) / 1000);
+            const incrementalDuration = currentDuration - previousDurationSent;
+            previousDurationSent = currentDuration;  // Update the previous duration sent
+
+            // Send only the incremental duration
+            updateLiveDuration(username, incrementalDuration)
+                .then(() => console.log('Incremental live duration updated successfully.'))
+                .catch(error => console.error('Error updating incremental live duration:', error));
+        }, 1000);  // Update the duration every second
+        
             socket.current.emit("set-initial-vote", 50);
             socket.current.emit("current-slide-amount", 5);
             socket.current.emit("go-live", username); 
