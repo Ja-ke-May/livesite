@@ -13,7 +13,8 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
   const [isUserSupported, setIsUserSupported] = useState(false);  
   const [loadingLinks, setLoadingLinks] = useState(false);  
   const [recentActivity, setRecentActivity] = useState([]);
-  const [profilePicture, setProfilePicture] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null); 
+  const [showGoLiveButton, setShowGoLiveButton] = useState(false);
   const goLiveTimerRef = useRef(null);
   const usernameRef = useRef(null);
 
@@ -136,6 +137,18 @@ useEffect(() => {
   };
 }, [state.isCameraOn, state.isLive, state.liveUserId]);
 
+useEffect(() => {
+  if (state.isCameraOn && !state.isLive && !state.liveUserId) {
+    const timer = setTimeout(() => {
+      setShowGoLiveButton(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  } else {
+    setShowGoLiveButton(false);  // Reset if the conditions change
+  }
+}, [state.isCameraOn, state.isLive, state.liveUserId]);
+
 
   return (
     <div className="relative h-[300px] md:h-[340px] lg:h-[400px] rounded text-center bg-transparent shadow-md w-full group">
@@ -198,7 +211,7 @@ useEffect(() => {
        </div>
       )}
 
-      {state.isCameraOn && !state.isLive && !state.liveUserId && (
+      {state.isCameraOn && !state.isLive && !state.liveUserId && showGoLiveButton && (
         <div className="absolute inset-0 flex items-center justify-center">
           <button
            onClick={() => {
