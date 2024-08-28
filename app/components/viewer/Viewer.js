@@ -387,18 +387,26 @@ const Viewer = () => {
     };
 
     const cleanup = () => {
-        console.log("Cleaning up Viewer component.");
-        Object.values(peerConnections.current).forEach((pc) => pc.close());
+        console.log("Cleaning up for the leaving user.");
+    
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach((track) => track.stop());
+            streamRef.current = null;
+        }
+    
+        if (mainVideoRef.current) {
+            mainVideoRef.current.srcObject = null;
+        }
     
         if (socket.current) {
+            socket.current.emit("user-disconnect", username);
             socket.current.disconnect();
         }
     
-        if (timerIntervalRef.current) {
-            clearInterval(timerIntervalRef.current);
-            timerIntervalRef.current = null;
-        }
+        Object.values(peerConnections.current).forEach((pc) => pc.close());
+        peerConnections.current = {}; 
     };
+    
     
     useEffect(() => {
         return () => cleanup();
@@ -406,7 +414,7 @@ const Viewer = () => {
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
-            stopVideo(true, true);
+            cleanup();
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
