@@ -51,6 +51,25 @@ const Viewer = () => {
     
         return () => cleanup();
     }, [username]);
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                console.log("User closed laptop screen or switched tab, disconnecting...");
+                cleanup(); 
+            } else if (document.visibilityState === 'visible') {
+                console.log("User reopened laptop screen or switched back to tab, reconnecting...");
+                initializeSocket(); 
+            }
+        };
+    
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, []);
+    
     
     const initializeSocket = () => {
         socket.current = io('https://livesite-backend.onrender.com', {
@@ -152,6 +171,24 @@ const Viewer = () => {
                 liveUserId: null,
             });
         });
+
+        socket.current.on("disconnected-due-to-inactivity", () => {
+            console.log("User was disconnected due to inactivity.");
+            setState((prevState) => ({
+                ...prevState,
+                isPopUpOpen: false,
+                isCameraOn: false,
+                showPreviewButton: false,
+                isLive: false,
+                inQueue: false,
+                isNext: false,
+                autoplayAllowed: true,
+                liveUserId: null,
+            }));
+            const wasLiveUser = state.isLive;
+            stopVideo(false, wasLiveUser);
+        });
+        
         
 
         socket.current.on("queue-position-update", (position) => {
