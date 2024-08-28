@@ -592,6 +592,8 @@ const Viewer = () => {
                 stopVideo={stopVideo} 
                 showQueueAlert={showQueueAlert} 
                 queuePosition={queuePosition}
+                upNext={nextUsername}
+                username={username}
             />
             <div className="group"> 
                 <ViewerMain
