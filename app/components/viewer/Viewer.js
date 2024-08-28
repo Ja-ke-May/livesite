@@ -171,6 +171,24 @@ const Viewer = () => {
                 liveUserId: null,
             });
         });
+
+        socket.current.on("disconnected-due-to-inactivity", () => {
+            console.log("User was disconnected due to inactivity.");
+            setState((prevState) => ({
+                ...prevState,
+                isPopUpOpen: false,
+                isCameraOn: false,
+                showPreviewButton: false,
+                isLive: false,
+                inQueue: false,
+                isNext: false,
+                autoplayAllowed: true,
+                liveUserId: null,
+            }));
+            const wasLiveUser = state.isLive;
+            stopVideo(false, wasLiveUser);
+        });
+        
         
 
         socket.current.on("queue-position-update", (position) => {
