@@ -414,8 +414,11 @@ const Viewer = () => {
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
-            stopVideo(true, true);
-            cleanup();
+            if (state.liveUserId === username) {
+                stopVideo(true, true);
+                cleanup();
+                window.location.reload();
+            }
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
@@ -423,7 +426,7 @@ const Viewer = () => {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, []);
+    }, [state.liveUserId, username]);
     
 
     const handleJoinClick = () => {
