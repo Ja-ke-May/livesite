@@ -139,16 +139,6 @@ const Viewer = () => {
             setState((prevState) => ({ ...prevState, isNext: true }));
         });
 
-        socket.current.on("cleanup-connections", () => {
-            Object.values(peerConnections.current).forEach((pc) => {
-                pc.close();
-                delete peerConnections.current[pc];
-            });
-        
-            mainVideoRef.current.srcObject = null;
-            console.log("Cleaned up all connections");
-        });
-
         socket.current.on("reset-state", () => {
             console.log("Received 'reset-state' event, resetting the user's state.");
             setState({
@@ -414,11 +404,9 @@ const Viewer = () => {
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
-            if (state.liveUserId === username) {
-                stopVideo(true, true);
-                cleanup();
-                window.location.reload();
-            }
+            
+            stopVideo(true, true);
+            cleanup();
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
@@ -426,7 +414,7 @@ const Viewer = () => {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, [state.liveUserId, username]);
+    }, []);
     
 
     const handleJoinClick = () => {
