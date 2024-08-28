@@ -51,6 +51,27 @@ const Viewer = () => {
     
         return () => cleanup();
     }, [username]);
+
+    useEffect(() => {
+        let heartbeatInterval;
+    
+        if (state.liveUserId === username) {
+            console.log(`Starting heartbeat for live user: ${username}`);
+            heartbeatInterval = setInterval(() => {
+                if (socket.current) {
+                    socket.current.emit("heartbeat", username);
+                }
+            }, 10000); 
+        }
+    
+        return () => {
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
+                console.log(`Stopped heartbeat for live user: ${username}`);
+            }
+        };
+    }, [state.liveUserId, username]);
+    
     
     const initializeSocket = () => {
         socket.current = io('https://livesite-backend.onrender.com', {
