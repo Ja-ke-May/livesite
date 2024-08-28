@@ -218,10 +218,7 @@ const Viewer = () => {
 
             stopVideo(true);
             
-            if (username === userId) {
-                // Reload the window for the user who was just live
                 window.location.reload();
-            }
         }
       
     };
