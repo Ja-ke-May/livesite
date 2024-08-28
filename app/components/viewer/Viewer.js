@@ -212,12 +212,18 @@ const Viewer = () => {
     };
 
     const handleTimerEnd = (userId) => {
-        if (userId === state.liveUserId) {
+        if (userId === previousLiveUserIdRef.current) {
             console.log("Timer ended for live user:", userId);
             setState((prevState) => ({ ...prevState, isLive: false, liveUserId: null, }));
+
             stopVideo(true);
+            
+            if (username === userId) {
+
+                window.location.reload();
+            }
         }
-        window.location.reload();
+      
     };
     
     const handleNewPeer = async (id) => {
