@@ -73,21 +73,6 @@ const Viewer = () => {
             }
         });
         
-    socket.current.on("timeout-disconnect", () => {
-        console.log("Received 'timeout-disconnect'. You were disconnected due to inactivity.");
-        
-        setState((prevState) => ({
-            ...prevState,
-            inQueue: false,
-            isNext: false,
-            showPreviewButton: false,
-            isPopUpOpen: false,
-            isLive: false,
-            liveUserId: null,
-        }));
-        window.location.reload(); 
-    });
-
         socket.current.on("join-queue", () => {
             console.log("Received join-queue event");
             handleJoinQueue();
