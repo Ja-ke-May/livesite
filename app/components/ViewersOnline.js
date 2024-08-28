@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { fetchOnlineUsers } from '@/utils/apiClient';
+import io from 'socket.io-client';
+
+const socket = io('https://livesite-backend.onrender.com', {
+  withCredentials: true,
+  transports: ['websocket', 'polling'],
+  reconnection: true,
+  reconnectionAttempts: Infinity,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+});
 
 const ViewersOnline = () => {
   const [viewers, setViewers] = useState(0);
 
   useEffect(() => {
-    const fetchViewers = async () => {
-      try {
-        const data = await fetchOnlineUsers();
-        setViewers(data.viewers);
-      } catch (error) {
-        console.error('Failed to fetch viewers:', error);
-      }
+    socket.on('update-online-users', (size) => {
+      setViewers(size);
+    });
+
+    return () => {
+      socket.off('update-online-users');
     };
-
-    fetchViewers();
-
-    const interval = setInterval(fetchViewers, 10000); 
-    return () => clearInterval(interval);
   }, []);
 
   return (
