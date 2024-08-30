@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import { useState, useContext, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
@@ -70,7 +70,6 @@ const Shop = () => {
   };
 
   const confirmPurchase = async () => {
-    setShowConfirmation(false);
     setIsPurchasing(true); // Start the animation
 
     try {
@@ -94,9 +93,21 @@ const Shop = () => {
 
       // Update the status message
       setPurchaseStatus({ message: `Purchased ${name} for ${selectedTokens} tokens!`, type: 'success' });
+
+      // Automatically hide the message after 3 seconds
+      setTimeout(() => {
+        setPurchaseStatus({ message: '', type: '' });
+        setShowConfirmation(false); // Close the confirmation popup
+      }, 3000);
     } catch (error) {
       console.error('Failed to complete the purchase:', error);
       setPurchaseStatus({ message: 'Purchase failed. Please try again.', type: 'error' });
+
+      // Automatically hide the message after 3 seconds
+      setTimeout(() => {
+        setPurchaseStatus({ message: '', type: '' });
+        setShowConfirmation(false); // Close the confirmation popup
+      }, 3000);
     } finally {
       setIsPurchasing(false); // Stop the animation
     }
@@ -229,11 +240,7 @@ const Shop = () => {
         <hr className='mt-10' />
         <p className='mt-4'>More coming soon...</p>
 
-        {purchaseStatus.message && (
-          <div className={`mt-4 p-4 rounded-md shadow-sm ${purchaseStatus.type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white`}>
-            {purchaseStatus.message}
-          </div>
-        )}
+      
 
       </div> 
       
@@ -250,6 +257,11 @@ const Shop = () => {
           {` ${selectedItem.name} `}
         </strong>
           for <span className='text-yellow-400 brightness-125'><strong>{selectedTokens}</strong> tokens?</span></p>
+            {purchaseStatus.message && (
+              <div className={`mt-4 p-4 rounded-md shadow-sm ${purchaseStatus.type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white`}>
+                {purchaseStatus.message}
+              </div>
+            )}
             <div className="mt-4 flex justify-end">
               <button
                 onClick={closeConfirmationPopup}
