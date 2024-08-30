@@ -1,3 +1,5 @@
+"user client";
+
 import { useState, useContext, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import { AuthContext } from '@/utils/AuthContext';
