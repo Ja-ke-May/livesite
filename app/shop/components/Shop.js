@@ -143,7 +143,7 @@ const confirmPurchase = async () => {
           {isLoggedIn && username && (
           <button
             className="mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
-            onClick={() => handlePurchaseClick('this Comment Colour', 500)}
+            onClick={() => handlePurchaseClick('this Comment Colour', 200)}
           >
             Purchase
           </button>
@@ -174,7 +174,7 @@ const confirmPurchase = async () => {
           {isLoggedIn && username && (
           <button
             className="mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
-            onClick={() => handlePurchaseClick('this Border Colour', 500)}
+            onClick={() => handlePurchaseClick('this Border Colour', 200)}
           >
             Purchase
           </button>
@@ -199,7 +199,7 @@ const confirmPurchase = async () => {
           {isLoggedIn && username && (
           <button
             className="mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
-            onClick={() => handlePurchaseClick('this Username Colour', 500)}
+            onClick={() => handlePurchaseClick('this Username Colour', 200)}
           >
             Purchase
           </button>
