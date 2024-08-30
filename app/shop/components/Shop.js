@@ -98,7 +98,7 @@ const Shop = () => {
       setTimeout(() => {
         setPurchaseStatus({ message: '', type: '' });
         setShowConfirmation(false); // Close the confirmation popup
-      }, 3000);
+      }, 2000);
     } catch (error) {
       console.error('Failed to complete the purchase:', error);
       setPurchaseStatus({ message: 'Purchase failed. Please try again.', type: 'error' });
@@ -107,7 +107,7 @@ const Shop = () => {
       setTimeout(() => {
         setPurchaseStatus({ message: '', type: '' });
         setShowConfirmation(false); // Close the confirmation popup
-      }, 3000);
+      }, 2000);
     } finally {
       setIsPurchasing(false); // Stop the animation
     }
