@@ -3,6 +3,7 @@ import SpeakerButton from './speakerButton';
 
 const CommentBox = ({ isLoggedIn, username, socket }) => {
   const [comment, setComment] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const maxLength = 55;
 
   const handleCommentChange = (e) => {
@@ -10,7 +11,8 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
   };
 
   const handleCommentSubmit = async () => {
-    if (isLoggedIn && comment.trim() !== '') {
+    if (isLoggedIn && comment.trim() !== '' && !isSubmitting) {
+      setIsSubmitting(true);  
       try {
         const token = localStorage.getItem('token');
         const response = await fetch('https://livesite-backend.onrender.com/comments', {
@@ -30,12 +32,14 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
         }
       } catch (error) {
         console.error('Error submitting comment:', error);
+      } finally {
+        setIsSubmitting(false); 
       }
     }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !isSubmitting) {
       handleCommentSubmit();
     }
   };
@@ -51,7 +55,7 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
           value={comment}
           onChange={handleCommentChange}
           onKeyDown={handleKeyDown}
-          disabled={!isLoggedIn}
+          disabled={!isLoggedIn || isSubmitting}
         />
         {isLoggedIn && (
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
@@ -65,7 +69,7 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
           !isLoggedIn && 'opacity-50 cursor-not-allowed'
         }`}
         onClick={handleCommentSubmit}
-        disabled={!isLoggedIn}
+        disabled={!isLoggedIn || isSubmitting} 
       >
         SEND
       </button>
