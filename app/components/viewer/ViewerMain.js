@@ -141,7 +141,7 @@ useEffect(() => {
   if (state.isCameraOn && !state.isLive && !state.liveUserId) {
     const timer = setTimeout(() => {
       setShowGoLiveButton(true);
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   } else {
