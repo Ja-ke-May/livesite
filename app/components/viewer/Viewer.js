@@ -140,6 +140,11 @@ const Viewer = () => {
             setState((prevState) => ({ ...prevState, isNext: true }));
         });
 
+        socket.current.on("force-disconnect", () => {
+            console.log("Received 'force-disconnect' event, disconnecting and attempting to reconnect...");
+            handleForceDisconnect();
+        });
+
         socket.current.on("reset-state", () => {
             console.log("Received 'reset-state' event, resetting the user's state.");
             setState({
@@ -226,6 +231,17 @@ const Viewer = () => {
         }
       
     };
+
+    const handleForceDisconnect = () => {
+        cleanup();
+    
+        setTimeout(() => {
+            console.log("Attempting to reconnect after forced disconnect...");
+            initializeSocket();
+            
+        }, 1000);
+    };
+    
     
     const handleNewPeer = async (id) => {
         if (!streamRef.current || id === socket.current.id) return;
