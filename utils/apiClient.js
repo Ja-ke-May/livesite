@@ -265,11 +265,11 @@ export const reportUser = async (username, reportText) => {
 export const updateColor = async (username, colorType, color) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.put('/profile/color', 
+    const response = await axiosInstance.put('/comment/color', 
       { 
         username, 
         colorType, 
-        color 
+        color // sending color directly
       }, 
       {
         headers: {
