@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import { AuthContext } from '@/utils/AuthContext';
 import TokenPurchasePopup from './TokenPurchasePopup'; 
-import { updateColor, deductTokens } from '@/utils/apiClient';
+import { updateColor, deductTokens, fetchUserProfile } from '@/utils/apiClient';
 
 const Shop = () => {
   const { isLoggedIn, username, tokens } = useContext(AuthContext);
@@ -15,7 +15,25 @@ const Shop = () => {
   const [usernameColor, setUsernameColor] = useState('#ffffff');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
-  const [selectedTokens, setSelectedTokens] = useState('');
+  const [selectedTokens, setSelectedTokens] = useState(''); 
+
+
+  useEffect(() => {
+    const fetchUserColors = async () => {
+      try {
+        if (username) {
+          const userProfile = await fetchUserProfile(username);
+          setColor(userProfile.commentColor || '#ffffff');
+          setBorderColor(userProfile.borderColor || '#000110');
+          setUsernameColor(userProfile.usernameColor || '#ffffff');
+        }
+      } catch (error) {
+        console.error('Failed to fetch user colors:', error);
+      }
+    };
+
+    fetchUserColors();
+  }, [username]);
 
   const handleBuyTokens = () => {
     setShowTokenPopup(true);
