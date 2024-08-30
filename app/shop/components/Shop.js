@@ -7,7 +7,7 @@ import TokenPurchasePopup from './TokenPurchasePopup';
 import { updateColor, deductTokens, fetchUserProfile } from '@/utils/apiClient';
 
 const Shop = () => {
-  const { isLoggedIn, username, tokens } = useContext(AuthContext);
+  const { isLoggedIn, username } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/shop');
   const [showTokenPopup, setShowTokenPopup] = useState(false);
   const [color, setColor] = useState('#ffffff'); 
@@ -16,23 +16,25 @@ const Shop = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
   const [selectedTokens, setSelectedTokens] = useState(''); 
+  const [userTokens, setUserTokens] = useState(0); 
 
 
   useEffect(() => {
-    const fetchUserColors = async () => {
+    const fetchUserColorsAndTokens = async () => {
       try {
         if (username) {
           const userProfile = await fetchUserProfile(username);
           setColor(userProfile.commentColor || '#ffffff');
           setBorderColor(userProfile.borderColor || '#000110');
           setUsernameColor(userProfile.usernameColor || '#ffffff');
+          setUserTokens(userProfile.tokens || 0);  // Set user's purchased tokens
         }
       } catch (error) {
-        console.error('Failed to fetch user colors:', error);
+        console.error('Failed to fetch user colors and tokens:', error);
       }
     };
 
-    fetchUserColors();
+    fetchUserColorsAndTokens();
   }, [username]);
 
   const handleBuyTokens = () => {
@@ -107,7 +109,7 @@ const confirmPurchase = async () => {
         {isLoggedIn && username && (
           <div>
             <h2 className="text-center text-yellow-400 brightness-125 mt-2">
-              Your Tokens: {tokens}
+              Your Tokens: {userTokens}
             </h2>
           </div>
         )}
