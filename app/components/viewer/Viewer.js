@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import LiveQueuePopUp from "./LiveQueuePopUp";
 import Timer from "./LiveTimer";
+import io from "socket.io-client";
 import { AuthContext } from "@/utils/AuthContext";
 import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
 
-const Viewer = ({ socket }) => {
+const Viewer = () => {
     const { username } = useContext(AuthContext);
     const isGuest = !username;
     
@@ -25,6 +26,7 @@ const Viewer = ({ socket }) => {
     const mainVideoRef = useRef(null);
     const streamRef = useRef(null);
     const peerConnections = useRef({});
+    const socket = useRef(null);
     const timerIntervalRef = useRef(null);
     const [slidePosition, setSlidePosition] = useState(50);
     const [slidePositionAmount, setSlidePositionAmount] = useState(5); 
@@ -52,6 +54,14 @@ const Viewer = ({ socket }) => {
     
     
     const initializeSocket = () => {
+        socket.current = io('https://livesite-backend.onrender.com', {
+            withCredentials: true,
+            transports: ['websocket', 'polling'],
+            reconnection: true,
+            reconnectionAttempts: Infinity, 
+            reconnectionDelay: 1000, 
+            reconnectionDelayMax: 5000, 
+        });
 
         socket.current.on("connect", () => {
             console.log(`Connected with socket ID: ${socket.current.id}`);
@@ -379,10 +389,10 @@ const Viewer = ({ socket }) => {
             mainVideoRef.current.srcObject = null;
         }
     
-        if (socket) {
-            socket.emit("user-disconnect", username);
-            socket.disconnect();
-          } 
+        if (socket.current) {
+            socket.current.emit("user-disconnect", username);
+            socket.current.disconnect();
+        }
     
         Object.values(peerConnections.current).forEach((pc) => pc.close());
         peerConnections.current = {}; 

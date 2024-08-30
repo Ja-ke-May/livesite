@@ -15,16 +15,13 @@ const HomeContent = () => {
   const { isLoggedIn, username, isInitialized } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false); 
 
-  let socket = io('https://livesite-backend.onrender.com', {
+  const socket = io('https://livesite-backend.onrender.com', {
     reconnection: true,
     reconnectionAttempts: 1000, 
     reconnectionDelay: 1000, 
     reconnectionDelayMax: 5000, 
   });
    
-  if (!socket) {
-    console.error('Socket is not initialized');
-  }
 
   useEffect(() => {
     if (isInitialized && !isLoggedIn) {
@@ -54,7 +51,7 @@ const HomeContent = () => {
       <h1 className='hidden'>Home</h1>
       <Navbar isLoggedIn={isLoggedIn} username={username} />
       <main className="flex flex-col items-center justify-center lg:max-w-[60%] w-full mx-auto">
-        <Viewer socket={socket} />
+        <Viewer />
         
         <Chat isLoggedIn={isLoggedIn} username={username} socket={socket} />
       </main>
