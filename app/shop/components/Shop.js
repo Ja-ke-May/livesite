@@ -92,7 +92,7 @@ const Shop = () => {
       await deductTokens(selectedTokens);
 
       // Update the status message
-      setPurchaseStatus({ message: `Purchased ${name} for ${selectedTokens} tokens!`, type: 'success' });
+      setPurchaseStatus({ message: `Success! Thank you for your purchase.`, type: 'success' });
 
       // Automatically hide the message after 3 seconds
       setTimeout(() => {
@@ -258,7 +258,7 @@ const Shop = () => {
         </strong>
           for <span className='text-yellow-400 brightness-125'><strong>{selectedTokens}</strong> tokens?</span></p>
             {purchaseStatus.message && (
-              <div className={`mt-4 p-4 rounded-md shadow-sm ${purchaseStatus.type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white`}>
+              <div className={`mt-4 p-4 rounded-md shadow-sm font-bold ${purchaseStatus.type === 'success' ? 'text-green-400' : 'text-red-500'} text-white`}>
                 {purchaseStatus.message}
               </div>
             )}
