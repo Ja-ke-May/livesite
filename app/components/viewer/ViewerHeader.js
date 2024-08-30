@@ -50,7 +50,7 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
             Leave
           </button>
         </div>
-      ) : (queuePosition === 1 || upNext === username) && !state.isCameraOn ? (
+      ) : (queuePosition === 1 || upNext === username) && !state.isCameraOn && state.inQueue ? (
         <button
           onClick={handlePreviewButtonClick}
           className="text-white border-2 border-red-700 px-2 h-full text-md md:text-md hover:bg-red-600 rounded bg-red-600 animate-pulse"
