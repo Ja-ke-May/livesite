@@ -17,22 +17,27 @@ const Shop = () => {
   const [selectedItem, setSelectedItem] = useState('');
   const [selectedTokens, setSelectedTokens] = useState(''); 
   const [userTokens, setUserTokens] = useState(0); 
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
     const fetchUserColorsAndTokens = async () => {
       try {
         if (username) {
+          setLoading(true);
           const userProfile = await fetchUserProfile(username);
           setColor(userProfile.commentColor || '#ffffff');
           setBorderColor(userProfile.borderColor || '#000110');
           setUsernameColor(userProfile.usernameColor || '#ffffff');
-          setUserTokens(userProfile.tokens || 0);  // Set user's purchased tokens
+          setUserTokens(userProfile.tokens || 0);  
         }
       } catch (error) {
         console.error('Failed to fetch user colors and tokens:', error);
+      } finally {
+        setLoading(false); 
       }
     };
+
 
     fetchUserColorsAndTokens();
   }, [username]);
@@ -94,8 +99,16 @@ const confirmPurchase = async () => {
     console.error('Failed to complete the purchase:', error);
     alert('Purchase failed. Please try again.');
   }
-};
+}; 
 
+if (loading) {  
+  return (
+    <div>
+      <Navbar />
+      <div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>
+    </div>
+  );
+}
   return (
     <>
       <Navbar
