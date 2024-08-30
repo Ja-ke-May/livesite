@@ -55,8 +55,6 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
         setSlidePosition(50);
         setSlidePositionAmount(5);
     } else if (liveUserId) {
-        setSlidePosition(50);
-        setSlidePositionAmount(5);
         setClickedIcon(null);
         setHasVoted(false);
         setIsPulsing(false);
