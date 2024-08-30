@@ -18,7 +18,8 @@ const Shop = () => {
   const [selectedTokens, setSelectedTokens] = useState(''); 
   const [userTokens, setUserTokens] = useState(0); 
   const [loading, setLoading] = useState(true);
-
+  const [purchaseStatus, setPurchaseStatus] = useState({ message: '', type: '' });
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
   useEffect(() => {
     const fetchUserColorsAndTokens = async () => {
@@ -37,7 +38,6 @@ const Shop = () => {
         setLoading(false); 
       }
     };
-
 
     fetchUserColorsAndTokens();
   }, [username]);
@@ -64,51 +64,53 @@ const Shop = () => {
     setSelectedTokens(tokens);
     setShowConfirmation(true);
   };
-  
-  
 
   const closeConfirmationPopup = () => {
     setShowConfirmation(false);
   };
 
-  
-const confirmPurchase = async () => {
-  setShowConfirmation(false);
+  const confirmPurchase = async () => {
+    setShowConfirmation(false);
+    setIsPurchasing(true); // Start the animation
 
-  try {
-    const { name, color } = selectedItem;
+    try {
+      const { name, color } = selectedItem;
 
-    // Determine the color type to update
-    let colorType;
-    if (name === 'this Comment Colour') {
-      colorType = 'commentColor';
-    } else if (name === 'this Border Colour') {
-      colorType = 'borderColor';
-    } else if (name === 'this Username Colour') {
-      colorType = 'usernameColor';
+      // Determine the color type to update
+      let colorType;
+      if (name === 'this Comment Colour') {
+        colorType = 'commentColor';
+      } else if (name === 'this Border Colour') {
+        colorType = 'borderColor';
+      } else if (name === 'this Username Colour') {
+        colorType = 'usernameColor';
+      }
+
+      // Call the API to update the user's color in the database
+      await updateColor(username, colorType, color);
+
+      // Handle token deduction or any other logic here
+      await deductTokens(selectedTokens);
+
+      // Update the status message
+      setPurchaseStatus({ message: `Purchased ${name} for ${selectedTokens} tokens!`, type: 'success' });
+    } catch (error) {
+      console.error('Failed to complete the purchase:', error);
+      setPurchaseStatus({ message: 'Purchase failed. Please try again.', type: 'error' });
+    } finally {
+      setIsPurchasing(false); // Stop the animation
     }
+  };
 
-    // Call the API to update the user's color in the database
-    await updateColor(username, colorType, color);
-
-    // Handle token deduction or any other logic here
-    await deductTokens(selectedTokens);
-
-    alert(`Purchased ${name} for ${selectedTokens} tokens!`);
-  } catch (error) {
-    console.error('Failed to complete the purchase:', error);
-    alert('Purchase failed. Please try again.');
+  if (loading) {  
+    return (
+      <div>
+        <Navbar />
+        <div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>
+      </div>
+    );
   }
-}; 
 
-if (loading) {  
-  return (
-    <div>
-      <Navbar />
-      <div className='bg-[#000110] w-[100%] h-[100%] flex justify-center items-center animate-pulse mt-10'>Loading...</div>
-    </div>
-  );
-}
   return (
     <>
       <Navbar
@@ -157,8 +159,9 @@ if (loading) {
           />
           {isLoggedIn && username && (
           <button
-            className="mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
+            className={`mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Comment Colour', 200)}
+            disabled={isPurchasing}
           >
             Purchase
           </button>
@@ -188,8 +191,9 @@ if (loading) {
           </div>
           {isLoggedIn && username && (
           <button
-            className="mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
+            className={`mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Border Colour', 200)}
+            disabled={isPurchasing}
           >
             Purchase
           </button>
@@ -213,8 +217,9 @@ if (loading) {
           />
           {isLoggedIn && username && (
           <button
-            className="mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
+            className={`mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Username Colour', 200)}
+            disabled={isPurchasing}
           >
             Purchase
           </button>
@@ -222,58 +227,16 @@ if (loading) {
         </div>
 
         <hr className='mt-10' />
-       <p className='mt-4'>More coming soon...</p>
-        
-        <div className='hidden mt-10 text-right'>
-          
-              <h3 className="text-sm font-semibold"><span className='text-3xl'>Username</span> <span className='text-xl'>Text</span> Size</h3>
-              <p><span className='mt-2'>Increase your username text size.</span></p>
-            
-       
-              {isLoggedIn && username && (
-          <button
-            className="mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
-            onClick={() => handlePurchaseClick('Username Text Size Increase', 1000)}
-          >
-            Purchase
-          </button>
-              )}
-        </div>
+        <p className='mt-4'>More coming soon...</p>
 
-       
-         <div className="hidden mt-10">
-         
-            <h3 className="text-3xl font-semibold">Comment <span className='text-xl'>Text</span> <span className='text-sm'>Size</span></h3>
-            <p className='mt-2'>Increase your comment text size.</p>
-          
-            {isLoggedIn && username && (
-          <button
-            className="mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
-            onClick={() => handlePurchaseClick('Comment Text Size Increase', 1000)}
-          >
-            Purchase
-          </button>
-            )}
-        </div>
-
-        
-        <div className="hidden mt-10 text-right">
-        <h3 className="text-xl font-semibold" style={{ letterSpacing: '0.2em' }}>
-    Comment Length Increase...
-  </h3>
-          <p>Increase the maximum length of your comments.</p>
-          {isLoggedIn && username && (
-          <button
-            className="mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600"
-            onClick={() => handlePurchaseClick('Comment Length Increase', 1000)}
-          >
-            Purchase
-          </button>
-          )}
+        {purchaseStatus.message && (
+          <div className={`mt-4 p-4 rounded-md shadow-sm ${purchaseStatus.type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white`}>
+            {purchaseStatus.message}
           </div>
+        )}
+
       </div> 
       
-
       {showTokenPopup && (
         <TokenPurchasePopup onClose={closeTokenPopup} />
       )}
@@ -296,7 +259,8 @@ if (loading) {
               </button>
               <button
                 onClick={confirmPurchase}
-                className="ml-2 mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600"
+                className={`ml-2 mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+                disabled={isPurchasing}
               >
                 Confirm
               </button>
