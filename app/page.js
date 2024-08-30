@@ -22,6 +22,9 @@ const HomeContent = () => {
     reconnectionDelayMax: 5000, 
   });
    
+  if (!socket) {
+    console.error('Socket is not initialized');
+  }
 
   useEffect(() => {
     if (isInitialized && !isLoggedIn) {
