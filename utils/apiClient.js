@@ -261,3 +261,24 @@ export const reportUser = async (username, reportText) => {
     throw new Error(error.response?.data?.message || 'Failed to submit report');
   }
 };
+
+export const updateColor = async (username, colorType, color) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.put('/profile/color', 
+      { 
+        username, 
+        colorType, 
+        color 
+      }, 
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to update color');
+  }
+};

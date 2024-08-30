@@ -74,7 +74,7 @@ const Menu = ({ isDarkBackground }) => {
                 isLoggedIn && (
                   <button 
                     onClick={() => setShowLogoutConfirm(true)} 
-                    className="text-red-400 hover:text-red-600 text-lg md:text-xl md:pl-4 md:pr-4 block" 
+                    className="text-red-600 hover:text-red-700 text-lg md:text-xl md:pl-4 md:pr-4 block" 
                     title='logout'
                   >
                     Log Out
