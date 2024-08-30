@@ -36,11 +36,16 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
         setSlidePositionAmount(5);
       });
 
+       socket.on('reset-votes', () => {
+        setHasVoted(false); 
+      });
+
       return () => {
         socket.off('vote-update');
         socket.off('current-position');
         socket.off('current-slide-amount');
         socket.off('go-live');
+        socket.off('reset-votes');
       };
     }
   }, [socket, setSlidePosition, setSlidePositionAmount]);
@@ -84,7 +89,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       socket.emit('vote', newPosition);
       setHasVoted(true);
 
-      if (newPosition === 100) {
+      if (newPosition >= 100) {
         setSlidePositionAmount(prevAmount => prevAmount / 2); 
         socket.emit('timer-update', liveUserId, 60);
         setHasVoted(false);
