@@ -66,15 +66,16 @@ const UserCommentBox = ({ username, comment, time, commentColor, borderColor, us
         style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
         >
           <div className='flex max-w-[100%] overflow-wrap'>
-            <h3 id={`username-${username}`} className="text-md font-bold cursor-pointer" 
+            <p id={`username-${username}`} className="text-md font-bold cursor-pointer" 
             onClick={togglePopup}
             style={{ color: usernameColor }}
             >
               {username}
-            </h3>
-            <p className="text-sm text-left mt-1 ml-2 break-words break-all"
+            
+            <span className="text-sm text-left mt-1 ml-2 break-words break-all"
             style={{ color: commentColor }}>
               {comment}
+              </span>
               </p>
           </div>
           <div className="flex justify-end">
