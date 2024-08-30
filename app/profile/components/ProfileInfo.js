@@ -9,7 +9,6 @@ const ProfileInfo = ({
   username,
   bio,
   handleFileChange,
-  handleUsernameChange,
   handleBioChange,
   links,
   tokens,
@@ -64,7 +63,6 @@ const ProfileInfo = ({
     if (newUsername.length >= 3) {
       try {
         const updatedUser = await updateUsername(newUsername);
-        handleUsernameChange(updatedUser.userName);
         setShowUsernameInput(false); 
         login(localStorage.getItem('token'), updatedUser.userName); 
         router.push(`/profile/${updatedUser.userName}`);
