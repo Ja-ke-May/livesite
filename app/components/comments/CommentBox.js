@@ -23,6 +23,7 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
         });
   
         if (response.ok) {
+          socket.emit('new-comment', { username, comment });
           setComment(''); 
         } else {
           console.error('Failed to submit comment');
