@@ -14,23 +14,7 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
       try {
         const token = localStorage.getItem('token');
         
-        // Fetch user profile to get colors
-        const profileResponse = await fetch(`https://livesite-backend.onrender.com/profile/${username}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-  
-        if (!profileResponse.ok) {
-          console.error('Failed to fetch user profile');
-          return;
-        }
-  
-        const userProfile = await profileResponse.json();
-        const { commentColor, borderColor, usernameColor } = userProfile;
-  
-        // Send the comment along with the color settings
+        // Send the comment to the server
         const response = await fetch('https://livesite-backend.onrender.com/comments', {
           method: 'POST',
           headers: {
@@ -41,14 +25,8 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
         });
   
         if (response.ok) {
-          socket.emit('new-comment', { 
-            username, 
-            comment, 
-            commentColor, 
-            borderColor, 
-            usernameColor 
-          });
-          setComment(''); 
+          setComment(''); // Clear the input field
+          // The server will handle emitting the comment with colors to the socket
         } else {
           console.error('Failed to submit comment');
         }
@@ -57,6 +35,7 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
       }
     }
   };
+  
   
 
   const handleKeyDown = (e) => {
