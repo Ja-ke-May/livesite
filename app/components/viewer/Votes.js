@@ -45,6 +45,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
         socket.off('current-position');
         socket.off('current-slide-amount');
         socket.off('go-live');
+        socket.off('reset-votes');
       };
     }
   }, [socket, setSlidePosition, setSlidePositionAmount]);
