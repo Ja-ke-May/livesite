@@ -3,7 +3,7 @@ import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
 
-const UserCommentBox = ({ username, comment, time }) => {
+const UserCommentBox = ({ username, comment, time, commentColor, borderColor, usernameColor }) => {
   
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 }); 
@@ -62,12 +62,20 @@ const UserCommentBox = ({ username, comment, time }) => {
   return (
     <>
       <div className="relative"> 
-        <div className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]">
+        <div className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]"
+        style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
+        >
           <div className='flex max-w-[100%] overflow-wrap'>
-            <h3 id={`username-${username}`} className="text-md font-bold cursor-pointer" onClick={togglePopup}>
+            <h3 id={`username-${username}`} className="text-md font-bold cursor-pointer" 
+            onClick={togglePopup}
+            style={{ color: usernameColor }}
+            >
               {username}
             </h3>
-            <p className="text-sm text-left mt-1 ml-2 break-words break-all">{comment}</p>
+            <p className="text-sm text-left mt-1 ml-2 break-words break-all"
+            style={{ color: commentColor }}>
+              {comment}
+              </p>
           </div>
           <div className="flex justify-end">
             <h4 className="text-gray-400 text-xs">{time}</h4>

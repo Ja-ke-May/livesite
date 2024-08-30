@@ -38,7 +38,11 @@ const Chat = ({ socket }) => {
           key={index} 
           username={c.username} 
           comment={c.comment}
-          time={c.time} />
+          time={c.time} 
+          commentColor={c.commentColor || '#ffffff'} 
+            borderColor={c.borderColor || '#000110'} 
+            usernameColor={c.usernameColor || '#ffffff'} 
+             />
         ))}
       </div>
     </div>
