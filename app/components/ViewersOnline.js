@@ -11,15 +11,17 @@ const socket = io('https://livesite-backend.onrender.com', {
 });
 
 const ViewersOnline = () => {
-  const [viewers, setViewers] = useState();
+  const [viewers, setViewers] = useState(0);
 
   useEffect(() => {
-    socket.on('update-online-users', (size) => {
+    const handleUpdateOnlineUsers = (size) => {
       setViewers(size);
-    });
+    };
+
+    socket.on('update-online-users', handleUpdateOnlineUsers);
 
     return () => {
-      socket.off('update-online-users');
+      socket.off('update-online-users', handleUpdateOnlineUsers);
     };
   }, []);
 
