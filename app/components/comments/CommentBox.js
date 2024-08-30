@@ -13,8 +13,6 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
     if (isLoggedIn && comment.trim() !== '') {
       try {
         const token = localStorage.getItem('token');
-        
-        // Send the comment to the server
         const response = await fetch('https://livesite-backend.onrender.com/comments', {
           method: 'POST',
           headers: {
@@ -25,8 +23,7 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
         });
   
         if (response.ok) {
-          setComment(''); // Clear the input field
-          // The server will handle emitting the comment with colors to the socket
+          setComment(''); 
         } else {
           console.error('Failed to submit comment');
         }
@@ -35,8 +32,6 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
       }
     }
   };
-  
-  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
