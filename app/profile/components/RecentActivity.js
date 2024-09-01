@@ -8,8 +8,9 @@ const RecentActivity = ({ recentActivity, usernameColor, commentColor, borderCol
   };
 
   const uniqueActivities = recentActivity.filter((activity, index, self) => {
-    const activityTimestamp = activity.match(/\d{2}\/\d{2}\/\d{4}, \d{2}:\d{2}:\d{2}/)[0];
-    return index === self.findIndex(a => a.includes(activityTimestamp));
+    const activityTimestamp = activity.match(/\d{2}\/\d{2}\/\d{4}, \d{2}:\d{2}:\d{2}/);
+    if (!activityTimestamp) return true;
+    return index === self.findIndex(a => a.includes(activityTimestamp[0]));
   });
 
   return (
