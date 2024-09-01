@@ -1,10 +1,16 @@
 import React from 'react';
 
-const Support = ({ username, supportersCount, isUserSupported, onToggleSupport }) => {
+const Support = ({ username, supportersCount, isUserSupported, onToggleSupport, usernameColor, commentColor, borderColor }) => {
   return (
     <div className='flex justify-center'>
-      <div className="bg-gray-800/80 rounded-lg shadow-md p-6 mt-4 text-center max-w-[85%]">
-        <h3 className="text-xl font-semibold mb-4">
+      <div 
+  className="bg-gray-800/80 rounded-lg shadow-md p-6 mt-4 text-center max-w-[85%]"
+  style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
+>
+<h3 
+          className="text-xl font-semibold mb-4"
+          style={{ color: usernameColor }}
+        >
           Support <span className='font-bold'>{username}</span>
           {isUserSupported ? (
             <span
@@ -21,7 +27,9 @@ const Support = ({ username, supportersCount, isUserSupported, onToggleSupport }
             </span>
           )}
         </h3>
-        <p className="text-xs mt-4">
+        <p className="text-xs mt-4 "
+         style={{ color: commentColor }}
+         >
           It's completely free to show your support. Your username will show in
           a supported users, and your recent activity.
         </p>

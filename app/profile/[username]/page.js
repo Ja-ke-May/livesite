@@ -22,6 +22,10 @@ const ProfileContent = ({ profileUsername }) => {
   const [recentActivity, setRecentActivity] = useState([]);
   const [totalLiveDuration, setTotalLiveDuration] = useState(0); 
   const [longestLiveDuration, setLongestLiveDuration] = useState(0);
+  const [commentColor, setCommentColor] = useState('#ffffff');
+const [borderColor, setBorderColor] = useState('#000110');
+const [usernameColor, setUsernameColor] = useState('#ffffff');
+
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -45,6 +49,11 @@ const ProfileContent = ({ profileUsername }) => {
         setRecentActivity(recentActivityData);
         setTotalLiveDuration(userProfile.totalLiveDuration || 0); 
         setLongestLiveDuration(userProfile.longestLiveDuration || 0); 
+
+        setCommentColor(userProfile.commentColor || '#ffffff');
+        setBorderColor(userProfile.borderColor || '#000110');
+        setUsernameColor(userProfile.usernameColor || '#ffffff');
+
       } catch (error) {
         console.error('Failed to load user profile:', error);
       } finally {
@@ -131,6 +140,9 @@ const ProfileContent = ({ profileUsername }) => {
             onToggleSupport={handleToggleSupport}
             isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} 
             loggedInUsername={loggedInUsername} 
+            commentColor={commentColor}
+            borderColor={borderColor}
+            usernameColor={usernameColor}
           />
         </Suspense>
         <Suspense>
@@ -139,19 +151,32 @@ const ProfileContent = ({ profileUsername }) => {
             supportersCount={supportersCount}
             isUserSupported={isUserSupported}
             onToggleSupport={handleToggleSupport}
+            borderColor={borderColor}
+            usernameColor={usernameColor}
           />
         </Suspense>
         <Suspense>
-          <LinksSection links={links} setLinks={setLinks} isLoggedIn={isLoggedIn && loggedInUsername === profileUsername} />
+          <LinksSection links={links} setLinks={setLinks} isLoggedIn={isLoggedIn && loggedInUsername === profileUsername}
+          commentColor={commentColor}
+          borderColor={borderColor}
+          usernameColor={usernameColor}
+           />
         </Suspense>
         <Suspense>
         <ProfileStarResults 
             totalLiveDuration={totalLiveDuration} 
             longestLiveDuration={longestLiveDuration} 
+            borderColor={borderColor}
+            usernameColor={usernameColor}
           />
         </Suspense>
         <Suspense>
-          <RecentActivity recentActivity={recentActivity} />
+          <RecentActivity 
+          recentActivity={recentActivity} 
+          commentColor={commentColor}
+    borderColor={borderColor}
+    usernameColor={usernameColor}
+    />
         </Suspense>
       </main>
     </>

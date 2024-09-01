@@ -16,7 +16,10 @@ const ProfileInfo = ({
   isUserSupported,
   onToggleSupport,
   isLoggedIn,
-  loggedInUsername 
+  loggedInUsername,
+   usernameColor, 
+   commentColor, 
+   borderColor,
 }) => {
   const router = useRouter(); 
   const { login } = useContext(AuthContext);
@@ -105,9 +108,13 @@ const ProfileInfo = ({
 
   return (
     <div className="flex justify-center mt-4">
-      <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 w-full max-w-lg">
+      <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 w-full max-w-lg"
+      style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
+      >
         <div className="text-center relative">
-          <h2 className="text-2xl font-bold cursor-pointer" onClick={(e) => togglePopup(e)}>
+          <h2 className="text-2xl font-bold cursor-pointer" 
+          style={{ color: usernameColor }}
+          onClick={(e) => togglePopup(e)}>
             {username}
           </h2>
           {isLoggedIn && loggedInUsername === username && (
@@ -130,7 +137,9 @@ const ProfileInfo = ({
             alt="Profile Picture"
             className="max-w-60 max-h-60 rounded-[10%] mb-4 md:mb-0 md:mr-6"
           />
-          <p className="mt-2 text-center md:text-left max-w-[75%] md:max-w-[50%] break-words">
+          <p className="mt-2 text-center md:text-left max-w-[75%] md:max-w-[50%] break-words"
+          style={{ color: commentColor }}
+          >
             {bio}
           </p>
         </div>

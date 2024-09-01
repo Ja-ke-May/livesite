@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { addLink, deleteLink } from '../../../utils/apiClient';
 
-const LinksSection = ({ links = [], setLinks, isLoggedIn }) => {
+const LinksSection = ({ links = [], setLinks, isLoggedIn, usernameColor, commentColor, borderColor }) => {
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
   const [newLinkText, setNewLinkText] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -47,10 +47,15 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn }) => {
 
   return (
     <div className="flex justify-center">
-      <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 mt-4 w-full max-w-md md:max-w-2xl">
-        <h3 className="text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]">Links</h3>
+      <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 mt-4 w-full max-w-md md:max-w-2xl"
+      style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
+      >
+        <h3 className="text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]"
+        style={{ color: usernameColor }}>Links</h3>
         <p className='text-xs text-center mb-4'><span className='text-red-600'>Please note:</span> MyMe.live is not responsible for the content of external links found on user profiles. Only click on links from users you trust.</p>
-        <div className="flex flex-wrap justify-center mb-4 text-xl md:text-2xl">
+        <div className="flex flex-wrap justify-center mb-4 text-xl md:text-2xl"
+        style={{ color: commentColor }}
+        >
           {links.map((link) => (
             <div key={link._id} className="flex items-center mb-2 mx-2 text-white">
               <a
