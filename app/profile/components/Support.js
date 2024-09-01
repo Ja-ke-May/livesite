@@ -28,12 +28,13 @@ const Support = ({ username, supportersCount, isUserSupported, onToggleSupport, 
           )}
         </h3>
         <p className="text-xs mt-4 "
-         style={{ color: commentColor }}
+         
          >
           It's completely free to show your support. Your username will show in
           a supported users, and your recent activity.
         </p>
-        <p className="text-md mt-4">Supporters: <span className='text-xl text-yellow-400 brightness-125'>{supportersCount}</span></p>
+        <p className="text-md mt-4" 
+        style={{ color: commentColor }}>Supporters: <span className='text-xl text-yellow-400 brightness-125'>{supportersCount}</span></p>
       </div>
     </div>
   );
