@@ -57,7 +57,7 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn, usernameColor, comment
         style={{ color: commentColor }}
         >
           {links.map((link) => (
-            <div key={link._id} className="flex items-center mb-2 mx-2 text-white">
+            <div key={link._id} className="flex items-center mb-2 mx-2">
               <a
                 href={link.url}
                 className="flex items-center hover:text-blue-600"
@@ -99,7 +99,7 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn, usernameColor, comment
               <div className="flex flex-col items-center space-y-2 w-full">
                 <input
                   type="text"
-                  className="bg-[#000110] text-white px-4 py-2 rounded shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
+                  className="bg-[#000110] px-4 py-2 rounded shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
                   placeholder="Link Text"
                   value={newLinkText}
                   onChange={(e) => setNewLinkText(e.target.value)}

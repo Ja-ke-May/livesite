@@ -153,6 +153,7 @@ const [usernameColor, setUsernameColor] = useState('#ffffff');
             onToggleSupport={handleToggleSupport}
             borderColor={borderColor}
             usernameColor={usernameColor}
+            commentColor={commentColor}
           />
         </Suspense>
         <Suspense>
@@ -168,6 +169,7 @@ const [usernameColor, setUsernameColor] = useState('#ffffff');
             longestLiveDuration={longestLiveDuration} 
             borderColor={borderColor}
             usernameColor={usernameColor}
+            commentColor={commentColor}
           />
         </Suspense>
         <Suspense>
