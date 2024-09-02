@@ -33,6 +33,8 @@ const Viewer = () => {
     const [showQueueAlert, setShowQueueAlert] = useState(false);
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);
+    const [queueLength, setQueueLength] = useState(0);
+
 
     const previousLiveUserIdRef = useRef(null);
 
@@ -130,6 +132,12 @@ const Viewer = () => {
         socket.current.on("current-position", (position) => {
             setSlidePosition(position);
         });
+
+        socket.current.on("queue-length-update", (length) => {
+            console.log("Received queue-length-update event with length:", length);
+            setQueueLength(length);
+        });
+        
 
         socket.current.on("current-slide-amount", (amount) => {
             setSlidePositionAmount(amount);
@@ -611,6 +619,7 @@ const Viewer = () => {
                 onClose={handleClosePopUp}
                 onJoin={handleUserDecisionToJoinQueue}
                 queuePosition={queuePosition}
+                queueLength={queueLength}
             />
             {state.liveUserId && <Timer timer={timer} />}
 
