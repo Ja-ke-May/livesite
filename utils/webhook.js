@@ -1,4 +1,4 @@
-import axios from 'axios'; 
+import axios from 'axios';
 import Stripe from 'stripe';
 import getRawBody from 'raw-body';
 
@@ -7,9 +7,9 @@ const API_BASE_URL = 'https://livesite-backend.onrender.com';
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
     headers: {
-      'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
     },
-  });
+});
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2024-06-20',
@@ -51,28 +51,26 @@ const calculateTokens = (lineItems) => {
 };
 
 export default async function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).send("Only POST requests allowed");
+    }
+
+    const sig = req.headers["stripe-signature"];
+    let event;
+
     try {
-        if (req.method !== "POST") {
-            return res.status(405).send("Only POST requests allowed");
-        }
-
-        const sig = req.headers["stripe-signature"];
         const rawBody = await getRawBody(req);
+        event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+    } catch (err) {
+        console.error(`Webhook Error: ${err.message}`);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
 
-        let event;
+    if (event.type === "checkout.session.completed") {
         try {
-            event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
-        } catch (err) {
-            console.error(`Webhook Error: ${err.message}`);
-            return res.status(400).send(`Webhook Error: ${err.message}`);
-        }
-
-        if (event.type === "checkout.session.completed") {
             const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
                 event.data.object.id,
-                {
-                    expand: ["line_items"],
-                }
+                { expand: ["line_items"] }
             );
 
             const lineItems = sessionWithLineItems.line_items;
@@ -82,31 +80,26 @@ export default async function handler(req, res) {
                 return res.status(500).send("Internal Server Error");
             }
 
-            try {
-                const username = sessionWithLineItems.client_reference_id;
-                const purchasedAmount = calculateTokens(lineItems);
-                const amountSpent = sessionWithLineItems.amount_total / 100;
-                const currency = sessionWithLineItems.currency.toUpperCase();
+            const username = sessionWithLineItems.client_reference_id;
+            const purchasedAmount = calculateTokens(lineItems);
+            const amountSpent = sessionWithLineItems.amount_total / 100;
+            const currency = sessionWithLineItems.currency.toUpperCase();
 
-                // Make an API request to update the user's purchases
-                await axiosInstance.post(`/update-purchase`, {
-                    username,
-                    tokens: purchasedAmount,
-                    amountSpent,
-                    currency,
-                    description: `Purchased ${purchasedAmount} tokens for ${amountSpent} ${currency}`
-                });
+            res.status(200).send("Event processed");
 
-                console.log(`Successfully processed purchase for ${username}.`);
-            } catch (error) {
-                console.error("Error updating user purchase data:", error);
-                return res.status(500).send("Failed to update user data");
-            }
+            await axiosInstance.post(`${API_BASE_URL}/update-purchase`, {
+                username,
+                tokens: purchasedAmount,
+                amountSpent,
+                currency,
+                description: `Purchased ${purchasedAmount} tokens for ${amountSpent} ${currency}`
+            });
+
+            console.log(`Successfully processed purchase for ${username}. Session ID: ${sessionWithLineItems.id}`);
+        } catch (error) {
+            console.error("Error processing checkout session:", error);
         }
-
-        res.status(200).end();
-    } catch (error) {
-        console.error("Unhandled error in webhook handler:", error);
-        res.status(500).send("Internal Server Error");
+    } else {
+        res.status(200).send("Event not handled");
     }
 }
