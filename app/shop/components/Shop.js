@@ -245,7 +245,9 @@ const Shop = () => {
       </div> 
       
       {showTokenPopup && (
-        <TokenPurchasePopup onClose={closeTokenPopup} />
+        <TokenPurchasePopup onClose={closeTokenPopup}
+        username={username}
+         />
       )}
 
       {showConfirmation && (
