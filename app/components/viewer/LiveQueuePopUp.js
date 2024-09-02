@@ -67,7 +67,7 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin, queueLength }, re
             <div className="flex flex-col justify-center items-center">
               <button 
                 onClick={handleJoinForFreeClick}
-                className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 max-w-[50%] mb-2"
+                className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 max-w-[50%]"
               >
                 Join for Free
               </button>
