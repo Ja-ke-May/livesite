@@ -30,7 +30,7 @@ const TokenPurchasePopup = ({ onClose }) => {
                 href={option.url} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="ml-2 bg-yellow-400 font-bold text-[#000110] brightness-125 px-1 py-1 rounded-md shadow-sm hover:bg-yellow-600"
+                className="ml-2 bg-yellow-400 font-bold text-[#000110] brightness-125 px-1 py-1 rounded-md shadow-sm hover:bg-yellow-600 flex justify-center items-center text-center"
               >
                 Buy
               </a>
