@@ -67,37 +67,35 @@ export default async function handler(req, res) {
     }
 
     if (event.type === "checkout.session.completed") {
+        const session = event.data.object;
+        const sessionWithLineItems = await stripe.checkout.sessions.retrieve(session.id, {
+            expand: ["line_items"],
+        });
+
+        const lineItems = sessionWithLineItems.line_items;
+        if (!lineItems) {
+            console.error("No line items found for the session");
+            return res.status(500).send("Internal Server Error");
+        }
+
+        const totalTokens = calculateTokens(lineItems);
+        const { email } = sessionWithLineItems.customer_details; // Assuming you're using email as the username
+
         try {
-            const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
-                event.data.object.id,
-                { expand: ["line_items"] }
-            );
-
-            const lineItems = sessionWithLineItems.line_items;
-
-            if (!lineItems) {
-                console.error("No line items found for the session");
-                return res.status(500).send("Internal Server Error");
-            }
-
-            const username = sessionWithLineItems.client_reference_id;
-            const purchasedAmount = calculateTokens(lineItems);
-            const amountSpent = sessionWithLineItems.amount_total / 100;
-            const currency = sessionWithLineItems.currency.toUpperCase();
-
-            res.status(200).send("Event processed");
-
-            await axiosInstance.post(`${API_BASE_URL}/update-purchase`, {
-                username,
-                tokens: purchasedAmount,
-                amountSpent,
-                currency,
-                description: `Purchased ${purchasedAmount} tokens for ${amountSpent} ${currency}`
+          
+             await axiosInstance.post('/update-purchase', {
+                username: email, 
+                tokens: totalTokens,
+                amountSpent: session.amount_total / 100, 
+                currency: 'GBP',
+                description: `Purchase of ${totalTokens} tokens`
             });
 
-            console.log(`Successfully processed purchase for ${username}. Session ID: ${sessionWithLineItems.id}`);
+            console.log(`Successfully updated user ${email} with ${totalTokens} tokens.`);
+            res.status(200).send("Purchase processed successfully");
         } catch (error) {
-            console.error("Error processing checkout session:", error);
+            console.error("Error updating user after purchase:", error);
+            res.status(500).send("Error updating user after purchase");
         }
     } else {
         res.status(200).send("Event not handled");
