@@ -1,8 +1,9 @@
-const Stripe = require("stripe");
-const getRawBody = require("raw-body");
+const Stripe = require('stripe');
+const getRawBody = require('raw-body');
+const axios = require('axios'); // Use axios to send the API request to the backend
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2022-11-15",
+    apiVersion: '2024-06-20',
 });
 
 const endpointSecret = process.env.WEBHOOK_SECRET;
@@ -13,26 +14,49 @@ export const config = {
     },
 };
 
+const calculateTokens = (lineItems) => {
+    let totalTokens = 0;
+    lineItems.data.forEach(item => {
+        switch (item.description) {
+            case '400 Tokens':
+                totalTokens += 400;
+                break;
+            case '1000 Tokens':
+                totalTokens += 1000;
+                break;
+            case '2000 Tokens':
+                totalTokens += 2000;
+                break;
+            case '4000 Tokens':
+                totalTokens += 4000;
+                break;
+            case '10000 Tokens':
+                totalTokens += 10000;
+                break;
+            default:
+                console.warn(`Unrecognized item description: ${item.description}`);
+                break;
+        }
+    });
+    return totalTokens;
+};
+
 export default async function handler(req, res) {
     try {
-        console.log("req.headers", req.headers);
         if (req.method !== "POST") {
             return res.status(405).send("Only POST requests allowed");
         }
 
         const sig = req.headers["stripe-signature"];
-        const rawBody = await getRawBody(req);  
+        const rawBody = await getRawBody(req);
 
         let event;
-
         try {
             event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
         } catch (err) {
             console.error(`Webhook Error: ${err.message}`);
             return res.status(400).send(`Webhook Error: ${err.message}`);
         }
-
-        console.log("event.type", JSON.stringify(event.type));
 
         if (event.type === "checkout.session.completed") {
             const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
@@ -45,20 +69,35 @@ export default async function handler(req, res) {
             const lineItems = sessionWithLineItems.line_items;
 
             if (!lineItems) {
+                console.error("No line items found for the session");
                 return res.status(500).send("Internal Server Error");
             }
 
             try {
-                // Your custom logic for handling the completed session
-                console.log("Send user tokens and say thanks");
+                const username = sessionWithLineItems.client_reference_id;
+                const purchasedAmount = calculateTokens(lineItems);
+                const amountSpent = sessionWithLineItems.amount_total / 100;
+                const currency = sessionWithLineItems.currency.toUpperCase();
+
+                // Make an API request to update the user's purchases
+                await axios.post(`https://livesite-backend.onrender.com/update-purchase`, {
+                    username,
+                    tokens: purchasedAmount,
+                    amountSpent,
+                    currency,
+                    description: `Purchased ${purchasedAmount} tokens for ${amountSpent} ${currency}`
+                });
+
+                console.log(`Successfully processed purchase for ${username}.`);
             } catch (error) {
-                console.error("Error sending tokens to user", error);
+                console.error("Error updating user purchase data:", error);
+                return res.status(500).send("Failed to update user data");
             }
         }
 
         res.status(200).end();
     } catch (error) {
-        console.error(error);
+        console.error("Unhandled error in webhook handler:", error);
         res.status(500).send("Internal Server Error");
     }
 }
