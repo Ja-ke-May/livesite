@@ -2,12 +2,14 @@ import React from 'react';
 
 const TokenPurchasePopup = ({ onClose, username }) => {
   
+let userName = username;
+
   const tokenOptions = [
-    { amount: 400, price: '£9.99', url: `https://buy.stripe.com/9AQ4he2zAdPBbiE9AA?client_reference_id=${username}` },
-    { amount: 1000, price: '£19.99', url: `https://buy.stripe.com/3cs152deeaDpeuQ3cd?client_reference_id=${username}` },   
-    { amount: 2000, price: '£29.99', url: `https://buy.stripe.com/dR6dROfmm7rd3Qc7su?client_reference_id=${username}` },
-    { amount: 4000, price: '£49.99', url: `https://buy.stripe.com/dR67tq3DE9zlgCY5kn?client_reference_id=${username}` },
-    { amount: 10000, price: '£99.99', url: `https://buy.stripe.com/cN200Ygqq4f186s9AE?client_reference_id=${username}` },
+    { amount: 400, price: '£9.99', url: `https://buy.stripe.com/9AQ4he2zAdPBbiE9AA?client_reference_id=${userName}` },
+    { amount: 1000, price: '£19.99', url: `https://buy.stripe.com/3cs152deeaDpeuQ3cd?client_reference_id=${userName}` },   
+    { amount: 2000, price: '£29.99', url: `https://buy.stripe.com/dR6dROfmm7rd3Qc7su?client_reference_id=${userName}` },
+    { amount: 4000, price: '£49.99', url: `https://buy.stripe.com/dR67tq3DE9zlgCY5kn?client_reference_id=${userName}` },
+    { amount: 10000, price: '£99.99', url: `https://buy.stripe.com/cN200Ygqq4f186s9AE?client_reference_id=${userName}` },
 ];
 
 
