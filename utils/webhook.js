@@ -1,7 +1,6 @@
-import axios from 'axios';
-
 const Stripe = require('stripe');
 const getRawBody = require('raw-body');
+const axios = require('axios');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2024-06-20',
@@ -81,7 +80,7 @@ export default async function handler(req, res) {
                 const currency = sessionWithLineItems.currency.toUpperCase();
 
                 // Make an API request to update the user's purchases
-                await axios.Instance.post(`https://livesite-backend.onrender.com/update-purchase`, {
+                await axiosInstance.post(`https://livesite-backend.onrender.com/update-purchase`, {
                     username,
                     tokens: purchasedAmount,
                     amountSpent,
