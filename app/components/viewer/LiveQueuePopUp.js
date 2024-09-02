@@ -56,8 +56,8 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin, queueLength }, re
             >
               &times;
             </button>
-            <h3 className="text-xl font-semibold mt-4 mb-4 text-center">Join the live queue</h3>
-            <p className='text-center mb-4'>There are currently: 
+            <h3 className="text-xl font-semibold mt-2 mb-2 text-center">Join the live queue</h3>
+            <p className='text-center mb-5'>There are currently: 
               <br />
               {queueLength}
               <br />
