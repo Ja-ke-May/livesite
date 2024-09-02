@@ -74,7 +74,11 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
         SEND
       </button>
 
+<div className='hidden'>
       <SpeakerButton isLoggedIn={isLoggedIn} />
+      </div>
+
+
     </div>
   );
 };
