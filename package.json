@@ -9,15 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "and": "^0.0.3",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "js-cookie": "^3.0.5",
     "next": "14.2.5",
+    "raw-body": "^3.0.0",
     "react": "^18",
     "react-dom": "^18",
     "react-google-recaptcha": "^3.1.0",
     "react-router-dom": "^6.25.1",
     "socket.io-client": "^4.7.5",
+    "stripe": "^16.9.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
