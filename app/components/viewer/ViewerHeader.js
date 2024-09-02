@@ -68,7 +68,7 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
           </button>
         </>
       ) : state.inQueue ? (
-        <p className="md:font-extrabold inline mt-1">
+        <p className="md:font-extrabold inline mt-2">
           Your position in queue: {queuePosition}
         </p>
       ) : null }
