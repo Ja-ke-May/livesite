@@ -4,11 +4,11 @@ import React from 'react';
 
 const TokenPurchasePopup = ({ onClose }) => {
   const tokenOptions = [
-    { amount: 400, price: '£9.99' },
-    { amount: 1000, price: '£19.99' },
-    { amount: 2000, price: '£29.99' },
-    { amount: 4000, price: '£49.99' },
-    { amount: 10000, price: '£99.99' },
+    { amount: 400, price: '£9.99' }, https://buy.stripe.com/9AQ4he2zAdPBbiE9AA
+    { amount: 1000, price: '£19.99' }, https://buy.stripe.com/3cs152deeaDpeuQ3cd   
+    { amount: 2000, price: '£29.99' }, https://buy.stripe.com/dR6dROfmm7rd3Qc7su
+    { amount: 4000, price: '£49.99' }, https://buy.stripe.com/dR67tq3DE9zlgCY5kn
+    { amount: 10000, price: '£99.99' }, https://buy.stripe.com/cN200Ygqq4f186s9AE
   ];
 
   return (
