@@ -1,7 +1,7 @@
 import React, { useImperativeHandle, useRef, forwardRef, useState } from 'react';
 import { deductTokens } from '@/utils/apiClient';
 
-const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
+const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin, queueLength }, ref) => {
   const popupRef = useRef(null);
   const confirmRef = useRef(null);
   const [confirmVisible, setConfirmVisible] = useState(false);
@@ -57,6 +57,13 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin }, ref) => {
               &times;
             </button>
             <h3 className="text-xl font-semibold mt-4 mb-6 text-center">Join the live queue</h3>
+            <p>There are currently: 
+              <br />
+              {queueLength}
+              <br />
+              people in the queue.
+            </p>
+            
             <div className="flex flex-col justify-center items-center">
               <button 
                 onClick={handleJoinForFreeClick}
