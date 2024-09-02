@@ -99,7 +99,7 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin, queueLength }, re
             >
               &times;
             </button>
-            <h3 className="text-xl font-semibold mt-4 mb-6 text-center">Fast Pass Confirmation</h3>
+            <h3 className="text-xl font-semibold mt-2 mb-4 text-center">Fast Pass Confirmation</h3>
             <p className="text-center text-white mb-6">A fast pass will cost you <span className='text-yellow-400 brightness-125'>100 tokens</span>, are you sure you want to continue?</p>
             <div className="flex justify-center space-x-4">
               <button
