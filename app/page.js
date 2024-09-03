@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import React, { useContext, useState, useEffect } from 'react';
 import Navbar from './components/Navbar'; 
 import Chat from './components/comments/Chat';
@@ -14,14 +14,24 @@ import io from 'socket.io-client';
 const HomeContent = () => {
   const { isLoggedIn, username, isInitialized } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false); 
+  const [socket, setSocket] = useState(null);
 
-  const socket = io('https://livesite-backend.onrender.com', {
-    reconnection: true,
-    reconnectionAttempts: 1000, 
-    reconnectionDelay: 1000, 
-    reconnectionDelayMax: 5000, 
-  });
-   
+  useEffect(() => {
+    const newSocket = io('https://livesite-backend.onrender.com', {
+      reconnection: true,
+      reconnectionAttempts: 1000, 
+      reconnectionDelay: 1000, 
+      reconnectionDelayMax: 5000, 
+    });
+
+    setSocket(newSocket);
+
+    return () => {
+      if (newSocket) {
+        newSocket.disconnect();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (isInitialized && !isLoggedIn) {
@@ -46,6 +56,10 @@ const HomeContent = () => {
     return <Over18 onConfirm={handleOver18Confirm} />;
   }
 
+  if (!socket) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <h1 className='hidden'>Home</h1>
@@ -56,7 +70,7 @@ const HomeContent = () => {
         <Chat isLoggedIn={isLoggedIn} username={username} socket={socket} />
       </main>
       <CommentBox isLoggedIn={isLoggedIn} username={username} socket={socket} />
-      <ViewersOnline />
+      <ViewersOnline socket={socket} />
     </div>
   );
 };
