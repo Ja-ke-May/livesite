@@ -28,7 +28,7 @@ const About = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className='text-xl font-semibold mb-2'><span className='text-yellow-400 brightness-125'>YOUR YOU ⭐</span></h2>
+            <h2 className='text-xl font-semibold mb-2 brightness-125'><span className='text-yellow-400'>YOUR YOU ⭐</span></h2>
             <p>
               At MyMe, we believe in celebrating the real you. Our mission is to create a community where authenticity and creativity thrive. Unlike traditional social media, there’s no need to play by the rules of algorithms or chase after followers. MyMe is your space to be seen, heard, and appreciated for who you truly are. We focus on fostering honest feedback, real connections, and a culture where creativity is king.
             </p>
@@ -84,8 +84,8 @@ const About = () => {
             </p>
            
               <p className='mt-2'><strong className='text-red-500'>❌ Over 18 Only:</strong> MyMe is an adult community. We do not allow pornographic or illegal content—violations will result in immediate bans.</p>
-              <p><strong className='text-red-500'>❌ Respect the Community:</strong> Spamming, harassment, or causing trouble intentionally will lead to warnings and potential bans.</p>
-              <p><strong className='text-red-500'>❌ Support and Honesty:</strong> We value real, honest feedback and interactions that help everyone grow and improve.</p>
+              <p><strong className='text-red-500'>❌ Respect:</strong> Spamming, harassment, or causing trouble intentionally will lead to warnings and potential bans.</p>
+              <p><strong className='text-yellow-400 brightness-125'><span className='brightness-125'>⭐</span> Support and Honesty:</strong> We value real, honest feedback and interactions that help everyone grow and improve.</p>
             
           </section>
 
