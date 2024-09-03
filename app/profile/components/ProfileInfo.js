@@ -159,6 +159,7 @@ const ProfileInfo = ({
                   value={newUsername}
                   onChange={handleUsernameChangeInternal}
                   maxLength={12}
+                  placeholder='max characters 12'
                 />
                 {usernameError && <p className="text-red-500 text-sm mb-2">{usernameError}</p>}
                 <button
