@@ -17,10 +17,12 @@ const ViewersOnline = ({ socket }) => {
     };
   }, [socket]); 
 
+  const viewersDividedAndRounded = Math.ceil(viewers / 2);
+
   return (
     <div className="fixed bottom-0 bg-none w-full flex justify-center items-center h-4 md:h-6 mb-1 z-50">
       <p className="text-white">
-        Current Viewers: {viewers}
+        Current Viewers: {viewersDividedAndRounded}
       </p>
     </div>
   );
