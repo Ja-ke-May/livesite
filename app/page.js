@@ -1,3 +1,5 @@
+"use client";
+ 
 import React, { useContext, useState, useEffect } from 'react';
 import Navbar from './components/Navbar'; 
 import Chat from './components/comments/Chat';
