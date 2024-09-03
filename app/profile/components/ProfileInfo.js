@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import UsernamePopUp from '../../components/UsernamePopUp';
 import { updateUsername, updateBio } from '@/utils/apiClient';
 import { AuthContext } from '@/utils/AuthContext';
+import TokenPurchasePopup from '@/app/shop/components/TokenPurchasePopup';
 
 const ProfileInfo = ({
   profilePicture,
@@ -31,6 +32,7 @@ const ProfileInfo = ({
   const [fileError, setFileError] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
+  const [showTokenPopup, setShowTokenPopup] = useState(false);
 
   const toggleUsernameInput = () => {
     setShowUsernameInput(!showUsernameInput);
@@ -106,6 +108,14 @@ const ProfileInfo = ({
     }
   };
 
+  const closeTokenPopup = () => {
+    setShowTokenPopup(false);
+  };
+
+  const handleBuyTokens = () => {
+    setShowTokenPopup(true);
+  };
+
   return (
     <div className="flex justify-center mt-4">
       <div className="bg-gray-800/80 rounded-lg shadow-md p-4 md:p-6 w-full max-w-lg"
@@ -117,19 +127,31 @@ const ProfileInfo = ({
           onClick={(e) => togglePopup(e)}>
             {username}
           </h2>
+
           {isLoggedIn && loggedInUsername === username && (
-            <div>
-              <p className="text-yellow-400 brightness-125 mt-2">Tokens: {tokens}</p>
-            </div>
-          )}
-          {/* <div className="mt-4 w-full flex items-center justify-center">
-          <button
-            onClick={handleBuyTokens}
-            className="bg-yellow-400 font-black brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600"
-          >
-            Buy Tokens
-          </button>
-        </div> */}
+  <div>
+    <div>
+      <p className="text-yellow-400 brightness-125 mt-2">Tokens: {tokens}</p>
+    </div>
+
+    <div className="mt-4 w-full flex items-center justify-center">
+      <button
+        onClick={handleBuyTokens}
+        className="bg-yellow-400 font-black brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600"
+      >
+        Buy Tokens
+      </button>
+    </div>
+
+    {showTokenPopup && (
+      <TokenPurchasePopup 
+        onClose={closeTokenPopup} 
+        username={username} 
+      />
+    )}
+  </div>
+)}
+
         </div>
         <div className="flex flex-col items-center md:flex-row md:items-start mt-4">
           <img
