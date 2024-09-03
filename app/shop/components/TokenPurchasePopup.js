@@ -39,12 +39,14 @@ let userName = username;
             </li>
           ))}
         </ul>
+        <div className='w-full flex justify-center items-center'>
         <button
           onClick={onClose}
           className="mt-4 bg-red-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-700"
         >
           Close
         </button>
+        </div>
       </div>
     </div>
   );
