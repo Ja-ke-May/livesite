@@ -36,15 +36,16 @@ const TermsAndConditionsModal = ({ isOpen, onClose }) => {
             <strong>Moderation and Enforcement:</strong> MyMe reserves the right to ban or remove any users from the queue, chat, or Platform at any time for any reason, without notice. Users can report inappropriate behaviour by clicking on a username. Reports will be reviewed, and appropriate action will be taken, including temporary bans for minor offences and permanent bans for serious violations.
           </p>
           <h3 className="text-lg font-semibold mt-4">4. Content Ownership and Usage</h3>
-          <p>
-            By posting or streaming content on MyMe, you grant MyMe a non-exclusive, royalty-free, worldwide, perpetual licence to use, display, reproduce, modify, and distribute your content for any purpose, including but not limited to promotional activities on MyMe’s social media or other platforms.
-          </p>
-          <p>
-            Users are prohibited from sharing content of other users without obtaining explicit permission. To request permission to share content, contact MyMe at info@myme.live.
-          </p>
-          <p>
-            MyMe may record and share content streamed on the Platform through its social media channels or other platforms. Users acknowledge that live content is inherently public and should not expect privacy regarding what they stream.
-          </p>
+<p>
+  By posting or streaming content on MyMe, you grant MyMe a non-exclusive, royalty-free, worldwide, perpetual license to use, display, reproduce, modify, and distribute your content for any purpose, including but not limited to promotional activities on MyMe’s social media or other platforms.
+</p>
+<p>
+  You retain the right to share your content on other platforms at your discretion. However, if you wish to use content created by other users, you must obtain their explicit permission before doing so. This ensures that all users maintain control over how their content is used and shared by others.
+</p>
+<p>
+  MyMe may record and share content streamed on the Platform through its social media channels or other platforms. Users acknowledge that live content is inherently public and should not expect privacy regarding what they stream.
+</p>
+
           <h3 className="text-lg font-semibold mt-4">5. Data Collection and Privacy</h3>
           <p>
             MyMe collects and stores personal information, including but not limited to user emails, which are encrypted to ensure privacy and security. User emails are used for essential communication and, if opted in, for marketing purposes. MyMe uses Google Analytics and other implemented methods to track user behaviour on the site. This data is used to improve the user experience and optimise the Platform.
