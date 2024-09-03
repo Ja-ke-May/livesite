@@ -30,7 +30,7 @@ const Menu = ({ isDarkBackground }) => {
           {showMenuList && (
             <section
               id="menu-list"
-              className='fixed top-0 right-0 md:pr-2 md:pt-2 bg-gray-800/80 text-white text-xl md:text-2xl p-4 z-50 rounded-bl-3xl'
+              className='fixed top-0 right-0 md:pr-2 md:pt-2 bg-gray-800/90 text-white font-extrabold text-xl md:text-2xl p-4 z-50 rounded-bl-3xl'
             >
               <Link href="/stars" passHref>
                 <button 
@@ -86,7 +86,7 @@ const Menu = ({ isDarkBackground }) => {
         </div>
         <MenuIcon onMenuToggle={handleMenuClick} isDarkBackground={isDarkBackground} />
         {showLogoutConfirm && (
-          <div className="fixed inset-0 flex items-center justify-center bg-[#000110]/80 z-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-[#000110]/90 z-50">
             <div className="p-4 md:p-6 rounded-lg shadow-lg bg-[#000110]/80">
               <h2 className="text-xl text-center mb-4">Are you sure you want to log out?</h2>
               <div className="flex justify-center">

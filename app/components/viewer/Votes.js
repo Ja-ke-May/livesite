@@ -111,7 +111,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
     
     try {
       setLoading(true);
-      await deductTokens(1); 
+      await deductTokens(10); 
       setShowBuyVotePrompt(false); 
       setHasVoted(false);
       setLoading(false);
@@ -172,7 +172,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
     return (
       <div className="mt-2">
         <div className="flex justify-center items-center">
-          <span>Buy 1 vote for 1 token?</span>
+          <span>Buy 1 vote for 10 tokens?</span>
 
           <button
             className="hover:bg-blue-700 text-white px-1 ml-2 rounded-md shadow-sm bg-[#0000110] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 max-w-[50%]"
