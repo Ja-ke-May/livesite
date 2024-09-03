@@ -35,33 +35,43 @@ const About = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className='text-xl font-semibold mb-2'>How MyMe Works <span className='brightness-125'>⭐</span></h2>
-            <div className="list-disc list-inside ml-4">
-              <p className='mt-2'>
-                <strong><span className='brightness-125'>⭐</span> Go Live, One at a Time:</strong> MyMe focuses on a single live streamer at a time, giving you an undivided spotlight. When you join the queue, your moment to shine comes when you're at the front. The audience votes in real-time—if they love what they see, your time gets extended. If not, the next person gets their chance. It's a fair, exciting way to share your creativity.
-              </p>
-              <p className='mt-2'>
-                <strong><span className='brightness-125'>⭐</span> Real-Time Interaction:</strong> Engage directly with your audience through live chat. Share your thoughts, promote your work, and make connections. Customise your messages to stand out even more. When someone clicks on your name, they can check out your profile and follow your links to other social platforms or websites.
-              </p>
-              <p className='mt-2'>
-                <strong><span className='brightness-125'>⭐</span> Earn and Spend Tokens:</strong> As you captivate the audience, you'll earn tokens. These can be used to enhance your visibility on the platform—customise your profile, make your comments pop, or grab a "Fast Pass" to jump the queue and go live sooner. Tokens are also available for purchase, helping you promote what matters most while supporting the platform.
-              </p>
-              <p className='mt-2'>
-                <strong><span className='brightness-125'>⭐</span> Community-Driven Content:</strong> Our innovative voting system ensures that the most engaging content stays in the spotlight. If the audience isn’t hooked, they can vote to move on, paving the way for the next exciting stream. This dynamic approach keeps MyMe fresh and driven by its users.
-              </p>
-            </div>
-          </section>
+  <h2 className='text-xl font-semibold mb-4'>How MyMe Works <span className='brightness-125'>⭐</span></h2>
+  <div className="list-disc list-inside ml-4">
+    <p className='mt-2'>
+      <strong><span className='brightness-125'>⭐</span> Go Live:</strong> Start by joining the live queue using the yellow "JOIN" banner at the top of the home page. You can join for free or use a Fast Pass to jump to the front of the line.
+    </p>
+    <p className='mt-2'>
+      <strong><span className='brightness-125'>⭐</span> One Minute Spotlight:</strong> When it’s your turn, click "Preview Your Camera" and in a few seconds you'll be shown the "GO LIVE" button. You start with 1 minute on the clock.
+    </p>
+    <p className='mt-2'>
+      <strong><span className='brightness-125'>⭐</span> Real-Time Voting:</strong> Viewers vote using a sliding bar. If the bar moves towards the star ⭐, you get an extra minute. If it reaches the red cross ❌, your stream ends, and the next person goes live.
+    </p>
+    <p className='mt-2'>
+      <strong><span className='brightness-125'>⭐</span> Votes:</strong> Viewers get 1 free vote per minute. They can purchase additional votes for 10 tokens each to promote their favorite users.
+    </p>
+    <p className='mt-2'>
+      <strong><span className='brightness-125'>⭐</span> Stay Engaged:</strong> Use tokens to customise your chat messages and profile. Tokens can also be used to buy Fast Passes or boost your visibility.
+    </p>
+    <p className='mt-2'>
+      <strong><span className='brightness-125'>⭐</span> Live Chat:</strong> Chat with your audience in real-time below the video. The chat is live 24/7.
+    </p>
+    <p className='mt-2'>
+      <strong><span className='brightness-125'>⭐</span> End of Stream:</strong> Your stream ends when your time runs out or if you leave. The next user in the queue then gets their turn.
+    </p>
+  </div>
+</section>
+
 
           <section className="mb-8">
             <h2 className='text-xl font-semibold mb-2'>Why MyMe? <span className='brightness-125'>⭐</span></h2>
             <p>
-              MyMe isn’t just a platform—it’s a community where every voice matters. Whether you're launching a new business, showcasing your art, or simply sharing your thoughts, MyMe provides a welcoming space for real, meaningful interactions. Here, you don’t need a massive following or a niche market. Everyone gets a chance to shine.
+              MyMe isn’t just a platform—it’s a community where every voice matters. Whether you're launching a new business, showcasing your art, or simply sharing your thoughts, MyMe provides a welcoming space for real, meaningful interactions. Here, you don’t need a massive following or a niche market. Everyone gets a chance to be a <strong><span className='brightness-125 text-yellow-400 font-bold'>STAR</span></strong>
             </p>
             <div className="list-disc list-inside ml-4 mt-2">
-              <p><strong><span className='brightness-125'>⭐</span> Go Live:</strong> Share your ideas, talents, or passions with an engaged audience.</p>
-              <p><strong><span className='brightness-125'>⭐</span> Interact:</strong> Chat, vote, and connect with others in real-time.</p>
-              <p><strong><span className='brightness-125'>⭐</span> Customise:</strong> Use tokens to personalise your profile and stand out in the crowd.</p>
-              <p><strong><span className='brightness-125'>⭐</span> Promote:</strong> Share your links to grow your audience and expand your reach.</p>
+              <p><strong><span className='brightness-125 text-yellow-400'>⭐ S</span>hare:</strong> Share your ideas, talents, or passions with an engaged audience.</p>
+              <p><strong><span className='brightness-125 text-yellow-400'>⭐ T</span>alk:</strong> Chat, vote, and connect with others in real-time.</p>
+              <p><strong><span className='brightness-125 text-yellow-400'>⭐ A</span>mplify:</strong> Use tokens to personalise your account and help promote your you.</p>
+              <p><strong><span className='brightness-125 text-yellow-400'>⭐ R</span>each:</strong> Share your links to grow your audience and expand your reach.</p>
             </div>
           </section>
 
@@ -95,7 +105,7 @@ const About = () => {
           <br /> 
           That’s why I built MyMe. A new fun and exciting space where anyone can step into the spotlight, share their passions, and make meaningful connections. MyMe is all about celebrating creativity and individuality in real-time. It’s a platform where you can showcase your talents, promote your projects, and engage with a supportive community that values what you bring to the table.
           <br /> 
-          Whether you’re an entrepreneur, artist, or just someone with a great idea, MyMe is designed to help you grow, connect, and thrive in a way that feels natural and enjoyable. Here, every voice has a chance to be heard, and every moment is an opportunity to build something new. I’m excited to welcome you to MyMe, where the spotlight is always on, <span className='text-yellow-400 brightness-125'>YOUR YOU </span><span className='brightness-150'>⭐</span>
+          Whether you’re an entrepreneur, artist, or just someone with a great idea, MyMe is designed to help you grow, connect, and thrive in a way that feels natural and enjoyable. Here, every voice has a chance to be heard, and every moment is an opportunity to build something new. I’m excited to welcome you to MyMe, where the spotlight is always on, <strong><span className='text-yellow-400 brightness-125 font-bold'>YOUR YOU </span></strong><span className='brightness-150'>⭐</span>
           </p> 
           </section>
 
