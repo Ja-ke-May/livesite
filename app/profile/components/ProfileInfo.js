@@ -134,7 +134,7 @@ const ProfileInfo = ({
       <p className="text-yellow-400 brightness-125 mt-2">Tokens: {tokens}</p>
     </div>
 
-    <div className="mt-4 w-full flex items-center justify-center">
+    <div className="mt-2 w-full flex items-center justify-center">
       <button
         onClick={handleBuyTokens}
         className="bg-yellow-400 font-black brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600"
