@@ -142,13 +142,14 @@ const ProfileInfo = ({
         Buy Tokens
       </button>
     </div>
-
+<div className='text-left'>
     {showTokenPopup && (
       <TokenPurchasePopup 
         onClose={closeTokenPopup} 
         username={username} 
       />
     )}
+    </div>
   </div>
 )}
 
