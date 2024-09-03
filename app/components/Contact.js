@@ -19,13 +19,18 @@ const Contact = () => {
         />
         <div className="max-w-4xl mx-auto p-4 mt-4 text-center text-white">
           <h1 className='hidden text-2xl font-bold mb-4'>Contact Us</h1>
-          <p className='text-lg mb-4'>We'd love to hear from you! If you have any questions, feedback, or concerns, please feel free to reach out at:</p>
+          <p className='text-lg mb-6'>We'd love to hear from you! If you have any questions, feedback, or concerns, please feel free to reach out:</p>
           <p className='text-xl font-semibold'>
             <a href="mailto:info@myme.live" className="text-blue-500 brightness-125 hover:underline">
               info@myme.live
             </a>
+            <br />
+            <br />
+            <a target="_blank" href="https://www.youtube.com/@MyMeLive" className="text-red-500 brightness-125 hover:underline">
+             YouTube
+            </a>
           </p>
-          <p className='text-lg mt-4'>
+          <p className='text-lg mt-6'>
             We'll get back to you as soon as possible.
           </p>
         </div>

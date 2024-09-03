@@ -95,7 +95,7 @@ const About = () => {
           <br /> 
           That’s why I built MyMe. A new fun and exciting space where anyone can step into the spotlight, share their passions, and make meaningful connections. MyMe is all about celebrating creativity and individuality in real-time. It’s a platform where you can showcase your talents, promote your projects, and engage with a supportive community that values what you bring to the table.
           <br /> 
-          Whether you’re an entrepreneur, artist, or just someone with a great idea, MyMe is designed to help you grow, connect, and thrive in a way that feels natural and enjoyable. Here, every voice has a chance to be heard, and every moment is an opportunity to build something new. I’m excited to welcome you to MyMe, where the spotlight is always on, your you.<span className='brightness-150'>⭐</span>
+          Whether you’re an entrepreneur, artist, or just someone with a great idea, MyMe is designed to help you grow, connect, and thrive in a way that feels natural and enjoyable. Here, every voice has a chance to be heard, and every moment is an opportunity to build something new. I’m excited to welcome you to MyMe, where the spotlight is always on, <span className='text-yellow-400 brightness-125'>YOUR YOU </span><span className='brightness-150'>⭐</span>
           </p> 
           </section>
 
