@@ -44,6 +44,9 @@ const ProfileInfo = ({
   };
 
   const togglePopup = (event) => {
+    if (!username) {
+      return; 
+    }
     if (event) {
       setPopupPosition({ x: event.clientX, y: event.clientY });
     }
@@ -229,7 +232,6 @@ const ProfileInfo = ({
             )}
           </div>
         )}
-         {isLoggedIn && (
         <UsernamePopUp 
           visible={showPopup} 
           onClose={togglePopup} 
@@ -240,7 +242,6 @@ const ProfileInfo = ({
           isUserSupported={isUserSupported}
           onToggleSupport={onToggleSupport}
         />
-         )}
       </div>
     </div>
   );

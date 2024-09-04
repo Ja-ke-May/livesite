@@ -13,6 +13,9 @@ const UserCommentBox = ({ username, comment, time, commentColor, borderColor, us
   const [recentActivity, setRecentActivity] = useState([]);
 
   const togglePopup = () => {
+    if (!username) {
+      return; 
+    }
     const fixedPosition = {
       x: 20, 
       y: window.innerHeight - 200, 
@@ -85,7 +88,7 @@ const UserCommentBox = ({ username, comment, time, commentColor, borderColor, us
       </div>
 
       <div>
-        {showPopup && username && (
+        {showPopup && (
           <UsernamePopUp
             visible={showPopup}
             onClose={togglePopup}
