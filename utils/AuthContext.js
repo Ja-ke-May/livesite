@@ -14,24 +14,33 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username'); 
-    const storedIsAdmin = localStorage.getItem('isAdmin') === 'true'; 
+    const storedIsAdmin = localStorage.getItem('isAdmin');
+
+    console.log('Token:', token);
+    console.log('Stored Username:', storedUsername);
+    console.log('Stored isAdmin:', storedIsAdmin);  
+
+    
+    const isAdminFlag = storedIsAdmin === 'true';  
 
     if (token && storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername); 
-      setIsAdmin(storedIsAdmin);
+      setIsAdmin(isAdminFlag);  
     }
-    setIsInitialized(true);
+    setIsInitialized(true);  
   }, []);
 
-  const login = (token, username, isAdmin ) => {
+  const login = (token, username, isAdmin = false) => {
+    
     localStorage.setItem('token', token);
     localStorage.setItem('username', username); 
-    localStorage.setItem('isAdmin', isAdmin); 
+    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false'); 
 
+    // Update state
     setIsLoggedIn(true);
     setUsername(username);
-    setIsAdmin(isAdmin); 
+    setIsAdmin(isAdmin);  
   };
 
   const logout = () => {
@@ -45,7 +54,16 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, username, isAdmin, login, logout, isInitialized, notificationCount, setNotificationCount }}>
+    <AuthContext.Provider value={{ 
+      isLoggedIn, 
+      username, 
+      isAdmin, 
+      login, 
+      logout, 
+      isInitialized, 
+      notificationCount, 
+      setNotificationCount 
+    }}>
       {children}
     </AuthContext.Provider>
   );
