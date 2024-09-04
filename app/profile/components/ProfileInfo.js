@@ -21,6 +21,7 @@ const ProfileInfo = ({
    usernameColor, 
    commentColor, 
    borderColor,
+   isAdmin,
 }) => {
   const router = useRouter(); 
   const { login } = useContext(AuthContext);
@@ -237,6 +238,7 @@ const ProfileInfo = ({
           onClose={togglePopup} 
           links={links} 
           username={username} 
+          isAdmin={isAdmin}
           position={popupPosition}
           supportersCount={supportersCount}
           isUserSupported={isUserSupported}
