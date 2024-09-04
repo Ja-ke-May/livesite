@@ -79,6 +79,9 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
   }, [username, liveUserId, mainVideoRef]);
 
   const togglePopup = async (userId) => {
+    if (!username) {
+      return; 
+    }
     setShowPopup(true);
     setPopupPosition({ x: 0, y: 0 });
 
@@ -196,7 +199,7 @@ useEffect(() => {
           )}
         </div>
          <div>
-         {showPopup && username && (
+         {showPopup && (
            <UsernamePopUp 
              visible={showPopup} 
              onClose={togglePopup} 
