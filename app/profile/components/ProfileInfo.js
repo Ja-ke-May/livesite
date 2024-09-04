@@ -229,6 +229,7 @@ const ProfileInfo = ({
             )}
           </div>
         )}
+         {isLoggedIn && (
         <UsernamePopUp 
           visible={showPopup} 
           onClose={togglePopup} 
@@ -239,6 +240,7 @@ const ProfileInfo = ({
           isUserSupported={isUserSupported}
           onToggleSupport={onToggleSupport}
         />
+         )}
       </div>
     </div>
   );

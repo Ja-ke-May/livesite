@@ -85,7 +85,7 @@ const UserCommentBox = ({ username, comment, time, commentColor, borderColor, us
       </div>
 
       <div>
-        {showPopup && (
+        {showPopup && username && (
           <UsernamePopUp
             visible={showPopup}
             onClose={togglePopup}
