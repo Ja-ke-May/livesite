@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
     setIsInitialized(true);
   }, []);
 
-  const login = (token, username, isAdmin = false ) => {
+  const login = (token, username, isAdmin ) => {
     localStorage.setItem('token', token);
     localStorage.setItem('username', username); 
     localStorage.setItem('isAdmin', isAdmin); 
