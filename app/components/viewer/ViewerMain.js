@@ -196,7 +196,7 @@ useEffect(() => {
           )}
         </div>
          <div>
-         {showPopup && (
+         {showPopup && username && (
            <UsernamePopUp 
              visible={showPopup} 
              onClose={togglePopup} 
