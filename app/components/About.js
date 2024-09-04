@@ -80,7 +80,7 @@ const About = () => {
     The Future <span className="brightness-125">⭐</span>
   </h2>
   <p>
-    MyMe is constantly evolving with its community. While the future is not yet decided, features like multiple rooms, simultaneous streams, and even video posting options could be on the horizon. Our goal is to break traditional social media barriers, making it easier to share ideas and connect. MyMe is driven by its users, and its future will be shaped by you.
+    MyMe is constantly evolving with its community. While the future is not yet decided, features like speaker chat comments, multiple rooms, and even video posting options could be on the horizon. Our goal is to break traditional social media barriers, making it easier to share ideas and connect. MyMe is driven by its users, and its future will be shaped by you.
   </p>
   <p>
     Looking ahead, expect more shop items, leaderboards to highlight active and popular users, and even competitions where you can earn tokens. Together, we’re building a creative revolution, where you help shape the future of MyMe.
