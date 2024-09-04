@@ -13,6 +13,11 @@ const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) =>
   }));
 
   useEffect(() => {
+    console.log("isAdmin prop:", isAdmin);  // Log the value of isAdmin
+  }, [isAdmin]);
+  
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
         onClose();
@@ -92,11 +97,11 @@ const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) =>
                 onClick={handleAdminAction}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
-                Admin Action
+                Admin 
               </button>
             </div>
           )}
-          
+
         </>
       ) : (
         <div className="text-center text-white mt-4">
