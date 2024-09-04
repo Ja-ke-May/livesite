@@ -23,9 +23,10 @@ export const signup = async (userData) => {
 export const login = async (credentials) => {
     try {
       const response = await axiosInstance.post('/login', credentials);
-      const { token, username } = response.data;
+      const { token, username, isAdmin } = response.data;
       localStorage.setItem('token', token);
-      localStorage.setItem('username', username);
+      localStorage.setItem('username', username); 
+      localStorage.setItem('isAdmin', isAdmin);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to log in');
