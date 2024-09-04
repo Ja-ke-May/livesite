@@ -12,7 +12,7 @@ const Support = lazy(() => import('../components/Support'));
 const LinksSection = lazy(() => import('../components/Links'));
 
 const ProfileContent = ({ profileUsername }) => {
-  const { isLoggedIn, username: loggedInUsername, isInitialized } = useContext(AuthContext);
+  const { isLoggedIn, username: loggedInUsername, isInitialized, isAdmin } = useContext(AuthContext);
   const [profilePicture, setProfilePicture] = useState("");
   const [bio, setBio] = useState('');
   const [links, setLinks] = useState([]);
@@ -130,6 +130,7 @@ const [usernameColor, setUsernameColor] = useState('#ffffff');
           <ProfileInfo
             profilePicture={profilePicture}
             username={profileUsername}
+            isAdmin={isAdmin}
             bio={bio}
             handleFileChange={handleFileChange}
             handleBioChange={handleBioChange}
