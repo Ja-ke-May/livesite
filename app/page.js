@@ -12,7 +12,7 @@ import io from 'socket.io-client';
 
 
 const HomeContent = () => {
-  const { isLoggedIn, username, isInitialized } = useContext(AuthContext); 
+  const { isLoggedIn, username, isInitialized, isAdmin } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false); 
   const [socket, setSocket] = useState(null);
 
@@ -65,9 +65,9 @@ const HomeContent = () => {
       <h1 className='hidden'>Home</h1>
       <Navbar isLoggedIn={isLoggedIn} username={username} />
       <main className="flex flex-col items-center justify-center lg:max-w-[60%] w-full mx-auto">
-        <Viewer />
+        <Viewer isAdmin={isAdmin} />
         
-        <Chat isLoggedIn={isLoggedIn} username={username} socket={socket} />
+        <Chat isLoggedIn={isLoggedIn} username={username} socket={socket} isAdmin={isAdmin} />
       </main>
       <CommentBox isLoggedIn={isLoggedIn} username={username} socket={socket} />
       <ViewersOnline socket={socket} />

@@ -7,7 +7,7 @@ import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
 
-const Viewer = () => {
+const Viewer = ( { isAdmin } ) => {
     const { username } = useContext(AuthContext);
     const isGuest = !username;
     
@@ -612,6 +612,7 @@ const Viewer = () => {
                     liveUserId={state.liveUserId || username}
                     upNext={nextUsername}
                     username={username}
+                    isAdmin={isAdmin}
                 />
             </div>
             <LiveQueuePopUp

@@ -3,7 +3,7 @@ import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
 
-const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, borderColor, usernameColor }) => {
+const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, borderColor, usernameColor, isAdmin }) => {
   
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 }); 
@@ -90,6 +90,7 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
             visible={showPopup}
             onClose={togglePopup}
             username={username}
+            isAdmin={isAdmin}
             position={popupPosition}
             links={links}
             isUserSupported={isUserSupported}
