@@ -1,7 +1,7 @@
 import React, { useImperativeHandle, useRef, useEffect, forwardRef, useState } from 'react';
 import { reportUser } from '@/utils/apiClient';
 
-const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
+const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) => {
   const popupRef = useRef(null);
   const [reportText, setReportText] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -46,6 +46,11 @@ const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
     }
   };
 
+  const handleAdminAction = () => {
+    console.log(`Admin action on ${username}`);
+    // Add any specific admin functionality here, like banning a user or managing the report
+  };
+
   if (!visible) return null;
 
   return (
@@ -79,6 +84,19 @@ const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
               <p className="text-red-500 mt-2 text-center">{error}</p>  // Display error message if any
             )}
           </div>
+
+           {/* Admin-only Button */}
+           {isAdmin && (
+            <div className="mt-4">
+              <button
+                onClick={handleAdminAction}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                Admin Action
+              </button>
+            </div>
+          )}
+          
         </>
       ) : (
         <div className="text-center text-white mt-4">

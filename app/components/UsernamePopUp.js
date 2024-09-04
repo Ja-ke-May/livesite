@@ -4,7 +4,7 @@ import SendTokensPopUp from './SendTokens';
 import ReportPopUp from './ReportPopUp';
 import Link from 'next/link';
 
-const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupported, onToggleSupport }) => {
+const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupported, onToggleSupport, isAdmin }) => {
   const [activePopUp, setActivePopUp] = useState(null);
   const popupRef = useRef(null);
 
@@ -118,7 +118,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
         <SendTokensPopUp recipientUsername={username} visible={activePopUp === 'sendTokens'} onClose={() => handlePopUpToggle('sendTokens')} />
       )}
       {activePopUp === 'report' && (
-        <ReportPopUp visible={activePopUp === 'report'} onClose={() => handlePopUpToggle('report')} username={username} />
+        <ReportPopUp visible={activePopUp === 'report'} onClose={() => handlePopUpToggle('report')} username={username} isAdmin={isAdmin} />
       )}
     </div>
   );

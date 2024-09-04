@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UserCommentBox from './UserCommentBox';
 
-const Chat = ({ socket, isLoggedIn }) => {
+const Chat = ({ socket, isLoggedIn, isAdmin }) => {
   const [comments, setComments] = useState([]);
 
   const formatTime = () => {
@@ -36,6 +36,7 @@ const Chat = ({ socket, isLoggedIn }) => {
         {comments.map((c, index) => (
           <UserCommentBox
           isLoggedIn={isLoggedIn} 
+          isAdmin={isAdmin}
           key={index} 
           username={c.username} 
           comment={c.comment}
