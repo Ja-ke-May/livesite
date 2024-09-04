@@ -2,11 +2,10 @@ import React, { useState, useCallback } from 'react';
 import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient';
 
-
 const UserCommentBox = ({ username, comment, time, commentColor, borderColor, usernameColor }) => {
   
   const [showPopup, setShowPopup] = useState(false);
-  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 }); 
+  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [links, setLinks] = useState([]);
   const [isUserSupported, setIsUserSupported] = useState(false);
   const [loadingLinks, setLoadingLinks] = useState(false);
@@ -16,16 +15,20 @@ const UserCommentBox = ({ username, comment, time, commentColor, borderColor, us
     if (!username) {
       return; 
     }
-    const fixedPosition = {
-      x: 20, 
-      y: window.innerHeight - 200, 
-    };
-    setPopupPosition(fixedPosition); 
-    setShowPopup(!showPopup);
 
-    if (!showPopup) {
-      loadData();
-    }
+    setShowPopup((prevShowPopup) => {
+      const nextShowPopup = !prevShowPopup;
+
+      if (nextShowPopup) {
+        setPopupPosition({
+          x: 20, 
+          y: window.innerHeight - 200,
+        });
+        loadData();
+      }
+
+      return nextShowPopup;
+    });
   };
 
   const loadData = async () => {
@@ -66,20 +69,17 @@ const UserCommentBox = ({ username, comment, time, commentColor, borderColor, us
     <>
       <div className="relative"> 
         <div className="flex flex-col bg-gray-800/80 text-white p-1 m-1 lg:m-2 lg:p-2 rounded-md shadow-md z-[100]"
-        style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
-        >
+          style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}>
           <div className='flex max-w-[100%] overflow-wrap'>
             <p id={`username-${username}`} className="text-md font-bold cursor-pointer" 
-            onClick={togglePopup}
-            style={{ color: usernameColor }}
-            >
+              onClick={togglePopup}
+              style={{ color: usernameColor }}>
               {username}
-            
+            </p>
             <span className="text-sm text-left mt-1 ml-2 break-words break-all"
-            style={{ color: commentColor }}>
+              style={{ color: commentColor }}>
               {comment}
-              </span>
-              </p>
+            </span>
           </div>
           <div className="flex justify-end">
             <h4 className="text-gray-400 text-xs">{time}</h4>
@@ -87,20 +87,18 @@ const UserCommentBox = ({ username, comment, time, commentColor, borderColor, us
         </div>
       </div>
 
-      <div>
-        {showPopup && (
-          <UsernamePopUp
-            visible={showPopup}
-            onClose={togglePopup}
-            username={username}
-            position={popupPosition}
-            links={links}
-            isUserSupported={isUserSupported}
-            onToggleSupport={handleToggleSupport}
-            style={{ position: 'fixed', bottom: '200px', left: '20px' }} 
-          />
-        )}
-      </div>
+      {showPopup && username && (
+        <UsernamePopUp
+          visible={showPopup}
+          onClose={togglePopup}
+          username={username}
+          position={popupPosition}
+          links={links}
+          isUserSupported={isUserSupported}
+          onToggleSupport={handleToggleSupport}
+          style={{ position: 'fixed', bottom: '200px', left: '20px' }} 
+        />
+      )}
     </>
   );
 };
