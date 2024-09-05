@@ -9,12 +9,13 @@ import ViewersOnline from './components/ViewersOnline';
 import { AuthContext, AuthProvider } from '@/utils/AuthContext'; 
 import Over18 from './components/Over18';
 import io from 'socket.io-client';
-
+import { useRouter } from 'next/navigation';
 
 const HomeContent = () => {
-  const { isLoggedIn, username, isInitialized, isAdmin } = useContext(AuthContext); 
+  const { isLoggedIn, username, isInitialized, isAdmin, logout } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false); 
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(null); 
+  const router = useRouter();
 
   useEffect(() => {
     const newSocket = io('https://livesite-backend.onrender.com', {
@@ -32,6 +33,20 @@ const HomeContent = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('forceLogout', (data) => {
+        alert(data.message); 
+        logout(); 
+        router.push('/login'); 
+      });
+      
+       return () => {
+        socket.off('forceLogout');
+      };
+    }
+  }, [socket, logout, router]);
 
   useEffect(() => {
     if (isInitialized && !isLoggedIn) {
