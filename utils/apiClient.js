@@ -20,6 +20,15 @@ export const signup = async (userData) => {
   }
 };
 
+export const activateAccount = async (token) => {
+  try {
+    const response = await axiosInstance.get(`/activate?token=${token}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to activate account');
+  }
+};
+
 // Login with logging for isAdmin
 export const login = async (credentials) => {
   try {

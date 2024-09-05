@@ -2,30 +2,26 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import axios from 'axios';
+import { activateAccount } from '@/utils/apiClient';
 
 const ActivateAccount = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');  // Get the token from the URL query string
+  const token = searchParams.get('token');
 
   useEffect(() => {
     if (token) {
-      activateAccount(token);
+      activateAccount(token)
+        .then(data => {
+          setMessage(data.message);
+        })
+        .catch(err => {
+          setError(err.message);
+        });
     }
   }, [token]);
-
-  const activateAccount = async (token) => {
-    try {
-      // Make a request to the backend to activate the account
-      const response = await axios.get(`/api/activate?token=${token}`);  
-      setMessage(response.data.message);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Activation failed');
-    }
-  };
 
   return (
     <div className="flex w-full justify-center items-center activation-container bg-[#000110] text-white min-h-screen">
