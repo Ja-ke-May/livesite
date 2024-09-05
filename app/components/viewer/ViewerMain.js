@@ -179,6 +179,7 @@ useEffect(() => {
               links={links} 
               isUserSupported={isUserSupported} 
               onToggleSupport={handleToggleSupport} 
+              isAdmin={isAdmin}
             />
           )}
         </div>
