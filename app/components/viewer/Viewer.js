@@ -637,6 +637,7 @@ const Viewer = ( { isAdmin, isBlocked } ) => {
                     username={username}
                     nextUsername={nextUsername}
                     stopVideo={stopVideo}
+                    isBlocked={isBlocked}
                 />
             ) : (
                 <div className='mt-2'>Nobody's live at the moment</div>
