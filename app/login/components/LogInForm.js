@@ -16,7 +16,8 @@ const LogInForm = ({ setShowForgotPasswordModal }) => {
     try {
       const normalizedEmail = email.toLowerCase();
       const data = await apiLogin({ email: normalizedEmail, password });
-      login(data.token, data.username);
+      
+      login(data.token, data.username, data.isAdmin);
       setErrorMessage('');
       window.location.href = `/profile/${data.username}`; 
     } catch (error) {
