@@ -38,9 +38,9 @@ const HomeContent = () => {
     if (socket) {
       socket.on('forceLogout', (data) => {
         alert(data.message); 
-        window.location.href = '/login'; 
-        logout(); 
         socket.disconnect(); 
+        logout(); 
+        window.location.href = '/login'; 
       });
   
       return () => {
