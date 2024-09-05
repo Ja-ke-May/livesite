@@ -39,14 +39,16 @@ const HomeContent = () => {
       socket.on('forceLogout', (data) => {
         alert(data.message); 
         logout(); 
-        window.location.reload();
+        socket.disconnect(); 
+        window.location.href = '/'; 
       });
-
-       return () => {
+  
+      return () => {
         socket.off('forceLogout');
       };
     }
   }, [socket, logout, router]);
+  
 
   useEffect(() => {
     if (isInitialized && !isLoggedIn) {
