@@ -1,16 +1,15 @@
-"use client" 
+"use client";
 
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 
 const ActivateAccount = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter();  
 
   const searchParams = useSearchParams();
-  const token = searchParams.get('token'); 
+  const token = searchParams.get('token');  // Get the token from the URL query string
 
   useEffect(() => {
     if (token) {
@@ -20,13 +19,9 @@ const ActivateAccount = () => {
 
   const activateAccount = async (token) => {
     try {
-      const response = await axios.get(`/activate?token=${token}`);
+      // Make a request to the backend to activate the account
+      const response = await axios.get(`/api/activate?token=${token}`);  
       setMessage(response.data.message);
-
-      
-      setTimeout(() => {
-        router.push('/login');  
-      }, 2000); 
     } catch (err) {
       setError(err.response?.data?.message || 'Activation failed');
     }
@@ -37,7 +32,7 @@ const ActivateAccount = () => {
       {message ? (
         <div className="activation-success text-center">
           <h1>{message}</h1>
-          <p>Your account has been activated successfully! Redirecting to the login page...</p>
+          <p>Your account has been activated successfully! You can now log in.</p>
           <a href="/login" className="btn">Go to Login</a>
         </div>
       ) : (
