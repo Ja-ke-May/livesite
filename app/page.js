@@ -39,7 +39,7 @@ const HomeContent = () => {
       socket.on('forceLogout', (data) => {
         alert(data.message); 
         logout(); 
-        router.push('/login'); 
+        window.location.reload();
       });
 
        return () => {
