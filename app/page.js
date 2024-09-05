@@ -41,7 +41,7 @@ const HomeContent = () => {
         logout(); 
         router.push('/login'); 
       });
-      
+
        return () => {
         socket.off('forceLogout');
       };
