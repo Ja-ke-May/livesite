@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
     setIsInitialized(true);  
   }, []);
 
-  const login = (token, username, isAdmin = false) => {
+  const login = (token, username, isAdmin ) => {
     console.log('Login isAdmin received:', isAdmin); // Log what isAdmin value is received from the backend
 
     // Store token, username, and isAdmin in localStorage
