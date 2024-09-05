@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SpeakerButton from './speakerButton';
 
-const CommentBox = ({ isLoggedIn, username, socket }) => {
+const CommentBox = ({ isLoggedIn, username, socket, isBlocked }) => {
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const maxLength = 55;
@@ -43,6 +43,15 @@ const CommentBox = ({ isLoggedIn, username, socket }) => {
       handleCommentSubmit();
     }
   };
+
+   // Prevent blocked users from commenting
+   if (!isLoggedIn || isBlocked) {
+    return (
+      <div className="fixed w-full flex justify-center bg-[#000110] bottom-0 md:text-lg pb-6">
+        <div className="text-white text-center p-4">You are blocked from commenting.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed w-full flex justify-center bg-[#000110] bottom-0 md:text-lg pb-6">
