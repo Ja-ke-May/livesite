@@ -26,7 +26,7 @@ const ActivateAccount = () => {
       
       setTimeout(() => {
         router.push('/login');  
-      }, 1000); 
+      }, 2000); 
     } catch (err) {
       setError(err.response?.data?.message || 'Activation failed');
     }
