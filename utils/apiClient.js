@@ -321,3 +321,18 @@ export const blockUser = async (username, duration) => {
     throw new Error(error.response?.data?.message || 'Failed to block user');
   }
 };
+
+// Function to fetch user's blocked status
+export const fetchUserBlockedStatus = async (token, username) => {
+  try {
+    const response = await axiosInstance.get(`/users/${username}/status`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data.isBlocked; // Return the blocked status
+  } catch (error) {
+    console.error('Failed to fetch blocked status:', error.response?.data?.message || error);
+    throw new Error('Failed to fetch blocked status');
+  }
+};

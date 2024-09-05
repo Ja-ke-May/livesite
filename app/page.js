@@ -12,7 +12,7 @@ import io from 'socket.io-client';
 import { useRouter } from 'next/navigation';
 
 const HomeContent = () => {
-  const { isLoggedIn, username, isInitialized, isAdmin, logout } = useContext(AuthContext); 
+  const { isLoggedIn, username, isInitialized, isAdmin, logout, isBlocked } = useContext(AuthContext); 
   const [showOver18, setShowOver18] = useState(false); 
   const [socket, setSocket] = useState(null); 
   const router = useRouter();
@@ -86,7 +86,7 @@ const HomeContent = () => {
         
         <Chat isLoggedIn={isLoggedIn} username={username} socket={socket} isAdmin={isAdmin} />
       </main>
-      <CommentBox isLoggedIn={isLoggedIn} username={username} socket={socket} />
+      <CommentBox isLoggedIn={isLoggedIn} username={username} socket={socket} isBlocked={isBlocked} />
       <ViewersOnline socket={socket} />
     </div>
   );
