@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import { deductTokens, awardTokens } from '@/utils/apiClient';
 
-const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, socket, isInteractive, username, nextUsername, stopVideo }) => {
+const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlidePositionAmount, liveUserId, socket, isInteractive, username, nextUsername, stopVideo, isBlocked }) => {
   const [isPulsing, setIsPulsing] = useState(false);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
@@ -62,7 +62,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
 }, [liveUserId, setSlidePosition, setSlidePositionAmount]);
 
   const handleClickCross = () => {
-    if (!isInteractive) return;
+    if (!isInteractive || isBlocked) return;
     if (hasVoted) {
       promptBuyVote();
     } else {
@@ -76,7 +76,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
   };
 
   const handleClickStar = () => {
-    if (!isInteractive) return;
+    if (!isInteractive || isBlocked) return;
     if (hasVoted) {
       promptBuyVote();
     } else {
