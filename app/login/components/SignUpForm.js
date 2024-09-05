@@ -116,7 +116,7 @@ const SignUpForm = () => {
     try {
       const userData = { userName, email, password, dob, marketingConsent };
       await signup(userData);
-      setSuccessMessage('Welcome to MyMe! Please log in.');
+      setSuccessMessage('Welcome to MyMe! Please check your email to activate your account.');
       setErrorMessages([]);
     } catch (error) {
       setErrorMessages([`Error: ${error.message}`]);
