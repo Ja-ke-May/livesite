@@ -7,7 +7,7 @@ import ViewerHeader from "./ViewerHeader";
 import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
 
-const Viewer = ( { isAdmin } ) => {
+const Viewer = ( { isAdmin, isBlocked } ) => {
     const { username } = useContext(AuthContext);
     const isGuest = !username;
     
@@ -602,7 +602,8 @@ const Viewer = ( { isAdmin } ) => {
                 showQueueAlert={showQueueAlert} 
                 queuePosition={queuePosition}
                 upNext={nextUsername}
-                username={username}
+                username={username} 
+                isBlocked={isBlocked}
             />
             <div className="group"> 
                 <ViewerMain
