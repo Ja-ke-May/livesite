@@ -26,7 +26,7 @@ export const login = async (credentials) => {
       const { token, username, isAdmin } = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('username', username); 
-      localStorage.setItem('isAdmin', isAdmin);
+      localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to log in');
