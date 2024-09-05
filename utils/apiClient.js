@@ -295,3 +295,20 @@ export const updateColor = async (username, colorType, color) => {
     throw new Error(error.response?.data?.message || 'Failed to update color');
   }
 };
+
+export const blockUser = async (username, duration) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post('/block-user', 
+      { username, duration }, 
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to block user');
+  }
+};
