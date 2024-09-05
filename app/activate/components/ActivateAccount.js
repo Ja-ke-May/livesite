@@ -32,6 +32,7 @@ const ActivateAccount = () => {
         <div className="activation-success text-center">
           <h1>{message}</h1>
           <p>Your account has been activated successfully! You can now log in.</p>
+          <br />
           <a href="/login" className="mt-6 bg-yellow-400 p-2 font-black rounded text-xl brightness-125 hover:bg-yellow-500 text-[#000110]">Go to Login</a>
         </div>
         </>
