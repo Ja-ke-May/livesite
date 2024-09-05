@@ -47,9 +47,7 @@ const CommentBox = ({ isLoggedIn, username, socket, isBlocked }) => {
    // Prevent blocked users from commenting
    if (!isLoggedIn || isBlocked) {
     return (
-      <div className="fixed w-full flex justify-center bg-[white] bottom-0 md:text-lg">
-        <div className="text-[#000110] text-center p-2 md:p-4">You are blocked from commenting.</div>
-      </div>
+      null
     );
   }
 

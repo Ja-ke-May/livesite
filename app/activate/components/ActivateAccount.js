@@ -8,7 +8,7 @@ import MyMeLogo from '@/app/components/MyMeLogo';
 const ActivateAccount = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true); 
 
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -18,11 +18,11 @@ const ActivateAccount = () => {
       activateAccount(token)
         .then(data => {
           setMessage(data.message);
-          setLoading(false); // Stop loading after success
+          setLoading(false); 
         })
         .catch(err => {
           setError(err.message);
-          setLoading(false); // Stop loading after error
+          setLoading(false); 
         });
     } else {
       setError('Invalid or missing token');
@@ -33,7 +33,7 @@ const ActivateAccount = () => {
   return (
     <div className="flex w-full justify-center items-center activation-container bg-[#000110] text-white min-h-screen">
       {loading ? (
-        <div className="text-center">Loading...</div> // Show loading while processing
+        <div className="text-center">Loading...</div> 
       ) : message ? (
         <>
           <MyMeLogo />
