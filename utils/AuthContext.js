@@ -22,7 +22,6 @@ const AuthProvider = ({ children }) => {
     // Convert storedIsAdmin to boolean
     const isAdminFlag = storedIsAdmin === 'true';  
 
-    s
     if (token && storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername); 
