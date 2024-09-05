@@ -8,6 +8,7 @@ import MyMeLogo from '@/app/components/MyMeLogo';
 const ActivateAccount = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -17,24 +18,33 @@ const ActivateAccount = () => {
       activateAccount(token)
         .then(data => {
           setMessage(data.message);
+          setLoading(false); // Stop loading after success
         })
         .catch(err => {
           setError(err.message);
+          setLoading(false); // Stop loading after error
         });
+    } else {
+      setError('Invalid or missing token');
+      setLoading(false); // Stop loading if no token is present
     }
   }, [token]);
 
   return (
     <div className="flex w-full justify-center items-center activation-container bg-[#000110] text-white min-h-screen">
-      {message ? (
+      {loading ? (
+        <div className="text-center">Loading...</div> // Show loading while processing
+      ) : message ? (
         <>
-        <MyMeLogo />
-        <div className="activation-success text-center">
-          <h1>{message}</h1>
-          <p>Your account has been activated successfully! You can now log in.</p>
-          <br />
-          <a href="/login" className="mt-6 bg-yellow-400 p-2 font-black rounded text-xl brightness-125 hover:bg-yellow-500 text-[#000110]">Go to Login</a>
-        </div>
+          <MyMeLogo />
+          <div className="activation-success text-center">
+            <h1>{message}</h1>
+            <p>Your account has been activated successfully! You can now log in.</p>
+            <br />
+            <a href="/login" className="mt-6 bg-yellow-400 p-2 font-black rounded text-xl brightness-125 hover:bg-yellow-500 text-[#000110]">
+              Go to Login
+            </a>
+          </div>
         </>
       ) : (
         <div className="activation-error text-center">

@@ -82,7 +82,7 @@ const HomeContent = () => {
       <h1 className='hidden'>Home</h1>
       <Navbar isLoggedIn={isLoggedIn} username={username} />
       <main className="flex flex-col items-center justify-center lg:max-w-[60%] w-full mx-auto">
-        <Viewer isAdmin={isAdmin} />
+        <Viewer isAdmin={isAdmin} isBlocked={isBlocked} />
         
         <Chat isLoggedIn={isLoggedIn} username={username} socket={socket} isAdmin={isAdmin} />
       </main>

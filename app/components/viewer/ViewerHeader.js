@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '@/utils/AuthContext';
 
-const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVideo, showQueueAlert, queuePosition, username, upNext }) => {
+const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVideo, showQueueAlert, queuePosition, username, upNext, isBlocked }) => {
   const { isLoggedIn } = useContext(AuthContext);
-  const [showLoginAlert, setShowLoginAlert] = useState(false);
+  const [showLoginAlert, setShowLoginAlert] = useState(false); 
+  const [showBlockedAlert, setShowBlockedAlert] = useState(false);
 
   useEffect(() => {
     let timer;
@@ -24,11 +25,13 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
     if (!isLoggedIn) {
       setShowLoginAlert(true);
       setTimeout(() => setShowLoginAlert(false), 2000); 
+    } else if (isBlocked) { 
+      setShowBlockedAlert(true);
+      setTimeout(() => setShowBlockedAlert(false), 2000); 
     } else {
       handleJoinClick();
     }
   };
-
   const renderAlert = (message) => (
     <div className="bg-white text-[#000110] w-full h-full flex justify-center items-center rounded absolute top-0 left-0">
       {message}
@@ -76,6 +79,7 @@ const ViewerHeader = ({ state, handleJoinClick, handlePreviewButtonClick, stopVi
       ) : null }
 
       {showLoginAlert && renderAlert('Please log in')}
+      {showBlockedAlert && renderAlert('You are blocked from joining the queue')}
       {showQueueAlert && renderAlert('Already in queue')}
     </div>
   );
