@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
+    // Retrieve token and user info from local storage
     const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username'); 
     const storedIsAdmin = localStorage.getItem('isAdmin');
@@ -20,19 +21,24 @@ const AuthProvider = ({ children }) => {
     console.log('Stored Username:', storedUsername);
     console.log('Stored isAdmin:', storedIsAdmin);  
 
-    
+    // Convert storedIsAdmin to boolean
     const isAdminFlag = storedIsAdmin === 'true';  
 
+    // If token and username exist, set the user as logged in
     if (token && storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername); 
-      setIsAdmin(isAdminFlag);  
+      setIsAdmin(isAdminFlag);  // Set admin status based on the stored value
     }
+
+    // Mark initialization as complete
     setIsInitialized(true);  
   }, []);
 
   const login = (token, username, isAdmin = false) => {
-    
+    console.log('Login isAdmin received:', isAdmin); // Log what isAdmin value is received
+
+    // Store token, username, and isAdmin in localStorage
     localStorage.setItem('token', token);
     localStorage.setItem('username', username); 
     localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false'); 
@@ -40,10 +46,11 @@ const AuthProvider = ({ children }) => {
     // Update state
     setIsLoggedIn(true);
     setUsername(username);
-    setIsAdmin(isAdmin);  
+    setIsAdmin(isAdmin);  // Set the correct admin state based on the login response
   };
 
   const logout = () => {
+    // Clear localStorage and reset state on logout
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('isAdmin');
