@@ -1,5 +1,5 @@
 import React, { useImperativeHandle, useRef, useEffect, forwardRef, useState } from 'react';
-import { reportUser } from '@/utils/apiClient';
+import { reportUser, blockUser } from '@/utils/apiClient'; 
 
 const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) => {
   const popupRef = useRef(null);
@@ -7,6 +7,7 @@ const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) =>
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);  
+  const [showBlockOptions, setShowBlockOptions] = useState(false); // State to show block options
 
   useImperativeHandle(ref, () => ({
     contains: (element) => popupRef.current && popupRef.current.contains(element),
@@ -52,8 +53,21 @@ const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) =>
   };
 
   const handleAdminAction = () => {
-    console.log(`Admin action on ${username}`);
-    // Add any specific admin functionality here, like banning a user or managing the report
+    setShowBlockOptions(true);  // Show the block options when Admin button is clicked
+  };
+
+  const handleBlockUser = async (duration) => {
+    setLoading(true);
+    try {
+      await blockUser(username, duration); 
+      console.log(`User ${username} blocked for ${duration}`);
+      setTimeout(() => onClose(), 1000); // Close the popup after the action
+    } catch (error) {
+      setError('Failed to block user. Please try again.');
+      console.error('Failed to block user:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!visible) return null;
@@ -93,12 +107,41 @@ const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) =>
            {/* Admin-only Button */}
            {isAdmin && (
             <div className="mt-4">
-              <button
-                onClick={handleAdminAction}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Admin 
-              </button>
+              {!showBlockOptions ? (
+                <button
+                  onClick={handleAdminAction}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Admin Actions
+                </button>
+              ) : (
+                <div className="mt-4 space-y-2">
+                  <button
+                    onClick={() => handleBlockUser('1 day')}
+                    className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700"
+                  >
+                    Block for 1 Day
+                  </button>
+                  <button
+                    onClick={() => handleBlockUser('1 week')}
+                    className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700"
+                  >
+                    Block for 1 Week
+                  </button>
+                  <button
+                    onClick={() => handleBlockUser('1 month')}
+                    className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700"
+                  >
+                    Block for 1 Month
+                  </button>
+                  <button
+                    onClick={() => handleBlockUser('permanent')}
+                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                  >
+                    Permanent Ban
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
