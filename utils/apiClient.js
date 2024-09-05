@@ -20,21 +20,33 @@ export const signup = async (userData) => {
   }
 };
 
+// Login with logging for isAdmin
 export const login = async (credentials) => {
-    try {
-      const response = await axiosInstance.post('/login', credentials);
-      const { token, username, isAdmin } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('username', username); 
-      localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Failed to log in');
-    }
-  };  
+  try {
+    const response = await axiosInstance.post('/login', credentials);
 
+    const { token, username, isAdmin } = response.data;
+    console.log('Login response:', { token, username, isAdmin });  
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('username', username); 
+    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+    
+    console.log('Stored isAdmin in localStorage:', localStorage.getItem('isAdmin'));  
+
+    return response.data;
+  } catch (error) {
+    console.error('Login error:', error.response?.data || error);
+    throw new Error(error.response?.data?.message || 'Failed to log in');
+  }
+};
+
+// Logout
 export const logout = () => {
   localStorage.removeItem('token');
+  localStorage.removeItem('username');
+  localStorage.removeItem('isAdmin');
+  console.log('User logged out. Cleared token, username, and isAdmin from localStorage.');
 };
 
 
