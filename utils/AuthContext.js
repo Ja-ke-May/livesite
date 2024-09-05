@@ -17,9 +17,10 @@ const AuthProvider = ({ children }) => {
     const storedUsername = localStorage.getItem('username'); 
     const storedIsAdmin = localStorage.getItem('isAdmin');
 
+    // Log values retrieved from localStorage
     console.log('Token:', token);
     console.log('Stored Username:', storedUsername);
-    console.log('Stored isAdmin:', storedIsAdmin);  
+    console.log('Stored isAdmin (from localStorage):', storedIsAdmin);  
 
     // Convert storedIsAdmin to boolean
     const isAdminFlag = storedIsAdmin === 'true';  
@@ -29,6 +30,7 @@ const AuthProvider = ({ children }) => {
       setIsLoggedIn(true);
       setUsername(storedUsername); 
       setIsAdmin(isAdminFlag);  // Set admin status based on the stored value
+      console.log('User logged in with isAdmin:', isAdminFlag);  // Log the set value of isAdmin
     }
 
     // Mark initialization as complete
@@ -36,17 +38,26 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (token, username, isAdmin = false) => {
-    console.log('Login isAdmin received:', isAdmin); // Log what isAdmin value is received
+    console.log('Login isAdmin received:', isAdmin); // Log what isAdmin value is received from the backend
 
     // Store token, username, and isAdmin in localStorage
     localStorage.setItem('token', token);
     localStorage.setItem('username', username); 
-    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false'); 
+    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');  // Ensure 'true'/'false' is stored as string
+
+    // Log what is being stored in localStorage
+    console.log('Stored in localStorage:', {
+      token: token,
+      username: username,
+      isAdmin: localStorage.getItem('isAdmin')  // Check how isAdmin is stored
+    });
 
     // Update state
     setIsLoggedIn(true);
     setUsername(username);
     setIsAdmin(isAdmin);  // Set the correct admin state based on the login response
+
+    console.log('State after login - isAdmin:', isAdmin);  // Log state after setting isAdmin
   };
 
   const logout = () => {
@@ -55,9 +66,11 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('username');
     localStorage.removeItem('isAdmin');
 
+    console.log('Clearing localStorage and logging out.');
+
     setIsLoggedIn(false);
     setUsername('');
-    setIsAdmin(false); 
+    setIsAdmin(false);  // Reset isAdmin on logout
   };
 
   return (
