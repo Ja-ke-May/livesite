@@ -158,7 +158,7 @@ const HomeContent = () => {
 };
 
 const Home = () => (
-  <AuthProvider>
+  <AuthProvider>  
     <HomeContent />
   </AuthProvider>
 );
