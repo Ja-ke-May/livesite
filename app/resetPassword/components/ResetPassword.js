@@ -30,9 +30,7 @@ const ResetPassword = () => {
       setSuccessMessage('Password reset successfully.');
       setErrorMessage(''); 
 
-      setTimeout(() => {
-        router.push('/');
-      }, 2000); 
+     
     } catch (error) {
       setErrorMessage(error.message || 'Failed to reset password.');
       setSuccessMessage(''); 
@@ -93,7 +91,7 @@ const ResetPassword = () => {
       )}
     </div>
 
-<a href="/" className={`text-white font-black flex items-center z-[150]`}>
+<a href="/" className={`fixed text-white font-black flex items-center top-0 z-[150]`}>
 <div className="flex items-center justify-center">
   <p className="text-5xl">M</p>
 </div>
