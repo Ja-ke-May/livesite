@@ -58,7 +58,7 @@ const AuthFormContent = () => {
                 id="forgotPasswordEmail"
                 className="mt-1 block w-full px-3 py-2 border text-[#000110] border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-800 focus:border-blue-800 sm:text-sm"
                 value={forgotPasswordEmail}
-                onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                onChange={(e) => setForgotPasswordEmail(e.target.value.toLowerCase())}
                 required
               />
               <div className="mt-4 flex justify-end">
