@@ -79,14 +79,14 @@ const HomeContent = () => {
   useEffect(() => {
     if (socket) {
       socket.on('receive-audio', (audioBase64) => {
-        fetch(audioBase64)
-          .then(res => res.blob())
-          .then(blob => {
-            const audioUrl = URL.createObjectURL(blob);
-            const audio = new Audio(audioUrl);
-            audio.play();
-          })
-          .catch(err => console.error('Error playing audio:', err));
+        try {
+          const audioBlob = base64ToBlob(audioBase64);
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+          audio.play();
+        } catch (err) {
+          console.error('Error playing audio:', err);
+        }
       });
   
       return () => {
@@ -94,6 +94,16 @@ const HomeContent = () => {
       };
     }
   }, [socket]);
+  
+  function base64ToBlob(base64) {
+    const binary = atob(base64.split(',')[1]);
+    const array = [];
+    for (let i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], { type: 'audio/wav' });
+  }
+  
   
   const handleOver18Confirm = (isOver18) => {
     if (isOver18) {
