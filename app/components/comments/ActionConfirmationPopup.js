@@ -30,41 +30,46 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   };
 
   const startRecording = async () => {
-
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null); 
     }
-    setAudioChunks([]);
-
+    setAudioChunks([]); 
+  
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
-      setAudioChunks([]); 
-      mediaRecorderRef.current.start();
-      setRecording(true);
-      setError(null);
-
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        setAudioChunks(prev => [...prev, event.data]);
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+  
+      const tempChunks = [];
+  
+      mediaRecorder.ondataavailable = (event) => {
+        tempChunks.push(event.data); 
       };
-
-      mediaRecorderRef.current.onstop = () => {
-        const audioBlob = new Blob([...audioChunks], { type: 'audio/wav' });
+  
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(tempChunks, { type: 'audio/wav' });
         const newAudioUrl = URL.createObjectURL(audioBlob);
         setAudioUrl(newAudioUrl);
         setRecording(false);
       };
-
+  
+      mediaRecorder.start();
+      setRecording(true);
+      setError(null);
+  
       setTimeout(() => {
-        stopRecording();
+        if (mediaRecorder.state === 'recording') {
+          mediaRecorder.stop();
+        }
       }, 3500);
+  
     } catch (err) {
       setError('Microphone access denied. Please allow microphone access to record audio.');
       setRecording(false);
     }
   };
-
+  
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
