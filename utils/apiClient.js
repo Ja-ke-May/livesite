@@ -336,3 +336,24 @@ export const fetchUserBlockedStatus = async (token, username) => {
     throw new Error('Failed to fetch blocked status');
   }
 };
+
+export const requestPasswordReset = async (email) => {
+  try {
+    const response = await axiosInstance.post('/forgot-password', { email });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to send password reset email');
+  }
+};
+
+export const resetPassword = async (token, newPassword) => {
+  try {
+    const response = await axiosInstance.post('/reset-password', {
+      token,
+      newPassword,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to reset password');
+  }
+};

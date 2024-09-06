@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Navbar from '@/app/components/Navbar';
 import SignUpForm from './SignUpForm';
 import LogInForm from './LogInForm';
 import { AuthContext, AuthProvider } from '@/utils/AuthContext';
+import { requestPasswordReset } from '@/utils/apiClient';
 
 const AuthFormContent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,12 +13,17 @@ const AuthFormContent = () => {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const handleForgotPasswordSubmit = (event) => {
+  const handleForgotPasswordSubmit = async (event) => {
     event.preventDefault();
-    setSuccessMessage('Please check your email to reset your password.');
-    setForgotPasswordEmail('');
-    setShowForgotPasswordModal(false);
+    try {
+      await requestPasswordReset(forgotPasswordEmail);
+      setSuccessMessage('Please check your email to reset your password.');
+    } catch (error) {
+      setSuccessMessage('Failed to send reset email.');
+    }
   };
+  
+  
 
   return (
     <>
