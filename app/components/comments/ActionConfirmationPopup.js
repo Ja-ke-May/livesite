@@ -8,6 +8,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   const [recording, setRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
   const [error, setError] = useState(null);
+  const [audioChunks, setAudioChunks] = useState([]);
 
   useImperativeHandle(ref, () => ({
     openPopup: () => setConfirmVisible(true),
@@ -32,22 +33,23 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
+      setAudioChunks([]); // Reset chunks when starting a new recording
       mediaRecorderRef.current.start();
       setRecording(true);
       setError(null);
 
-      const audioChunks = [];
-      mediaRecorderRef.current.addEventListener('dataavailable', (event) => {
-        audioChunks.push(event.data);
-      });
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        setAudioChunks(prev => [...prev, event.data]);
+      };
 
-      mediaRecorderRef.current.addEventListener('stop', () => {
+      mediaRecorderRef.current.onstop = () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setAudioUrl(audioUrl);
+        const newAudioUrl = URL.createObjectURL(audioBlob);
+        setAudioUrl(newAudioUrl);
         setRecording(false);
-      });
+      };
 
+      // Automatically stop recording after 3.2 seconds
       setTimeout(() => {
         stopRecording();
       }, 3200);
@@ -60,31 +62,34 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-  
-      
+
       const stream = mediaRecorderRef.current.stream;
-      stream.getTracks().forEach(track => track.stop()); 
+      stream.getTracks().forEach(track => track.stop()); // Stop all tracks
     }
   };
 
   const handleReRecord = () => {
-    setAudioUrl(null);
+    // Revoke the old blob URL
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+      setAudioUrl(null);
+    }
     startRecording();
   };
 
   const handleSend = async () => {
-    if (audioUrl && mediaRecorderRef.current) {
+    if (audioUrl && audioChunks.length) {
       try {
         await deductTokens(200);
 
-        const audioBlob = new Blob(mediaRecorderRef.current.audioChunks, { type: 'audio/wav' });
-  
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
         const reader = new FileReader();
         reader.readAsDataURL(audioBlob);
         reader.onloadend = () => {
           const base64AudioMessage = reader.result;
-          socket.emit('send-audio', base64AudioMessage); 
-        }; 
+          socket.emit('send-audio', base64AudioMessage);
+        };
 
         socket.emit('new-comment', { 
           username, 
@@ -93,8 +98,13 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
 
         const audio = new Audio(audioUrl);
         setConfirmVisible(false);
-        audio.play();
+        audio.play().catch(err => {
+          console.error('Error playing audio:', err);
+          setError('Error playing audio, please try again.');
+        });
+
         audio.onended = () => {
+          URL.revokeObjectURL(audioUrl); // Clean up URL after playback
           setAudioUrl(null);
           if (onClose) {
             onClose(true);
@@ -106,7 +116,6 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
       }
     }
   };
-  
 
   if (!confirmVisible) return null;
 
