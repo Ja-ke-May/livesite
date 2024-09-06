@@ -104,8 +104,9 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         });
 
         audio.onended = () => {
-          URL.revokeObjectURL(audioUrl); // Clean up URL after playback
-          setAudioUrl(null);
+          URL.revokeObjectURL(audioUrl); 
+          setAudioUrl(null); 
+          setAudioChunks([]);
           if (onClose) {
             onClose(true);
           }
