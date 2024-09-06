@@ -88,13 +88,14 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         reader.readAsDataURL(audioBlob);
         reader.onloadend = () => {
           const base64AudioMessage = reader.result;
-          socket.emit('send-audio', base64AudioMessage);
-        };
 
+          socket.emit('send-audio', base64AudioMessage);
+        
         socket.emit('new-comment', { 
           username, 
           comment: 'SENT A RECORDING!' 
         });
+      };
 
         const audio = new Audio(audioUrl);
         setConfirmVisible(false);
@@ -104,7 +105,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         });
 
         audio.onended = () => {
-          URL.revokeObjectURL(audioUrl); // Clean up URL after playback
+          URL.revokeObjectURL(audioUrl);
           setAudioUrl(null);
           if (onClose) {
             onClose(true);
