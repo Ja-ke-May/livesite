@@ -83,9 +83,28 @@ const HomeContent = () => {
           const audioBlob = base64ToBlob(audioBase64);
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
-          audio.play();
+  
+          audio.play().catch((err) => {
+            if (err.name === 'NotAllowedError' || err.name === 'DOMException') {
+              console.error('Autoplay was prevented. Waiting for user interaction to play the audio.');
+  
+              const playOnInteraction = () => {
+                audio.play().catch(error => console.error('Error playing audio:', error));
+              
+                document.removeEventListener('click', playOnInteraction);
+                document.removeEventListener('keydown', playOnInteraction);
+                document.removeEventListener('scroll', playOnInteraction);
+              };
+  
+              document.addEventListener('click', playOnInteraction);
+              document.addEventListener('keydown', playOnInteraction);
+              document.addEventListener('scroll', playOnInteraction);
+            } else {
+              console.error('Error playing audio:', err);
+            }
+          });
         } catch (err) {
-          console.error('Error playing audio:', err);
+          console.error('Error handling received audio:', err);
         }
       });
   
