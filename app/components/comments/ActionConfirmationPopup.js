@@ -30,6 +30,13 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   };
 
   const startRecording = async () => {
+
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+      setAudioUrl(null); // Clear the old audio URL
+    }
+    setAudioChunks([]);
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
@@ -49,10 +56,9 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         setRecording(false);
       };
 
-      // Automatically stop recording after 3.2 seconds
       setTimeout(() => {
         stopRecording();
-      }, 3200);
+      }, 3500);
     } catch (err) {
       setError('Microphone access denied. Please allow microphone access to record audio.');
       setRecording(false);
