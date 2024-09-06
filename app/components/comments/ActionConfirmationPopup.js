@@ -99,10 +99,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
 
         const audio = new Audio(audioUrl);
         setConfirmVisible(false);
-        audio.play().catch(err => {
-          console.error('Error playing audio:', err);
-          setError('Error playing audio, please try again.');
-        });
+       
 
         audio.onended = () => {
           URL.revokeObjectURL(audioUrl);
