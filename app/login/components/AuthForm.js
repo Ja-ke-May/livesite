@@ -18,8 +18,10 @@ const AuthFormContent = () => {
     try {
       await requestPasswordReset(forgotPasswordEmail);
       setSuccessMessage('Please check your email to reset your password.');
+      setShowForgotPasswordModal(false)
     } catch (error) {
       setSuccessMessage('Failed to send reset email.');
+      setShowForgotPasswordModal(false)
     }
   };
   
@@ -71,7 +73,6 @@ const AuthFormContent = () => {
                 </button>
                 <button
                   type="submit"
-                  onClick={() => setShowForgotPasswordModal(false)}
                   className="py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
                 >
                   Reset My Password
