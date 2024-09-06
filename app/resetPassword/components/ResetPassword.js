@@ -9,13 +9,20 @@ const ResetPassword = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleResetPasswordSubmit = async (event) => {
     event.preventDefault();
+
     if (!token) {
       setErrorMessage('Invalid token.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setErrorMessage('Passwords do not match.');
       return;
     }
 
@@ -52,9 +59,23 @@ const ResetPassword = () => {
           />
         </div>
 
+        <div>
+          <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
+            Confirm Password:
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="w-full p-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+        </div>
+
         <button 
           type="submit" 
-          className="w-full py-3 px-4 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400"
+          className="w-full py-3 px-4 bg-yellow-400 hover:bg-yellow-500 brightness-125 text-black font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400"
         >
           Reset Password
         </button>
