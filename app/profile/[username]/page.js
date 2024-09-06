@@ -30,6 +30,23 @@ const [usernameColor, setUsernameColor] = useState('#ffffff');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-3YM558MVY4';
+    script.async = true;
+    document.body.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-3YM558MVY4');
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isInitialized || !profileUsername) return;
 
     const loadUserProfile = async () => {
