@@ -84,7 +84,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
 
         socket.emit('new-comment', { 
           username, 
-          comment: 'Sent a recording!' 
+          comment: 'SENT A RECORDING!' 
         });
 
         const audio = new Audio(audioUrl);
