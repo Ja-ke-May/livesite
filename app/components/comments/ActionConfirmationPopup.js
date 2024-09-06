@@ -49,12 +49,17 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         setAudioChunks(prev => [...prev, event.data]);
       };
 
-      mediaRecorderRef.current.onstop = () => {
-        const audioBlob = new Blob([...audioChunks], { type: 'audio/wav' });
-        const newAudioUrl = URL.createObjectURL(audioBlob);
-        setAudioUrl(newAudioUrl);
-        setRecording(false);
+      mediaRecorderRef.current.onstop = async () => {
+        if (audioChunks.length > 0) {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+          const newAudioUrl = URL.createObjectURL(audioBlob);
+          setAudioUrl(newAudioUrl);  
+          setRecording(false);   
+        }
       };
+
+      setRecording(true);
+      setError(null);
 
       setTimeout(() => {
         stopRecording();
@@ -68,17 +73,12 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-  
+
       const stream = mediaRecorderRef.current.stream;
       stream.getTracks().forEach(track => track.stop());
-  
-      setTimeout(() => {
-        if (audioChunks.length > 0) {
-          const audioBlob = new Blob([...audioChunks], { type: 'audio/wav' });
-          const newAudioUrl = URL.createObjectURL(audioBlob);
-          setAudioUrl(newAudioUrl);
-        }
-      }, 200); 
+
+     
+      mediaRecorderRef.current = null;
     }
   };
 
