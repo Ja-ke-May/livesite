@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'next/navigation'; 
 import { resetPassword } from '@/utils/apiClient';
-import MyMeLogo from '@/app/components/MyMeLogo';
 
 const ResetPassword = () => {
   const searchParams = useSearchParams();
@@ -30,6 +29,10 @@ const ResetPassword = () => {
       await resetPassword(token, newPassword);
       setSuccessMessage('Password reset successfully.');
       setErrorMessage(''); 
+
+      setTimeout(() => {
+        router.push('/');
+      }, 2000); 
     } catch (error) {
       setErrorMessage(error.message || 'Failed to reset password.');
       setSuccessMessage(''); 
@@ -37,8 +40,9 @@ const ResetPassword = () => {
   };
 
   return (
+    <>
     <div className="min-h-screen flex flex-col justify-center items-center bg-[#000110] text-white p-4">
-      <MyMeLogo />
+    
       <h1 className="text-3xl font-bold mb-6 text-center">Reset Your Password</h1>
       
       <form 
@@ -88,6 +92,18 @@ const ResetPassword = () => {
         <p className="text-red-500 text-center mt-4">{errorMessage}</p>
       )}
     </div>
+
+<a href="/" className={`text-white font-black flex items-center z-[150]`}>
+<div className="flex items-center justify-center">
+  <p className="text-5xl">M</p>
+</div>
+<div className="flex flex-col items-center justify-center">
+  <p className="text-xl leading-none">Y</p>
+  <p className="text-xl leading-none">E</p>
+</div>
+</a>
+
+</>
   );
 };
 

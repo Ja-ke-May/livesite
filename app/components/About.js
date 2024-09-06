@@ -111,7 +111,7 @@ const About = () => {
 
           <div className="w-full text-center mt-8 flex justify-center items-center">
           
-              <a href="/" className={`text-white font-black flex items-centerz-[150]`}>
+              <a href="/" className={`text-white font-black flex items-center z-[150]`}>
       <div className="flex items-center justify-center">
         <p className="text-5xl">M</p>
       </div>
