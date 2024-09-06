@@ -76,6 +76,25 @@ const HomeContent = () => {
     }
   }, [isInitialized, isLoggedIn]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.on('receive-audio', (audioBase64) => {
+        fetch(audioBase64)
+          .then(res => res.blob())
+          .then(blob => {
+            const audioUrl = URL.createObjectURL(blob);
+            const audio = new Audio(audioUrl);
+            audio.play();
+          })
+          .catch(err => console.error('Error playing audio:', err));
+      });
+  
+      return () => {
+        socket.off('receive-audio');
+      };
+    }
+  }, [socket]);
+  
   const handleOver18Confirm = (isOver18) => {
     if (isOver18) {
       localStorage.setItem('isOver18', 'true');

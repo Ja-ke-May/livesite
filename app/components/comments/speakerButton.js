@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ActionConfirmationPopup from './ActionConfirmationPopup'; 
 
-const SpeakerButton = ({ isLoggedIn }) => {
+const SpeakerButton = ({ isLoggedIn, socket, username }) => {
   const [expanded, setExpanded] = useState(false);
   const [action, setAction] = useState(null);
   const popupRef = useRef();
@@ -27,19 +27,19 @@ const SpeakerButton = ({ isLoggedIn }) => {
         <div className="left-0 text-[#000110] rounded-md py-2 w-full focus:outline-none bg-[#000110] z-[102] flex justify-center">
           <div className="space-x-2">
             <button 
-              className="px-1 py-1 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-green-700 hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-900"
+              className="hidden px-1 py-1 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-green-700 hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-900"
               onClick={() => handleActionClick('Woo')}
             >
               Woo
             </button>
             <button 
-              className="px-1 py-1 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900"
+              className="hidden px-1 py-1 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-blue-700 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-900"
               onClick={() => handleActionClick('Boo')}
             >
               Boo
             </button>
             <button 
-              className="px-1 py-1 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-orange-700 hover:bg-orange-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-900"
+              className="hidden px-1 py-1 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-orange-700 hover:bg-orange-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-900"
               onClick={() => handleActionClick('Haha')}
             >
               Haha
@@ -59,6 +59,8 @@ const SpeakerButton = ({ isLoggedIn }) => {
         visible={!!action} 
         action={action}
         onClose={handlePopupClose}
+        socket={socket}
+        username={username}
       />
     </div>
     <button 

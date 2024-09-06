@@ -1,7 +1,8 @@
 import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; 
+import { deductTokens } from '@/utils/apiClient';
 
-const ActionConfirmationPopup = forwardRef(({ action, onClose }, ref) => {
+const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username }, ref) => {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const mediaRecorderRef = useRef(null);
   const [recording, setRecording] = useState(false);
@@ -67,19 +68,41 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose }, ref) => {
     startRecording();
   };
 
-  const handleSend = () => {
-    if (audioUrl) {
-      const audio = new Audio(audioUrl);
-      setConfirmVisible(false);
-      audio.play();
-      audio.onended = () => {
-        setAudioUrl(null);
-        if (onClose) {
-          onClose(true);
-        }
-      };
+  const handleSend = async () => {
+    if (audioUrl && mediaRecorderRef.current) {
+      try {
+        await deductTokens(200);
+
+        const audioBlob = new Blob(mediaRecorderRef.current.audioChunks, { type: 'audio/wav' });
+  
+        const reader = new FileReader();
+        reader.readAsDataURL(audioBlob);
+        reader.onloadend = () => {
+          const base64AudioMessage = reader.result;
+          socket.emit('send-audio', base64AudioMessage); 
+        }; 
+
+        socket.emit('new-comment', { 
+          username, 
+          comment: 'SENT A RECORDING!' 
+        });
+
+        const audio = new Audio(audioUrl);
+        setConfirmVisible(false);
+        audio.play();
+        audio.onended = () => {
+          setAudioUrl(null);
+          if (onClose) {
+            onClose(true);
+          }
+        };
+      } catch (error) {
+        setError('Failed to deduct tokens. Please try again.');
+        console.error('Error deducting tokens:', error);
+      }
     }
   };
+  
 
   if (!confirmVisible) return null;
 
@@ -101,7 +124,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose }, ref) => {
             ) : (
               <>
                 {!audioUrl && !recording && (
-                  <p className="text-center text-white mb-6">Record 3 seconds of audio for 100 tokens?</p>
+                  <p className="text-center text-white mb-6">Record 3 seconds of audio for 200 tokens?</p>
                 )}
                 {audioUrl && (
                   <div className="mt-4">
@@ -172,6 +195,8 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose }, ref) => {
 ActionConfirmationPopup.propTypes = {
   action: PropTypes.string.isRequired,
   onClose: PropTypes.func,
+  socket: PropTypes.object.isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 ActionConfirmationPopup.defaultProps = {

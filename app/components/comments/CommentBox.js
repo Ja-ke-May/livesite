@@ -81,9 +81,9 @@ const CommentBox = ({ isLoggedIn, username, socket, isBlocked }) => {
         SEND
       </button>
 
-<div className='hidden'>
-      <SpeakerButton isLoggedIn={isLoggedIn} />
-      </div>
+
+      <SpeakerButton isLoggedIn={isLoggedIn} socket={socket} username={username} />
+    
 
 
     </div>
