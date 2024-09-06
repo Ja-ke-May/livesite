@@ -4,6 +4,7 @@ import { deductTokens } from '@/utils/apiClient';
 
 const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username }, ref) => {
   const [confirmVisible, setConfirmVisible] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
   const mediaRecorderRef = useRef(null);
   const [recording, setRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
@@ -15,12 +16,8 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   }));
 
   const handleConfirmClose = async (confirm) => {
-    if (confirm && action === 'Record') {
-      if (!recording) {
-        startRecording();
-      } else {
-        stopRecording();
-      }
+    if (confirm) {
+      setConfirmed(true);
     } else {
       setConfirmVisible(false);
       if (onClose) {
@@ -49,10 +46,10 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         setRecording(false);
       };
 
-      // Automatically stop recording after 3.2 seconds
+      // Automatically stop recording after 3.5 seconds
       setTimeout(() => {
         stopRecording();
-      }, 3200);
+      }, 3500);
     } catch (err) {
       setError('Microphone access denied. Please allow microphone access to record audio.');
       setRecording(false);
@@ -77,6 +74,15 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
     startRecording();
   };
 
+  const resetState = () => {
+    setConfirmed(false);
+    setRecording(false);
+    setAudioUrl(null);
+    setAudioChunks([]);
+    setError(null);
+    setConfirmVisible(false);
+  };
+
   const handleSend = async () => {
     if (audioUrl && audioChunks.length) {
       try {
@@ -91,16 +97,14 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
 
           socket.emit('send-audio', base64AudioMessage);
         };
-        
+
         socket.emit('new-comment', { 
           username, 
           comment: 'SENT A RECORDING!' 
         });
-      
 
         const audio = new Audio(audioUrl);
         setConfirmVisible(false);
-       
 
         audio.onended = () => {
           URL.revokeObjectURL(audioUrl);
@@ -108,6 +112,10 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
           if (onClose) {
             onClose(true);
           }
+
+          setTimeout(() => {
+            resetState();
+          }, 4000);
         };
       } catch (error) {
         setError('Failed to deduct tokens. Please try again.');
@@ -131,51 +139,57 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         <h3 className="text-xl font-semibold mt-4 mb-6 text-center">{action} Confirmation</h3>
         {action === 'Record' ? (
           <>
-            {recording ? (
+            {confirmed && !recording && !audioUrl && (
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={startRecording}
+                  className="text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
+                >
+                  Start Recording
+                </button>
+              </div>
+            )}
+            {recording && (
               <p className="text-center text-white mb-6">Recording...</p>
+            )}
+            {audioUrl && (
+              <div className="mt-4">
+                <audio controls src={audioUrl} className="w-full" />
+              </div>
+            )}
+            {error && <p className="text-red-500 text-center">{error}</p>}
+            {audioUrl ? (
+              <div className="flex justify-center space-x-4 mt-4">
+                <button
+                  onClick={handleReRecord}
+                  className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
+                >
+                  Re-record
+                </button>
+                <button
+                  onClick={handleSend}
+                  className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
+                >
+                  Send
+                </button>
+              </div>
             ) : (
-              <>
-                {!audioUrl && !recording && (
-                  <p className="text-center text-white mb-6">Record 3 seconds of audio for 200 tokens?</p>
-                )}
-                {audioUrl && (
-                  <div className="mt-4">
-                    <audio controls src={audioUrl} className="w-full" />
-                  </div>
-                )}
-                {error && <p className="text-red-500 text-center">{error}</p>}
-                {audioUrl ? (
-                  <div className="flex justify-center space-x-4 mt-4">
-                    <button
-                      onClick={handleReRecord}
-                      className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
-                    >
-                      Re-record
-                    </button>
-                    <button
-                      onClick={handleSend}
-                      className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
-                    >
-                      Send
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex justify-center space-x-4">
-                    <button
-                      onClick={() => handleConfirmClose(false)}
-                      className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={() => handleConfirmClose(true)}
-                      className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
-                    >
-                      Confirm
-                    </button>
-                  </div>
-                )}
-              </>
+              !recording && !audioUrl && !confirmed && (
+                <div className="flex justify-center space-x-4">
+                  <button
+                    onClick={() => handleConfirmClose(false)}
+                    className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => handleConfirmClose(true)}
+                    className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              )
             )}
           </>
         ) : (
