@@ -60,6 +60,10 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
+  
+      
+      const stream = mediaRecorderRef.current.stream;
+      stream.getTracks().forEach(track => track.stop()); 
     }
   };
 
