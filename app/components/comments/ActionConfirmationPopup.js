@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types'; 
 import { deductTokens } from '@/utils/apiClient';
 
@@ -9,6 +9,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   const [audioUrl, setAudioUrl] = useState(null);
   const [error, setError] = useState(null);
   const [audioChunks, setAudioChunks] = useState([]);
+  const [countdown, setCountdown] = useState(0);  // Countdown state
 
   useImperativeHandle(ref, () => ({
     openPopup: () => setConfirmVisible(true),
@@ -17,7 +18,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   const handleConfirmClose = async (confirm) => {
     if (confirm && action === 'Record') {
       if (!recording) {
-        startRecording();
+        startCountdown();  // Start the countdown
       } else {
         stopRecording();
       }
@@ -29,18 +30,32 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
     }
   };
 
-  const startRecording = async () => {
+  // Start countdown from 3 to 0
+  const startCountdown = () => {
+    setCountdown(3); // Set initial countdown to 3 seconds
+    const interval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev === 1) {
+          clearInterval(interval);  // Stop the countdown when it reaches 0
+          startRecording();  // Start recording
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000); // Decrease countdown by 1 every second
+  };
 
+  const startRecording = async () => {
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
-      setAudioUrl(null); // Clear the old audio URL
+      setAudioUrl(null); 
     }
     setAudioChunks([]);
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
-      setAudioChunks([]); // Reset chunks when starting a new recording
+      setAudioChunks([]); 
       mediaRecorderRef.current.start();
       setRecording(true);
       setError(null);
@@ -72,13 +87,11 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
       const stream = mediaRecorderRef.current.stream;
       stream.getTracks().forEach(track => track.stop());
 
-      // Clear the media recorder reference
       mediaRecorderRef.current = null;
     }
   };
 
   const handleReRecord = () => {
-    // Revoke the old blob URL
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null);
@@ -142,50 +155,56 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         <h3 className="text-xl font-semibold mt-4 mb-6 text-center">{action} Confirmation</h3>
         {action === 'Record' ? (
           <>
-            {recording ? (
-              <p className="text-center text-white mb-6">Recording...</p>
+            {countdown > 0 ? (
+              <p className="text-center text-white mb-6">Recording will start in {countdown}...</p>  // Show countdown
             ) : (
               <>
-                {!audioUrl && !recording && (
-                  <p className="text-center text-white mb-6">Record 3 seconds of audio for <span className='text-yellow-400 brightness-125'>200 tokens?</span></p>
-                )}
-                {audioUrl && (
-  <div className="mt-4">
-    <audio controls src={audioUrl} className="w-full" />
-    <p className="text-center text-yellow-400 brightness-125 mt-4">Please check your recording before sending</p>
-  </div>
-)}
-                {error && <p className="text-red-500 text-center">{error}</p>}
-                {audioUrl ? (
-                  <div className="flex justify-center space-x-4 mt-4">
-                    <button
-                      onClick={handleReRecord}
-                      className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
-                    >
-                      Re-record
-                    </button>
-                    <button
-                      onClick={handleSend}
-                      className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
-                    >
-                      Send
-                    </button>
-                  </div>
+                {recording ? (
+                  <p className="text-center text-white mb-6">Recording...</p>
                 ) : (
-                  <div className="flex justify-center space-x-4">
-                    <button
-                      onClick={() => handleConfirmClose(false)}
-                      className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={() => handleConfirmClose(true)}
-                      className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
-                    >
-                      Confirm
-                    </button>
-                  </div>
+                  <>
+                    {!audioUrl && !recording && (
+                      <p className="text-center text-white mb-6">Record 3 seconds of audio for <span className='text-yellow-400 brightness-125'>200 tokens?</span></p>
+                    )}
+                    {audioUrl && (
+                      <div className="mt-4">
+                        <audio controls src={audioUrl} className="w-full" />
+                        <p className="text-center text-yellow-400 brightness-125 mt-4">Please check your recording before sending</p>
+                      </div>
+                    )}
+                    {error && <p className="text-red-500 text-center">{error}</p>}
+                    {audioUrl ? (
+                      <div className="flex justify-center space-x-4 mt-4">
+                        <button
+                          onClick={handleReRecord}
+                          className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
+                        >
+                          Re-record
+                        </button>
+                        <button
+                          onClick={handleSend}
+                          className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
+                        >
+                          Send
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex justify-center space-x-4">
+                        <button
+                          onClick={() => handleConfirmClose(false)}
+                          className="text-white px-4 py-2 rounded-md shadow-sm text-white bg-gray-800/80 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%]"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() => handleConfirmClose(true)}
+                          className="hover:bg-yellow-400 hover:brightness-125 hover:text-[#000110] text-white px-4 py-2 rounded-md shadow-sm bg-gray-800/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 max-w-[50%] brightness-125"
+                        >
+                          Confirm
+                        </button>
+                      </div>
+                    )}
+                  </>
                 )}
               </>
             )}
