@@ -14,12 +14,10 @@ const AuthProvider = ({ children }) => {
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
-    // Retrieve token and user info from local storage
     const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username'); 
     const storedIsAdmin = localStorage.getItem('isAdmin'); 
 
-    // Convert storedIsAdmin to boolean
     const isAdminFlag = storedIsAdmin === 'true';  
 
     if (token && storedUsername) {
