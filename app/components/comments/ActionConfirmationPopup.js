@@ -17,9 +17,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
   const handleConfirmClose = async (confirm) => {
     if (confirm && action === 'Record') {
       if (!recording) {
-        setTimeout(() => {
-          startRecording();
-        }, 2000);
+        startRecording();
       } else {
         stopRecording();
       }
