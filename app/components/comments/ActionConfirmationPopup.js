@@ -51,6 +51,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
         const audioBlob = new Blob(tempChunks, { type: 'audio/wav' });
         const newAudioUrl = URL.createObjectURL(audioBlob);
         setAudioUrl(newAudioUrl);
+        setAudioChunks(tempChunks);
         setRecording(false);
       };
   
