@@ -260,7 +260,7 @@ const Shop = () => {
         </strong>
           for <span className='text-yellow-400 brightness-125'><strong>{selectedTokens}</strong> tokens?</span></p>
             {purchaseStatus.message && (
-              <div className={`mt-4 p-4 rounded-md shadow-sm font-bold ${purchaseStatus.type === 'success' ? 'text-green-400' : 'text-red-500'}`}>
+              <div className={`mt-2 p-4 rounded-md shadow-sm font-bold ${purchaseStatus.type === 'success' ? 'text-green-400' : 'text-red-500'}`}>
                 {purchaseStatus.message}
               </div>
             )}
