@@ -18,10 +18,10 @@ const ProfileInfo = ({
   onToggleSupport,
   isLoggedIn,
   loggedInUsername,
-   usernameColor, 
-   commentColor, 
-   borderColor,
-   isAdmin,
+  usernameColor, 
+  commentColor, 
+  borderColor,
+  isAdmin,
 }) => {
   const router = useRouter(); 
   const { login } = useContext(AuthContext);
@@ -34,28 +34,29 @@ const ProfileInfo = ({
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [showTokenPopup, setShowTokenPopup] = useState(false); 
+  const [usernameAvailable, setUsernameAvailable] = useState(true); // For checking username availability
 
-  const [usernameAvailable, setUsernameAvailable] = useState(true);
-
+  // Toggle username input field
   const toggleUsernameInput = () => {
     setShowUsernameInput(!showUsernameInput);
     setUsernameError('');
   };
 
+  // Toggle bio input field
   const toggleBioInput = () => {
     setShowBioInput(!showBioInput);
   };
 
+  // Toggle popup for username
   const togglePopup = (event) => {
-    if (!username) {
-      return; 
-    }
+    if (!username) return;
     if (event) {
       setPopupPosition({ x: event.clientX, y: event.clientY });
     }
     setShowPopup(!showPopup);
   };
 
+  // Check if the username is available
   const checkUsernameAvailability = async (username) => {
     if (username.trim() === '') {
       setUsernameAvailable(true);
@@ -72,12 +73,14 @@ const ProfileInfo = ({
     }
   };
 
+  // Handle username change
   const handleUsernameChangeInternal = (e) => {
     const { value } = e.target;
     setNewUsername(value);
-    checkUsernameAvailability(value); 
+    checkUsernameAvailability(value); // Check if the username is taken
   };
 
+  // Confirm username change
   const confirmUsernameChange = async () => {
     if (!usernameAvailable) {
       setUsernameError('Username is already taken.');
@@ -98,6 +101,7 @@ const ProfileInfo = ({
     }
   };
 
+  // Confirm bio change
   const confirmBioChange = async () => {
     try {
       const updatedUser = await updateBio(newBio);
@@ -108,6 +112,7 @@ const ProfileInfo = ({
     }
   };
 
+  // Handle profile picture change
   const handleFileChangeInternal = async (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -127,10 +132,12 @@ const ProfileInfo = ({
     }
   };
 
+  // Close token purchase popup
   const closeTokenPopup = () => {
     setShowTokenPopup(false);
   };
 
+  // Handle token purchase
   const handleBuyTokens = () => {
     setShowTokenPopup(true);
   };
@@ -148,30 +155,29 @@ const ProfileInfo = ({
           </h2>
 
           {isLoggedIn && loggedInUsername === username && (
-  <div>
-    <div>
-      <p className="text-yellow-400 brightness-125 mt-2">Tokens: {tokens}</p>
-    </div>
+            <div>
+              <div>
+                <p className="text-yellow-400 brightness-125 mt-2">Tokens: {tokens}</p>
+              </div>
 
-    <div className="mt-2 w-full flex items-center justify-center">
-      <button
-        onClick={handleBuyTokens}
-        className="bg-yellow-400 font-black brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600"
-      >
-        Buy Tokens
-      </button>
-    </div>
-<div className='text-left'>
-    {showTokenPopup && (
-      <TokenPurchasePopup 
-        onClose={closeTokenPopup} 
-        username={username} 
-      />
-    )}
-    </div>
-  </div>
-)}
-
+              <div className="mt-2 w-full flex items-center justify-center">
+                <button
+                  onClick={handleBuyTokens}
+                  className="bg-yellow-400 font-black brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600"
+                >
+                  Buy Tokens
+                </button>
+              </div>
+              <div className='text-left'>
+                {showTokenPopup && (
+                  <TokenPurchasePopup 
+                    onClose={closeTokenPopup} 
+                    username={username} 
+                  />
+                )}
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex flex-col items-center md:flex-row md:items-start mt-4">
           <img
