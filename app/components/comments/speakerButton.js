@@ -4,6 +4,7 @@ import ActionConfirmationPopup from './ActionConfirmationPopup';
 const SpeakerButton = ({ isLoggedIn, socket, username }) => {
   const [expanded, setExpanded] = useState(false);
   const [action, setAction] = useState(null);
+  const [disableRecordButton, setDisableRecordButton] = useState(false);
   const popupRef = useRef();
 
   const handleClick = () => {
@@ -11,6 +12,8 @@ const SpeakerButton = ({ isLoggedIn, socket, username }) => {
   };
 
   const handleActionClick = (actionName) => {
+    if (actionName === 'Record' && disableRecordButton) return;
+
     setAction(actionName);
     setExpanded(false);
     popupRef.current.openPopup();
@@ -18,6 +21,11 @@ const SpeakerButton = ({ isLoggedIn, socket, username }) => {
 
   const handlePopupClose = () => {
     setAction(null);
+  };
+
+  const disableRecordTemporarily = () => {
+    setDisableRecordButton(true);
+    setTimeout(() => setDisableRecordButton(false), 5000);
   };
 
   return (
@@ -45,8 +53,11 @@ const SpeakerButton = ({ isLoggedIn, socket, username }) => {
               Haha
             </button>
             <button 
-              className="px-1 py-1 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-red-700 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-900"
+              className={`px-1 py-1 rounded-md shadow-sm text-lg md:text-xl font-medium text-white bg-red-700 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-900 ${
+                disableRecordButton ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
               onClick={() => handleActionClick('Record')}
+              disabled={disableRecordButton} 
             >
               Record
             </button>
@@ -60,7 +71,8 @@ const SpeakerButton = ({ isLoggedIn, socket, username }) => {
         action={action}
         onClose={handlePopupClose}
         socket={socket}
-        username={username}
+        username={username} 
+        onAudioSent={disableRecordTemporarily}
       />
     </div>
     <button 

@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react'
 import PropTypes from 'prop-types'; 
 import { deductTokens } from '@/utils/apiClient';
 
-const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username }, ref) => {
+const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username, onAudioSent  }, ref) => {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const mediaRecorderRef = useRef(null);
   const [recording, setRecording] = useState(false);
@@ -125,7 +125,11 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username 
           if (onClose) {
             onClose(true);
           }
-        };
+        }; 
+
+        if (onAudioSent) {
+          onAudioSent();
+        }
       } catch (error) {
         setError('Failed to deduct tokens. Please try again.');
         console.error('Error deducting tokens:', error);
@@ -227,10 +231,12 @@ ActionConfirmationPopup.propTypes = {
   onClose: PropTypes.func,
   socket: PropTypes.object.isRequired,
   username: PropTypes.string.isRequired,
+  onAudioSent: PropTypes.func,
 };
 
 ActionConfirmationPopup.defaultProps = {
-  onClose: () => {},
+  onClose: () => {}, 
+  onAudioSent: () => {},
 };
 
 export default ActionConfirmationPopup;
