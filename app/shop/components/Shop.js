@@ -59,6 +59,21 @@ const Shop = () => {
     fetchUserColorsAndTokens();
   }, [username]);
 
+  useEffect(() => {
+    const fetchTokensInterval = setInterval(async () => {
+      try {
+        if (username) {
+          const userProfile = await fetchUserProfile(username);
+          setUserTokens(userProfile.tokens || 0);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user tokens:', error);
+      }
+    }, 5000); 
+
+    return () => clearInterval(fetchTokensInterval);
+  }, [username]);
+
   const handleBuyTokens = () => {
     setShowTokenPopup(true);
   };
