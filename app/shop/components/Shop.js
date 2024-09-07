@@ -4,8 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import { AuthContext } from '@/utils/AuthContext';
 import TokenPurchasePopup from './TokenPurchasePopup'; 
-import { updateColor, deductTokens, fetchUserProfile, getActiveAdCount, addUserAdLink } from '@/utils/apiClient';
-import UserLinkAds from '@/app/components/viewer/UserLinkAds';
+import { updateColor, deductTokens, fetchUserProfile } from '@/utils/apiClient';
 
 const Shop = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -21,11 +20,6 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [purchaseStatus, setPurchaseStatus] = useState({ message: '', type: '' });
   const [isPurchasing, setIsPurchasing] = useState(false);
-  const [userLinks, setUserLinks] = useState([]); // Store user links
-  const [showLinksPopup, setShowLinksPopup] = useState(false); // Manage link popup visibility
-  const [selectedLink, setSelectedLink] = useState('');
-  const [activeAdCount, setActiveAdCount] = useState(0);
-  const [adsFull, setAdsFull] = useState(false); 
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -54,11 +48,6 @@ const Shop = () => {
           setBorderColor(userProfile.borderColor || '#000110');
           setUsernameColor(userProfile.usernameColor || '#ffffff');
           setUserTokens(userProfile.tokens || 0);  
-          setUserLinks(userProfile.links || []); 
-
-          const { activeAdCount } = await getActiveAdCount();
-          setActiveAdCount(activeAdCount);
-          setAdsFull(activeAdCount >= 20); 
         }
       } catch (error) {
         console.error('Failed to fetch user colors and tokens:', error);
@@ -93,11 +82,7 @@ const Shop = () => {
     setShowTokenPopup(false);
   };
 
-  
-
   const handlePurchaseClick = (item, tokens) => {
-    
-
     let selectedItemDetails = { name: item, color: '' };
     if (item === 'this Comment Colour') {
       selectedItemDetails.color = color;
@@ -105,13 +90,6 @@ const Shop = () => {
       selectedItemDetails.color = borderColor;
     } else if (item === 'this Username Colour') {
       selectedItemDetails.color = usernameColor;
-    } else if (item.startsWith('Link -')) {
-      if (adsFull) {
-        setPurchaseStatus({ message: 'Spaces full, please check back later.', type: 'error' });
-        return;
-      }
-      selectedItemDetails.name = `Link - ${selectedLink}`;
-      selectedItemDetails.color = ''; 
     }
     
     setSelectedItem(selectedItemDetails);
@@ -125,82 +103,47 @@ const Shop = () => {
 
   const confirmPurchase = async () => {
     setIsPurchasing(true); // Start the animation
-  
+
     try {
       const { name, color } = selectedItem;
-  
-      // If the user is purchasing a link ad
-      if (name.startsWith('Link -')) {
-        const adLinkData = {
-          text: selectedLink,  
-          url: selectedLink,   
-        };
-  
-        await addUserAdLink(adLinkData); 
-        await deductTokens(1000);
-  
-      } else {
-        // For other purchases like color customizations (comment, border, or username)
-        let colorType;
-  
-        if (name === 'this Comment Colour') {
-          colorType = 'commentColor';
-        } else if (name === 'this Border Colour') {
-          colorType = 'borderColor';
-        } else if (name === 'this Username Colour') {
-          colorType = 'usernameColor';
-        }
-  
-        // Call the API to update the user's color in the database if it's a color-related purchase
-        await updateColor(username, colorType, color);
+
+      // Determine the color type to update
+      let colorType;
+      if (name === 'this Comment Colour') {
+        colorType = 'commentColor';
+      } else if (name === 'this Border Colour') {
+        colorType = 'borderColor';
+      } else if (name === 'this Username Colour') {
+        colorType = 'usernameColor';
       }
-  
-      // Deduct tokens for any purchase
+
+      // Call the API to update the user's color in the database
+      await updateColor(username, colorType, color);
+
+      // Handle token deduction or any other logic here
       await deductTokens(selectedTokens);
-  
+
       // Update the status message
       setPurchaseStatus({ message: `Success! Thank you for your purchase.`, type: 'success' });
-  
+
       // Automatically hide the message after 3 seconds
       setTimeout(() => {
         setPurchaseStatus({ message: '', type: '' });
         setShowConfirmation(false); // Close the confirmation popup
       }, 2000);
-  
     } catch (error) {
       console.error('Failed to complete the purchase:', error);
       setPurchaseStatus({ message: 'Purchase failed. Please try again.', type: 'error' });
-  
+
       // Automatically hide the message after 3 seconds
       setTimeout(() => {
         setPurchaseStatus({ message: '', type: '' });
         setShowConfirmation(false); // Close the confirmation popup
       }, 2000);
-  
     } finally {
       setIsPurchasing(false); // Stop the animation
     }
   };
-  
-
-  const handleLinkSelection = (link) => {
-    setSelectedLink(link);
-    setShowLinksPopup(false);
-    setSelectedItem({ name: `Link - ${link}`, color: '' });
-    setSelectedTokens(1000); 
-    setShowConfirmation(true);
-  };
-
-  const handleOpenLinksPopup = () => {
-    if (userLinks.length === 0) {
-      console.error('No user links available');
-      setPurchaseStatus({ message: 'No links available to choose from.', type: 'error' });
-      return; // Early return if no links available
-    }
-    setShowLinksPopup(true);
-  };
-  
-
 
   if (loading) {  
     return (
@@ -240,10 +183,10 @@ const Shop = () => {
           </button>
         </div>
  )}
-        <hr className='mt-10 mb-2' />
+        <hr className='mt-10' />
 
-
-        <div className='relative h-[400px] w-full'>
+        
+        {/* <div className='relative h-[400px] w-full'>
           <div className='p-20 md:p-40 text-center'>
         <p className='text-xl'>Feature your links between streamers for 1 week!</p>
         {isLoggedIn && username && !adsFull && (
@@ -269,7 +212,7 @@ const Shop = () => {
                
 </div>
 
-        <hr className='mt-10' />
+        <hr className='mt-10' /> */}
 
         {/* Comment Colour */}
         <div className="mt-10">
@@ -286,7 +229,6 @@ const Shop = () => {
             value={color}
             onChange={(e) => setColor(e.target.value)}
           />
-           <p className='text-yellow-400 brightness-125 mt-2'>200 Tokens</p>
           {isLoggedIn && username && (
           <button
             className={`mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
@@ -319,7 +261,6 @@ const Shop = () => {
               onChange={(e) => setBorderColor(e.target.value)}
             />
           </div>
-          <p className='text-yellow-400 brightness-125 mt-2'>200 Tokens</p>
           {isLoggedIn && username && (
           <button
             className={`mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
@@ -346,7 +287,6 @@ const Shop = () => {
             value={usernameColor}
             onChange={(e) => setUsernameColor(e.target.value)}
           />
-          <p className='text-yellow-400 brightness-125 mt-2'>200 Tokens</p>
           {isLoggedIn && username && (
           <button
             className={`mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
@@ -364,36 +304,6 @@ const Shop = () => {
       
 
       </div> 
-
-         {/* Links Popup */}
-         {showLinksPopup && (
-          <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
-            <div className="bg-[#000110] p-6 rounded-md shadow-lg">
-              <h2 className="text-lg font-semibold mb-4">Select Link</h2>
-              {userLinks.length > 0 ? (
-                <ul className="space-y-2">
-                  {userLinks.map((link, index) => (
-                    <li key={index}>
-                      <button
-                        onClick={() => handleLinkSelection(link)}
-                        className="text-yellow-400 brightness-125 hover:text-yellow-600"
-                      >
-                        {link}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No links available.</p>
-              )}
-              <div className="mt-4 flex justify-end">
-                <button onClick={() => setShowLinksPopup(false)} className="bg-red-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-700">
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       
       {showTokenPopup && (
         <TokenPurchasePopup onClose={closeTokenPopup}
