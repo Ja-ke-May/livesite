@@ -158,9 +158,9 @@ useEffect(() => {
     <div className="relative h-[300px] md:h-[340px] lg:h-[400px] rounded text-center bg-transparent shadow-md w-full group">
       
       {!state.liveUserId && !state.isCameraOn && (
-  
+  <div className='w-full flex-jutify-center'>
   <UserLinkAds />
-  
+  </div>
   )
   }
   
