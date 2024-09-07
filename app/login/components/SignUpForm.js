@@ -57,6 +57,7 @@ const SignUpForm = () => {
   const checkUsernameAvailability = debounce(async (username) => {
     if (username.trim() === '') {
       setUsernameAvailable(true);
+      setUsernameChecking(false);
       return;
     }
 
@@ -152,7 +153,7 @@ const SignUpForm = () => {
         )}
         <div className="mb-4">
           <label htmlFor="userName" className="block text-sm font-medium text-gray-200">Username</label>
-          {!usernameAvailable && (
+          {!usernameAvailable && !usernameChecking && (
             <div className="text-red-500 text-sm mt-1">Username is already taken.</div>
           )}
           <input
