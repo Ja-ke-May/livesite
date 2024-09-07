@@ -34,7 +34,8 @@ const ProfileInfo = ({
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [showTokenPopup, setShowTokenPopup] = useState(false); 
-  const [usernameAvailable, setUsernameAvailable] = useState(true); // For checking username availability
+  const [usernameAvailable, setUsernameAvailable] = useState(true); // Username availability flag
+  const [checkingUsername, setCheckingUsername] = useState(false); // Loading indicator for username checking
 
   // Toggle username input field
   const toggleUsernameInput = () => {
@@ -60,16 +61,26 @@ const ProfileInfo = ({
   const checkUsernameAvailability = async (username) => {
     if (username.trim() === '') {
       setUsernameAvailable(true);
+      setUsernameError('');
       return;
     }
 
+    setCheckingUsername(true); // Start checking
     try {
       const response = await fetch(`/check-username/${username}`);
       const data = await response.json();
       setUsernameAvailable(data.available);
+      if (!data.available) {
+        setUsernameError('Username is already taken.');
+      } else {
+        setUsernameError('');
+      }
     } catch (error) {
       console.error('Error checking username:', error);
       setUsernameAvailable(false);
+      setUsernameError('Error checking username availability.');
+    } finally {
+      setCheckingUsername(false); // End checking
     }
   };
 
@@ -209,14 +220,14 @@ const ProfileInfo = ({
                   maxLength={12}
                   placeholder='max characters 12'
                 />
-                {!usernameAvailable && (
+                {!usernameAvailable && !checkingUsername && (
                   <p className="text-red-500 text-sm mb-2">Username is already taken.</p>
                 )}
                 {usernameError && <p className="text-red-500 text-sm mb-2">{usernameError}</p>}
                 <button
                   onClick={confirmUsernameChange}
                   className="bg-[#000110] text-white px-4 py-2 rounded shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700"
-                  disabled={!usernameAvailable}
+                  disabled={!usernameAvailable || checkingUsername}
                 >
                   Confirm Username
                 </button>
