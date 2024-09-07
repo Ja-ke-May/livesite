@@ -69,7 +69,7 @@ const UserLinkAds = () => {
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-">
       {(ads.length > 0 ? ads : defaultAds).map((ad, index) => renderAd(ad, index))}
     </div>
   );

@@ -192,8 +192,14 @@ const Shop = () => {
   };
 
   const handleOpenLinksPopup = () => {
+    if (userLinks.length === 0) {
+      console.error('No user links available');
+      setPurchaseStatus({ message: 'No links available to choose from.', type: 'error' });
+      return; // Early return if no links available
+    }
     setShowLinksPopup(true);
   };
+  
 
 
   if (loading) {  
@@ -238,13 +244,15 @@ const Shop = () => {
 
 
         <div className='relative h-[400px] w-full'>
-          <div className='h-full w-full flex flex-col justify-center items-center p-20 md:p-40 text-center'>
+          <div className='p-20 md:p-40 text-center'>
         <p className='text-xl'>Feature your links between streamers for 1 week!</p>
         {isLoggedIn && username && !adsFull && (
           <button onClick={handleOpenLinksPopup} className='mt-2 md:mt-4 bg-gray-800 p-2 rounded text-lg hover:bg-gray-600'>
               Choose a link
-            </button>
+            
+          </button>
         )}
+        {userLinks.length === 0 && <p className='mt-2 text-red-500'>No links available for selection.</p>}
         <p className='text-yellow-400 brightness-125 mt-2 md:mt-4'>1000 Tokens</p>
         {isLoggedIn && username && !adsFull && (
         <button
