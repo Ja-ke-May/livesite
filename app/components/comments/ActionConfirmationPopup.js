@@ -165,7 +165,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username,
     <p className="text-center text-yellow-400 brightness-125 mt-4">Please check your recording before sending</p>
   </div>
 )}
-                {error && <p className="text-red-500 text-center">{error}</p>}
+                {error && <p className="text-red-500 m-4 text-center">{error}</p>}
                 {audioUrl ? (
                   <div className="flex justify-center space-x-4 mt-4">
                     <button
