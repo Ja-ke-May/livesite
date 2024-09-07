@@ -2,3 +2,126 @@
 @tailwind components;
 @tailwind utilities;
 
+.ad-container {
+    opacity: 0;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+}
+
+@media screen and (min-width: 768px) {
+    .ad-container {
+        width: 80px;
+        height: 80px;
+    }
+}
+  
+  @keyframes move-square {
+    0% {
+        opacity: 1;
+      top: 0;
+      left: 0;
+    }
+    25% {
+      top: 0;
+      left: 85%;
+    }
+    50% {
+      top: 85%;
+      left: 85%;
+    }
+    75% {
+      top: 85%;
+      left: 0;
+    }
+    100% {
+        opacity: 1;
+      top: 0;
+      left: 0;
+    }
+  }
+  /* Animating each ad in sequence with delays */
+  .ad-animation-0 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 0s;
+}
+.ad-animation-1 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 2s;
+}
+.ad-animation-2 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 4s;
+}
+.ad-animation-3 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 6s;
+}
+.ad-animation-4 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 8s;
+}
+.ad-animation-5 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 10s;
+}
+.ad-animation-6 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 12s;
+}
+.ad-animation-7 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 14s;
+}
+.ad-animation-8 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 16s;
+}
+.ad-animation-9 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 18s;
+}
+.ad-animation-10 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 20s;
+}
+.ad-animation-11 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 22s;
+}
+.ad-animation-12 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 24s;
+}
+.ad-animation-13 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 26s;
+}
+.ad-animation-14 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 28s;
+}
+.ad-animation-15 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 30s;
+}
+.ad-animation-16 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 32s;
+}
+.ad-animation-17 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 34s;
+}
+.ad-animation-18 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 36s;
+}
+.ad-animation-19 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 38s;
+}
+.ad-animation-20 {
+    animation: move-square 30s infinite linear;
+    animation-delay: 40s;
+}

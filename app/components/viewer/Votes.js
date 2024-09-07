@@ -165,7 +165,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
   };
 
   if (!liveUserId) {
-    return <div className='mt-2'>Nobody's live at the moment</div>;
+    return <div className='mt-2'></div>;
   }
 
   if (showBuyVotePrompt) {
