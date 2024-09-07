@@ -640,7 +640,7 @@ const Viewer = ( { isAdmin, isBlocked } ) => {
                     isBlocked={isBlocked}
                 />
             ) : (
-                <div className='mt-2'>Nobody's live at the moment</div>
+                <div className='mt-2'></div>
             )}
 
         </>

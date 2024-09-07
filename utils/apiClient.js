@@ -357,3 +357,45 @@ export const resetPassword = async (token, newPassword) => {
     throw new Error(error.response?.data?.message || 'Failed to reset password');
   }
 };
+
+
+export const getActiveAdCount = async () => {
+  try {
+    const response = await axiosInstance.get('/ads/active-count');
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch active ad count');
+  }
+};
+
+export const fetchActiveAds = async () => {
+  try {
+    const response = await axiosInstance.get('/ads/active'); 
+    return response.data; 
+  } catch (error) {
+    throw new Error('Failed to fetch active ads');
+  }
+};
+
+export const addUserAdLink = async (link) => {
+  try {
+    const token = getToken();
+    const formData = new FormData();
+    formData.append('text', link.text);
+    formData.append('url', link.url);
+    if (link.imageFile) {
+      formData.append('image', link.imageFile);
+    }
+
+    const response = await axiosInstance.post('/ads/link', formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to add user ad link');
+  }
+};
