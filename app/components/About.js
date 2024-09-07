@@ -87,7 +87,7 @@ const About = () => {
             <div className="list-disc list-inside ml-4 mt-2">
               <p><strong><span className='brightness-125 text-yellow-400'>⭐ S</span>hare:</strong> Share your ideas, talents, or passions with an engaged audience.</p>
               <p><strong><span className='brightness-125 text-yellow-400'>⭐ T</span>alk:</strong> Chat, vote, and connect with others in real-time.</p>
-              <p><strong><span className='brightness-125 text-yellow-400'>⭐ A</span>mplify:</strong> Customise and personalise your account to amplify your voice.</p>
+              <p><strong><span className='brightness-125 text-yellow-400'>⭐ A</span>mplify:</strong> Customise and personalise your account to help amplify your voice.</p>
               <p><strong><span className='brightness-125 text-yellow-400'>⭐ R</span>each:</strong> Share your links to grow your audience and expand your reach.</p>
             </div>
           </section>
