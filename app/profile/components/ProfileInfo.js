@@ -33,7 +33,9 @@ const ProfileInfo = ({
   const [fileError, setFileError] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
-  const [showTokenPopup, setShowTokenPopup] = useState(false);
+  const [showTokenPopup, setShowTokenPopup] = useState(false); 
+
+  const [usernameAvailable, setUsernameAvailable] = useState(true);
 
   const toggleUsernameInput = () => {
     setShowUsernameInput(!showUsernameInput);
@@ -54,21 +56,34 @@ const ProfileInfo = ({
     setShowPopup(!showPopup);
   };
 
-  const userNameRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]*$/;
+  const checkUsernameAvailability = async (username) => {
+    if (username.trim() === '') {
+      setUsernameAvailable(true);
+      return;
+    }
 
-  const handleUsernameChangeInternal = (e) => {
-    const { value } = e.target;
-    if (userNameRegex.test(value)) {
-      setNewUsername(value);
+    try {
+      const response = await fetch(`/check-username/${username}`);
+      const data = await response.json();
+      setUsernameAvailable(data.available);
+    } catch (error) {
+      console.error('Error checking username:', error);
+      setUsernameAvailable(false);
     }
   };
 
-  const handleBioChangeInternal = (e) => {
+  const handleUsernameChangeInternal = (e) => {
     const { value } = e.target;
-    setNewBio(value);
+    setNewUsername(value);
+    checkUsernameAvailability(value); 
   };
 
   const confirmUsernameChange = async () => {
+    if (!usernameAvailable) {
+      setUsernameError('Username is already taken.');
+      return;
+    }
+
     if (newUsername.length >= 3) {
       try {
         const updatedUser = await updateUsername(newUsername);
@@ -188,10 +203,14 @@ const ProfileInfo = ({
                   maxLength={12}
                   placeholder='max characters 12'
                 />
+                {!usernameAvailable && (
+                  <p className="text-red-500 text-sm mb-2">Username is already taken.</p>
+                )}
                 {usernameError && <p className="text-red-500 text-sm mb-2">{usernameError}</p>}
                 <button
                   onClick={confirmUsernameChange}
                   className="bg-[#000110] text-white px-4 py-2 rounded shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700"
+                  disabled={!usernameAvailable}
                 >
                   Confirm Username
                 </button>
