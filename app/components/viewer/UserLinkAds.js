@@ -33,15 +33,16 @@ const UserLinkAds = () => {
     
     const link = ad.links?.[0]; 
     
-    if (!link || !link.url || !link.imageUrl) {
-      console.warn('Missing link or its properties for ad:', ad);
-      return null; 
-    }
+   
 
     const imageUrl = link.imageUrl.startsWith('data:') 
       ? link.imageUrl 
       : `data:image/jpeg;base64,${link.imageUrl}`;
 
+      if (!link || !link.url || imageUrl) {
+        console.warn('Missing link or its properties for ad:', ad);
+        return null; 
+      }
 
     return (
       <div className="w-full flex justify-center" key={ad.id || ad._id}>
