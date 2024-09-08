@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { fetchActiveAds } from '@/utils/apiClient';
+import React, { useState, useEffect } from 'react'; 
+import { fetchUserAds } from '@/utils/apiClient';
 
 const defaultAds = [
   { id: 'Ad1', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
@@ -30,10 +30,10 @@ const UserLinkAds = () => {
 
   // Fetch ads from backend
   useEffect(() => {
-    const getActiveAds = async () => {
+    const getUserAds = async () => {
       try {
         setLoading(true);
-        const response = await fetchActiveAds(); // Fetch active ads from backend
+        const response = await fetchUserAds();
         if (response && response.ads && response.ads.length > 0) {
           setAds(response.ads); // Set fetched ads if available
         } else {
@@ -47,7 +47,7 @@ const UserLinkAds = () => {
       }
     };
 
-    getActiveAds();
+    getUserAds();
   }, []);
 
   const renderAd = (ad, index) => (
@@ -69,7 +69,7 @@ const UserLinkAds = () => {
   }
 
   return (
-    <div className="w-full h-">
+    <div className="w-full">
       {(ads.length > 0 ? ads : defaultAds).map((ad, index) => renderAd(ad, index))}
     </div>
   );
