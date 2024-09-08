@@ -51,15 +51,11 @@ const UserLinkAds = () => {
     getActiveAds();
   }, []);
 
-  // Combine fetched ads with default ads to always have 20 ads
-  const combinedAds = ads.length < 20 
-    ? [...ads, ...defaultAds.slice(ads.length, 20)] // Fill the rest with default ads if fetched ads are less than 20
-    : ads;
-
   const renderAd = (ad, index) => {
-    // Safely check if 'ad.links' exists and it contains 'url' and 'imageUrl'
-    const link = ad.links?.[0]; // Assuming links is an array; use the first link
+    // Safely check if 'ad.links' exists before accessing its properties
+    const link = ad.links;
     
+    // Check if the link object and its necessary properties are available
     if (!link || !link.url || !link.imageUrl) {
       console.warn('Missing link or its properties for ad:', ad);
       return null; // Skip rendering if crucial data is missing
@@ -86,7 +82,7 @@ const UserLinkAds = () => {
 
   return (
     <div className="w-full h-">
-      {combinedAds.map((ad, index) => renderAd(ad, index))}
+      {(ads.length > 0 ? ads : defaultAds).map((ad, index) => renderAd(ad, index))}
     </div>
   );
 };
