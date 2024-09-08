@@ -30,17 +30,23 @@ const UserLinkAds = () => {
 
  
   const renderAd = (ad, index) => {
-    
-    const link = ad.links?.[0]; 
-
-    const imageUrl = link.imageUrl.startsWith('data:') 
-      ? link.imageUrl 
+    const link = ad.links?.[0];
+  
+    if (!link || !link.imageUrl || !link.url) {
+      return null;
+    }
+  
+    // Check if imageUrl already has a 'data:' prefix. If not, add the base64 image prefix.
+    const imageUrl = link.imageUrl.startsWith('data:')
+      ? link.imageUrl
       : `data:image/jpeg;base64,${link.imageUrl}`;
-
-
+  
     return (
       <div className="w-full flex justify-center" key={ad.id || ad._id}>
-        <div id={ad.id || ad._id} className={`ad-container ad-animation-${index} flex justify-center items-center pointer-events-auto cursor-pointer`}>
+        <div
+          id={ad.id || ad._id}
+          className={`ad-container ad-animation-${index} flex justify-center items-center pointer-events-auto cursor-pointer`}
+        >
           <a href={link.url} target="_blank" rel="noopener noreferrer">
             <img
               src={imageUrl}
@@ -52,6 +58,7 @@ const UserLinkAds = () => {
       </div>
     );
   };
+  
 
   if (loading) {
     return <div></div>;
