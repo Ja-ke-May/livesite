@@ -32,17 +32,28 @@ const UserLinkAds = () => {
 
     getUserAds();
   }, []);
-
   const renderAd = (ad, index) => {
     const isDefaultAd = !ad.links || !ad.links[0]; // Check if it's a default ad or user ad
     const link = isDefaultAd ? ad : ad.links[0]; // Access the first link if it's a user ad
-
+  
+    const base64Prefix = (imageUrl) => {
+      // Check if the base64 string needs a JPEG or PNG prefix
+      if (imageUrl.startsWith('iVBORw0KGgo')) {
+        return `data:image/png;base64,${imageUrl}`;
+      }
+      return `data:image/jpeg;base64,${imageUrl}`;
+    };
+  
+    const imageSrc = isDefaultAd
+      ? ad.imageUrl
+      : base64Prefix(link.imageUrl); // Handle user ad base64 properly
+  
     return (
       <div className="w-full flex justify-center" key={ad.id || ad._id || index}>
         <div id={ad.id || ad._id || index} className={`ad-container ad-animation-${index} flex justify-center items-center`}>
           <a href={isDefaultAd ? ad.linkUrl : link.url} target="_blank" rel="noopener noreferrer">
             <img
-              src={isDefaultAd ? ad.imageUrl : `data:image/jpeg;base64,${link.imageUrl}`} // Use base64 for user ads
+              src={imageSrc} // Use the proper image source
               alt={link.text || `Ad ${ad.id || ad._id || index}`}
               className="w-full h-full rounded"
               onError={(e) => { e.target.src = '/images/fallback-image.jpg'; }} // Fallback image on error
@@ -52,9 +63,10 @@ const UserLinkAds = () => {
       </div>
     );
   };
+  
 
   if (loading) {
-    return <div>Loading ads...</div>; // Loading state
+    return <div></div>; // Loading state
   }
 
   // Fill with default ads if not enough user ads are available
