@@ -59,7 +59,7 @@ const UserLinkAds = () => {
 
   return (
     <div className="w-full">
-      {combinedAds.map((ad, index) => renderAd(ad, index))}
+      {ads.map((ad, index) => renderAd(ad, index))}
     </div>
   );
 };
