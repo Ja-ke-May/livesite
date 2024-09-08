@@ -382,14 +382,19 @@ export const fetchAdsCount = async () => {
   }
 };
 
-// Fetch ads from the backend
+// Fetch ads from the backend, sorted by createdAt (oldest to newest)
 export const fetchUserAds = async () => {
   try {
-    const response = await axiosInstance.get('/ads', {
+    const token = getToken();
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+     const response = await axiosInstance.get('/ads', {
+      headers, 
       params: {
         sort: 'createdAt', 
       },
     });
+
     return response.data; 
   } catch (error) {
     throw new Error('Failed to fetch user ads');
