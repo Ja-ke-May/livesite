@@ -51,19 +51,30 @@ const UserLinkAds = () => {
     getActiveAds();
   }, []);
 
-  const renderAd = (ad, index) => (
-    <div className="w-full flex justify-center" key={ad.id || ad._id}>
-      <div id={ad.id || ad._id} className={`ad-container ad-animation-${index} flex justify-center items-center`}>
-        <a href={ad.linkUrl || ad.link.url} target="_blank" rel="noopener noreferrer">
-          <img
-            src={ad.imageUrl || `data:image/jpeg;base64,${ad.link.imageUrl}`}
-            alt={ad.text || `Ad ${ad.id || ad._id}`}
-            className="w-full h-full rounded"
-          />
-        </a>
+  const renderAd = (ad, index) => {
+    // Safely check if 'ad.links' exists before accessing its properties
+    const link = ad.links;
+    
+    // Check if the link object and its necessary properties are available
+    if (!link || !link.url || !link.imageUrl) {
+      console.warn('Missing link or its properties for ad:', ad);
+      return null; // Skip rendering if crucial data is missing
+    }
+
+    return (
+      <div className="w-full flex justify-center" key={ad.id || ad._id}>
+        <div id={ad.id || ad._id} className={`ad-container ad-animation-${index} flex justify-center items-center`}>
+          <a href={link.url} target="_blank" rel="noopener noreferrer">
+            <img
+              src={`data:image/jpeg;base64,${link.imageUrl}`}
+              alt={link.text || `Ad ${ad.id || ad._id}`}
+              className="w-full h-full rounded"
+            />
+          </a>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   if (loading) {
     return <div></div>;
