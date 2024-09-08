@@ -53,7 +53,7 @@ const UserLinkAds = () => {
   }, []);
 
   const renderAd = (ad, index) => {
-    const isDefaultAd = !ad.links; // Check if it's a default ad (if `links` doesn't exist)
+    const isDefaultAd = !ad.links || !ad.links[0]; // Check if it's a default ad or if user ad has links
     const link = isDefaultAd ? ad : ad.links[0]; // Access the first link if it's a user ad
 
     return (
@@ -72,7 +72,7 @@ const UserLinkAds = () => {
   };
 
   if (loading) {
-    return <div>Loading ads...</div>; // Loading state
+    return <div></div>; // Loading state
   }
 
   // Fill with default ads if not enough user ads are available
