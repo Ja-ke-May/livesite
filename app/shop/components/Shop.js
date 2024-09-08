@@ -110,26 +110,17 @@ const Shop = () => {
   };
 
   const confirmPurchase = async () => {
-    setIsPurchasing(true); // Start loading animation
+    setIsPurchasing(true);
   
     try {
       const { name } = selectedItem;
   
-      // If the purchase is for featuring a link as an ad
-      if (name === 'Ad featuring this link') {
-        // Deduct tokens for ad purchase
+      if (name === 'Promote Your Link for 1 Week') {
         await deductTokens(selectedTokens);
-        // Send selected link to ads
-        await sendLinkToAds(selectedLink);
+        const selectedLinkObject = userLinks.find(link => link._id === selectedLink);
+        await sendLinkToAds(selectedLinkObject);
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 1 week.`, type: 'success' });
-  
-        // Automatically close the confirmation popup after a delay
-        setTimeout(() => {
-          setPurchaseStatus({ message: '', type: '' });
-          setShowConfirmation(false); // Close the confirmation popup
-        }, 2000);
-  
       } else {
         // Handle color purchase
         const { color } = selectedItem;
@@ -149,40 +140,41 @@ const Shop = () => {
         // Deduct tokens for the color purchase
         await deductTokens(selectedTokens);
   
-        // Update the purchase status
         setPurchaseStatus({ message: `Success! You purchased ${name}.`, type: 'success' });
-  
-        // Automatically close the confirmation popup after a delay
-        setTimeout(() => {
-          setPurchaseStatus({ message: '', type: '' });
-          setShowConfirmation(false); // Close the confirmation popup
-        }, 2000);
       }
+  
+      // Close confirmation popup after a delay
+      setTimeout(() => {
+        setPurchaseStatus({ message: '', type: '' });
+        setShowConfirmation(false);
+      }, 2000);
     } catch (error) {
       console.error('Failed to complete the purchase:', error);
       setPurchaseStatus({ message: 'Purchase failed. Please try again.', type: 'error' });
   
-      // Automatically hide the message after a delay
       setTimeout(() => {
         setPurchaseStatus({ message: '', type: '' });
-        setShowConfirmation(false); // Close the confirmation popup
+        setShowConfirmation(false);
       }, 2000);
     } finally {
-      setIsPurchasing(false); // Stop loading animation
+      setIsPurchasing(false);
     }
   };
-  
 
   const handlePurchaseAdClick = () => {
-    if (!selectedLink) {
+    const selectedLinkObject = userLinks.find(link => link._id === selectedLink); // Find the selected link object
+    
+    if (!selectedLinkObject) {
       setPurchaseStatus({ message: 'Please select a link to feature in ads.', type: 'error' });
       return;
     }
+    
     // Popup confirmation for ad purchase
     setShowConfirmation(true);
-    setSelectedItem({ name: 'Ad featuring this link', color: '' });
+    setSelectedItem({ name: 'Promote Your Link for 1 Week', color: '' });
     setSelectedTokens(1000); // Ad feature cost is 1000 tokens
   };
+  
 
  
   if (loading) {  
@@ -231,9 +223,7 @@ const Shop = () => {
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
             {isLoggedIn && username && adsCount < 20 && ( // Hide if adsCount is 20 or more
               <>
-                <button className="mt-2 md:mt-4 bg-gray-800 p-2 rounded text-lg hover:bg-gray-600" onClick={() => {}}>
-                  Choose a link
-                </button>
+               
                 {/* Display user links for selection */}
                 {userLinks.length > 0 && (
                   <select

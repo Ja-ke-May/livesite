@@ -358,10 +358,10 @@ export const resetPassword = async (token, newPassword) => {
   }
 };
 
-export const sendLinkToAds = async (linkId) => {
+export const sendLinkToAds = async (link) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.post(`/ads/send-link/${linkId}`, null, {
+    const response = await axiosInstance.post(`/ads/send-link`, { link }, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -371,6 +371,7 @@ export const sendLinkToAds = async (linkId) => {
     throw new Error(error.response?.data?.message || 'Failed to send link to ads');
   }
 };
+
 
 export const fetchAdsCount = async () => {
   try {
