@@ -3,7 +3,6 @@ import { fetchUserAds } from '@/utils/apiClient';
 
 const defaultAds = [
   { id: 'Ad1', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-
 ];
 
 const UserLinkAds = () => {
@@ -16,9 +15,9 @@ const UserLinkAds = () => {
       try {
         setLoading(true);
         const response = await fetchUserAds();
-        console.log("Fetched ads:", response.ads); // Log the fetched ads
+        console.log("Fetched ads:", response?.ads || []); // Log the fetched ads
 
-        if (response && response.ads && response.ads.length > 0) {
+        if (response?.ads?.length > 0) {
           setAds(response.ads); // Set fetched ads if available
         } else {
           setAds([]); // Set to empty if no ads are fetched
@@ -35,7 +34,7 @@ const UserLinkAds = () => {
   }, []);
 
   const renderAd = (ad, index) => {
-    const isDefaultAd = !ad.links || !ad.links[0]; // Check if it's a default ad or if user ad has links
+    const isDefaultAd = !ad.links || !ad.links[0]; // Check if it's a default ad or user ad
     const link = isDefaultAd ? ad : ad.links[0]; // Access the first link if it's a user ad
 
     return (
@@ -46,6 +45,7 @@ const UserLinkAds = () => {
               src={isDefaultAd ? ad.imageUrl : `data:image/jpeg;base64,${link.imageUrl}`} // Use base64 for user ads
               alt={link.text || `Ad ${ad.id || ad._id || index}`}
               className="w-full h-full rounded"
+              onError={(e) => { e.target.src = '/images/fallback-image.jpg'; }} // Fallback image on error
             />
           </a>
         </div>
@@ -54,7 +54,7 @@ const UserLinkAds = () => {
   };
 
   if (loading) {
-    return <div></div>; // Loading state
+    return <div>Loading ads...</div>; // Loading state
   }
 
   // Fill with default ads if not enough user ads are available
