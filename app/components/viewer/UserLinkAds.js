@@ -28,7 +28,7 @@ const UserLinkAds = () => {
             const link = ad.links?.[0];
             if (link && link.imageUrl && !link.imageUrl.startsWith('data:')) {
               try {
-                const base64Image = await toBase64(link.imageUrl); // Convert to base64
+                const base64Image = await toBase64(link.imageUrl); 
                 link.imageUrl = base64Image; // Update imageUrl with base64 string
               } catch (error) {
                 console.error('Error converting image to base64:', error);
