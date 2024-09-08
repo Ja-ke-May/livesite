@@ -38,12 +38,17 @@ const UserLinkAds = () => {
       return null; 
     }
 
+    const imageUrl = link.imageUrl.startsWith('data:') 
+      ? link.imageUrl 
+      : `data:image/jpeg;base64,${link.imageUrl}`;
+
+
     return (
       <div className="w-full flex justify-center" key={ad.id || ad._id}>
         <div id={ad.id || ad._id} className={`ad-container ad-animation-${index} flex justify-center items-center pointer-events-auto cursor-pointer`}>
           <a href={link.url} target="_blank" rel="noopener noreferrer">
             <img
-              src={`data:image/jpeg;base64,${link.imageUrl}`}
+              src={imageUrl}
               alt={link.text || `Ad ${ad.id || ad._id}`}
               className="w-full h-full rounded pointer-events-auto cursor-pointer"
             />
