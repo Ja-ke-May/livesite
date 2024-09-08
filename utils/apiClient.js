@@ -358,3 +358,43 @@ export const resetPassword = async (token, newPassword) => {
   }
 };
 
+export const sendLinkToAds = async (linkId) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post(`/ads/send-link/${linkId}`, null, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to send link to ads');
+  }
+};
+
+export const fetchAdsCount = async () => {
+  try {
+    const response = await axiosInstance.get('/ads/count');
+    return response.data.count;
+  } catch (error) {
+    throw new Error('Failed to fetch ads count');
+  }
+};
+
+// Fetch ads from the backend, sorted by createdAt (oldest to newest)
+export const fetchUserAds = async () => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.get('/ads', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      params: {
+        sort: 'createdAt', // Sort by createdAt in ascending order (oldest to newest)
+      },
+    });
+    return response.data; // Return the ads data from the response
+  } catch (error) {
+    throw new Error('Failed to fetch user ads');
+  }
+};
