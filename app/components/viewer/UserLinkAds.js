@@ -34,6 +34,7 @@ const UserLinkAds = () => {
       try {
         setLoading(true);
         const response = await fetchUserAds(); // Fetch active ads from backend
+        console.log(response);
         if (response && response.ads && response.ads.length > 0) {
           setAds(response.ads); // Set fetched ads if available
         } else {
