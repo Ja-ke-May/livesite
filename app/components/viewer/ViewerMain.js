@@ -158,7 +158,7 @@ useEffect(() => {
     <div className="relative h-[300px] md:h-[340px] lg:h-[400px] rounded text-center bg-transparent shadow-md w-full group">
       
       {!state.liveUserId && !state.isCameraOn && (
-  <div className='w-full flex-jutify-center pointer-events: auto  cursor-pointer'>
+  <div className='w-full flex-jutify-center pointer-events: auto cursor-pointer'>
   <UserLinkAds />
   </div>
   )
@@ -199,7 +199,7 @@ useEffect(() => {
 
          {!state.liveUserId && !state.isCameraOn && upNext && (
           <div>
-        <div className="absolute inset-0 flex flex-col text-center items-center justify-center bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
+        <div className="absolute inset-0 flex flex-col text-center items-center justify-center bg-none pointer-events-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
           <p onClick={() => togglePopup(upNext)} className="text-white pointer-events-auto cursor-pointer">Up Next: <span className="font-bold">{upNext}</span></p>
           
           {profilePicture && (
