@@ -5,7 +5,6 @@ const UserLinkAds = () => {
   const [ads, setAds] = useState([]); 
   const [loading, setLoading] = useState(true); 
 
-  
   useEffect(() => {
     const getActiveAds = async () => {
       try {
@@ -13,7 +12,7 @@ const UserLinkAds = () => {
         const response = await fetchUserAds(); 
         console.log(response);
         if (response && response.ads && response.ads.length > 0) {
-          setAds(response.ads); 
+          setAds(response.ads); // Set the ads directly since they already contain base64 images
         } else {
           setAds([]); 
         }
@@ -28,19 +27,13 @@ const UserLinkAds = () => {
     getActiveAds();
   }, []);
 
- 
   const renderAd = (ad, index) => {
     const link = ad.links?.[0];
   
     if (!link || !link.imageUrl || !link.url) {
       return null;
     }
-  
-    // Check if imageUrl already has a 'data:' prefix. If not, add the base64 image prefix.
-    const imageUrl = link.imageUrl.startsWith('data:')
-      ? link.imageUrl
-      : `data:image/jpeg;base64,${link.imageUrl}`;
-  
+
     return (
       <div className="w-full flex justify-center" key={ad.id || ad._id}>
         <div
@@ -49,7 +42,7 @@ const UserLinkAds = () => {
         >
           <a href={link.url} target="_blank" rel="noopener noreferrer">
             <img
-              src={imageUrl}
+              src={link.imageUrl} // Directly use the base64 image
               alt={link.text || `Ad ${ad.id || ad._id}`}
               className="w-full h-full rounded pointer-events-auto cursor-pointer"
             />
@@ -58,10 +51,9 @@ const UserLinkAds = () => {
       </div>
     );
   };
-  
 
   if (loading) {
-    return <div></div>;
+    return <div>Loading ads...</div>;
   }
 
   return (
