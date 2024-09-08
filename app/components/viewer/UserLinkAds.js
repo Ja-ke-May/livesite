@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from 'react';
 import { fetchUserAds } from '@/utils/apiClient';
 
@@ -26,18 +25,21 @@ const UserLinkAds = () => {
             console.log('Link:', link);
 
             if (link && link.imageUrl && link.url) {
-              console.log(`Ad ${index + 1} has valid fields. ImageUrl: ${link.imageUrl}, Url: ${link.url}`);
+              // Ensure URL case sensitivity is handled properly
+              if (link.url.startsWith('Https://')) {
+                link.url = link.url.replace('Https://', 'https://');
+              }
+
+              // Ensure imageUrl has the correct base64 prefix if it's missing
+              if (!link.imageUrl.startsWith('data:image/png;base64,')) {
+                link.imageUrl = `data:image/png;base64,${link.imageUrl}`;
+              }
+
+              return ad;
             } else {
               console.warn(`Ad ${index + 1} missing required fields (imageUrl or url)`, link);
               return null; // Skip ads with missing fields
             }
-
-            // Ensure URL case sensitivity is handled properly
-            if (link.url && link.url.startsWith('Https://')) {
-              link.url = link.url.replace('Https://', 'https://');
-            }
-
-            return ad;
           });
 
           // Filter out any null ads (ads that were skipped due to missing fields)
@@ -76,7 +78,7 @@ const UserLinkAds = () => {
         >
           <a href={link.url} target="_blank" rel="noopener noreferrer">
             <img
-              src={`data:image/png;base64,${link.imageUrl}`} // Use base64 data directly in the image source
+              src={link.imageUrl} // Base64 image already prefixed correctly
               alt={link.text || `Ad ${ad.id || ad._id || index}`}
               className="w-full h-full rounded pointer-events-auto cursor-pointer"
             />
@@ -87,10 +89,12 @@ const UserLinkAds = () => {
   };
 
   if (loading) {
-    return <div></div>;  
+    return <div>Loading ads...</div>;  
   }
 
-
+  if (!ads || ads.length === 0) {
+    return <div>No ads available at this time.</div>;
+  }
 
   return (
     <div className="w-full">
