@@ -5,8 +5,6 @@ const UserLinkAds = () => {
   const [ads, setAds] = useState([]); 
   const [loading, setLoading] = useState(true); 
 
-  ads = [];
-
   
   useEffect(() => {
     const getActiveAds = async () => {
