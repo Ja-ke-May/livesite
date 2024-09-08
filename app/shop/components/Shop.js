@@ -231,9 +231,7 @@ const Shop = () => {
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
             {isLoggedIn && username && adsCount < 20 && ( // Hide if adsCount is 20 or more
               <>
-                <button className="mt-2 md:mt-4 bg-gray-800 p-2 rounded text-lg hover:bg-gray-600" onClick={() => {}}>
-                  Choose a link
-                </button>
+               
                 {/* Display user links for selection */}
                 {userLinks.length > 0 && (
                   <select
