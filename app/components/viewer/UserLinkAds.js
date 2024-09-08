@@ -33,7 +33,10 @@ const UserLinkAds = () => {
     const getUserAds = async () => {
       try {
         setLoading(true);
-        const response = await fetchUserAds();
+        const response = await fetchUserAds(); 
+
+        console.log("Fetched ads:", response.ads);
+        
         if (response && response.ads && response.ads.length > 0) {
           setAds(response.ads); // Set fetched ads if available
         } else {
