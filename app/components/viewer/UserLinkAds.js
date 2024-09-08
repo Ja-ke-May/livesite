@@ -1,26 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchUserAds } from '@/utils/apiClient';
 
-// Helper function to convert image URLs to base64
-const toBase64 = async (url) => {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch image from URL: ${url}`);
-    }
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  } catch (error) {
-    console.error('Error in toBase64 function:', error);
-    throw error;
-  }
-};
-
 const UserLinkAds = () => {
   const [ads, setAds] = useState([]); 
   const [loading, setLoading] = useState(true); 
@@ -36,37 +16,30 @@ const UserLinkAds = () => {
         if (response && response.ads && response.ads.length > 0) {
           console.log('Ads found:', response.ads.length);
 
-          // Convert image URLs to base64 if necessary and handle existing base64 images
-          const updatedAds = await Promise.all(response.ads.map(async (ad, index) => {
-            const link = ad.links?.[0];
-            console.log(`Processing ad ${index + 1}/${response.ads.length}:`, ad);
+          const updatedAds = response.ads.map((ad, index) => {
+            const link = ad.links?.[0]; // Assuming `links` is an array
 
-            if (link && link.imageUrl) {
-              if (!link.imageUrl.startsWith('data:') && !link.imageUrl.startsWith('http')) {
-                // If it's not already a base64 image or a regular URL, convert to base64
-                try {
-                  console.log(`Converting image for ad ${index + 1} to base64:`, link.imageUrl);
-                  const base64Image = await toBase64(link.imageUrl);
-                  link.imageUrl = base64Image; // Update imageUrl with base64 string
-                  console.log(`Base64 image set for ad ${index + 1}`);
-                } catch (error) {
-                  console.error(`Error converting image for ad ${index + 1}:`, error);
-                  link.imageUrl = 'default-placeholder-image.png'; // Set a default fallback
-                }
-              } else {
-                console.log(`Ad ${index + 1} already has a valid base64 or URL`);
-              }
+            // Log the structure of the ad to check `links`, `imageUrl`, and `url`
+            console.log(`Processing ad ${index + 1}/${response.ads.length}:`, ad);
+            console.log('Link:', link);
+
+            if (link && link.imageUrl && link.url) {
+              console.log(`Ad ${index + 1} has valid fields. ImageUrl: ${link.imageUrl}, Url: ${link.url}`);
+            } else {
+              console.warn(`Ad ${index + 1} missing required fields (imageUrl or url)`, link);
+              return null; // Skip ads with missing fields
             }
 
-            // Fix URL case sensitivity if needed
-            if (link && link.url && link.url.startsWith('Https://')) {
+            // Ensure URL case sensitivity is handled properly
+            if (link.url && link.url.startsWith('Https://')) {
               link.url = link.url.replace('Https://', 'https://');
             }
 
             return ad;
-          }));
+          });
 
-          setAds(updatedAds); 
+          // Filter out any null ads (ads that were skipped due to missing fields)
+          setAds(updatedAds.filter(ad => ad !== null)); 
         } else {
           console.log('No ads found');
           setAds([]); 
@@ -83,10 +56,10 @@ const UserLinkAds = () => {
   }, []);
 
   const renderAd = (ad, index) => {
-    const link = ad.links?.[0];
-  
+    const link = ad.links?.[0]; // Ensure proper access to the `links` array
+    
     if (!link || !link.imageUrl || !link.url) {
-      console.warn(`Ad ${index + 1} missing required fields (imageUrl or url)`);
+      console.warn(`Ad ${index + 1} missing required fields (imageUrl or url)`, link);
       return null;
     }
 
@@ -98,7 +71,7 @@ const UserLinkAds = () => {
         >
           <a href={link.url} target="_blank" rel="noopener noreferrer">
             <img
-              src={link.imageUrl || 'default-placeholder-image.png'} // Fallback if no image URL
+              src={`data:image/png;base64,${link.imageUrl}`} // Use base64 data directly in the image source
               alt={link.text || `Ad ${ad.id || ad._id || index}`}
               className="w-full h-full rounded pointer-events-auto cursor-pointer"
             />
@@ -111,6 +84,8 @@ const UserLinkAds = () => {
   if (loading) {
     return <div></div>;  
   }
+
+  
 
   return (
     <div className="w-full">
