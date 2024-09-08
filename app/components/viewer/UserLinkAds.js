@@ -53,9 +53,9 @@ const UserLinkAds = () => {
   const renderAd = (ad, index) => (
     <div className="w-full flex justify-center" key={ad.id || ad._id}>
       <div id={ad.id || ad._id} className={`ad-container ad-animation-${index} flex justify-center items-center`}>
-        <a href={ad.linkUrl || ad.link.url} target="_blank" rel="noopener noreferrer">
+        <a href={ad.url} target="_blank" rel="noopener noreferrer">
           <img
-            src={ad.imageUrl || `data:image/jpeg;base64,${ad.link.imageUrl}`}
+            src={ad.imageUrl || '/images/logo.jpg'}
             alt={ad.text || `Ad ${ad.id || ad._id}`}
             className="w-full h-full rounded"
           />
