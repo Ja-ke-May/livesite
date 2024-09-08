@@ -57,10 +57,9 @@ const UserLinkAds = () => {
     : ads;
 
   const renderAd = (ad, index) => {
-    // Safely check if 'ad.links' exists before accessing its properties
-    const link = ad.links;
+    // Safely check if 'ad.links' exists and it contains 'url' and 'imageUrl'
+    const link = ad.links?.[0]; // Assuming links is an array; use the first link
     
-    // Check if the link object and its necessary properties are available
     if (!link || !link.url || !link.imageUrl) {
       console.warn('Missing link or its properties for ad:', ad);
       return null; // Skip rendering if crucial data is missing
