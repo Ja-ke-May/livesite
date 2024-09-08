@@ -223,7 +223,9 @@ const Shop = () => {
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
             {isLoggedIn && username && adsCount < 20 && ( // Hide if adsCount is 20 or more
               <>
-               
+               <p className={adsCount >= 20 ? 'text-red-500 text-lg' : 'text-yellow-400 brightness-125 text-lg'}>
+  Spaces available {adsCount}/20
+</p>
                 {/* Display user links for selection */}
                 {userLinks.length > 0 && (
                   <select
