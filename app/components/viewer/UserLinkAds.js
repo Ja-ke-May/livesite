@@ -32,28 +32,36 @@ const UserLinkAds = () => {
 
     getUserAds();
   }, []);
+
+  // Function to prefix base64 image data
+  const getBase64ImageSrc = (base64Data) => {
+    // Check if the data seems to be PNG or JPEG based on the start of the base64 string
+    if (base64Data.startsWith('iVBORw0KGgo')) {
+      return `data:image/png;base64,${base64Data}`;
+    } else {
+      return `data:image/jpeg;base64,${base64Data}`;
+    }
+  };
+
+  // Render each ad
   const renderAd = (ad, index) => {
     const isDefaultAd = !ad.links || !ad.links[0]; // Check if it's a default ad or user ad
     const link = isDefaultAd ? ad : ad.links[0]; // Access the first link if it's a user ad
-  
-    const base64Prefix = (imageUrl) => {
-      // Check if the base64 string needs a JPEG or PNG prefix
-      if (imageUrl.startsWith('iVBORw0KGgo')) {
-        return `data:image/png;base64,${imageUrl}`;
-      }
-      return `data:image/jpeg;base64,${imageUrl}`;
-    };
-  
+
+    // Determine the image source based on whether it's a default ad or user ad with base64 image
     const imageSrc = isDefaultAd
       ? ad.imageUrl
-      : base64Prefix(link.imageUrl); // Handle user ad base64 properly
-  
+      : getBase64ImageSrc(link.imageUrl);
+
+    // Log the image source for debugging
+    console.log(`Ad ${index} image source:`, imageSrc);
+
     return (
       <div className="w-full flex justify-center" key={ad.id || ad._id || index}>
         <div id={ad.id || ad._id || index} className={`ad-container ad-animation-${index} flex justify-center items-center`}>
           <a href={isDefaultAd ? ad.linkUrl : link.url} target="_blank" rel="noopener noreferrer">
             <img
-              src={imageSrc} // Use the proper image source
+              src={imageSrc} // Use the correct image source
               alt={link.text || `Ad ${ad.id || ad._id || index}`}
               className="w-full h-full rounded"
               onError={(e) => { e.target.src = '/images/fallback-image.jpg'; }} // Fallback image on error
@@ -63,7 +71,6 @@ const UserLinkAds = () => {
       </div>
     );
   };
-  
 
   if (loading) {
     return <div></div>; // Loading state
