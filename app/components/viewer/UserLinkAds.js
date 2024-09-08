@@ -9,6 +9,7 @@ const UserLinkAds = () => {
     const fetchAds = async () => {
       try {
         const fetchedAds = await fetchUserAds(); 
+        console.log(fetchedAds);
         setAds(fetchedAds.ads); 
         setLoading(false); 
       } catch (error) {
@@ -25,7 +26,7 @@ const UserLinkAds = () => {
       <div className={`ad-container ad-animation-${index} flex justify-center items-center`}>
         <a href={ad.url} target="_blank" rel="noopener noreferrer">
           <img
-            src={`data:image/png;base64,${ad.imageUrl}`} 
+            src={ad.imageUrl ? `data:image/png;base64,${ad.imageUrl}` : '/images/logo.jpg'}
             alt={ad.text}
             className="w-full h-full rounded"
           />
