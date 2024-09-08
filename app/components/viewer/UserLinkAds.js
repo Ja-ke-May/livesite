@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { fetchUserAds } from '@/utils/apiClient';
 
@@ -17,9 +19,9 @@ const UserLinkAds = () => {
           console.log('Ads found:', response.ads.length);
 
           const updatedAds = response.ads.map((ad, index) => {
-            const link = ad.links?.[0]; // Assuming `links` is an array
+            const link = ad.links?.[0]; // Ensure links is an array and has at least one entry
 
-            // Log the structure of the ad to check `links`, `imageUrl`, and `url`
+            // Debugging: Log the structure of the ad to check `links`, `imageUrl`, and `url`
             console.log(`Processing ad ${index + 1}/${response.ads.length}:`, ad);
             console.log('Link:', link);
 
@@ -63,6 +65,9 @@ const UserLinkAds = () => {
       return null;
     }
 
+    // Debugging step: ensure the base64 image is correctly rendered
+    console.log(`Rendering ad with base64 image. URL: ${link.url}, Image: ${link.imageUrl.slice(0, 50)}...`);
+
     return (
       <div className="w-full flex justify-center" key={ad.id || ad._id || index}>
         <div
@@ -85,7 +90,7 @@ const UserLinkAds = () => {
     return <div></div>;  
   }
 
-  
+
 
   return (
     <div className="w-full">
