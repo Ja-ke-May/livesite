@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { fetchUserAds } from '@/utils/apiClient';
 
+const toBase64 = async (url) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
+
 const UserLinkAds = () => {
   const [ads, setAds] = useState([]); 
   const [loading, setLoading] = useState(true); 
@@ -12,7 +23,20 @@ const UserLinkAds = () => {
         const response = await fetchUserAds(); 
         console.log(response);
         if (response && response.ads && response.ads.length > 0) {
-          setAds(response.ads); // Set the ads directly since they already contain base64 images
+          // Convert image URLs to base64 if necessary
+          const updatedAds = await Promise.all(response.ads.map(async (ad) => {
+            const link = ad.links?.[0];
+            if (link && link.imageUrl && !link.imageUrl.startsWith('data:')) {
+              try {
+                const base64Image = await toBase64(link.imageUrl); // Convert to base64
+                link.imageUrl = base64Image; // Update imageUrl with base64 string
+              } catch (error) {
+                console.error('Error converting image to base64:', error);
+              }
+            }
+            return ad;
+          }));
+          setAds(updatedAds); 
         } else {
           setAds([]); 
         }
@@ -42,7 +66,7 @@ const UserLinkAds = () => {
         >
           <a href={link.url} target="_blank" rel="noopener noreferrer">
             <img
-              src={link.imageUrl} // Directly use the base64 image
+              src={link.imageUrl}
               alt={link.text || `Ad ${ad.id || ad._id}`}
               className="w-full h-full rounded pointer-events-auto cursor-pointer"
             />
@@ -53,7 +77,7 @@ const UserLinkAds = () => {
   };
 
   if (loading) {
-    return <div>Loading ads...</div>;
+    return <div></div>;
   }
 
   return (
