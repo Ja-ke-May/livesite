@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 import React, { useState, useEffect } from 'react';
 import { fetchUserAds } from '@/utils/apiClient';
 
@@ -14,9 +14,11 @@ const UserLinkAds = () => {
         const response = await fetchUserAds(); 
         console.log('Fetched response:', response);
 
-        if (response && response.ads && response.ads.length > 0) {
-          console.log('Ads found:', response.ads.length);
+        // Check if the response has the expected structure
+        if (response && response.ads && Array.isArray(response.ads)) {
+          console.log(`Ads found: ${response.ads.length}`);
 
+          // Process the ads
           const updatedAds = response.ads.map((ad, index) => {
             const link = ad.links?.[0]; // Ensure links is an array and has at least one entry
 
@@ -31,7 +33,7 @@ const UserLinkAds = () => {
               }
 
               // Ensure imageUrl has the correct base64 prefix if it's missing
-              if (!link.imageUrl.startsWith('data:image/png;base64,')) {
+              if (!link.imageUrl.startsWith('data:image/png;base64,') && !link.imageUrl.startsWith('data:image/jpeg;base64,')) {
                 link.imageUrl = `data:image/png;base64,${link.imageUrl}`;
               }
 
@@ -43,10 +45,12 @@ const UserLinkAds = () => {
           });
 
           // Filter out any null ads (ads that were skipped due to missing fields)
-          setAds(updatedAds.filter(ad => ad !== null)); 
+          const validAds = updatedAds.filter(ad => ad !== null);
+          console.log(`Valid ads after filtering: ${validAds.length}`);
+          setAds(validAds);
         } else {
-          console.log('No ads found');
-          setAds([]); 
+          console.warn('No ads found or invalid structure in response.');
+          setAds([]);
         }
       } catch (error) {
         console.error('Error fetching ads:', error);
@@ -61,7 +65,7 @@ const UserLinkAds = () => {
 
   const renderAd = (ad, index) => {
     const link = ad.links?.[0]; // Ensure proper access to the `links` array
-    
+
     if (!link || !link.imageUrl || !link.url) {
       console.warn(`Ad ${index + 1} missing required fields (imageUrl or url)`, link);
       return null;
