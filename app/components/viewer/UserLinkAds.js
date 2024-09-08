@@ -3,25 +3,7 @@ import { fetchUserAds } from '@/utils/apiClient';
 
 const defaultAds = [
   { id: 'Ad1', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad2', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad3', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad4', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad5', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad6', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad7', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad8', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad9', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad10', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad11', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad12', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad13', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad14', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad15', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad16', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad17', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad18', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad19', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
-  { id: 'Ad20', imageUrl: '/images/logo.jpg', linkUrl: 'https://myme.live' },
+
 ];
 
 const UserLinkAds = () => {
