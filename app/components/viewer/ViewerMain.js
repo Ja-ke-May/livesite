@@ -158,7 +158,7 @@ useEffect(() => {
     <div className="relative h-[300px] md:h-[340px] lg:h-[400px] rounded text-center bg-transparent shadow-md w-full group">
       
       {!state.liveUserId && !state.isCameraOn && (
-  <div className='w-full h-full flex justify-center pointer-events-auto cursor-pointer'>
+  <div className='w-full z-[100] h-full flex justify-center pointer-events-auto cursor-pointer'>
   <UserLinkAds />
   </div>
   )
@@ -169,7 +169,7 @@ useEffect(() => {
 
       {state.liveUserId && (
         <div>
-          <div className="absolute top-2 left-2 bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
+          <div className="absolute z-[99] top-2 left-2 bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
           <span
             ref={usernameRef}
             className="font-bold cursor-pointer"
@@ -199,7 +199,7 @@ useEffect(() => {
 
          {!state.liveUserId && !state.isCameraOn && upNext && (
           <div>
-        <div className="absolute inset-0 flex flex-col text-center items-center justify-center bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
+        <div className="absolute z-[99] inset-0 flex flex-col text-center items-center justify-center bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
           <p onClick={() => togglePopup(upNext)} className="text-white pointer-events-auto cursor-pointer">Up Next: <span className="font-bold">{upNext}</span></p>
           
           {profilePicture && (
@@ -228,7 +228,7 @@ useEffect(() => {
       )}
 
       {state.isCameraOn && !state.isLive && !state.liveUserId && showGoLiveButton && (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute  z-[200] inset-0 flex items-center justify-center">
           <button
            onClick={() => {
             clearTimeout(goLiveTimerRef.current);
@@ -244,7 +244,7 @@ useEffect(() => {
       {state.liveUserId && isMuted && (
         <button
           onClick={handleUnmuteClick}
-          className="absolute bottom-4 right-4 bg-[#000110] text-white text-md font-bold rounded-full p-3"
+          className="absolute z-[200] bottom-4 right-4 bg-[#000110] text-white text-md font-bold rounded-full p-3"
         >
           Sound On
         </button>
@@ -252,7 +252,7 @@ useEffect(() => {
 
       {state.liveUserId && showVolumeControls && (
         <div
-          className={`absolute bottom-4 right-4 bg-none text-md rounded p-2 transition-opacity duration-300 ${
+          className={`absolute z-[200] bottom-4 right-4 bg-none text-md rounded p-2 transition-opacity duration-300 ${
             isVolumeVisible ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
           }`}
         >
