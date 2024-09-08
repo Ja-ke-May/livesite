@@ -33,10 +33,9 @@ const UserLinkAds = () => {
     const getUserAds = async () => {
       try {
         setLoading(true);
-        const response = await fetchUserAds(); 
+        const response = await fetchUserAds();
+        console.log("Fetched ads:", response.ads); // Log the fetched ads
 
-        console.log("Fetched ads:", response.ads);
-        
         if (response && response.ads && response.ads.length > 0) {
           setAds(response.ads); // Set fetched ads if available
         } else {
@@ -54,15 +53,16 @@ const UserLinkAds = () => {
   }, []);
 
   const renderAd = (ad, index) => {
-    const isDefaultAd = !ad.url; // Check if it's a default ad (if `url` doesn't exist)
+    const isDefaultAd = !ad.links; // Check if it's a default ad (if `links` doesn't exist)
+    const link = isDefaultAd ? ad : ad.links[0]; // Access the first link if it's a user ad
 
     return (
       <div className="w-full flex justify-center" key={ad.id || ad._id || index}>
         <div id={ad.id || ad._id || index} className={`ad-container ad-animation-${index} flex justify-center items-center`}>
-          <a href={isDefaultAd ? ad.linkUrl : ad.url} target="_blank" rel="noopener noreferrer">
+          <a href={isDefaultAd ? ad.linkUrl : link.url} target="_blank" rel="noopener noreferrer">
             <img
-              src={isDefaultAd ? ad.imageUrl : `data:image/jpeg;base64,${ad.imageUrl}`} // Use base64 for user ads
-              alt={ad.text || `Ad ${ad.id || ad._id || index}`}
+              src={isDefaultAd ? ad.imageUrl : `data:image/jpeg;base64,${link.imageUrl}`} // Use base64 for user ads
+              alt={link.text || `Ad ${ad.id || ad._id || index}`}
               className="w-full h-full rounded"
             />
           </a>
@@ -72,11 +72,13 @@ const UserLinkAds = () => {
   };
 
   if (loading) {
-    return <div></div>; // Loading state
+    return <div>Loading ads...</div>; // Loading state
   }
 
   // Fill with default ads if not enough user ads are available
   const allAds = [...ads, ...defaultAds.slice(ads.length)].slice(0, 20); // Ensure 20 ads
+
+  console.log("Ads being rendered:", allAds); // Log the final list of ads being rendered
 
   return (
     <div className="w-full">
