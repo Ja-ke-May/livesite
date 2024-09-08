@@ -36,27 +36,36 @@ const UserLinkAds = () => {
         if (response && response.ads && response.ads.length > 0) {
           console.log('Ads found:', response.ads.length);
 
-          // Convert image URLs to base64 if necessary
+          // Convert image URLs to base64 if necessary and handle existing base64 images
           const updatedAds = await Promise.all(response.ads.map(async (ad, index) => {
             const link = ad.links?.[0];
             console.log(`Processing ad ${index + 1}/${response.ads.length}:`, ad);
 
-            if (link && link.imageUrl && !link.imageUrl.startsWith('data:')) {
-              try {
-                console.log(`Converting image for ad ${index + 1} to base64:`, link.imageUrl);
-                const base64Image = await toBase64(link.imageUrl);
-                link.imageUrl = base64Image; // Update imageUrl with base64 string
-                console.log(`Base64 image set for ad ${index + 1}`);
-              } catch (error) {
-                console.error(`Error converting image for ad ${index + 1}:`, error);
-                link.imageUrl = 'default-placeholder-image.png'; // Set a default fallback
+            if (link && link.imageUrl) {
+              if (!link.imageUrl.startsWith('data:') && !link.imageUrl.startsWith('http')) {
+                // If it's not already a base64 image or a regular URL, convert to base64
+                try {
+                  console.log(`Converting image for ad ${index + 1} to base64:`, link.imageUrl);
+                  const base64Image = await toBase64(link.imageUrl);
+                  link.imageUrl = base64Image; // Update imageUrl with base64 string
+                  console.log(`Base64 image set for ad ${index + 1}`);
+                } catch (error) {
+                  console.error(`Error converting image for ad ${index + 1}:`, error);
+                  link.imageUrl = 'default-placeholder-image.png'; // Set a default fallback
+                }
+              } else {
+                console.log(`Ad ${index + 1} already has a valid base64 or URL`);
               }
-            } else {
-              console.log(`Ad ${index + 1} already has a base64 image or no image URL`);
+            }
+
+            // Fix URL case sensitivity if needed
+            if (link && link.url && link.url.startsWith('Https://')) {
+              link.url = link.url.replace('Https://', 'https://');
             }
 
             return ad;
           }));
+
           setAds(updatedAds); 
         } else {
           console.log('No ads found');
@@ -100,11 +109,7 @@ const UserLinkAds = () => {
   };
 
   if (loading) {
-    return <div>Loading ads...</div>;  // Display loading message or spinner
-  }
-
-  if (ads.length === 0) {
-    return <div>No ads to display.</div>;  // Handle case where no ads are available
+    return <div></div>;  
   }
 
   return (
