@@ -229,7 +229,7 @@ const Shop = () => {
 
         
         <div className="relative h-[400px] w-full">
-          <div className="p-20 md:mt-20 text-center">
+          <div className="p-20 md:pt-[30] text-center">
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
             {isLoggedIn && username && adsCount < 15 && ( 
               <>
