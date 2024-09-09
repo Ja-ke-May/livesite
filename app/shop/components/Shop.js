@@ -82,6 +82,20 @@ const Shop = () => {
     return () => clearInterval(fetchTokensInterval);
   }, [username]);
 
+  useEffect(() => {
+    const fetchAdsCountInterval = setInterval(async () => {
+      try {
+        const count = await fetchAdsCount();
+        setAdsCount(count); 
+      } catch (error) {
+        console.error('Failed to fetch ads count:', error);
+      }
+    }, 10000); 
+
+    return () => clearInterval(fetchAdsCountInterval);
+  }, []);
+
+
   const handleBuyTokens = () => {
     setShowTokenPopup(true);
   };
@@ -250,7 +264,7 @@ const Shop = () => {
               </>
             )}
             {adsCount >= 15 && (
-              <p className="text-red-500 mt-4">Sorry, the maximum number of ads have been reached. Please check back later!</p>
+              <p className="text-red-500 mt-4">Sorry, spaces are now full. Please check back later!</p>
             )}
           </div>
 
