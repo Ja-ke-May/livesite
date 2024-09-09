@@ -64,7 +64,7 @@ const About = () => {
       <strong><span className='brightness-125'>⭐</span> Real-Time Voting:</strong> Viewers vote using a sliding bar. If the bar moves towards the star <span className='brightness-125'>⭐</span>, you get an extra minute and 100 tokens! If it reaches the red cross ❌, your stream ends, and the next person goes live.
     </p>
     <p className='mt-2'>
-      <strong><span className='brightness-125'>⭐</span> Votes:</strong> Viewers get 1 free vote per minute. They can purchase additional votes for 10 tokens each to help promote their favorite users.
+      <strong><span className='brightness-125'>⭐</span> Votes:</strong> Viewers get 1 free vote per minute. You can purchase additional votes for 10 tokens each to help promote your favorite users.
     </p>
     <p className='mt-2'>
       <strong><span className='brightness-125'>⭐</span> Stay Engaged:</strong> Use tokens to customise your chat messages and profile. Tokens can also be used to buy Fast Passes or boost your visibility.
