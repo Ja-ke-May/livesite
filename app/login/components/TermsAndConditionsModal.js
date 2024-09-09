@@ -48,7 +48,10 @@ const TermsAndConditionsModal = ({ isOpen, onClose }) => {
 
           <h3 className="text-lg font-semibold mt-4">5. Data Collection and Privacy</h3>
           <p>
-            MyMe collects and stores personal information, including but not limited to: user emails which are stored securely and passwords which are encrypted to ensure privacy and security. User emails are used for essential communication and, if opted in, for marketing purposes. MyMe uses Google Analytics and other implemented methods to track user behaviour on the site. This data is used to improve the user experience and optimise the Platform.
+            MyMe collects and stores personal information, including but not limited to: user emails which are stored securely and passwords which are encrypted to ensure privacy and security. User emails are used for essential communication and, if opted in, for marketing and updates. MyMe uses Google Analytics and other implemented methods to track user behaviour on the site. This data is used to improve the user experience and optimise the Platform.
+          </p>
+          <p>
+          MyMe uses cookies to enhance your experience on the Platform. Cookies help us track user behavior, remember preferences, and improve overall functionality. By using the Platform, you consent to the use of cookies for these purposes. You can manage or disable cookies through your browser settings, but this may affect certain features of the Platform.
           </p>
           <p>
             MyMe complies with the Data Protection Act 2018 and UK GDPR. Users have the right to access, rectify, or request the deletion of their personal data. Users may request the deletion of their account and personal information by directly contacting MyMe. Currently, there is no option to delete accounts or remove information through user settings.

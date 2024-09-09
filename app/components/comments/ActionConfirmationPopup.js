@@ -78,13 +78,11 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username,
       const stream = mediaRecorderRef.current.stream;
       stream.getTracks().forEach(track => track.stop());
 
-      // Clear the media recorder reference
       mediaRecorderRef.current = null;
     }
   };
 
   const handleReRecord = () => {
-    // Revoke the old blob URL
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null);
