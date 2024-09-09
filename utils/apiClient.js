@@ -29,19 +29,15 @@ export const activateAccount = async (token) => {
   }
 };
 
-// Login with logging for isAdmin
 export const login = async (credentials) => {
   try {
     const response = await axiosInstance.post('/login', credentials);
 
     const { token, username, isAdmin } = response.data;
-    console.log('Login response:', { token, username, isAdmin });  
 
     localStorage.setItem('token', token);
     localStorage.setItem('username', username); 
-    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
-    
-    console.log('Stored isAdmin in localStorage:', localStorage.getItem('isAdmin'));  
+    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false'); 
 
     return response.data;
   } catch (error) {
@@ -55,7 +51,6 @@ export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
   localStorage.removeItem('isAdmin');
-  console.log('User logged out. Cleared token, username, and isAdmin from localStorage.');
 };
 
 
@@ -291,7 +286,7 @@ export const updateColor = async (username, colorType, color) => {
       { 
         username, 
         colorType, 
-        color // sending color directly
+        color 
       }, 
       {
         headers: {
@@ -322,7 +317,6 @@ export const blockUser = async (username, duration) => {
   }
 };
 
-// Function to fetch user's blocked status
 export const fetchUserBlockedStatus = async (token, username) => {
   try {
     const response = await axiosInstance.get(`/users/${username}/status`, {
@@ -330,7 +324,7 @@ export const fetchUserBlockedStatus = async (token, username) => {
         'Authorization': `Bearer ${token}`,
       },
     });
-    return response.data.isBlocked; // Return the blocked status
+    return response.data.isBlocked; 
   } catch (error) {
     console.error('Failed to fetch blocked status:', error.response?.data?.message || error);
     throw new Error('Failed to fetch blocked status');
@@ -382,7 +376,6 @@ export const fetchAdsCount = async () => {
   }
 };
 
-// Fetch ads from the backend, sorted by createdAt (oldest to newest)
 export const fetchUserAds = async () => {
   try {
     const token = getToken();

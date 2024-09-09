@@ -157,7 +157,6 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
     if (liveUserId) {
       try {
         await awardTokens(liveUserId, 100);
-        console.log(`Sent 100 tokens to ${liveUserId}`);
       } catch (error) {
         console.error('Failed to award tokens:', error);
       }
@@ -218,7 +217,6 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
         ⭐
       </span>
 
-      {/* Falling Stars */}
       {stars.length > 0 && (
         <div className="absolute inset-0 pointer-events-none">
           {stars.map((star, index) => (
@@ -237,7 +235,6 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
         </div>
       )}
 
-      {/* CSS for animations */}
       <style>
         {stars.map((_, index) => (
           `@keyframes fall-${index} {

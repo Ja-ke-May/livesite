@@ -7,14 +7,13 @@ const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) =>
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);  
-  const [showBlockOptions, setShowBlockOptions] = useState(false); // State to show block options
+  const [showBlockOptions, setShowBlockOptions] = useState(false); 
 
   useImperativeHandle(ref, () => ({
     contains: (element) => popupRef.current && popupRef.current.contains(element),
   }));
 
   useEffect(() => {
-    console.log("isAdmin prop:", isAdmin);  // Log the value of isAdmin
   }, [isAdmin]);
   
 
@@ -53,15 +52,14 @@ const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) =>
   };
 
   const handleAdminAction = () => {
-    setShowBlockOptions(true);  // Show the block options when Admin button is clicked
+    setShowBlockOptions(true);  
   };
 
   const handleBlockUser = async (duration) => {
     setLoading(true);
     try {
       await blockUser(username, duration); 
-      console.log(`User ${username} blocked for ${duration}`);
-      setTimeout(() => onClose(), 1000); // Close the popup after the action
+      setTimeout(() => onClose(), 1000); 
     } catch (error) {
       setError('Failed to block user. Please try again.');
       console.error('Failed to block user:', error);

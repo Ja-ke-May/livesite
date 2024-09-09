@@ -58,13 +58,13 @@ const About = () => {
       <strong><span className='brightness-125'>⭐</span> Go Live:</strong> Start by joining the live queue using the yellow "JOIN" banner at the top of the home page. You can join for free or use a Fast Pass to jump to the front of the line.
     </p>
     <p className='mt-2'>
-      <strong><span className='brightness-125'>⭐</span> One Minute Spotlight:</strong> When your position 2 in the queue, you're next! Click "Preview Your Camera" when you see it and in a few seconds you'll be shown the "GO LIVE" button. You start with 1 minute on the clock.
+      <strong><span className='brightness-125'>⭐</span> One Minute Spotlight:</strong> When your position 2 in the queue, you're next! Click "Preview Your Camera" when you see it and in a few seconds you'll be shown the green "GO LIVE" button. You start with 1 minute on the clock.
     </p>
     <p className='mt-2'>
-      <strong><span className='brightness-125'>⭐</span> Real-Time Voting:</strong> Viewers vote using a sliding bar. If the bar moves towards the star <span className='brightness-125'>⭐</span>, you get an extra minute. If it reaches the red cross ❌, your stream ends, and the next person goes live.
+      <strong><span className='brightness-125'>⭐</span> Real-Time Voting:</strong> Viewers vote using a sliding bar. If the bar moves towards the star <span className='brightness-125'>⭐</span>, you get an extra minute and 100 tokens! If it reaches the red cross ❌, your stream ends, and the next person goes live.
     </p>
     <p className='mt-2'>
-      <strong><span className='brightness-125'>⭐</span> Votes:</strong> Viewers get 1 free vote per minute. They can purchase additional votes for 10 tokens each to promote their favorite users.
+      <strong><span className='brightness-125'>⭐</span> Votes:</strong> Viewers get 1 free vote per minute. They can purchase additional votes for 10 tokens each to help promote their favorite users.
     </p>
     <p className='mt-2'>
       <strong><span className='brightness-125'>⭐</span> Stay Engaged:</strong> Use tokens to customise your chat messages and profile. Tokens can also be used to buy Fast Passes or boost your visibility.
@@ -97,10 +97,10 @@ const About = () => {
     The Future <span className="brightness-125">⭐</span>
   </h2>
   <p>
-    MyMe is constantly evolving with its community. While the future is not yet decided, features like speaker chat comments, multiple rooms, and even video posting options could be on the horizon. Our goal is to break traditional social media barriers, making it easier to share ideas and connect. MyMe is driven by its users, and its future will be shaped by you.
+    MyMe is constantly evolving with its community. While the future is not yet decided, features like multiple rooms, video posting and private messaging could be on the horizon. Our goal is to break traditional social media barriers, making it easier to share ideas and connect. MyMe is driven by its users, and its future will be shaped by you.
   </p>
   <p>
-    Looking ahead, expect more shop items, leaderboards to highlight active and popular users, and even competitions where you can earn tokens. Together, we’re building a creative revolution, where you help shape the future of MyMe.
+    Looking ahead, expect more shop items, leaderboards to highlight active and popular users and new exciting ways to grow your audience. Together, we’re building a creative revolution, where you help shape the future of MyMe.
   </p>
 </section>
 
@@ -118,7 +118,7 @@ const About = () => {
 
           <section> <h2 className='text-xl font-semibold mb-2'>The Creator <span className='brightness-125'>⭐</span></h2> 
           <p> 
-          Hi, I’m Jacob, the creator of MyMe. My journey in the social media world has shown me how powerful it can be to connect with others, share ideas, and grow a network. But I also saw the need for a platform that’s more focused on authentic interactions and giving everyone a chance to shine—without the pressure of chasing followers or dedicating your life to a specific niche.
+          Hi, I’m Jacob, the creator of MyMe. My journey in the social media world has shown me how powerful it can be to connect with others, share ideas, and grow a network. But I also saw the need for a platform that’s more focused on authentic interactions and giving everyone a chance to shine, without the pressure of conforming to algorithms, dedicating your life to a specific niche or constantly posting just to stay visible, as is often the case on traditional platforms.
           <br /> 
           That’s why I built MyMe. A new fun and exciting space where anyone can step into the spotlight, share their passions, and make meaningful connections. MyMe is all about celebrating creativity and individuality in real-time. It’s a platform where you can showcase your talents, promote your projects, and engage with a supportive community that values what you bring to the table.
           <br /> 

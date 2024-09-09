@@ -43,7 +43,7 @@ const ActivateAccount = () => {
         });
     } else {
       setError('Invalid or missing token');
-      setLoading(false); // Stop loading if no token is present
+      setLoading(false); 
     }
   }, [token]);
 

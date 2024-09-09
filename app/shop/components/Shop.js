@@ -122,7 +122,6 @@ const Shop = () => {
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 1 week.`, type: 'success' });
       } else {
-        // Handle color purchase
         const { color } = selectedItem;
   
         let colorType;
@@ -134,16 +133,13 @@ const Shop = () => {
           colorType = 'usernameColor';
         }
   
-        // Call the API to update the user's color in the database
         await updateColor(username, colorType, color);
   
-        // Deduct tokens for the color purchase
         await deductTokens(selectedTokens);
   
         setPurchaseStatus({ message: `Success! You purchased ${name}.`, type: 'success' });
       }
   
-      // Close confirmation popup after a delay
       setTimeout(() => {
         setPurchaseStatus({ message: '', type: '' });
         setShowConfirmation(false);
@@ -162,17 +158,17 @@ const Shop = () => {
   };
 
   const handlePurchaseAdClick = () => {
-    const selectedLinkObject = userLinks.find(link => link._id === selectedLink); // Find the selected link object
+    const selectedLinkObject = userLinks.find(link => link._id === selectedLink); 
     
     if (!selectedLinkObject) {
       setPurchaseStatus({ message: 'Please select a link to feature in ads.', type: 'error' });
       return;
     }
     
-    // Popup confirmation for ad purchase
+   
     setShowConfirmation(true);
     setSelectedItem({ name: 'Promote Your Link for 1 Week', color: '' });
-    setSelectedTokens(1000); // Ad feature cost is 1000 tokens
+    setSelectedTokens(2000); 
   };
   
 
@@ -204,7 +200,7 @@ const Shop = () => {
           </div>
         )}
 
-        {/* Buy Tokens */}
+        
         {isLoggedIn && username && (
         <div className="mt-4 w-full flex items-center justify-center">
           <button
@@ -221,10 +217,12 @@ const Shop = () => {
         <div className="relative h-[400px] w-full">
           <div className="p-20 md:p-40 text-center">
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
-            {isLoggedIn && username && adsCount < 20 && ( // Hide if adsCount is 20 or more
+            {isLoggedIn && username && adsCount < 20 && ( 
               <>
-               
-                {/* Display user links for selection */}
+               <p className={`${adsCount >= 20 ? 'text-red-500' : 'text-yellow-400 brightness-125'} text-center text-lg`}>
+  {adsCount >= 20 ? 'No spaces available' : `Spaces available ${20 - adsCount}`}
+</p>
+                
                 {userLinks.length > 0 && (
                   <select
                     className="mt-2 bg-gray-800 p-2 rounded text-lg"
@@ -239,7 +237,7 @@ const Shop = () => {
                     ))}
                   </select>
                 )}
-                <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">1000 Tokens</p>
+                <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">2000 Tokens</p>
                 <button
                   className={`mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${
                     isPurchasing ? 'animate-pulse' : ''
@@ -262,7 +260,6 @@ const Shop = () => {
 
         <hr className='mt-10' />
 
-        {/* Comment Colour */}
         <div className="mt-10">
           <div className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm"
             style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}>
@@ -288,7 +285,6 @@ const Shop = () => {
           )}
         </div>
 
-        {/* Border Colour */}
         <div className='mt-4 text-right'>
           <div className="flex justify-end">
             <div 
@@ -319,8 +315,7 @@ const Shop = () => {
           </button>
           )}
         </div>
-
-        {/* Username Colour */}
+        
         <div className="mt-4">
           <div className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm"
             style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}>
