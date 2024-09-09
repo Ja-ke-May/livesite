@@ -229,7 +229,7 @@ const Shop = () => {
 
         
         <div className="relative h-[400px] w-full">
-          <div className="p-20 text-center">
+          <div className="p-20 md:mt-20 text-center">
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
             {isLoggedIn && username && adsCount < 15 && ( 
               <>
@@ -291,7 +291,7 @@ const Shop = () => {
           {isLoggedIn && username && (
             <>             <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">200 Tokens</p>
           <button
-            className={`mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Comment Colour', 200)}
             disabled={isPurchasing}
           >
@@ -325,7 +325,7 @@ const Shop = () => {
           {isLoggedIn && username && (
             <>             <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">200 Tokens</p>
           <button
-            className={`mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Border Colour', 200)}
             disabled={isPurchasing}
           >
@@ -352,7 +352,7 @@ const Shop = () => {
           {isLoggedIn && username && (
             <>             <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">200 Tokens</p>
           <button
-            className={`mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+            className={`mt-2 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Username Colour', 200)}
             disabled={isPurchasing}
           >
