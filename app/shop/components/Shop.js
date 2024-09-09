@@ -228,8 +228,8 @@ const Shop = () => {
         <hr className='mt-10' />
 
         
-        <div className="relative h-[400px] w-full">
-          <div className="p-20 md:pt-[30] text-center">
+        <div className="relative h-[400px] md:h-[450px] w-full">
+          <div className="p-20 md:p-40 text-center">
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
             {isLoggedIn && username && adsCount < 15 && ( 
               <>
