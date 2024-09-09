@@ -217,10 +217,10 @@ const Shop = () => {
         <div className="relative h-[400px] w-full">
           <div className="p-20 md:p-40 text-center">
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
-            {isLoggedIn && username && adsCount < 20 && ( 
+            {isLoggedIn && username && adsCount < 15 && ( 
               <>
-               <p className={`${adsCount >= 20 ? 'text-red-500' : 'text-yellow-400 brightness-125'} text-center text-lg`}>
-  {adsCount >= 20 ? 'No spaces available' : `Spaces available ${19 - adsCount}`}
+               <p className={`${adsCount >= 15 ? 'text-red-500' : 'text-yellow-400 brightness-125'} text-center text-lg`}>
+  {adsCount >= 15 ? 'No spaces available' : `Spaces available ${15 - adsCount}`}
 </p>
                 
                 {userLinks.length > 0 && (
@@ -239,7 +239,7 @@ const Shop = () => {
                 )}
                 <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">2000 Tokens</p>
                 <button
-                  className={`mt-4 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${
+                  className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${
                     isPurchasing ? 'animate-pulse' : ''
                   }`}
                   onClick={handlePurchaseAdClick}
@@ -249,7 +249,7 @@ const Shop = () => {
                 </button>
               </>
             )}
-            {adsCount >= 20 && (
+            {adsCount >= 15 && (
               <p className="text-red-500 mt-4">Sorry, the maximum number of ads have been reached. Please check back later!</p>
             )}
           </div>
