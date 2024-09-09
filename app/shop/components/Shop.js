@@ -220,7 +220,7 @@ const Shop = () => {
             {isLoggedIn && username && adsCount < 20 && ( 
               <>
                <p className={`${adsCount >= 20 ? 'text-red-500' : 'text-yellow-400 brightness-125'} text-center text-lg`}>
-  {adsCount >= 20 ? 'No spaces available' : `Spaces available ${20 - adsCount}`}
+  {adsCount >= 20 ? 'No spaces available' : `Spaces available ${19 - adsCount}`}
 </p>
                 
                 {userLinks.length > 0 && (
