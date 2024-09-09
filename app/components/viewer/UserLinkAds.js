@@ -20,18 +20,14 @@ const UserLinkAds = () => {
     const fetchAds = async () => {
       try {
         const fetchedAds = await fetchUserAds();
-        console.log('Fetched Ads:', fetchedAds); 
 
         const adsWithValidImages = fetchedAds.ads.map((ad, index) => {
-          console.log(`Checking ad #${index}:`, ad);
 
           const imageUrl = ad.links && ad.links.imageUrl ? ad.links.imageUrl : ad.imageUrl;
 
           if (!isBase64(imageUrl)) {
-            console.log(`Invalid imageUrl for ad #${index}, using fallback.`);
             ad.imageUrl = '/images/logo.jpg'; 
           } else {
-            console.log(`Valid base64 image for ad #${index}`);
             ad.imageUrl = `data:image/png;base64,${imageUrl}`; 
           }
 
