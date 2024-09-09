@@ -182,7 +182,7 @@ const Shop = () => {
    
     setShowConfirmation(true);
     setSelectedItem({ name: 'Promote Your Link for 1 Week', color: '' });
-    setSelectedTokens(2000); 
+    setSelectedTokens(2500); 
   };
   
 
@@ -251,7 +251,7 @@ const Shop = () => {
                     ))}
                   </select>
                 )}
-                <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">2000 Tokens</p>
+                <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">2500 Tokens</p>
                 <button
                   className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${
                     isPurchasing ? 'animate-pulse' : ''
