@@ -284,7 +284,7 @@ const Shop = () => {
             type="color"
             id="commentColor"
             name="commentColor"
-            className="block mt-4 h-10 w-10 rounded-md shadow-sm"
+            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
             value={color}
             onChange={(e) => setColor(e.target.value)}
           />
@@ -317,7 +317,7 @@ const Shop = () => {
               type="color"
               id="borderColor"
               name="borderColor"
-              className="h-10 w-10 rounded-md shadow-sm"
+              className="h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
               value={borderColor}
               onChange={(e) => setBorderColor(e.target.value)}
             />
@@ -345,7 +345,7 @@ const Shop = () => {
             type="color"
             id="usernameColor"
             name="usernameColor"
-            className="block mt-4 h-10 w-10 rounded-md shadow-sm"
+            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
             value={usernameColor}
             onChange={(e) => setUsernameColor(e.target.value)}
           />
