@@ -228,7 +228,7 @@ const Shop = () => {
         <hr className='mt-10' />
 
         
-        <div className="relative h-[400px] md:h-[450px] w-full">
+        <div className="relative h-[400px] md:h-[450px] w-full z-10">
           <div className="p-20 md:p-40 text-center">
             <p className="text-xl">Feature your links between streamers for 1 week!</p>
             {isLoggedIn && username && adsCount < 15 && ( 
@@ -284,7 +284,7 @@ const Shop = () => {
             type="color"
             id="commentColor"
             name="commentColor"
-            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
+            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer z-[160]"
             value={color}
             onChange={(e) => setColor(e.target.value)}
           />
