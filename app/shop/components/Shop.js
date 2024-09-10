@@ -274,7 +274,7 @@ const Shop = () => {
 
         <hr className='mt-10' />
 
-        <div className="mt-10">
+        <div className="mt-10 z-[150]">
           <div className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm"
             style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}>
             <h3 className="text-lg font-semibold" style={{ color: usernameColor }}>Comment Colour</h3>
@@ -284,7 +284,7 @@ const Shop = () => {
             type="color"
             id="commentColor"
             name="commentColor"
-            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer z-[150]"
+            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
             value={color}
             onChange={(e) => setColor(e.target.value)}
           />
@@ -302,7 +302,7 @@ const Shop = () => {
           )}
         </div>
 
-        <div className='mt-4 text-right'>
+        <div className='mt-4 text-right z-[150]'>
           <div className="flex justify-end">
             <div 
               className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm text-right border" 
@@ -317,7 +317,7 @@ const Shop = () => {
               type="color"
               id="borderColor"
               name="borderColor"
-              className="h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer z-[150]"
+              className="h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
               value={borderColor}
               onChange={(e) => setBorderColor(e.target.value)}
             />
@@ -335,7 +335,7 @@ const Shop = () => {
           )}
         </div>
         
-        <div className="mt-4">
+        <div className="mt-4 z-[150]">
           <div className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm"
             style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}>
             <h3 className="text-lg font-semibold" style={{ color: usernameColor }}>Username Colour</h3>
@@ -345,7 +345,7 @@ const Shop = () => {
             type="color"
             id="usernameColor"
             name="usernameColor"
-            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer z-[150]"
+            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
             value={usernameColor}
             onChange={(e) => setUsernameColor(e.target.value)}
           />
