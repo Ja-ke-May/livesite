@@ -117,7 +117,7 @@ const SignUpForm = () => {
     try {
       const userData = { userName, email, password, dob, marketingConsent };
       await signup(userData);
-      setSuccessMessage('Welcome to MyMe! Please check your email to activate your account.');
+      setSuccessMessage('Welcome to MyMe! Please check your email to activate your account. If you don’t see it, check your junk folder. Didn’t receive it within an hour? Contact us for help.');
       setErrorMessages([]);
     } catch (error) {
       setErrorMessages([`Error: ${error.message}`]);
