@@ -284,7 +284,7 @@ const Shop = () => {
             type="color"
             id="commentColor"
             name="commentColor"
-            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
+            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer z-[100]"
             value={color}
             onChange={(e) => setColor(e.target.value)}
           />
@@ -317,7 +317,7 @@ const Shop = () => {
               type="color"
               id="borderColor"
               name="borderColor"
-              className="h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
+              className="h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer z-[100]"
               value={borderColor}
               onChange={(e) => setBorderColor(e.target.value)}
             />
@@ -345,7 +345,7 @@ const Shop = () => {
             type="color"
             id="usernameColor"
             name="usernameColor"
-            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer"
+            className="block mt-4 h-10 w-10 rounded-md shadow-sm pointer-events-auto cursor-pointer z-[100]"
             value={usernameColor}
             onChange={(e) => setUsernameColor(e.target.value)}
           />
@@ -376,7 +376,7 @@ const Shop = () => {
       )}
 
       {showConfirmation && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-[150]">
           <div className="bg-[#000110] p-6 rounded-md shadow-lg">
             <h2 className="text-lg font-semibold mb-4">Confirm Purchase</h2>
             <p>Are you sure you want to purchase <strong style={{ color: selectedItem.color }}>   
