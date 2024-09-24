@@ -52,7 +52,7 @@ const UserLinkAds = () => {
           <img
             src={ad.imageUrl.startsWith('data:image') ? ad.imageUrl : '/images/logo.jpg'}
             alt={ad.links?.text || 'Ad Link Image'} 
-            className="w-full max-h-[50px] rounded"
+            className="max-w-[50px] md:max-w-[100px] max-h-[50px] md:max-h-[100px] rounded"
           />
         </a>
       </div>
