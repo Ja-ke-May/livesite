@@ -46,7 +46,7 @@ const Contact = () => {
                 📧 info@myme.live
               </a>
             </p>
-            <p className='text-xl font-semibold'>
+            <p className='hidden text-xl font-semibold'>
               <a 
                 target="_blank" 
                 href="https://www.youtube.com/@MyMeLive" 
@@ -55,7 +55,7 @@ const Contact = () => {
                 🎥 YouTube
               </a>
             </p>
-            <p className='text-xl font-semibold'>
+            <p className='hidden text-xl font-semibold'>
               <a 
                 target="_blank" 
                 href="https://x.com/MyMe_Live" 
