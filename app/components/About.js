@@ -118,7 +118,7 @@ const About = () => {
 
           <section> <h2 className='text-xl font-semibold mb-2'>The Creator <span className='brightness-125'>⭐</span></h2> 
           <p> 
-          Hi, I’m Jacob, the creator of MyMe. My journey in the social media world has shown me how powerful it can be to connect with others, share ideas, and grow a network. But I also saw the need for a platform that’s more focused on authentic interactions and giving everyone a chance to shine, without the pressure of conforming to algorithms, dedicating your life to a specific niche or constantly posting just to stay visible, as is often the case on traditional platforms.
+          My journey in the social media world has shown me how powerful it can be to connect with others, share ideas, and grow a network. But I also saw the need for a platform that’s more focused on authentic interactions and giving everyone a chance to shine, without the pressure of conforming to algorithms, dedicating your life to a specific niche or constantly posting just to stay visible, as is often the case on traditional platforms.
           <br /> 
           That’s why I built MyMe. A new fun and exciting space where anyone can step into the spotlight, share their passions, and make meaningful connections. MyMe is all about celebrating creativity and individuality in real-time. It’s a platform where you can showcase your talents, promote your projects, and engage with a supportive community that values what you bring to the table.
           <br /> 
