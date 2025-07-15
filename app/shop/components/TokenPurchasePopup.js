@@ -18,7 +18,7 @@ let userName = username;
       <div className="bg-[#000110] p-6 rounded-md shadow-lg w-[300px]">
         <h2 className="text-lg font-semibold mb-2 text-center">Buy Tokens</h2>
         <p className='m-2 bg-yellow-400 brightness-125 rounded text-[#000110] font-black text-center'>
-          LAUNCH OFFER! <br /> DOUBLE TOKENS!
+          SPECIAL OFFER! <br /> DOUBLE TOKENS!
         </p>
         <ul className='mt-4'>
           {tokenOptions.map((option, index) => (
