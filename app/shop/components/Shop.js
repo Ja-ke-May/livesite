@@ -129,12 +129,12 @@ const Shop = () => {
     try {
       const { name } = selectedItem;
   
-      if (name === 'Promote Your Link for 1 Week') {
+      if (name === 'Promote Your Link for 24 hours') {
         await deductTokens(selectedTokens);
         const selectedLinkObject = userLinks.find(link => link._id === selectedLink);
         await sendLinkToAds(selectedLinkObject);
   
-        setPurchaseStatus({ message: `Success! Your link has been featured in ads for 1 week.`, type: 'success' });
+        setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
       } else {
         const { color } = selectedItem;
   
@@ -181,8 +181,8 @@ const Shop = () => {
     
    
     setShowConfirmation(true);
-    setSelectedItem({ name: 'Promote Your Link for 1 Week', color: '' });
-    setSelectedTokens(2500); 
+    setSelectedItem({ name: 'Promote Your Link for 24 hours', color: '' });
+    setSelectedTokens(1000); 
   };
   
 
@@ -230,7 +230,7 @@ const Shop = () => {
         
         <div className="relative h-[400px] md:h-[450px] w-full z-10">
           <div className="p-20 md:p-40 text-center">
-            <p className="text-xl">Feature your links between streamers for 1 week!</p>
+            <p className="text-xl">Feature your links between streamers for 24 hours!</p>
             {isLoggedIn && username && adsCount < 15 && ( 
               <>
                <p className={`${adsCount >= 15 ? 'text-red-500' : 'text-yellow-400 brightness-125'} text-center text-lg`}>
@@ -251,7 +251,7 @@ const Shop = () => {
                     ))}
                   </select>
                 )}
-                <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">2500 Tokens</p>
+                <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">1000 Tokens</p>
                 <button
                   className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${
                     isPurchasing ? 'animate-pulse' : ''
