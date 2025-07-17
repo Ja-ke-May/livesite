@@ -29,7 +29,6 @@ const BritGamesShop = ({
 />
 
       <h3 className="text-center text-lg font-semibold">Brit Stick</h3>
-       <p className="text-center text-yellow-400 brightness-125">400 Tokens</p>
       <p className="text-center text-sm mb-2">Got a stick mate?</p>
 
       <select
@@ -73,14 +72,13 @@ const BritGamesShop = ({
         className="w-full h-40 object-contain mb-4"
       />
       <h3 className="text-center text-lg font-semibold">Safety Boat</h3>
-       <p className="text-center text-yellow-400 brightness-125">10000 Tokens</p>
       <p className="text-center text-sm mb-2">They MIGHT need this...</p>
 
       {isLoggedIn && username && (
         <>
-          <p className="text-yellow-400 brightness-125 mt-2">10000 Tokens</p>
+          <p className="text-center text-bottom text-yellow-400 brightness-125 mt-2">10000 Tokens</p>
           <button
-            className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+            className={`text-center text-bottom mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('safety_boat', 10000)}
             disabled={isPurchasing}
           >
