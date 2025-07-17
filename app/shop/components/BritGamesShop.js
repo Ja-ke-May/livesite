@@ -64,7 +64,7 @@ const BritGamesShop = ({
     </div>
 
     {/* Safety Boat */}
-    <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+    <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
       <img
         src="https://cdn.pixabay.com/photo/2013/07/13/12/19/dinghy-159624_1280.png"
 
