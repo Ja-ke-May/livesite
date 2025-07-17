@@ -6,6 +6,7 @@ import { AuthContext } from '@/utils/AuthContext';
 import TokenPurchasePopup from './TokenPurchasePopup'; 
 import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCount } from '@/utils/apiClient';
 import UserLinkAds from '@/app/components/viewer/UserLinkAds';
+import BritGamesShop from './BritGamesShop';
 
 const Shop = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -135,7 +136,17 @@ const Shop = () => {
         await sendLinkToAds(selectedLinkObject);
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
-      } else {
+      } else if (name === 'SAFETY BOAT' || name === 'Brit Stick') {
+  await deductTokens(selectedTokens);
+
+  const message =
+    name === 'Brit Stick' && selectedItem.player
+      ? `Success! You purchased Brit Stick (${selectedItem.player}).`
+      : `Success! You purchased ${name}.`;
+
+  setPurchaseStatus({ message, type: 'success' });
+}
+else {
         const { color } = selectedItem;
   
         let colorType;
@@ -224,7 +235,21 @@ const Shop = () => {
             Buy Tokens
           </button>
         </div>
+
+
  )}
+
+    <BritGamesShop
+  selectedItem={selectedItem}
+  setSelectedItem={setSelectedItem}
+  isLoggedIn={isLoggedIn}
+  username={username}
+  isPurchasing={isPurchasing}
+  handlePurchaseClick={handlePurchaseClick}
+/>
+
+
+
         <hr className='mt-10' />
 
         
