@@ -105,8 +105,8 @@ const Shop = () => {
     setShowTokenPopup(false);
   };
 
-  const handlePurchaseClick = (item, tokens) => {
-    let selectedItemDetails = { name: item, color: '' };
+  const handlePurchaseClick = (item, tokens, player = '') => {
+    let selectedItemDetails = { name: item, color: '', player: ''};
     if (item === 'this Comment Colour') {
       selectedItemDetails.color = color;
     } else if (item === 'this Border Colour') {
@@ -114,6 +114,10 @@ const Shop = () => {
     } else if (item === 'this Username Colour') {
       selectedItemDetails.color = usernameColor;
     }
+
+    if (player) {
+    selectedItemDetails.player = player;
+  }
     
     setSelectedItem(selectedItemDetails);
     setSelectedTokens(tokens);
@@ -128,7 +132,7 @@ const Shop = () => {
     setIsPurchasing(true);
   
     try {
-      const { name } = selectedItem;
+      const { name, player } = selectedItem;
   
       if (name === 'Promote Your Link for 24 hours') {
         await deductTokens(selectedTokens);
@@ -136,12 +140,12 @@ const Shop = () => {
         await sendLinkToAds(selectedLinkObject);
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
-      } else if (name === 'SAFETY BOAT' || name === 'Brit Stick') {
+      } else if (name === 'SAFETY BOAT' || name === 'Brit Stick' && player) {
   await deductTokens(selectedTokens);
 
   const message =
     name === 'Brit Stick' && selectedItem.player
-      ? `Success! You purchased Brit Stick (${selectedItem.player}).`
+      ? `Success! You purchased Brit Stick for (${player}).`
       : `Success! You purchased ${name}.`;
 
   setPurchaseStatus({ message, type: 'success' });
