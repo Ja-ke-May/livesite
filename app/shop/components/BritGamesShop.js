@@ -50,7 +50,7 @@ const BritGamesShop = ({
       </select>
 
       {isLoggedIn && username && (
-        <>
+         <div className="text-center flex flex-col flex-end">
           <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
           <button
             className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
@@ -59,7 +59,7 @@ const BritGamesShop = ({
           >
             Purchase
           </button>
-        </>
+        </div>
       )}
     </div>
 
@@ -75,16 +75,16 @@ const BritGamesShop = ({
       <p className="text-center text-sm mb-2">They MIGHT need this...</p>
 
       {isLoggedIn && username && (
-        <>
-          <p className="text-center text-bottom text-yellow-400 brightness-125 mt-2">10000 Tokens</p>
+        <div className="text-center flex flex-col flex-end">
+          <p className="text-yellow-400 brightness-125 mt-2">10000 Tokens</p>
           <button
-            className={`text-center text-bottom mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+            className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('safety_boat', 10000)}
             disabled={isPurchasing}
           >
             Purchase
           </button>
-        </>
+        </div>
       )}
     </div>
   </div>
