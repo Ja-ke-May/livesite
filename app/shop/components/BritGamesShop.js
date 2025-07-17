@@ -8,7 +8,7 @@ const BritGamesShop = ({
 }) => {
   return (
 
-<div className="relative w-full z-10 py-10  bg-gradient-to-tr from-red-600 via-white to-blue-600">
+<div className="relative w-full z-10 py-5  bg-gradient-to-tr from-red-600 via-white to-blue-600 rounded mt-10">
  <h2 className="text-center text-xl mb-6 font-black text-black flex items-center justify-center gap-2">
   Limited Edition - BRITGAMES! 
   <img 
