@@ -81,7 +81,7 @@ const BritGamesShop = ({
         src="https://cdn.pixabay.com/photo/2013/07/13/12/19/dinghy-159624_1280.png"
 
         alt="Safety Boat"
-        className="w-full h-40 object-contain mb-4"
+        className="w-full h-40 object-contain"
       />
       
       <p className="text-center text-sm mb-2">They MIGHT need this...</p>
