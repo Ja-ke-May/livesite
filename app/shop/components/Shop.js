@@ -145,7 +145,7 @@ const Shop = () => {
 
   const message =
     name === 'Brit Stick' && selectedItem.player
-      ? `Success! You purchased Brit Stick for (${player}).`
+      ? `Success! You purchased Brit Stick for ${player}.`
       : `Success! You purchased ${name}.`;
 
   setPurchaseStatus({ message, type: 'success' });
