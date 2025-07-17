@@ -9,26 +9,36 @@ const BritGamesShop = ({
   return (
 
 <div className="relative w-full z-10 py-5 px-2 bg-gradient-to-tr from-red-600 via-white to-blue-600 rounded mt-10">
- <h2 className="text-center text-xl mb-6 font-black text-black flex items-center justify-center gap-2">
-  Limited Edition - BRITGAMES! 
-  <img 
+ <img 
     src="https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" 
     alt="UK Flag" 
-    className="w-6 h-4 inline-block"
+    className="w-6 h-4  mx-auto mb-2"
   />
+  <h2 className="text-center text-xl mb-2 font-black text-black flex items-center justify-center gap-2">
+  Limited Edition - BRITGAMES! 
+  
+  
 </h2>
+<img 
+    src="https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" 
+    alt="UK Flag" 
+    className="w-6 h-4  mx-auto mb-4"
+  />
 
 
   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center px-6">
     {/* Brit Stick */}
     <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+
+    <h3 className="text-center text-lg font-semibold">Brit Stick</h3>
+
      <img
   src="/images/stick-britgames.png"
   alt="Brit Stick"
   className="w-full h-40 object-contain mb-4"
 />
 
-      <h3 className="text-center text-lg font-semibold">Brit Stick</h3>
+      
       <p className="text-center text-sm mb-2">Got a stick mate?</p>
 
       <select
@@ -65,13 +75,15 @@ const BritGamesShop = ({
 
     {/* Safety Boat */}
     <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+      <h3 className="text-center text-lg font-semibold">Safety Boat</h3>
+      
       <img
         src="https://cdn.pixabay.com/photo/2013/07/13/12/19/dinghy-159624_1280.png"
 
         alt="Safety Boat"
         className="w-full h-40 object-contain mb-4"
       />
-      <h3 className="text-center text-lg font-semibold">Safety Boat</h3>
+      
       <p className="text-center text-sm mb-2">They MIGHT need this...</p>
 
       {isLoggedIn && username && (
