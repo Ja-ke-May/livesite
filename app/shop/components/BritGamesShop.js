@@ -43,9 +43,9 @@ const BritGamesShop = ({
 
       <select
         className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
-        value={selectedItem.name === 'britgames' ? selectedItem.player : ''}
+        value={selectedItem.name === 'Brit Stick' ? selectedItem.player : ''}
         onChange={(e) =>
-          setSelectedItem({ name: 'britgames', player: e.target.value })
+          setSelectedItem({ name: 'Brit Stick', player: e.target.value })
         }
       >
         <option value="">Select a player</option>
@@ -64,7 +64,7 @@ const BritGamesShop = ({
           <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
           <button
             className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
-            onClick={() => handlePurchaseClick('britgames', 400)}
+            onClick={() => handlePurchaseClick('Brit Stick', 400)}
             disabled={isPurchasing || !selectedItem.player}
           >
             Purchase
@@ -88,10 +88,10 @@ const BritGamesShop = ({
 
       {isLoggedIn && username && (
         <div className="text-center flex flex-col flex-end">
-          <p className="text-yellow-400 brightness-125 mt-2">10000 Tokens</p>
+          <p className="text-yellow-400 brightness-125 mt-2">20000 Tokens</p>
           <button
             className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
-            onClick={() => handlePurchaseClick('safety_boat', 10000)}
+            onClick={() => handlePurchaseClick('Safety Boat', 20000)}
             disabled={isPurchasing}
           >
             Purchase
