@@ -64,7 +64,7 @@ const BritGamesShop = ({
           <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
           <button
             className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
-            onClick={() => handlePurchaseClick('Brit Stick', 400)}
+            onClick={() => handlePurchaseClick('Brit Stick', 400, selectedItem.player)}
             disabled={isPurchasing || !selectedItem.player}
           >
             Purchase
