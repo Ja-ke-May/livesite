@@ -252,6 +252,7 @@ else {
 
  )}
 
+<div className=''>
     <BritGamesShop
   selectedItem={selectedItem}
   setSelectedItem={setSelectedItem}
@@ -261,7 +262,7 @@ else {
   handlePurchaseClick={handlePurchaseClick}
 />
 
-
+</div>
 
         <hr className='mt-10' />
 
