@@ -140,7 +140,7 @@ const Shop = () => {
         await sendLinkToAds(selectedLinkObject);
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
-      } else if (name === 'SAFETY BOAT' || name === 'Brit Stick' && player) {
+      } else if (name === 'Safety Boat' || name === 'Brit Stick' && player) {
   await deductTokens(selectedTokens);
 
   const message =
