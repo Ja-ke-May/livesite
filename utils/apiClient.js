@@ -393,3 +393,20 @@ export const fetchUserAds = async () => {
     throw new Error('Failed to fetch user ads');
   }
 };
+
+
+// BritGames
+
+export const sendPurchaseEmail = async (purchaseDetails) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post('/send-purchase-email', purchaseDetails, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to send purchase email');
+  }
+};

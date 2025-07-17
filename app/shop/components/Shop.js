@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import { AuthContext } from '@/utils/AuthContext';
 import TokenPurchasePopup from './TokenPurchasePopup'; 
-import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCount } from '@/utils/apiClient';
+import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCount, sendPurchaseEmail } from '@/utils/apiClient';
 import UserLinkAds from '@/app/components/viewer/UserLinkAds';
 import BritGamesShop from './BritGamesShop';
 
@@ -132,7 +132,7 @@ const Shop = () => {
     setIsPurchasing(true);
   
     try {
-      const { name, player } = selectedItem;
+      const { name, player, color } = selectedItem;
   
       if (name === 'Promote Your Link for 24 hours') {
         await deductTokens(selectedTokens);
@@ -148,7 +148,16 @@ const Shop = () => {
       ? `Success! You purchased Brit Stick for ${player}.`
       : `Success! You purchased ${name}.`;
 
-  setPurchaseStatus({ message, type: 'success' });
+  
+
+  await sendPurchaseEmail({
+        itemName: name + (player ? ` for ${player}` : ''),
+        price: selectedTokens,
+        username,
+        purchaseDate: new Date().toISOString(),
+      });
+
+      setPurchaseStatus({ message, type: 'success' });
 }
 else {
         const { color } = selectedItem;
