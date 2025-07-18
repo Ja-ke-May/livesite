@@ -72,7 +72,7 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
             >
               {username}
             
-            <span className="text-sm text-left mt-1 ml-2 break-words break-all"
+            <span className="text-sm text-left mt-1 ml-2 break-words"
             style={{ color: commentColor }}>
               {comment}
               </span>
