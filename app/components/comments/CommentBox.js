@@ -4,7 +4,7 @@ import SpeakerButton from './speakerButton';
 const CommentBox = ({ isLoggedIn, username, socket, isBlocked }) => {
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const maxLength = 55;
+  const maxLength = 120;
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
