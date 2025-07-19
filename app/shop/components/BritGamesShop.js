@@ -146,10 +146,10 @@ const BritGamesShop = ({
       className={`border-2 text-5xl mr-2 rounded p-2 transition
       ${activeIndex === 5 ? "bg-red-700 opacity-50 cursor-not-allowed" : "bg-red-700 hover:bg-red-800 opacity-100"}`}
    aria-label="Vote down"
-      onClick={() => {
-  handleVote("down");
-  handlePurchaseClick("Luxury Downvote", 1000);
-}}
+      onClick={async () => {
+    const success = await handlePurchaseClick("Luxury Downvote", 1000);
+    if (success) handleVote("down");
+  }}
  disabled={activeIndex === 5}
     >
       \/
@@ -158,10 +158,10 @@ const BritGamesShop = ({
      className={`border-2 text-5xl ml-2 rounded p-2 transition
       ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
     aria-label="Vote up" 
-      onClick={() => {
-  handleVote("up");
-  handlePurchaseClick("Luxury Upvote", 1000);
-}}
+      onClick={async () => {
+    const success = await handlePurchaseClick("Luxury Upvote", 1000);
+    if (success) handleVote("up");
+  }}
      disabled={activeIndex === 0}
     >
       /\
