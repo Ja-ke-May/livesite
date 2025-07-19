@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
 
 const BritGamesShop = ({
   selectedItem,
@@ -9,7 +8,6 @@ const BritGamesShop = ({
   isPurchasing,
   handlePurchaseClick,
 }) => {
-  const [socket, setSocket] = useState(null);
   const [activeIndex, setActiveIndex] = useState(5); 
   const scaleItems = [
     "Hotel, Meal Out",
@@ -31,16 +29,7 @@ const BritGamesShop = ({
     });
   };
 
-  useEffect(() => {
-    const newSocket = io("https://livesite-backend.onrender.com", {
-      reconnection: true,
-      reconnectionAttempts: 1000,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-    });
-    setSocket(newSocket);
-    return () => newSocket.disconnect();
-  }, []);
+  
 
   useEffect(() => {
   const handleLuxuryVote = (e) => {
@@ -50,20 +39,6 @@ const BritGamesShop = ({
   document.addEventListener('luxuryVote', handleLuxuryVote);
   return () => document.removeEventListener('luxuryVote', handleLuxuryVote);
 }, []);
-
-useEffect(() => {
-  if (!socket) return;
-
-  const handleDotPositionUpdate = (newIndex) => {
-    setActiveIndex(newIndex);
-  };
-
-  socket.on("dotPositionUpdate", handleDotPositionUpdate);
-
-  return () => {
-    socket.off("dotPositionUpdate", handleDotPositionUpdate);
-  };
-}, [socket]);
 
   
 
@@ -176,7 +151,7 @@ useEffect(() => {
       ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
     aria-label="Vote up" 
       onClick={async () => {
-    const success = await handlePurchaseClick("Luxury Upvote", 1000);
+    const success = await handlePurchaseClick("Luxury Upvote", 2000);
     if (success) handleVote("up");
   }}
      disabled={activeIndex === 0}
