@@ -51,6 +51,20 @@ const BritGamesShop = ({
   return () => document.removeEventListener('luxuryVote', handleLuxuryVote);
 }, []);
 
+useEffect(() => {
+  if (!socket) return;
+
+  const handleDotPositionUpdate = (newIndex) => {
+    setActiveIndex(newIndex);
+  };
+
+  socket.on("dotPositionUpdate", handleDotPositionUpdate);
+
+  return () => {
+    socket.off("dotPositionUpdate", handleDotPositionUpdate);
+  };
+}, [socket]);
+
   
 
   return (
