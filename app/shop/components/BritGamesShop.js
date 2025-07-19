@@ -22,9 +22,7 @@ const BritGamesShop = ({
   const handleVote = (direction) => {
     setActiveIndex((prev) => {
       const newIndex = Math.max(0, Math.min(5, prev + (direction === "down" ? 1 : -1)));
-      if (socket) {
-        socket.emit("dotPositionUpdate", newIndex);
-      }
+      
       return newIndex;
     });
   };
