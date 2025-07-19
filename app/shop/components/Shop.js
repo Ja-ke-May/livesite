@@ -142,6 +142,9 @@ const Shop = () => {
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
       } else if (name === 'Luxury Upvote' || name === 'Luxury Downvote') {
   await deductTokens(selectedTokens);
+  const direction = name === 'Luxury Upvote' ? 'up' : 'down';
+document.dispatchEvent(new CustomEvent('luxuryVote', { detail: direction }));
+
   setPurchaseStatus({ message: `Thanks! You cast a ${name}.`, type: 'success' });
 } else if (name === 'Safety Boat' || name === 'Brit Stick' && player) {
   await deductTokens(selectedTokens);

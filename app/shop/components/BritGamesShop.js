@@ -42,7 +42,16 @@ const BritGamesShop = ({
     return () => newSocket.disconnect();
   }, []);
 
- 
+  useEffect(() => {
+  const handleLuxuryVote = (e) => {
+    handleVote(e.detail); 
+  };
+
+  document.addEventListener('luxuryVote', handleLuxuryVote);
+  return () => document.removeEventListener('luxuryVote', handleLuxuryVote);
+}, []);
+
+  
 
   return (
     <div className="relative w-full z-10 py-5 px-2 bg-gradient-to-tr from-red-600 via-white to-blue-600 rounded mt-10">
