@@ -140,7 +140,10 @@ const Shop = () => {
         await sendLinkToAds(selectedLinkObject);
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
-      } else if (name === 'Safety Boat' || name === 'Brit Stick' && player) {
+      } else if (name === 'Luxury Upvote' || name === 'Luxury Downvote') {
+  await deductTokens(selectedTokens);
+  setPurchaseStatus({ message: `Thanks! You cast a ${name}.`, type: 'success' });
+} else if (name === 'Safety Boat' || name === 'Brit Stick' && player) {
   await deductTokens(selectedTokens);
 
   const message =
@@ -252,7 +255,7 @@ else {
 
  )}
 
-<div className='hidden'>
+<div className=''>
     <BritGamesShop
   selectedItem={selectedItem}
   setSelectedItem={setSelectedItem}
