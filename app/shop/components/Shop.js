@@ -143,7 +143,7 @@ const Shop = () => {
       } else if (name === 'Luxury Upvote' || name === 'Luxury Downvote') {
   await deductTokens(selectedTokens);
 
-  setPurchaseStatus({ message: `Thanks! You cast a ${name}.`, type: 'success' });
+  setPurchaseStatus({ message: `Success! You cast a ${name}.`, type: 'success' });
 } else if (name === 'Safety Boat' || name === 'Brit Stick' && player) {
   await deductTokens(selectedTokens);
 
