@@ -159,8 +159,8 @@ const BritGamesShop = ({
       ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
     aria-label="Vote up" 
       onClick={() => {
-  handleVote("down");
-  handlePurchaseClick("Luxury Upvote", 10000);
+  handleVote("up");
+  handlePurchaseClick("Luxury Upvote", 1000);
 }}
      disabled={activeIndex === 0}
     >
