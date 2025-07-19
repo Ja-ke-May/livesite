@@ -21,13 +21,11 @@ const BritGamesShop = ({
   ];
   const dotOffsets = [0, 20, 40, 60, 80, 100]; 
 
-  const handleVote = (direction) => {
-    setActiveIndex((prev) => {
-      const newIndex = Math.max(0, Math.min(5, prev + (direction === "down" ? 1 : -1)));
-      
-      return newIndex;
-    });
-  };
+ const handleVote = (direction) => {
+  if (!socket) return;
+
+  socket.emit("luxury-vote", direction); 
+};
 
   
 
