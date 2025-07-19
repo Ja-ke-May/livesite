@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 
 const BritGamesShop = ({
   selectedItem,
@@ -42,13 +42,7 @@ const BritGamesShop = ({
     return () => newSocket.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("dotPositionUpdate", (newIndex) => {
-      setActiveIndex(newIndex);
-    });
-    return () => socket.off("dotPositionUpdate");
-  }, [socket]);
+ 
 
   return (
     <div className="relative w-full z-10 py-5 px-2 bg-gradient-to-tr from-red-600 via-white to-blue-600 rounded mt-10">
