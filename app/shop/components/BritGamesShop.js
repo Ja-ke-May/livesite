@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; 
+import io from 'socket.io-client';
 
 const BritGamesShop = ({
   selectedItem,
@@ -8,6 +9,7 @@ const BritGamesShop = ({
   isPurchasing,
   handlePurchaseClick,
 }) => {
+  const [socket, setSocket] = useState(null);
   const [activeIndex, setActiveIndex] = useState(5); 
   const scaleItems = [
     "Hotel, Meal Out",
@@ -38,6 +40,27 @@ const BritGamesShop = ({
   return () => document.removeEventListener('luxuryVote', handleLuxuryVote);
 }, []);
 
+ useEffect(() => {
+    const newSocket = io('https://livesite-backend.onrender.com', {
+      reconnection: true,
+      reconnectionAttempts: 1000, 
+      reconnectionDelay: 1000, 
+      reconnectionDelayMax: 5000, 
+    });
+
+    
+  setSocket(newSocket);
+
+  newSocket.on("luxury-scale-update", (index) => {
+    setActiveIndex(index);
+  });
+
+    return () => {
+      if (newSocket) {
+        newSocket.disconnect();
+      }
+    };
+  }, []);
   
 
   return (
@@ -137,9 +160,10 @@ const BritGamesShop = ({
       ${activeIndex === 5 ? "bg-red-700 opacity-50 cursor-not-allowed" : "bg-red-700 hover:bg-red-800 opacity-100"}`}
    aria-label="Vote down"
       onClick={async () => {
-    const success = await handlePurchaseClick("Luxury Downvote", 1000);
-    if (success) handleVote("down");
-  }}
+  const success = await handlePurchaseClick("Luxury Downvote", 1000);
+  if (success) socket.emit("luxury-vote", "down");
+}}
+
  disabled={activeIndex === 5}
     >
       \/
@@ -149,9 +173,10 @@ const BritGamesShop = ({
       ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
     aria-label="Vote up" 
       onClick={async () => {
-    const success = await handlePurchaseClick("Luxury Upvote", 2000);
-    if (success) handleVote("up");
-  }}
+  const success = await handlePurchaseClick("Luxury Upvote", 2000);
+  if (success) socket.emit("luxury-vote", "up");
+}}
+
      disabled={activeIndex === 0}
     >
       /\
