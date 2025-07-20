@@ -21,7 +21,7 @@ export const getLuxuryIndex = async () => {
 export const updateLuxuryIndex = async (direction, username) => {
   const token = getToken();
   const response = await axiosInstance.post(
-    '/api/luxury/vote',
+    'api/luxury/vote',
     { voteType: direction, userId: username },
     {
       headers: {
