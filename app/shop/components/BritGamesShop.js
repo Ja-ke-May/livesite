@@ -23,41 +23,34 @@ const BritGamesShop = ({
   ];
   const dotOffsets = [0, 20, 40, 60, 80, 100]; 
 
-  useEffect(() => {
-    const updateTimer = () => {
-      const now = new Date();
+useEffect(() => {
+  const updateTimer = () => {
+    const now = new Date();
+    const ukTime = new Date(now.toLocaleString("en-GB", { timeZone: "Europe/London" }));
+    let target = new Date(ukTime);
+    target.setHours(16, 0, 0, 0);
 
-      // Get UK time by converting to London timezone offset (considering BST/GMT)
-      // For simplicity, we assume the browser runs in UTC or local and convert using Intl.DateTimeFormat
-      const ukTime = new Date(
-        now.toLocaleString("en-GB", { timeZone: "Europe/London" })
-      );
+    if (ukTime >= target) {
+      target.setDate(target.getDate() + 1);
+    }
 
-      const target = new Date(ukTime);
-      target.setHours(16, 0, 0, 0); // 4 PM UK time today
+    const diff = target - ukTime;
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      // If it's past 4 PM, set target to 4 PM tomorrow
-      if (ukTime >= target) {
-        target.setDate(target.getDate() + 1);
-      }
+    setTimeLeft(
+      `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+        .toString()
+        .padStart(2, "0")}`
+    );
+  };
 
-      const diff = target - ukTime;
+  updateTimer();
+  const interval = setInterval(updateTimer, 1000);
+  return () => clearInterval(interval);
+}, []);
 
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      setTimeLeft(
-        `${hours.toString().padStart(2, "0")}:${minutes
-          .toString()
-          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-      );
-    };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
  const handleVote = async (direction) => {
   if (!isLoggedIn || !username) return;
