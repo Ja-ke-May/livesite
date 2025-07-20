@@ -286,7 +286,7 @@ useEffect(() => {
  <p className="text-center text-white">
     At 4pm UK time the item selected will be chosen.
   </p>
-  <p className="text-center mb-2 text-red-400">{timeLeft}</p>
+  <p className="text-center mb-2 text-red-300">{timeLeft}</p>
 
   <div className="flex justify-center">
     <button
