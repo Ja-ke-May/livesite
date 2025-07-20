@@ -11,7 +11,8 @@ const BritGamesShop = ({
   handleVoteRequest,
 }) => {
   const [activeIndex, setActiveIndex] = useState(5); 
-  const [timeLeft, setTimeLeft] = useState("00:00:00");
+  const [timeLeft, setTimeLeft] = useState("00:00:00"); 
+  const [isFourPM, setIsFourPM] = useState(false);
 
   const scaleItems = [
     "Hotel, Meal Out",
@@ -24,44 +25,50 @@ const BritGamesShop = ({
   const dotOffsets = [0, 20, 40, 60, 80, 100]; 
 
 useEffect(() => {
+  let flashTimeout;
+
   const updateTimer = () => {
     const now = new Date();
-    const ukTime = new Date(now.toLocaleString("en-GB", { timeZone: "Europe/London" }));
-    let target = new Date(ukTime);
+
+    const ukTime = new Date(
+      now.toLocaleString("en-GB", { timeZone: "Europe/London" })
+    );
+
+    const target = new Date(ukTime);
     target.setHours(16, 0, 0, 0);
 
     if (ukTime >= target) {
-      target.setDate(target.getDate() + 1);
+      setTimeLeft("00:00:00");
+      if (!isFourPM) {
+        setIsFourPM(true);
+        flashTimeout = setTimeout(() => {
+          setIsFourPM(false);
+        }, 10000);
+      }
+    } else {
+      setIsFourPM(false);
+      const diff = target - ukTime;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      setTimeLeft(
+        `${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+      );
     }
-
-    const diff = target - ukTime;
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    setTimeLeft(
-      `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
-        .toString()
-        .padStart(2, "0")}`
-    );
   };
 
   updateTimer();
   const interval = setInterval(updateTimer, 1000);
-  return () => clearInterval(interval);
-}, []);
 
+  return () => {
+    clearInterval(interval);
+    clearTimeout(flashTimeout);
+  };
+}, [isFourPM]);
 
- const handleVote = async (direction) => {
-  if (!isLoggedIn || !username) return;
-
-  try {
-    const newIndex = await updateLuxuryIndex(direction, username);
-    setActiveIndex(newIndex); 
-  } catch (error) {
-    console.error("Failed to update luxury index:", error);
-  }
-};
 
 useEffect(() => {
   const fetchLuxurySelection = async () => {
@@ -287,6 +294,11 @@ onClick={() => handleVoteRequest("Luxury Upvote", "upvote", 10000)}
   <p className="text-center mt-2 text-yellow-400 font-mono text-lg">
       {timeLeft}
     </p>
+    {isFourPM && (
+  <div className="text-center text-3xl font-bold text-red-400 animate-pulse">
+    It’s 4 PM! Time’s up!
+  </div>
+)}
   </div>
 )}
 </div>
