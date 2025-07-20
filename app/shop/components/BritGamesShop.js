@@ -240,7 +240,7 @@ useEffect(() => {
       ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
     aria-label="Vote up" 
       
-onClick={() => handleVote("upvpte")}
+onClick={() => handleVote("upvote")}
      disabled={activeIndex === 0}
     >
       /\
