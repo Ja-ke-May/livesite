@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
 
 export const getLuxuryIndex = async () => {
   try {
-    const response = await axiosInstance.get('/api/luxury');
+    const response = await axiosInstance.get('/luxury');
     return response.data.index;
   } catch (error) {
     console.error('Error fetching luxury index:', error);
