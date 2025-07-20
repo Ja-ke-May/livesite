@@ -159,7 +159,6 @@ const Shop = () => {
   await deductTokens(selectedTokens);
 
   try {
-    // Actually update the scale
     await updateLuxuryIndex(pendingVote, username);
   } catch (error) {
     console.error("Failed to update luxury index after vote:", error);
