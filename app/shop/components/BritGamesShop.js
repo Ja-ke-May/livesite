@@ -32,18 +32,18 @@ const BritGamesShop = ({
 };
 
 useEffect(() => {
-  const fetchLuxuryIndex = async () => {
+  const fetchLuxurySelection = async () => {
     try {
       const index = await getLuxuryIndex();
-      setActiveIndex(index);
+      setActiveSelection(index);
     } catch (error) {
       console.error("Failed to fetch luxury index:", error);
     }
   };
 
-  fetchLuxuryIndex(); 
+  fetchLuxurySelection(); 
 
-  const interval = setInterval(fetchLuxuryIndex, 5000); 
+  const interval = setInterval(fetchLuxurySelection, 5000); 
   return () => clearInterval(interval); 
 }, []);
 
