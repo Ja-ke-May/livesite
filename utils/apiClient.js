@@ -19,10 +19,17 @@ export const getLuxuryIndex = async () => {
     return response.data.index;
   } catch (error) {
     console.error('Error fetching luxury index:', error);
-    throw error;  // rethrow to let caller handle
+    throw error;
   }
 };
 
+export const updateLuxuryIndex = async (direction, username) => {
+  const response = await axiosInstance.post('/api/luxury/update', {
+    direction,
+    username,
+  });
+  return response.data.index;  
+};
 
 export const signup = async (userData) => {
   try {

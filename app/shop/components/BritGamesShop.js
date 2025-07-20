@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"; 
-import { getLuxuryIndex } from "@/utils/apiClient";
+import { getLuxuryIndex, updateLuxuryIndex } from "@/utils/apiClient";
 
 const BritGamesShop = ({
   selectedItem,
