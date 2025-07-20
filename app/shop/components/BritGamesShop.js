@@ -29,6 +29,8 @@ const BritGamesShop = ({
   } catch (error) {
     console.error("Failed to update luxury index:", error);
   }
+};
+
 useEffect(() => {
   const fetchLuxuryIndex = async () => {
     try {
