@@ -11,6 +11,8 @@ const BritGamesShop = ({
   handleVoteRequest,
 }) => {
   const [activeIndex, setActiveIndex] = useState(5); 
+  const [timeLeft, setTimeLeft] = useState("00:00:00");
+
   const scaleItems = [
     "Hotel, Meal Out",
     "Campsite, Pizza",
