@@ -24,7 +24,7 @@ export const getLuxuryIndex = async () => {
 };
 
 export const updateLuxuryIndex = async (direction, username) => {
-  const response = await axiosInstance.post('/api/luxury/update', {
+  const response = await axiosInstance.post('/luxury/update', {
     direction,
     username,
   });
