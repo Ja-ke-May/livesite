@@ -8,6 +8,7 @@ const BritGamesShop = ({
   username,
   isPurchasing,
   handlePurchaseClick,
+  handleVoteRequest,
 }) => {
   const [activeIndex, setActiveIndex] = useState(5); 
   const scaleItems = [
@@ -177,7 +178,7 @@ useEffect(() => {
   <div className="flex flex-col gap-4 mt-6 z-10 relative">
     
 
-<div className="flex flex-col gap-2 mt-6 mb-2 z-10 relative px-8"> {/* Added px-8 */}
+<div className="flex flex-col gap-2 mt-6 mb-2 z-10 relative px-8"> 
   {/* Vertical Line */}
   <div className="absolute left-1/2 transform -translate-x-1/2 top-2 bottom-0 w-1 bg-white opacity-60 rounded"></div>
 
@@ -229,7 +230,8 @@ useEffect(() => {
       className={`border-2 text-5xl mr-2 rounded p-2 transition
       ${activeIndex === 5 ? "bg-red-700 opacity-50 cursor-not-allowed" : "bg-red-700 hover:bg-red-800 opacity-100"}`}
    aria-label="Vote down"
-      onClick={() => handleVote("downvote")}
+      onClick={() => handleVoteRequest("Luxury Downvote", "downvote", 1000)}
+
 
  disabled={activeIndex === 5}
     >
@@ -240,7 +242,8 @@ useEffect(() => {
       ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
     aria-label="Vote up" 
       
-onClick={() => handleVote("upvote")}
+onClick={() => handleVoteRequest("Luxury Upvote", "upvote", 2000)}
+
      disabled={activeIndex === 0}
     >
       /\

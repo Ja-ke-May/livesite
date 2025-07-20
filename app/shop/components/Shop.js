@@ -7,6 +7,7 @@ import TokenPurchasePopup from './TokenPurchasePopup';
 import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCount, sendPurchaseEmail } from '@/utils/apiClient';
 import UserLinkAds from '@/app/components/viewer/UserLinkAds';
 import BritGamesShop from './BritGamesShop';
+import { getLuxuryIndex, updateLuxuryIndex } from "@/utils/apiClient";
 
 const Shop = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -25,6 +26,8 @@ const Shop = () => {
   const [userLinks, setUserLinks] = useState([]);
   const [selectedLink, setSelectedLink] = useState(''); 
   const [adsCount, setAdsCount] = useState(0); 
+
+  const [pendingVote, setPendingVote] = useState(null);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -105,6 +108,18 @@ const Shop = () => {
     setShowTokenPopup(false);
   };
 
+
+  const handleVoteRequest = (itemName, voteDirection, tokenCost) => {
+  
+  setSelectedItem({ name: itemName });
+  setSelectedTokens(tokenCost);
+  setPendingVote(voteDirection);
+  setShowConfirmation(true);
+};
+
+
+
+
   const handlePurchaseClick = (item, tokens, player = '') => {
     let selectedItemDetails = { name: item, color: '', player: ''};
     if (item === 'this Comment Colour') {
@@ -143,7 +158,17 @@ const Shop = () => {
       } else if (name === 'Luxury Upvote' || name === 'Luxury Downvote') {
   await deductTokens(selectedTokens);
 
+  try {
+    await updateLuxuryIndex(pendingVote, username);
+  } catch (error) {
+    console.error("Failed to update luxury index after vote:", error);
+    setPurchaseStatus({ message: `Vote failed. Try again.`, type: 'error' });
+    setIsPurchasing(false);
+    return;
+  }
+
   setPurchaseStatus({ message: `Success! You cast a ${name}.`, type: 'success' });
+  setPendingVote(null);
 } else if (name === 'Safety Boat' || name === 'Brit Stick' && player) {
   await deductTokens(selectedTokens);
 
@@ -264,6 +289,7 @@ else {
   username={username}
   isPurchasing={isPurchasing}
   handlePurchaseClick={handlePurchaseClick}
+   handleVoteRequest={handleVoteRequest}
 />
 
 </div>
