@@ -280,7 +280,7 @@ useEffect(() => {
 {isLoggedIn && username && (
   <div>
   <h4 className="text-center text-2xl text-white m-2 font-bold">
-    Vote On Tonight's Evening Activity
+    Vote On Tonight's Activity
   </h4>
 
  <p className="text-center text-white">
