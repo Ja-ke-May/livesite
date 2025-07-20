@@ -35,7 +35,7 @@ useEffect(() => {
   const fetchLuxurySelection = async () => {
     try {
       const index = await getLuxuryIndex();
-      setActiveSelection(index);
+      setActiveIndex(index);
     } catch (error) {
       console.error("Failed to fetch luxury index:", error);
     }
