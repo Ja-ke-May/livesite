@@ -11,9 +11,6 @@ const BritGamesShop = ({
   handleVoteRequest,
 }) => {
   const [activeIndex, setActiveIndex] = useState(5); 
-  const [timeLeft, setTimeLeft] = useState("00:00:00"); 
-  const [isFourPM, setIsFourPM] = useState(false);
-
   const scaleItems = [
     "Hotel, Meal Out",
     "Campsite, Pizza",
@@ -24,60 +21,16 @@ const BritGamesShop = ({
   ];
   const dotOffsets = [0, 20, 40, 60, 80, 100]; 
 
-useEffect(() => {
-  let flashTimeout;
+ const handleVote = async (direction) => {
+  if (!isLoggedIn || !username) return;
 
-  const updateTimer = () => {
-  const now = new Date();
-
-  const ukTime = new Date(
-    now.toLocaleString("en-GB", { timeZone: "Europe/London" })
-  );
-
-  const target = new Date(
-    ukTime.getFullYear(),
-    ukTime.getMonth(),
-    ukTime.getDate(),
-    16, 0, 0, 0
-  );
-
-  if (ukTime >= target) {
-    setTimeLeft("00:00:00");
-    if (!isFourPM) {
-      setIsFourPM(true);
-      flashTimeout = setTimeout(() => {
-        setIsFourPM(false);
-      }, 10000);
-    }
-  } else {
-    setIsFourPM(false);
-    const diff = target - ukTime;
-    if (diff < 0) {
-      setTimeLeft("00:00:00");
-      return;
-    }
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    setTimeLeft(
-      `${hours.toString().padStart(2, "0")}:${minutes
-        .toString()
-        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-    );
+  try {
+    const newIndex = await updateLuxuryIndex(direction, username);
+    setActiveIndex(newIndex); 
+  } catch (error) {
+    console.error("Failed to update luxury index:", error);
   }
 };
-
-
-  updateTimer();
-  const interval = setInterval(updateTimer, 1000);
-
-  return () => {
-    clearInterval(interval);
-    clearTimeout(flashTimeout);
-  };
-}, [isFourPM]);
-
 
 useEffect(() => {
   const fetchLuxurySelection = async () => {
@@ -300,14 +253,7 @@ onClick={() => handleVoteRequest("Luxury Upvote", "upvote", 10000)}
   <p className="text-center mt-4 text-white">
     At 4pm UK time the item selected will be chosen.
   </p>
-  <p className="text-center mt-2 text-yellow-400 font-mono text-lg">
-      {timeLeft}
-    </p>
-    {isFourPM && (
-  <div className="text-center text-3xl font-bold text-red-400 animate-pulse">
-    It’s 4 PM! Time’s up!
-  </div>
-)}
+  <p>Time Left</p>
   </div>
 )}
 </div>
