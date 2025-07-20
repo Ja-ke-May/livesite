@@ -172,7 +172,8 @@ useEffect(() => {
                 onClick={() =>
                   handlePurchaseClick("Brit Stick", 400, selectedItem.player)
                 }
-                disabled={isPurchasing || !selectedItem.player}
+                disabled
+                // ={isPurchasing || !selectedItem.player}
               >
                 Purchase
               </button>
@@ -198,7 +199,8 @@ useEffect(() => {
                   isPurchasing ? "animate-pulse" : ""
                 }`}
                 onClick={() => handlePurchaseClick("Safety Boat", 20000)}
-                disabled={isPurchasing}
+                disabled
+                // ={isPurchasing}
               >
                 Purchase
               </button>
@@ -280,7 +282,7 @@ useEffect(() => {
 {isLoggedIn && username && (
   <div>
   <h4 className="text-center text-2xl text-white m-2 font-bold">
-    Vote On Tonight's Evening Activity
+    Vote On Tonight's Activity
   </h4>
 
  <p className="text-center text-white">
@@ -306,8 +308,8 @@ useEffect(() => {
     aria-label="Vote up" 
       
 onClick={() => handleVoteRequest("Luxury Upvote", "upvote", 10000)}
-
-     disabled={activeIndex === 0}
+disabled
+    //={activeIndex === 0}
     >
       /\
     </button>
