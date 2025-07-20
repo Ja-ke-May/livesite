@@ -9,7 +9,28 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
+}); 
+
+// BritGames Luxury
+
+export const getLuxuryIndex = async () => {
+  const response = await axiosInstance.get('/luxury-index');
+  return response.data.index;
+};
+
+export const updateLuxuryIndex = async (direction, username) => {
+  const token = getToken();
+  const response = await axiosInstance.post(
+    '/luxury-index',
+    { direction, username },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data.index;
+};
 
 export const signup = async (userData) => {
   try {

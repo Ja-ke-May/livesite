@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"; 
-import io from 'socket.io-client';
+import { getLuxuryIndex } from "@/utils/apiClient";
 
 const BritGamesShop = ({
   selectedItem,
@@ -9,7 +9,6 @@ const BritGamesShop = ({
   isPurchasing,
   handlePurchaseClick,
 }) => {
-  const [socket, setSocket] = useState(null);
   const [activeIndex, setActiveIndex] = useState(5); 
   const scaleItems = [
     "Hotel, Meal Out",
@@ -21,13 +20,33 @@ const BritGamesShop = ({
   ];
   const dotOffsets = [0, 20, 40, 60, 80, 100]; 
 
- const handleVote = (direction) => {
-  if (!socket) return;
+ const handleVote = async (direction) => {
+  if (!isLoggedIn || !username) return;
 
-  socket.emit("luxury-vote", direction); 
+  try {
+    const newIndex = await updateLuxuryIndex(direction, username);
+    setActiveIndex(newIndex); 
+  } catch (error) {
+    console.error("Failed to update luxury index:", error);
+  }
 };
 
-  
+useEffect(() => {
+  const fetchLuxuryIndex = async () => {
+    try {
+      const index = await getLuxuryIndex();
+      setActiveIndex(index);
+    } catch (error) {
+      console.error("Failed to fetch luxury index:", error);
+    }
+  };
+
+  fetchLuxuryIndex(); 
+
+  const interval = setInterval(fetchLuxuryIndex, 5000); 
+  return () => clearInterval(interval); 
+}, []);
+
 
   useEffect(() => {
   const handleLuxuryVote = (e) => {
@@ -38,27 +57,7 @@ const BritGamesShop = ({
   return () => document.removeEventListener('luxuryVote', handleLuxuryVote);
 }, []);
 
- useEffect(() => {
-    const newSocket = io('https://livesite-backend.onrender.com', {
-      reconnection: true,
-      reconnectionAttempts: 1000, 
-      reconnectionDelay: 1000, 
-      reconnectionDelayMax: 5000, 
-    });
 
-    
-  setSocket(newSocket);
-
-  newSocket.on("luxury-scale-update", (index) => {
-    setActiveIndex(index);
-  });
-
-    return () => {
-      if (newSocket) {
-        newSocket.disconnect();
-      }
-    };
-  }, []);
   
 
   return (
@@ -230,10 +229,7 @@ const BritGamesShop = ({
       className={`border-2 text-5xl mr-2 rounded p-2 transition
       ${activeIndex === 5 ? "bg-red-700 opacity-50 cursor-not-allowed" : "bg-red-700 hover:bg-red-800 opacity-100"}`}
    aria-label="Vote down"
-      onClick={async () => {
-  const success = await handlePurchaseClick("Luxury Downvote", 1000);
-  if (success) socket.emit("luxury-vote", "down");
-}}
+      onClick={() => handleVote("down")}
 
  disabled={activeIndex === 5}
     >
@@ -243,11 +239,8 @@ const BritGamesShop = ({
      className={`border-2 text-5xl ml-2 rounded p-2 transition
       ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
     aria-label="Vote up" 
-      onClick={async () => {
-  const success = await handlePurchaseClick("Luxury Upvote", 2000);
-  if (success) socket.emit("luxury-vote", "up");
-}}
-
+      
+onClick={() => handleVote("up")}
      disabled={activeIndex === 0}
     >
       /\
