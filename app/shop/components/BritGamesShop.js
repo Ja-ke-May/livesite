@@ -11,6 +11,8 @@ const BritGamesShop = ({
   handleVoteRequest,
 }) => {
   const [activeIndex, setActiveIndex] = useState(5); 
+  const [timeLeft, setTimeLeft] = useState(""); 
+
   const scaleItems = [
     "Hotel, Meal Out",
     "Campsite, Pizza",
@@ -59,7 +61,51 @@ useEffect(() => {
 }, []);
 
 
-  
+  useEffect(() => {
+    // Function to calculate time left until 4 PM UK time
+    const calculateTimeLeft = () => {
+      // Get current time in UK timezone (BST or GMT)
+      const now = new Date();
+
+      // Create a Date object for today's 4 PM UK time
+      // UK time zone offset:
+      // We'll use Intl.DateTimeFormat with timeZone option to get UK time
+      
+      const ukTime = new Date(
+        now.toLocaleString("en-GB", { timeZone: "Europe/London" })
+      );
+
+      const fourPM = new Date(ukTime);
+      fourPM.setHours(16, 0, 0, 0); // Set to 16:00:00
+
+      // If it's past 4 PM already, set target to 4 PM next day
+      if (ukTime >= fourPM) {
+        fourPM.setDate(fourPM.getDate() + 1);
+      }
+
+      // Calculate difference in milliseconds
+      const diff = fourPM - ukTime;
+
+      // Convert diff to hours, minutes, seconds
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      return `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    };
+
+    // Set initial time left immediately
+    setTimeLeft(calculateTimeLeft());
+
+    // Update timer every second
+    const interval = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="relative w-full z-10 py-5 px-2 bg-gradient-to-tr from-red-600 via-white to-blue-600 rounded mt-10">
@@ -253,7 +299,7 @@ onClick={() => handleVoteRequest("Luxury Upvote", "upvote", 10000)}
   <p className="text-center mt-4 text-white">
     At 4pm UK time the item selected will be chosen.
   </p>
-  <p>Time Left</p>
+  <p>{timeLeft}</p>
   </div>
 )}
 </div>
