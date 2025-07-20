@@ -28,37 +28,46 @@ useEffect(() => {
   let flashTimeout;
 
   const updateTimer = () => {
-    const now = new Date();
+  const now = new Date();
 
-    const ukTime = new Date(
-      now.toLocaleString("en-GB", { timeZone: "Europe/London" })
-    );
+  const ukTime = new Date(
+    now.toLocaleString("en-GB", { timeZone: "Europe/London" })
+  );
 
-    const target = new Date(ukTime);
-    target.setHours(16, 0, 0, 0);
+  const target = new Date(
+    ukTime.getFullYear(),
+    ukTime.getMonth(),
+    ukTime.getDate(),
+    16, 0, 0, 0
+  );
 
-    if (ukTime >= target) {
-      setTimeLeft("00:00:00");
-      if (!isFourPM) {
-        setIsFourPM(true);
-        flashTimeout = setTimeout(() => {
-          setIsFourPM(false);
-        }, 10000);
-      }
-    } else {
-      setIsFourPM(false);
-      const diff = target - ukTime;
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      setTimeLeft(
-        `${hours.toString().padStart(2, "0")}:${minutes
-          .toString()
-          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-      );
+  if (ukTime >= target) {
+    setTimeLeft("00:00:00");
+    if (!isFourPM) {
+      setIsFourPM(true);
+      flashTimeout = setTimeout(() => {
+        setIsFourPM(false);
+      }, 10000);
     }
-  };
+  } else {
+    setIsFourPM(false);
+    const diff = target - ukTime;
+    if (diff < 0) {
+      setTimeLeft("00:00:00");
+      return;
+    }
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    setTimeLeft(
+      `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+    );
+  }
+};
+
 
   updateTimer();
   const interval = setInterval(updateTimer, 1000);
