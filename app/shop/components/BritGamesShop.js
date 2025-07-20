@@ -283,7 +283,7 @@ useEffect(() => {
     Vote On Tonight's Evening Activity
   </h4>
 
- <p className="text-center mt-4 text-white">
+ <p className="text-center text-white">
     At 4pm UK time the item selected will be chosen.
   </p>
   <p className="text-center mb-2">{timeLeft}</p>
