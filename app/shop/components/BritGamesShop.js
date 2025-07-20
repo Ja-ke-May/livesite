@@ -283,6 +283,11 @@ useEffect(() => {
     Vote On Tonight's Evening Activity
   </h4>
 
+ <p className="text-center mt-4 text-white">
+    At 4pm UK time the item selected will be chosen.
+  </p>
+  <p className="text-center">{timeLeft}</p>
+  
   <div className="flex justify-center">
     <button
       className={`border-2 text-5xl mr-2 rounded p-2 transition
@@ -308,10 +313,7 @@ onClick={() => handleVoteRequest("Luxury Upvote", "upvote", 10000)}
     </button>
   </div>
 
-  <p className="text-center mt-4 text-white">
-    At 4pm UK time the item selected will be chosen.
-  </p>
-  <p className="text-center">{timeLeft}</p>
+ 
   </div>
 )}
 </div>
