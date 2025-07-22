@@ -228,7 +228,7 @@ useEffect(() => {
         <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
           <h3 className="text-center text-lg font-semibold">Sparkle Song</h3>
           <img
-            src="/images/stick-britgames.png"
+            src="/images/sparkle-britgames.png"
             alt="Sparkle Song"
             className="w-full h-40 object-contain mb-4"
           />
