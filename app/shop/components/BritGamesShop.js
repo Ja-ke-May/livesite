@@ -232,7 +232,7 @@ useEffect(() => {
             alt="Sparkle Song"
             className="w-full h-40 object-contain mb-4"
           />
-          <p className="text-center text-sm mb-2">Time to SHINE! ✨</p>
+          <p className="text-center text-sm mb-2">Time to SHINE!</p>
           <select
             className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
             value={selectedItem.name === "Sparkle Song" ? selectedItem.player : ""}
