@@ -190,7 +190,7 @@ useEffect(() => {
             alt="Brit Stick"
             className="w-full h-40 object-contain mb-4"
           />
-          <p className="text-center text-sm mb-2">Got a stick mate?</p>
+          <p className="text-center text-sm mb-2">Got a Stick Mate?</p>
           <select
             className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
             value={selectedItem.name === "Brit Stick" ? selectedItem.player : ""}
