@@ -224,6 +224,51 @@ useEffect(() => {
           )}
         </div>
 
+{/* Sparkle Song */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+          <h3 className="text-center text-lg font-semibold">Sparkle Song</h3>
+          <img
+            src="/images/stick-britgames.png"
+            alt="Sparkle Song"
+            className="w-full h-40 object-contain mb-4"
+          />
+          <p className="text-center text-sm mb-2">Time to SHINE! ✨</p>
+          <select
+            className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+            value={selectedItem.name === "Sparkle Song" ? selectedItem.player : ""}
+            onChange={(e) =>
+              setSelectedItem({ name: "Sparkle Song", player: e.target.value })
+            }
+          >
+            <option value="">Select a player</option>
+            {[...Array(8)].map((_, i) => (
+              <option key={i} value={`Player ${i + 1}`}>
+                Player {i + 1}
+              </option>
+            ))}
+          </select>
+
+          {isLoggedIn && username && (
+            <div className="text-center flex flex-col flex-end">
+              <p className="text-yellow-400 brightness-125 mt-2">1000 Tokens</p>
+              <button
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}
+                onClick={() =>
+                  handlePurchaseClick("Sparkle Song", 1000, selectedItem.player)
+                }
+                disabled={isPurchasing || !selectedItem.player}
+              >
+                Purchase
+              </button>
+            </div>
+          )}
+        </div>
+
+
+
+
         {/* Safety Boat */}
         <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-lg font-semibold">Safety Boat</h3>
