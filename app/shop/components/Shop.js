@@ -171,12 +171,12 @@ const Shop = () => {
   setPendingVote(null);
 } else if (
   name === 'Safety Boat' ||
-  ((name === 'Brit Stick' || name === 'Cookie') && player)
+  ((name === 'Brit Stick' || name === 'Cookie' || name === 'Sparkle') && player)
 ) {
   await deductTokens(selectedTokens);
 
   const message =
-    (name === 'Brit Stick' || name === 'Cookie') && player
+    (name === 'Brit Stick' || name === 'Cookie' || name === 'Sparkle') && player
       ? `Success! You purchased ${name} for ${player}.`
       : `Success! You purchased ${name}.`;
   
