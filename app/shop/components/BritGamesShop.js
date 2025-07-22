@@ -138,6 +138,50 @@ useEffect(() => {
 
       {/* Shop Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center px-6">
+
+{/* Cookie */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+          <h3 className="text-center text-lg font-semibold">Cookie</h3>
+          <img
+            src="/images/cookie-britgames.png"
+            alt="Cookie"
+            className="w-full h-40 object-contain mb-4"
+          />
+          <p className="text-center text-sm mb-2">Feed Me Plz</p>
+          <select
+            className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+            value={selectedItem.name === "Cookie" ? selectedItem.player : ""}
+            onChange={(e) =>
+              setSelectedItem({ name: "Cookie", player: e.target.value })
+            }
+          >
+            <option value="">Select a player</option>
+            {[...Array(8)].map((_, i) => (
+              <option key={i} value={`Player ${i + 1}`}>
+                Player {i + 1}
+              </option>
+            ))}
+          </select>
+
+          {isLoggedIn && username && (
+            <div className="text-center flex flex-col flex-end">
+              <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
+              <button
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}
+                onClick={() =>
+                  handlePurchaseClick("Cookie", 400, selectedItem.player)
+                }
+                disabled={isPurchasing || !selectedItem.player}
+              >
+                Purchase
+              </button>
+            </div>
+          )}
+        </div>
+
+
         {/* Brit Stick */}
         <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
           <h3 className="text-center text-lg font-semibold">Brit Stick</h3>
@@ -172,8 +216,7 @@ useEffect(() => {
                 onClick={() =>
                   handlePurchaseClick("Brit Stick", 400, selectedItem.player)
                 }
-                disabled
-                // ={isPurchasing || !selectedItem.player}
+                disabled={isPurchasing || !selectedItem.player}
               >
                 Purchase
               </button>
@@ -199,8 +242,7 @@ useEffect(() => {
                   isPurchasing ? "animate-pulse" : ""
                 }`}
                 onClick={() => handlePurchaseClick("Safety Boat", 20000)}
-                disabled
-                // ={isPurchasing}
+                disabled={isPurchasing}
               >
                 Purchase
               </button>
@@ -308,8 +350,7 @@ useEffect(() => {
     aria-label="Vote up" 
       
 onClick={() => handleVoteRequest("Luxury Upvote", "upvote", 10000)}
-disabled
-    //={activeIndex === 0}
+disabled={activeIndex === 0}
     >
       /\
     </button>
