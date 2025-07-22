@@ -7,7 +7,7 @@ import TokenPurchasePopup from './TokenPurchasePopup';
 import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCount, sendPurchaseEmail } from '@/utils/apiClient';
 import UserLinkAds from '@/app/components/viewer/UserLinkAds';
 import BritGamesShop from './BritGamesShop';
-import { getLuxuryIndex, updateLuxuryIndex } from "@/utils/apiClient";
+import { updateLuxuryIndex } from "@/utils/apiClient";
 
 const Shop = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -147,7 +147,7 @@ const Shop = () => {
     setIsPurchasing(true);
   
     try {
-      const { name, player, color } = selectedItem;
+      const { name, player } = selectedItem;
   
       if (name === 'Promote Your Link for 24 hours') {
         await deductTokens(selectedTokens);
@@ -169,14 +169,16 @@ const Shop = () => {
 
   setPurchaseStatus({ message: `Success! You cast a ${name}.`, type: 'success' });
   setPendingVote(null);
-} else if (name === 'Safety Boat' || name === 'Brit Stick' && player) {
+} else if (
+  name === 'Safety Boat' ||
+  ((name === 'Brit Stick' || name === 'Cookie') && player)
+) {
   await deductTokens(selectedTokens);
 
   const message =
-    name === 'Brit Stick' && selectedItem.player
-      ? `Success! You purchased Brit Stick for ${player}.`
+    (name === 'Brit Stick' || name === 'Cookie') && player
+      ? `Success! You purchased ${name} for ${player}.`
       : `Success! You purchased ${name}.`;
-
   
 
   await sendPurchaseEmail({
@@ -281,7 +283,7 @@ else {
 
  )}
 
-<div className='hidden'>
+<div className=''>
     <BritGamesShop
   selectedItem={selectedItem}
   setSelectedItem={setSelectedItem}
