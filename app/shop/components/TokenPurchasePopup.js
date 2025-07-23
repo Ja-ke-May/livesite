@@ -1,16 +1,29 @@
 import React from 'react';
 
 const TokenPurchasePopup = ({ onClose, username }) => {
-  
-let userName = username;
 
-  const tokenOptions = [
-    { amount: 400, price: '£9.99', url: `https://buy.stripe.com/9AQ4he2zAdPBbiE9AA?client_reference_id=${userName}` },
-    { amount: 1000, price: '£19.99', url: `https://buy.stripe.com/3cs152deeaDpeuQ3cd?client_reference_id=${userName}` },   
-    { amount: 2000, price: '£29.99', url: `https://buy.stripe.com/dR6dROfmm7rd3Qc7su?client_reference_id=${userName}` },
-    { amount: 4000, price: '£49.99', url: `https://buy.stripe.com/dR67tq3DE9zlgCY5kn?client_reference_id=${userName}` },
-    { amount: 10000, price: '£99.99', url: `https://buy.stripe.com/cN200Ygqq4f186s9AE?client_reference_id=${userName}` },
+ const tokenOptions = [
+  { amount: 400, price: '£9.99', sku: 'tokens_400' },
+  { amount: 1000, price: '£19.99', sku: 'tokens_1000' },
+  { amount: 2000, price: '£29.99', sku: 'tokens_2000' },
+  { amount: 4000, price: '£49.99', sku: 'tokens_4000' },
+  { amount: 10000, price: '£99.99', sku: 'tokens_10000' },
 ];
+
+const handleBuy = async (sku) => {
+  const res = await fetch('/api/xsolla/get-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, sku })
+  });
+  const data = await res.json();
+  if (data.paymentUrl) {
+    window.open(data.paymentUrl, '_blank');
+  } else {
+    alert('Failed to start payment');
+  }
+};
+
 
 
   return (
@@ -29,9 +42,7 @@ let userName = username;
                 <span className='text-white'>{option.price}</span>
               </span>
               <a 
-                href={option.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
+                onClick={() => handleBuy(option.sku)}
                 className="ml-2 bg-yellow-400 font-bold text-[#000110] brightness-125 px-1 py-1 rounded-md shadow-sm hover:bg-yellow-600 flex justify-center items-center text-center"
               >
                 Buy
