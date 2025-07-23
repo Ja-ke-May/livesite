@@ -11,7 +11,7 @@ const TokenPurchasePopup = ({ onClose, username }) => {
 ];
 
 const handleBuy = async (sku) => {
-  const res = await fetch('/api/xsolla/get-token', {
+  const res = await fetch('https://livesite-backend.onrender.com/api/xsolla/get-token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, sku })
