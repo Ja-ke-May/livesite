@@ -41,12 +41,12 @@ const handleBuy = async (sku) => {
                 {option.amount} Tokens <br />
                 <span className='text-white'>{option.price}</span>
               </span>
-              <a 
+              <button 
                 onClick={() => handleBuy(option.sku)}
                 className="ml-2 bg-yellow-400 font-bold text-[#000110] brightness-125 px-1 py-1 rounded-md shadow-sm hover:bg-yellow-600 flex justify-center items-center text-center"
               >
                 Buy
-              </a>
+              </button>
             </li>
           ))}
         </ul>
