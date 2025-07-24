@@ -11,21 +11,28 @@ const TokenPurchasePopup = ({ onClose, username }) => {
 ];
 
 const handleBuy = async (sku) => {
-  const res = await fetch('https://livesite-backend.onrender.com/api/xsolla/get-token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, sku })
-  });
-  const data = await res.json();
+  try {
+    const res = await fetch('https://livesite-backend.onrender.com/api/xsolla/get-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, sku })
+    });
 
-  if (data.token) {
-    const paystationUrl = `https://secure.xsolla.com/paystation3/?access_token=${data.token}`;
-    window.open(paystationUrl, '_blank');
-  } else {
-    alert('Failed to start payment');
+    console.log('Response status:', res.status);
+    const data = await res.json();
+    console.log('Response JSON:', data);
+
+    if (data.token) {
+      const paystationUrl = `https://secure.xsolla.com/paystation3/?access_token=${data.token}`;
+      window.open(paystationUrl, '_blank');
+    } else {
+      alert('Failed to start payment: no token received');
+    }
+  } catch (error) {
+    console.error('Fetch or parsing error:', error);
+    alert('Failed to start payment: fetch error');
   }
 };
-
 
 
 
