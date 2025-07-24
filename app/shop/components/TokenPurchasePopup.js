@@ -17,12 +17,15 @@ const handleBuy = async (sku) => {
     body: JSON.stringify({ username, sku })
   });
   const data = await res.json();
-  if (data.paymentUrl) {
-    window.open(data.paymentUrl, '_blank');
+
+  if (data.token) {
+    const paystationUrl = `https://secure.xsolla.com/paystation3/?access_token=${data.token}`;
+    window.open(paystationUrl, '_blank');
   } else {
     alert('Failed to start payment');
   }
 };
+
 
 
 
