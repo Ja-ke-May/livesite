@@ -27,7 +27,10 @@ const Shop = () => {
   const [selectedLink, setSelectedLink] = useState(''); 
   const [adsCount, setAdsCount] = useState(0); 
 
-  const [pendingVote, setPendingVote] = useState(null);
+  const [luxuryState, setLuxuryState] = useState({ index: 5, tokenGoal: 0 });
+  const [pendingVote, setPendingVote] = useState(null); 
+
+
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -109,13 +112,15 @@ const Shop = () => {
   };
 
 
-  const handleVoteRequest = (itemName, voteDirection, tokenCost) => {
-  
-  setSelectedItem({ name: itemName });
-  setSelectedTokens(tokenCost);
-  setPendingVote(voteDirection);
+  const handleVoteRequest = async (itemName, tokens) => {
+  if (!tokens || tokens <= 0) return;
+
+  setSelectedItem({ name: "Luxury Contribution" });
+  setSelectedTokens(tokens);
+  setPendingVote(tokens);
   setShowConfirmation(true);
 };
+
 
 
 
@@ -155,28 +160,28 @@ const Shop = () => {
         await sendLinkToAds(selectedLinkObject);
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
-      } else if (name === 'Luxury Upvote' || name === 'Luxury Downvote') {
+      }  else if (name === 'Luxury Contribution') {
   await deductTokens(selectedTokens);
 
   try {
-    await updateLuxuryIndex(pendingVote, username);
+    const { index, tokenGoal } = await updateLuxuryIndex(selectedTokens);
+    setPurchaseStatus({ message: `Success! Contributed ${selectedTokens} tokens to Luxury Scale.`, type: 'success' });
   } catch (error) {
-    console.error("Failed to update luxury index after vote:", error);
-    setPurchaseStatus({ message: `Vote failed. Try again.`, type: 'error' });
+    console.error("Failed to contribute to luxury scale:", error);
+    setPurchaseStatus({ message: `Contribution failed. Try again.`, type: 'error' });
     setIsPurchasing(false);
     return;
   }
 
-  setPurchaseStatus({ message: `Success! You cast a ${name}.`, type: 'success' });
   setPendingVote(null);
 } else if (
   name === 'Safety Boat' ||
-  ((name === 'Brit Stick' || name === 'Cookie' || name === 'Sparkle Song') && player)
+  ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice' || name === 'Blackpool') && player)
 ) {
   await deductTokens(selectedTokens);
 
   const message =
-    (name === 'Brit Stick' || name === 'Cookie' || name === 'Sparkle Song') && player
+    (name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice' || name === 'Blackpool') && player
       ? `Success! You purchased ${name} for ${player}.`
       : `Success! You purchased ${name}.`;
   
@@ -283,7 +288,7 @@ else {
 
  )}
 
-<div className='hidden'>
+<div className=''>
     <BritGamesShop
   selectedItem={selectedItem}
   setSelectedItem={setSelectedItem}
@@ -291,7 +296,9 @@ else {
   username={username}
   isPurchasing={isPurchasing}
   handlePurchaseClick={handlePurchaseClick}
-   handleVoteRequest={handleVoteRequest}
+  handleVoteRequest={handleVoteRequest}
+  luxuryIndex={luxuryState.index}
+  luxuryGoal={luxuryState.tokenGoal}
 />
 
 </div>

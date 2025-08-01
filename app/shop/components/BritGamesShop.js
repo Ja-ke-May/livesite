@@ -2,16 +2,22 @@ import { useState, useEffect } from "react";
 import { getLuxuryIndex, updateLuxuryIndex } from "@/utils/apiClient";
 
 const BritGamesShop = ({
-  selectedItem,
+ selectedItem,
   setSelectedItem,
   isLoggedIn,
   username,
   isPurchasing,
   handlePurchaseClick,
   handleVoteRequest,
+  luxuryIndex,
+  luxuryGoal,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(5); 
+  
+  const [tokenGoal, setTokenGoal] = useState(0);
   const [timeLeft, setTimeLeft] = useState(""); 
+const [activeIndex, setActiveIndex] = useState(luxuryIndex ?? 5); 
+  const [currentTokens, setCurrentTokens] = useState(luxuryGoal ?? 0);
+
 
   const scaleItems = [
     "Hotel, Meal Out",
@@ -33,6 +39,12 @@ const BritGamesShop = ({
     console.error("Failed to update luxury index:", error);
   }
 };
+
+useEffect(() => {
+  setActiveIndex(luxuryIndex);
+  setCurrentTokens(luxuryGoal);
+}, [luxuryIndex, luxuryGoal]);
+
 
 useEffect(() => {
   const fetchLuxurySelection = async () => {
@@ -141,18 +153,18 @@ useEffect(() => {
 
 {/* Cookie */}
         <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
-          <h3 className="text-center text-lg font-semibold">Cookie</h3>
+          <h3 className="text-center text-lg font-semibold">Biscuit</h3>
           <img
             src="/images/cookie-britgames.png"
-            alt="Cookie"
+            alt="Biscuit"
             className="w-full h-40 object-contain mb-4"
           />
           <p className="text-center text-sm mb-2">Feed Me Plz</p>
           <select
             className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
-            value={selectedItem.name === "Cookie" ? selectedItem.player : ""}
+            value={selectedItem.name === "Biscuit" ? selectedItem.player : ""}
             onChange={(e) =>
-              setSelectedItem({ name: "Cookie", player: e.target.value })
+              setSelectedItem({ name: "Biscuit", player: e.target.value })
             }
           >
             <option value="">Select a player</option>
@@ -171,7 +183,7 @@ useEffect(() => {
                   isPurchasing ? "animate-pulse" : ""
                 }`}
                 onClick={() =>
-                  handlePurchaseClick("Cookie", 400, selectedItem.player)
+                  handlePurchaseClick("Biscuit", 400, selectedItem.player)
                 }
                 disabled={isPurchasing || !selectedItem.player}
               >
@@ -267,26 +279,100 @@ useEffect(() => {
         </div>
 
 
+{/* Roll Dice */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+          <h3 className="text-center text-lg font-semibold">Roll D20</h3>
+          <img
+            src="/images/roll-britgames.png"
+            alt="Roll Dice"
+            className="w-full h-40 object-contain mb-4 "
+          />
+          <p className="text-center text-sm mb-2">We're rolling!</p>
+          <select
+            className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+            value={selectedItem.name === "Roll Dice" ? selectedItem.player : ""}
+            onChange={(e) =>
+              setSelectedItem({ name: "Roll Dice", player: e.target.value })
+            }
+          >
+            <option value="">Select a player</option>
+            {[...Array(8)].map((_, i) => (
+              <option key={i} value={`Player ${i + 1}`}>
+                Player {i + 1}
+              </option>
+            ))}
+          </select>
+
+          {isLoggedIn && username && (
+            <div className="text-center flex flex-col flex-end">
+              <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
+              <button
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}
+                onClick={() =>
+                  handlePurchaseClick("Roll Dice", 400, selectedItem.player)
+                }
+                disabled={isPurchasing || !selectedItem.player}
+              >
+                Purchase
+              </button>
+            </div>
+          )}
+        </div>
+
+
+
+
+
+
 
 
         {/* Safety Boat */}
         <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
-          <h3 className="text-center text-lg font-semibold">Safety Boat</h3>
+          <h3 className="text-center text-xl font-semibold">Safety Boat</h3>
           <img
             src="https://cdn.pixabay.com/photo/2013/07/13/12/19/dinghy-159624_1280.png"
             alt="Safety Boat"
             className="w-full h-40 object-contain"
           />
-          <p className="text-center text-sm mb-2">They MIGHT need this...</p>
+          <p className="text-center text-sm mb-2 mt-2">They MIGHT need this...</p>
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">20000 Tokens</p>
+              <p className="text-yellow-400 brightness-125 mt-2">40000 Tokens</p>
               <button
                 className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
-                onClick={() => handlePurchaseClick("Safety Boat", 20000)}
+                onClick={() => handlePurchaseClick("Safety Boat", 40000)}
+                disabled={isPurchasing}
+              >
+                Purchase
+              </button>
+            </div>
+          )}
+        </div>
+      
+
+       {/* Blackpool */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+          <h3 className="text-center text-xl font-semibold">Blackpool</h3>
+          <img
+            src="https://cdn.pixabay.com/photo/2019/02/26/11/00/blackpool-4021722_1280.jpg"
+            alt="Blackpool"
+            className="w-full h-40 object-contain rounded-full"
+          />
+          <p className="text-center text-sm mt-2 mb-2">The gang goes on holiday</p>
+
+          {isLoggedIn && username && (
+            <div className="text-center flex flex-col flex-end">
+              <p className="text-yellow-400 brightness-125 mt-2">500000 Tokens</p>
+              <button
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}
+                onClick={() => handlePurchaseClick("Blackpool", 500000)}
                 disabled={isPurchasing}
               >
                 Purchase
@@ -297,7 +383,7 @@ useEffect(() => {
       </div>
 
       
-{/* LUXURY SCALE */}
+ {/* LUXURY SCALE */}
 <div className="relative w-full max-w-md mx-auto mt-6 mb-6 brightness-125 bg-gray-800/80 p-4 rounded-md shadow-md border-2">
   <h3
     className="
@@ -366,44 +452,59 @@ useEffect(() => {
 
   </div>
 
-{isLoggedIn && username && (
+
   <div>
-  <h4 className="text-center text-2xl text-white m-2 font-bold">
-    Vote On Tonight's Activity
+  <h4 className="text-center text-2xl text-white mt-5 font-bold">
+    Reach the next goal to enhance tonights activities
   </h4>
 
- <p className="text-center text-white">
+  <div className="flex justify-center">
+  <div className="mt-4 h-5 w-[80%] bg-white rounded overflow-hidden border border-black">
+    <div
+  id="green-bar"
+  className="h-5 bg-green-600 brightness-125 transition-all duration-500"
+  style={{
+    width: `${Math.min((currentTokens / 20000) * 100, 100)}%`,
+  }}
+></div>
+
+  </div>
+</div>
+
+
+
+ <p className="text-center text-white mt-4">
     At 4pm UK time the item selected will be chosen.
   </p>
   <p className="text-center mb-2 text-red-300">{timeLeft}</p>
 
-  <div className="flex justify-center">
-    <button
-      className={`border-2 text-5xl mr-2 rounded p-2 transition
-      ${activeIndex === 5 ? "bg-red-700 opacity-50 cursor-not-allowed" : "bg-red-700 hover:bg-red-800 opacity-100"}`}
-   aria-label="Vote down"
-      onClick={() => handleVoteRequest("Luxury Downvote", "downvote", 20000)}
+  <div className="flex flex-col items-center gap-2 mt-4">
+  <input
+    type="number"
+    min="0"
+    className="w-40 p-2 rounded border border-gray-300 text-center text-black"
+    placeholder="Enter tokens"
+    value={tokenGoal}
+    onChange={(e) => {
+      const val = parseInt(e.target.value, 10);
+      setTokenGoal(isNaN(val) ? 0 : val);
+    }}
+  />
 
-
- disabled={activeIndex === 5}
-    >
-      \/
-    </button>
-    <button
-     className={`border-2 text-5xl ml-2 rounded p-2 transition
+  <button
+    className={`border-2 text-2xl rounded p-2 transition
       ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
-    aria-label="Vote up" 
-      
-onClick={() => handleVoteRequest("Luxury Upvote", "upvote", 10000)}
-disabled={activeIndex === 0}
-    >
-      /\
-    </button>
-  </div>
+    onClick={() => handleVoteRequest("GoalTokens", tokenGoal)}
+    disabled={activeIndex === 0}
+  >
+    Add Tokens
+  </button>
+</div>
+
 
  
   </div>
-)}
+
 </div>
 
     </div>
