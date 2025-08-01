@@ -164,7 +164,8 @@ const Shop = () => {
   await deductTokens(selectedTokens);
 
   try {
-    const { index, tokenGoal } = await updateLuxuryIndex(selectedTokens);
+    const { index, tokenGoal } = await updateLuxuryIndex('up', username); 
+
     setPurchaseStatus({ message: `Success! Contributed ${selectedTokens} tokens to Luxury Scale.`, type: 'success' });
   } catch (error) {
     console.error("Failed to contribute to luxury scale:", error);
