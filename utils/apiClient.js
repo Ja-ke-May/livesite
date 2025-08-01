@@ -23,13 +23,13 @@ export const getLuxuryIndex = async () => {
   }
 };
 
-export const updateLuxuryIndex = async (direction, username) => {
+export const updateLuxuryIndex = async (tokens) => {
   const response = await axiosInstance.post('/luxury/update', {
-    direction,
-    username,
+    tokens,
   });
-  return response.data.index;  
+  return response.data.index;
 };
+
 
 export const signup = async (userData) => {
   try {
