@@ -176,13 +176,13 @@ const Shop = () => {
 
   setPendingVote(null);
 } else if (
-  name === 'Safety Boat' ||
-  ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice' || name === 'Blackpool') && player)
+  name === 'Safety Boat' || name === 'Blackpool' ||
+  ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice') && player)
 ) {
   await deductTokens(selectedTokens);
 
   const message =
-    (name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice' || name === 'Blackpool') && player
+    (name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice') && player
       ? `Success! You purchased ${name} for ${player}.`
       : `Success! You purchased ${name}.`;
   
@@ -289,7 +289,7 @@ else {
 
  )}
 
-<div className='hidden'>
+<div className=''>
     <BritGamesShop
   selectedItem={selectedItem}
   setSelectedItem={setSelectedItem}
