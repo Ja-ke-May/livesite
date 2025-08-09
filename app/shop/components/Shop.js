@@ -27,8 +27,9 @@ const Shop = () => {
   const [selectedLink, setSelectedLink] = useState(''); 
   const [adsCount, setAdsCount] = useState(0); 
 
-  const [luxuryState, setLuxuryState] = useState({ index: 5, tokenGoal: 0 });
-  const [pendingVote, setPendingVote] = useState(null); 
+  const [luxuryState, setLuxuryState] = useState({ index: 5, tokenGoal: 0 }); 
+  const [currentTokens, setCurrentTokens] = useState(0);
+
 
 
 
@@ -112,15 +113,35 @@ const Shop = () => {
   };
 
 
-  const handleVoteRequest = async (itemName, tokens) => {
-  if (!tokens || tokens <= 0) return;
+  
+useEffect(() => {
+  if (luxuryGoal !== undefined) {
+    setCurrentTokens(luxuryGoal);
+  }
+}, [luxuryGoal]);
 
-  setSelectedItem({ name: "Luxury Contribution" });
-  setSelectedTokens(tokens);
-  setPendingVote(tokens);
-  setShowConfirmation(true);
+
+const handleAddTokens = async () => {
+  if (activeIndex === 0) return; // already at top
+
+  let newTokens = currentTokens + tokenGoal;
+  let newIndex = activeIndex;
+
+  if (newTokens >= 20000) {
+    newTokens = 0;
+    newIndex = Math.max(activeIndex - 1, 0);
+  }
+
+  setCurrentTokens(newTokens);
+  setActiveIndex(newIndex);
+  setTokenGoal(0);
+
+  try {
+    await updateLuxuryIndex({ index: newIndex, tokens: newTokens });
+  } catch (err) {
+    console.error("Error updating luxury index:", err);
+  }
 };
-
 
 
 
@@ -174,7 +195,7 @@ const Shop = () => {
     return;
   }
 
-  setPendingVote(null);
+  
 } else if (
   name === 'Safety Boat' || name === 'Blackpool' ||
   ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice') && player)
@@ -289,7 +310,7 @@ else {
 
  )}
 
-<div className='hidden'>
+<div className=''>
     <BritGamesShop
   selectedItem={selectedItem}
   setSelectedItem={setSelectedItem}
@@ -297,7 +318,7 @@ else {
   username={username}
   isPurchasing={isPurchasing}
   handlePurchaseClick={handlePurchaseClick}
-  handleVoteRequest={handleVoteRequest}
+  handleAddTokens={handleAddTokens}
   luxuryIndex={luxuryState.index}
   luxuryGoal={luxuryState.tokenGoal}
 />
