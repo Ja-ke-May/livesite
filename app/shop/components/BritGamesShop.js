@@ -492,7 +492,7 @@ useEffect(() => {
   />
 
   <button
-  onClick={handleAddTokens}
+  onClick={() => handleAddTokens(tokenGoal)}
   className={`border-2 text-2xl rounded p-2 transition
     ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800"}`}
   disabled={activeIndex === 0}
