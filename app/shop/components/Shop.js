@@ -30,7 +30,7 @@ const Shop = () => {
   const [luxuryState, setLuxuryState] = useState({ index: 5, tokenGoal: 0 }); 
   const [currentTokens, setCurrentTokens] = useState(0);
 
-
+const luxuryGoal = data.tokenGoal;
 
 
   useEffect(() => {
