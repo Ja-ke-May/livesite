@@ -7,7 +7,7 @@ import TokenPurchasePopup from './TokenPurchasePopup';
 import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCount, sendPurchaseEmail } from '@/utils/apiClient';
 import UserLinkAds from '@/app/components/viewer/UserLinkAds';
 import BritGamesShop from './BritGamesShop';
-import { updateLuxuryIndex } from "@/utils/apiClient";
+import { getLuxuryIndex, updateLuxuryIndex } from '@/utils/apiClient';
 
 const Shop = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -27,8 +27,10 @@ const Shop = () => {
   const [selectedLink, setSelectedLink] = useState(''); 
   const [adsCount, setAdsCount] = useState(0); 
 
-  const [luxuryState, setLuxuryState] = useState({ index: 5, tokenGoal: 0 });
-  const [pendingVote, setPendingVote] = useState(null); 
+  const [luxuryIndex, setLuxuryIndex] = useState(5); 
+  const [luxuryGoal, setLuxuryGoal] = useState(0);
+  const [currentTokens, setCurrentTokens] = useState(0);
+
 
 
 
@@ -112,15 +114,29 @@ const Shop = () => {
   };
 
 
-  const handleVoteRequest = async (itemName, tokens) => {
-  if (!tokens || tokens <= 0) return;
+useEffect(() => {
+    const fetchLuxury = async () => {
+      try {
+        const index = await getLuxuryIndex();
+        setLuxuryIndex(index);
+        
+        setLuxuryGoal(20000); 
+      } catch (error) {
+        console.error('Failed to fetch luxury index:', error);
+      }
+    };
+    fetchLuxury();
+  }, []);
 
-  setSelectedItem({ name: "Luxury Contribution" });
-  setSelectedTokens(tokens);
-  setPendingVote(tokens);
-  setShowConfirmation(true);
-};
 
+  const handleAddTokens = async (tokens) => {
+    try {
+      const updatedIndex = await updateLuxuryIndex(tokens);
+      setLuxuryIndex(updatedIndex);
+    } catch (error) {
+      console.error('Failed to update luxury index:', error);
+    }
+  };
 
 
 
@@ -174,7 +190,7 @@ const Shop = () => {
     return;
   }
 
-  setPendingVote(null);
+  
 } else if (
   name === 'Safety Boat' || name === 'Blackpool' ||
   ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice') && player)
@@ -289,7 +305,7 @@ else {
 
  )}
 
-<div className='hidden'>
+<div className=''>
     <BritGamesShop
   selectedItem={selectedItem}
   setSelectedItem={setSelectedItem}
@@ -297,9 +313,9 @@ else {
   username={username}
   isPurchasing={isPurchasing}
   handlePurchaseClick={handlePurchaseClick}
-  handleVoteRequest={handleVoteRequest}
-  luxuryIndex={luxuryState.index}
-  luxuryGoal={luxuryState.tokenGoal}
+  handleAddTokens={handleAddTokens}
+  luxuryIndex={luxuryIndex}
+  luxuryGoal={luxuryGoal}
 />
 
 </div>

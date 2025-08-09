@@ -8,9 +8,9 @@ const BritGamesShop = ({
   username,
   isPurchasing,
   handlePurchaseClick,
-  handleVoteRequest,
   luxuryIndex,
   luxuryGoal,
+  handleAddTokens,
 }) => {
   
   const [tokenGoal, setTokenGoal] = useState(0);
@@ -29,16 +29,7 @@ const [activeIndex, setActiveIndex] = useState(luxuryIndex ?? 5);
   ];
   const dotOffsets = [0, 20, 40, 60, 80, 100]; 
 
- const handleVote = async (direction) => {
-  if (!isLoggedIn || !username) return;
-
-  try {
-    const newIndex = await updateLuxuryIndex(direction, username);
-    setActiveIndex(newIndex); 
-  } catch (error) {
-    console.error("Failed to update luxury index:", error);
-  }
-};
+ 
 
 useEffect(() => {
   setActiveIndex(luxuryIndex);
@@ -63,14 +54,7 @@ useEffect(() => {
 }, []);
 
 
-  useEffect(() => {
-  const handleLuxuryVote = (e) => {
-    handleVote(e.detail); 
-  };
-
-  document.addEventListener('luxuryVote', handleLuxuryVote);
-  return () => document.removeEventListener('luxuryVote', handleLuxuryVote);
-}, []);
+  
 
 
   const calculateTimeLeft = () => {
@@ -128,6 +112,22 @@ useEffect(() => {
 
   return () => clearInterval(timerId);
 }, []);
+
+useEffect(() => {
+  const resetCheck = () => {
+    const londonTime = new Date().toLocaleString("en-GB", { timeZone: "Europe/London" });
+    const now = new Date(londonTime);
+    if (now.getHours() === 16 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+      setActiveIndex(5);
+      setCurrentTokens(0);
+      updateLuxuryIndex({ index: 5, tokens: 0 });
+    }
+  };
+
+  const interval = setInterval(resetCheck, 1000);
+  return () => clearInterval(interval);
+}, []);
+
 
 
 
@@ -492,13 +492,14 @@ useEffect(() => {
   />
 
   <button
-    className={`border-2 text-2xl rounded p-2 transition
-      ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800 opacity-100"}`}
-    onClick={() => handleVoteRequest("GoalTokens", tokenGoal)}
-    disabled={activeIndex === 0}
-  >
-    Add Tokens
-  </button>
+  onClick={handleAddTokens}
+  className={`border-2 text-2xl rounded p-2 transition
+    ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800"}`}
+  disabled={activeIndex === 0}
+>
+  Add Tokens
+</button>
+
 </div>
 
 
