@@ -7,7 +7,7 @@ import TokenPurchasePopup from './TokenPurchasePopup';
 import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCount, sendPurchaseEmail } from '@/utils/apiClient';
 import UserLinkAds from '@/app/components/viewer/UserLinkAds';
 import BritGamesShop from './BritGamesShop';
-import { updateLuxuryIndex } from "@/utils/apiClient";
+import { getLuxuryIndex, updateLuxuryIndex } from '@/utils/apiClient';
 
 const Shop = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -27,10 +27,11 @@ const Shop = () => {
   const [selectedLink, setSelectedLink] = useState(''); 
   const [adsCount, setAdsCount] = useState(0); 
 
-  const [luxuryState, setLuxuryState] = useState({ index: 5, tokenGoal: 0 }); 
+  const [luxuryIndex, setLuxuryIndex] = useState(5); 
+  const [luxuryGoal, setLuxuryGoal] = useState(0);
   const [currentTokens, setCurrentTokens] = useState(0);
 
-const luxuryGoal = data.tokenGoal;
+
 
 
   useEffect(() => {
@@ -113,35 +114,29 @@ const luxuryGoal = data.tokenGoal;
   };
 
 
-  
 useEffect(() => {
-  if (luxuryGoal !== undefined) {
-    setCurrentTokens(luxuryGoal);
-  }
-}, [luxuryGoal]);
+    const fetchLuxury = async () => {
+      try {
+        const index = await getLuxuryIndex();
+        setLuxuryIndex(index);
+        
+        setLuxuryGoal(20000); 
+      } catch (error) {
+        console.error('Failed to fetch luxury index:', error);
+      }
+    };
+    fetchLuxury();
+  }, []);
 
 
-const handleAddTokens = async () => {
-  if (activeIndex === 0) return; // already at top
-
-  let newTokens = currentTokens + tokenGoal;
-  let newIndex = activeIndex;
-
-  if (newTokens >= 20000) {
-    newTokens = 0;
-    newIndex = Math.max(activeIndex - 1, 0);
-  }
-
-  setCurrentTokens(newTokens);
-  setActiveIndex(newIndex);
-  setTokenGoal(0);
-
-  try {
-    await updateLuxuryIndex({ index: newIndex, tokens: newTokens });
-  } catch (err) {
-    console.error("Error updating luxury index:", err);
-  }
-};
+  const handleAddTokens = async (tokens) => {
+    try {
+      const updatedIndex = await updateLuxuryIndex(tokens);
+      setLuxuryIndex(updatedIndex);
+    } catch (error) {
+      console.error('Failed to update luxury index:', error);
+    }
+  };
 
 
 
@@ -319,8 +314,8 @@ else {
   isPurchasing={isPurchasing}
   handlePurchaseClick={handlePurchaseClick}
   handleAddTokens={handleAddTokens}
-  luxuryIndex={luxuryState.index}
-  luxuryGoal={luxuryState.tokenGoal}
+  luxuryIndex={luxuryIndex}
+  luxuryGoal={luxuryGoal}
 />
 
 </div>
