@@ -23,12 +23,14 @@ export const getLuxuryIndex = async () => {
   }
 };
 
-export const updateLuxuryIndex = async (tokens) => {
+export const updateLuxuryIndex = async ({ index, tokens }) => {
   const response = await axiosInstance.post('/luxury/update', {
+    index,
     tokens,
   });
   return response.data.index;
 };
+
 
 
 export const signup = async (userData) => {

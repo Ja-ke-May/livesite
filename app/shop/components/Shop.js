@@ -129,19 +129,19 @@ useEffect(() => {
   }, []);
 
 
- const handleAddTokens = async (tokensToAdd) => {
-  if (!tokensToAdd || tokensToAdd <= 0) return;
-  
+ const handleAddTokens = async () => {
   try {
-    
-    await updateLuxuryIndex({ index: activeIndex, tokens: currentTokens + tokensToAdd });
-    
-    
-    setCurrentTokens(prev => prev + tokensToAdd);
+    const updatedIndex = await updateLuxuryIndex({
+      index: activeIndex,
+      tokens: tokenGoal,
+    });
+    setActiveIndex(updatedIndex);
+    setTokenGoal(0);
   } catch (error) {
     console.error("Failed to update luxury index:", error);
   }
 };
+
 
 
 
