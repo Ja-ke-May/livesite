@@ -8,6 +8,7 @@ import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCou
 import UserLinkAds from '@/app/components/viewer/UserLinkAds';
 import BritGamesShop from './BritGamesShop';
 import { getLuxuryIndex, updateLuxuryIndex } from '@/utils/apiClient';
+import FlagShop from './UsernameFlag';
 
 const Shop = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -461,6 +462,8 @@ else {
           )}
         </div>
 
+        <hr className='mt-10' />
+        <FlagShop />
         <hr className='mt-10' />
         <p className='mt-4'>More coming soon...</p>
 
