@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import UsernamePopUp from '../../components/UsernamePopUp';
-import { updateUsername, updateBio, getUserFlag } from '@/utils/apiClient';
+import { updateUsername, updateBio } from '@/utils/apiClient';
 import { AuthContext } from '@/utils/AuthContext';
 import TokenPurchasePopup from '@/app/shop/components/TokenPurchasePopup';
-
 
 const ProfileInfo = ({
   profilePicture,
@@ -35,7 +34,6 @@ const ProfileInfo = ({
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [showTokenPopup, setShowTokenPopup] = useState(false);
-  const [flag, setFlag] = useState('');
 
   const toggleUsernameInput = () => {
     setShowUsernameInput(!showUsernameInput);
@@ -120,25 +118,7 @@ const ProfileInfo = ({
 
   const handleBuyTokens = () => {
     setShowTokenPopup(true);
-  }; 
-
-   useEffect(() => {
-  if (!username) return;
-
-  const fetchFlag = async () => {
-    try {
-      const fetchedFlag = await getUserFlag(username);
-      console.log("Fetched flag for", username, fetchedFlag);
-      setFlag(fetchedFlag);
-    } catch (error) {
-      console.error("Failed to fetch user flag:", error);
-      setFlag("");
-    }
   };
-
-  fetchFlag();
-}, [username]);
-
 
   return (
     <div className="flex justify-center mt-4">
@@ -149,16 +129,7 @@ const ProfileInfo = ({
           <h2 className="text-2xl font-bold cursor-pointer" 
           style={{ color: usernameColor }}
           onClick={(e) => togglePopup(e)}>
-            {username} 
-             {flag && (
-    <img
-      src={`https://flagcdn.com/w20/${flag.toLowerCase()}.png`}
-      alt={`${flag} flag`}
-      className="inline-block rounded-sm"
-      style={{ width: 20, height: 15 }}
-      draggable={false}
-    />
-  )}
+            {username}
           </h2>
 
           {isLoggedIn && loggedInUsername === username && (
