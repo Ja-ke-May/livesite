@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import UsernamePopUp from '../../components/UsernamePopUp';
-import { updateUsername, updateBio } from '@/utils/apiClient';
+import { updateUsername, updateBio, getUserFlag } from '@/utils/apiClient';
 import { AuthContext } from '@/utils/AuthContext';
 import TokenPurchasePopup from '@/app/shop/components/TokenPurchasePopup';
+
 
 const ProfileInfo = ({
   profilePicture,
@@ -34,6 +35,7 @@ const ProfileInfo = ({
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [showTokenPopup, setShowTokenPopup] = useState(false);
+  const [flag, setFlag] = useState('');
 
   const toggleUsernameInput = () => {
     setShowUsernameInput(!showUsernameInput);
@@ -118,7 +120,23 @@ const ProfileInfo = ({
 
   const handleBuyTokens = () => {
     setShowTokenPopup(true);
-  };
+  }; 
+
+   useEffect(() => {
+    if (!username) return;
+
+    const fetchFlag = async () => {
+      try {
+        const fetchedFlag = await getUserFlag(username);
+        setFlag(fetchedFlag);
+      } catch (error) {
+        console.error('Failed to fetch user flag:', error);
+        setFlag('');  // fallback to empty
+      }
+    };
+
+    fetchFlag();
+  }, [username]);
 
   return (
     <div className="flex justify-center mt-4">
