@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useContext } from "react";
-import { updateUserFlag } from "@/utils/apiClient"; // New API util to update flag
+import { updateUserFlag } from "@/utils/apiClient"; 
 import { AuthContext } from "@/utils/AuthContext";
 
 export default function FlagShop() {
