@@ -105,6 +105,38 @@ export const updateUsername = async (newUsername) => {
   }
 };
 
+export const updateUserFlag = async (username, flagCode) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.put(
+      `/profile/${username}/flag`,
+      { flag: flagCode },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to update flag');
+  }
+};
+
+
+export const getUserFlag = async (username) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.get(`/profile/${username}/flag`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.flag;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch user flag');
+  }
+};
 
 export const updateBio = async (newBio) => {
   try {

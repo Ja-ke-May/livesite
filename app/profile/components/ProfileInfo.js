@@ -129,7 +129,16 @@ const ProfileInfo = ({
           <h2 className="text-2xl font-bold cursor-pointer" 
           style={{ color: usernameColor }}
           onClick={(e) => togglePopup(e)}>
-            {username}
+            {username} 
+             {flag && (
+    <img
+      src={`https://flagcdn.com/w20/${flag.toLowerCase()}.png`}
+      alt={`${flag} flag`}
+      className="inline-block rounded-sm"
+      style={{ width: 20, height: 15 }}
+      draggable={false}
+    />
+  )}
           </h2>
 
           {isLoggedIn && loggedInUsername === username && (
