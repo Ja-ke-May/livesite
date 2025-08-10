@@ -123,20 +123,22 @@ const ProfileInfo = ({
   }; 
 
    useEffect(() => {
-    if (!username) return;
+  if (!username) return;
 
-    const fetchFlag = async () => {
-      try {
-        const fetchedFlag = await getUserFlag(username);
-        setFlag(fetchedFlag);
-      } catch (error) {
-        console.error('Failed to fetch user flag:', error);
-        setFlag('');  // fallback to empty
-      }
-    };
+  const fetchFlag = async () => {
+    try {
+      const fetchedFlag = await getUserFlag(username);
+      console.log("Fetched flag for", username, fetchedFlag);
+      setFlag(fetchedFlag);
+    } catch (error) {
+      console.error("Failed to fetch user flag:", error);
+      setFlag("");
+    }
+  };
 
-    fetchFlag();
-  }, [username]);
+  fetchFlag();
+}, [username]);
+
 
   return (
     <div className="flex justify-center mt-4">
