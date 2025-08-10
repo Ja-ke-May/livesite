@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useContext } from "react";
-import { updateUsername } from "@/utils/apiClient";
+import { updateUserFlag } from "@/utils/apiClient"; // New API util to update flag
 import { AuthContext } from "@/utils/AuthContext";
 
 export default function FlagShop() {
@@ -22,20 +22,25 @@ export default function FlagShop() {
     { code: "br", name: "Brazil" },
   ];
 
-  const buyFlag = async () => {
-    if (!selectedFlag) return setError("Select a flag first.");
-    setError("");
-    setLoading(true);
-    try {
-      const newName = `${selectedFlag.toUpperCase()} ${username}`;
-      const updatedUser = await updateUsername(newName);
-      login(localStorage.getItem("token"), updatedUser.userName);
-    } catch (err) {
-      setError(err.message || "Could not add flag.");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const buyFlag = async () => {
+  if (!selectedFlag) {
+    setError("Select a flag first.");
+    return;
+  }
+  setError("");
+  setLoading(true);
+  try {
+    const updatedUser = await updateUserFlag(username, selectedFlag); // pass username here
+
+    // Update AuthContext state with new flag
+    login(localStorage.getItem("token"), updatedUser.userName, updatedUser.flag);
+  } catch (err) {
+    setError(err.message || "Could not add flag.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div
