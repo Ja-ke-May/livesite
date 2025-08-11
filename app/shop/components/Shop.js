@@ -419,7 +419,7 @@ else {
         <img
           src={`https://flagcdn.com/w40/${flag}.png`}
           alt="flag"
-          className="h-5 w-8 object-cover rounded-sm"
+          className="h-5 w-8 object-cover rounded-sm absolute top-1 right-1"
         />
       )}
               <h3 className="text-lg font-semibold mb-1" style={{ color: usernameColor }}>Border Colour</h3>
