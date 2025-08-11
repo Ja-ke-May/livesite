@@ -319,7 +319,7 @@ export default function FlagShop() {
       )} 
 
       {successMessage && (
-        <div className="mt-4 flex flex-col items-center">
+        <div className="mb-4 flex flex-col items-center">
           <p className="text-green-400 font-semibold mb-2">{successMessage}</p>
           <img
             src={`https://flagcdn.com/w80/${selectedFlag}.png`}
