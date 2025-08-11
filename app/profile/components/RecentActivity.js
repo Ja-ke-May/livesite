@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const RecentActivity = ({ recentActivity, usernameColor, commentColor, borderColor }) => {
+const RecentActivity = ({ recentActivity, usernameColor, commentColor, borderColor, flag }) => {
   const [visibleCount, setVisibleCount] = useState(20);
 
   const handleLoadMore = () => {
@@ -19,7 +19,15 @@ const RecentActivity = ({ recentActivity, usernameColor, commentColor, borderCol
     >
       <h3 className="text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]"
       style={{ color: usernameColor }}
-      >Recent Activity</h3>
+      >
+         {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
+      Recent Activity</h3>
       <ul className="list-disc pl-5 overflow-y-auto max-h-[300px] max-x-full"
       style={{ color: commentColor }}
       >

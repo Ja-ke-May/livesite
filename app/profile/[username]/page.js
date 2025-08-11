@@ -175,14 +175,16 @@ const [profileFlag, setProfileFlag] = useState('');
             onToggleSupport={handleToggleSupport}
             borderColor={borderColor}
             usernameColor={usernameColor}
-            commentColor={commentColor}
+            commentColor={commentColor} 
+            flag={profileFlag}
           />
         </Suspense>
         <Suspense>
           <LinksSection links={links} setLinks={setLinks} isLoggedIn={isLoggedIn && loggedInUsername === profileUsername}
           commentColor={commentColor}
           borderColor={borderColor}
-          usernameColor={usernameColor}
+          usernameColor={usernameColor} 
+          flag={profileFlag}
            />
         </Suspense>
         <Suspense>
@@ -191,7 +193,8 @@ const [profileFlag, setProfileFlag] = useState('');
             longestLiveDuration={longestLiveDuration} 
             borderColor={borderColor}
             usernameColor={usernameColor}
-            commentColor={commentColor}
+            commentColor={commentColor} 
+            flag={profileFlag}
           />
         </Suspense>
         <Suspense>
@@ -199,7 +202,8 @@ const [profileFlag, setProfileFlag] = useState('');
           recentActivity={recentActivity} 
           commentColor={commentColor}
     borderColor={borderColor}
-    usernameColor={usernameColor}
+    usernameColor={usernameColor} 
+    flag={profileFlag}
     />
         </Suspense>
       </main>
