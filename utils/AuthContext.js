@@ -68,6 +68,11 @@ localStorage.setItem('flag', flag || "");
     setFlag("");
   };
 
+  const updateFlag = (newFlag) => {
+  setFlag(newFlag);
+  localStorage.setItem("flag", newFlag);
+};
+
   return (
     <AuthContext.Provider value={{ 
       isLoggedIn, 
@@ -75,6 +80,7 @@ localStorage.setItem('flag', flag || "");
       isAdmin, 
       isBlocked,
       flag,
+      updateFlag,
       login, 
       logout, 
       isInitialized, 
