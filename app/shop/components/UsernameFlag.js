@@ -298,10 +298,25 @@ export default function FlagShop() {
 
   return (
     <div
-      className="rounded-md shadow-md max-w-sm mx-auto p-4 mt-10"
+      className="rounded-md shadow-md max-w-sm lg:max-w-4xl mx-auto p-4 mt-10"
       style={{ borderColor: "#000110", borderWidth: "2px", borderStyle: "solid" }}
     >
-      <h3 className="text-center text-lg font-semibold text-white mb-4">Your Flag</h3>
+      <h3 className="text-center text-lg font-semibold text-white mb-4">Your Flag</h3> 
+
+      {username && (
+        <>
+          <p className="text-center text-yellow-400 brightness-125 mb-2 mt-2">{TOKEN_COST} Tokens</p>
+          <div className="w-full flex justify-center items-center">
+          <button
+            onClick={() => setShowPopup(true)} 
+            disabled={loading}
+            className={`text-center mb-5 bg-yellow-400 font-bold brightness-125 text-lg text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
+          >
+            {loading ? "Processing..." : "Purchase"}
+          </button> 
+          </div>
+        </>
+      )}
 
       <div className="grid gap-3 mb-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(56px, 1fr))' }}>
         {flags.map(({ code, name }) => (
@@ -332,7 +347,7 @@ export default function FlagShop() {
           <button
             onClick={() => setShowPopup(true)} 
             disabled={loading}
-            className={`mb-5 bg-yellow-400 font-bold brightness-125 text-lg text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
+            className={`text-center mb-5 bg-yellow-400 font-bold brightness-125 text-lg text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
           >
             {loading ? "Processing..." : "Purchase"}
           </button> 
