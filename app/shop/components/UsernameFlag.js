@@ -130,7 +130,7 @@ export default function FlagShop() {
     const updatedUser = await updateUserFlag(username, selectedFlag); 
 
     updateFlag(updatedUser.flag); 
-    setSuccessMessage(`You have successfully purchased the ${selectedFlag} flag!`); 
+    setSuccessMessage(`You have successfully purchased the ${selectedFlag.name} flag!`); 
       setShowPopup(false);
   } catch (err) {
     setError(err.message || "Could not add flag.");
@@ -171,12 +171,12 @@ export default function FlagShop() {
 
       {username && (
         <>
-          <p className="text-center text-yellow-400 brightness-125 mb-4">{TOKEN_COST} Tokens</p>
+          <p className="text-center text-yellow-400 brightness-125 mb-4 mt-2">{TOKEN_COST} Tokens</p>
           <div className="w-full flex justify-center items-center">
           <button
             onClick={() => setShowPopup(true)} 
             disabled={loading}
-            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-xl text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
+            className={`mb-5 bg-yellow-400 font-bold brightness-125 text-xl text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
           >
             {loading ? "Processing..." : "Purchase"}
           </button> 
@@ -210,7 +210,7 @@ export default function FlagShop() {
       <h2 className="text-2xl font-bold">Confirm Purchase</h2>
       <p>
         Are you sure you want to purchase the{" "}
-        <span className="uppercase font-semibold text-yellow-400 brightness-125">{selectedFlag}</span> flag for{" "}
+        <span className="uppercase font-semibold text-yellow-400 brightness-125">{selectedFlag.name}</span> flag for{" "}
         <span className="font-semibold text-yellow-400 brightness-125">{TOKEN_COST}</span> tokens?
       </p>
       <div className="flex justify-end space-x-4">
