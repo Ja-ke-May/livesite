@@ -172,7 +172,7 @@ export default function FlagShop() {
         <>
           <p className="text-center text-yellow-400 brightness-125 mb-4">{TOKEN_COST} Tokens</p>
           <button
-            onClick={buyFlag}
+            onClick={() => setShowPopup(true)} 
             disabled={loading}
             className="w-full bg-yellow-400 font-bold brightness-125 text-[#000110] py-2 rounded-md shadow-sm hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
@@ -220,7 +220,7 @@ export default function FlagShop() {
                 Cancel
               </button>
               <button
-                onClick={() => setShowPopup(true)} 
+                onClick={buyFlag}
                 disabled={loading}
                 className="px-4 py-2 bg-yellow-400 text-black rounded hover:bg-yellow-500 disabled:opacity-50"
               >
