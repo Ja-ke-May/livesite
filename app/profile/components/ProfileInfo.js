@@ -8,6 +8,7 @@ import TokenPurchasePopup from '@/app/shop/components/TokenPurchasePopup';
 const ProfileInfo = ({
   profilePicture,
   username,
+  flag,
   bio,
   handleFileChange,
   handleBioChange,
@@ -129,7 +130,9 @@ const ProfileInfo = ({
           <h2 className="text-2xl font-bold cursor-pointer" 
           style={{ color: usernameColor }}
           onClick={(e) => togglePopup(e)}>
+           {flag}
             {username}
+            
           </h2>
 
           {isLoggedIn && loggedInUsername === username && (
