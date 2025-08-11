@@ -12,7 +12,7 @@ const Support = lazy(() => import('../components/Support'));
 const LinksSection = lazy(() => import('../components/Links'));
 
 const ProfileContent = ({ profileUsername }) => {
-  const { isLoggedIn, username: loggedInUsername, isInitialized, isAdmin, flag } = useContext(AuthContext);
+  const { isLoggedIn, username: loggedInUsername, isInitialized, isAdmin } = useContext(AuthContext);
   const [profilePicture, setProfilePicture] = useState("");
   const [bio, setBio] = useState('');
   const [links, setLinks] = useState([]);
@@ -24,7 +24,8 @@ const ProfileContent = ({ profileUsername }) => {
   const [longestLiveDuration, setLongestLiveDuration] = useState(0);
   const [commentColor, setCommentColor] = useState('#ffffff');
 const [borderColor, setBorderColor] = useState('#000110');
-const [usernameColor, setUsernameColor] = useState('#ffffff');
+const [usernameColor, setUsernameColor] = useState('#ffffff'); 
+const [profileFlag, setProfileFlag] = useState('');
 
 
   const [isLoading, setIsLoading] = useState(true);
@@ -70,6 +71,8 @@ const [usernameColor, setUsernameColor] = useState('#ffffff');
         setCommentColor(userProfile.commentColor || '#ffffff');
         setBorderColor(userProfile.borderColor || '#000110');
         setUsernameColor(userProfile.usernameColor || '#ffffff');
+
+        setProfileFlag(userProfile.flag || ''); 
 
       } catch (error) {
         console.error('Failed to load user profile:', error);
@@ -161,7 +164,7 @@ const [usernameColor, setUsernameColor] = useState('#ffffff');
             commentColor={commentColor}
             borderColor={borderColor}
             usernameColor={usernameColor}
-            flag={flag}
+            flag={profileFlag}
           />
         </Suspense>
         <Suspense>
