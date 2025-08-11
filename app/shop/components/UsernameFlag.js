@@ -30,10 +30,10 @@ export default function FlagShop() {
   setError("");
   setLoading(true);
   try {
-    const updatedUser = await updateUserFlag(username, selectedFlag); // pass username here
+    const updatedUser = await updateUserFlag(selectedFlag); // pass username here
 
     // Update AuthContext state with new flag
-    login(localStorage.getItem("token"), updatedUser.userName, updatedUser.flag);
+    login(localStorage.getItem("token"), updatedUser.flag);
   } catch (err) {
     setError(err.message || "Could not add flag.");
   } finally {

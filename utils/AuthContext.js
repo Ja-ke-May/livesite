@@ -11,12 +11,14 @@ const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false); 
   const [isBlocked, setIsBlocked] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false); 
-  const [notificationCount, setNotificationCount] = useState(0);
+  const [notificationCount, setNotificationCount] = useState(0); 
+   const [flag, setFlag] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username'); 
     const storedIsAdmin = localStorage.getItem('isAdmin'); 
+      const storedFlag = localStorage.getItem('flag');
 
     const isAdminFlag = storedIsAdmin === 'true';  
 
@@ -24,6 +26,7 @@ const AuthProvider = ({ children }) => {
       setIsLoggedIn(true);
       setUsername(storedUsername); 
       setIsAdmin(isAdminFlag);  
+       setFlag(storedFlag || "");
       
       fetchUserBlockedStatus(token, storedUsername).then((status) => {
         setIsBlocked(status); 
@@ -38,12 +41,13 @@ const AuthProvider = ({ children }) => {
     localStorage.setItem('token', token);
     localStorage.setItem('username', username); 
     localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');  
-
+localStorage.setItem('flag', flag || "");
     
 
     setIsLoggedIn(true);
     setUsername(username);
     setIsAdmin(isAdmin);  
+     setFlag(flag || "");
 
     fetchUserBlockedStatus(token, username).then((status) => {
       setIsBlocked(status); 
@@ -53,13 +57,15 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('isAdmin'); 
+    localStorage.removeItem('flag');
 
 
     setIsLoggedIn(false);
     setUsername('');
     setIsAdmin(false);  
     setIsBlocked(false);
+    setFlag("");
   };
 
   return (
@@ -68,6 +74,7 @@ const AuthProvider = ({ children }) => {
       username, 
       isAdmin, 
       isBlocked,
+      flag,
       login, 
       logout, 
       isInitialized, 
