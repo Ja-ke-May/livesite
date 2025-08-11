@@ -1,14 +1,16 @@
 "use client";
 import React, { useState, useContext } from "react";
-import { updateUserFlag } from "@/utils/apiClient"; 
+import { updateUserFlag, deductTokens } from "@/utils/apiClient"; 
 import { AuthContext } from "@/utils/AuthContext";
 
 export default function FlagShop() {
-  const { username, login, updateFlag } = useContext(AuthContext);
+  const { username, updateFlag } = useContext(AuthContext);
   const [selectedFlag, setSelectedFlag] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
    const [successMessage, setSuccessMessage] = useState("");
+
+   const TOKEN_COST = 1000;
 
   const flags = [
   { code: "us", name: "United States" },
@@ -121,6 +123,8 @@ export default function FlagShop() {
    setSuccessMessage("");
   setLoading(true);
   try {
+     await deductTokens(TOKEN_COST);
+
     const updatedUser = await updateUserFlag(username, selectedFlag); 
 
     updateFlag(updatedUser.flag); 
@@ -164,7 +168,7 @@ export default function FlagShop() {
 
       {username && (
         <>
-          <p className="text-center text-yellow-400 brightness-125 mb-4">1000 Tokens</p>
+          <p className="text-center text-yellow-400 brightness-125 mb-4">{TOKEN_COST} Tokens</p>
           <button
             onClick={buyFlag}
             disabled={loading}
