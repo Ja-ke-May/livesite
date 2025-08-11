@@ -144,7 +144,7 @@ export default function FlagShop() {
     >
       <h3 className="text-center text-lg font-semibold text-white mb-4">Username Flag</h3>
 
-      <div className="grid grid-cols-5 gap-3 mb-4">
+      <div className="grid grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-3 mb-4">
         {flags.map(({ code, name }) => (
           <button
             key={code}
