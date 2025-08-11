@@ -196,13 +196,7 @@ useEffect(() => {
           <p onClick={() => togglePopup(upNext)} className="text-white pointer-events-auto cursor-pointer">
             Up Next: <span className="font-bold">
             {upNext}
-              {flag && (
-        <img
-          src={`https://flagcdn.com/w40/${flag}.png`}
-          alt="flag"
-          className="h-5 w-8 object-cover rounded-sm"
-        />
-      )}
+            
             </span></p>
           
           {profilePicture && (
