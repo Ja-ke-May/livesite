@@ -353,7 +353,7 @@ else {
                 )}
                 <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">1000 Tokens</p>
                 <button
-                  className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${
+                  className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-lg text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${
                     isPurchasing ? 'animate-pulse' : ''
                   }`}
                   onClick={handlePurchaseAdClick}
@@ -398,7 +398,7 @@ else {
           {isLoggedIn && username && (
             <>             <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">200 Tokens</p>
           <button
-            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-lg text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Comment Colour', 200)}
             disabled={isPurchasing}
           >
@@ -441,7 +441,7 @@ else {
           {isLoggedIn && username && (
             <>             <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">200 Tokens</p>
           <button
-            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-lg text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Border Colour', 200)}
             disabled={isPurchasing}
           >
@@ -475,7 +475,7 @@ else {
           {isLoggedIn && username && (
             <>             <p className="text-yellow-400 brightness-125 mt-2 md:mt-4">200 Tokens</p>
           <button
-            className={`mt-2 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
+            className={`mt-2 bg-yellow-400 font-bold brightness-125 text-lg text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
             onClick={() => handlePurchaseClick('this Username Colour', 200)}
             disabled={isPurchasing}
           >
