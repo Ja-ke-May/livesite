@@ -44,7 +44,7 @@ const Chat = ({ socket, isLoggedIn, isAdmin, flag }) => {
           commentColor={c.commentColor || '#ffffff'} 
             borderColor={c.borderColor || '#000110'} 
             usernameColor={c.usernameColor || '#ffffff'} 
-            flag
+            flag={flag}
              />
         ))}
       </div>
