@@ -386,13 +386,13 @@ export default function FlagShop() {
       {showPopup && (
   <div
     onClick={() => setShowPopup(false)}
-    className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+    className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-[151]"
   >
     <div
       onClick={e => e.stopPropagation()}
-      className="bg-gray-800 rounded-lg shadow-lg max-w-md w-full p-6 space-y-6 text-white"
+      className="bg-[#000110] rounded-lg shadow-lg max-w-md w-full p-6 space-y-6 text-white"
     >
-      <h2 className="text-2xl font-bold">Confirm Purchase</h2>
+      <h2 className="text-lg font-semibold mb-4">Confirm Purchase</h2>
       <p>
         Are you sure you want to purchase the{" "}
         <span className="uppercase font-semibold text-yellow-400 brightness-125">{flags.find(f => f.code === selectedFlag)?.name}</span> flag for{" "}
