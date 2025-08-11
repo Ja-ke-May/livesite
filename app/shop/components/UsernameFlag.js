@@ -142,7 +142,7 @@ export default function FlagShop() {
 
   return (
     <div
-      className="bg-gray-800/80 rounded-md shadow-md max-w-sm mx-auto p-4 mt-10"
+      className="rounded-md shadow-md max-w-sm mx-auto p-4 mt-10"
       style={{ borderColor: "#000110", borderWidth: "2px", borderStyle: "solid" }}
     >
       <h3 className="text-center text-lg font-semibold text-white mb-4">Username Flag</h3>
