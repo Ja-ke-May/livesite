@@ -178,7 +178,7 @@ export default function FlagShop() {
 
       {username && (
         <>
-          <p className="text-center text-yellow-400 brightness-125 mb-4 mt-2">{TOKEN_COST} Tokens</p>
+          <p className="text-center text-yellow-400 brightness-125 mb-2 mt-2">{TOKEN_COST} Tokens</p>
           <div className="w-full flex justify-center items-center">
           <button
             onClick={() => setShowPopup(true)} 
