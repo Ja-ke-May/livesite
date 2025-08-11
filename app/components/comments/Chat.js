@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UserCommentBox from './UserCommentBox';
 
-const Chat = ({ socket, isLoggedIn, isAdmin }) => {
+const Chat = ({ socket, isLoggedIn, isAdmin, flag }) => {
   const [comments, setComments] = useState([]);
 
   const formatTime = () => {
@@ -44,6 +44,7 @@ const Chat = ({ socket, isLoggedIn, isAdmin }) => {
           commentColor={c.commentColor || '#ffffff'} 
             borderColor={c.borderColor || '#000110'} 
             usernameColor={c.usernameColor || '#ffffff'} 
+            flag
              />
         ))}
       </div>
