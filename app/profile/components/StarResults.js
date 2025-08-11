@@ -16,7 +16,8 @@ const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameCo
   };
 
   return (
-    <div className='p-6'>
+    <div className='p-6 bg-gray-800/80 rounded-lg shadow-md mt-4 '
+    style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}>
     {flag && (
         <img
           src={`https://flagcdn.com/w40/${flag}.png`}
@@ -24,8 +25,8 @@ const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameCo
           className="h-5 w-8 object-cover rounded-sm"
         />
       )}
-    <div className="bg-gray-800/80 rounded-lg shadow-md mt-4 flex flex-col items-center"
-    style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
+    <div className="flex flex-col items-center"
+    
     >
       
       <h3 className='text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]'
