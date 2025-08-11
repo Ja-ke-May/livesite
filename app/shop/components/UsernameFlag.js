@@ -117,6 +117,7 @@ export default function FlagShop() {
 
  const buyFlag = async () => {
   if (!selectedFlag) {
+     setShowPopup(false);
     setError("Select a flag first.");
     return;
   }
