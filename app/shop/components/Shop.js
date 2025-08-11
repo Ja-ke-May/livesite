@@ -462,7 +462,7 @@ else {
           )}
         </div>
 
-<div className="hidden">
+<div className="">
         <hr className='mt-10' />
         <FlagShop />
         </div>
