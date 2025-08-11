@@ -140,13 +140,7 @@ const ProfileInfo = ({
         />
       )}
             {username}
-             {flag && (
-        <img
-          src={`https://flagcdn.com/w40/${flag}.png`}
-          alt="flag"
-          className="h-5 w-8 object-cover rounded-sm"
-        />
-      )}
+            
             
           </h2>
 
