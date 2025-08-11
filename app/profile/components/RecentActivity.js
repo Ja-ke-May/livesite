@@ -28,7 +28,7 @@ const RecentActivity = ({ recentActivity, usernameColor, commentColor, borderCol
         />
       )}
       Recent Activity</h3>
-      <ul className="list-disc pl-5 overflow-y-auto max-h-[300px] max-x-full"
+      <ul className="list-disc pl-5 overflow-y-auto max-h-[280px] max-x-full"
       style={{ color: commentColor }}
       >
           {[...uniqueActivities].reverse().slice(0, visibleCount).map((activity, index) => (
