@@ -124,7 +124,7 @@ export default function FlagShop() {
     const updatedUser = await updateUserFlag(username, selectedFlag); 
 
     updateFlag(updatedUser.flag); 
-    setSuccessMessage(`You have successfully purchased the ${flagName} flag!`);
+    setSuccessMessage(`You have successfully purchased the ${selectedFlag} flag!`);
   } catch (err) {
     setError(err.message || "Could not add flag.");
   } finally {
