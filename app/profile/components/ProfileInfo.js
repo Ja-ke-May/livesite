@@ -134,7 +134,7 @@ const ProfileInfo = ({
           onClick={(e) => togglePopup(e)}>
            {flag && (
         <img
-          src={`https://flagcdn.com/w40/${flag}.png`}
+          src={`https://flagcdn.com/w40/${username.flag}.png`}
           alt="flag"
           className="h-5 w-8 object-cover rounded-sm"
         />
