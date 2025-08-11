@@ -70,7 +70,13 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
             onClick={togglePopup}
             style={{ color: usernameColor }}
             >
-              {flag}
+              {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
               {username}
             
             <span className="text-sm text-left mt-1 ml-2 break-words break-all"
