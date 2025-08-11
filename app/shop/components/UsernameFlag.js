@@ -390,7 +390,7 @@ export default function FlagShop() {
   >
     <div
       onClick={e => e.stopPropagation()}
-      className="bg-[#000110] rounded-lg shadow-lg max-w-md w-full p-6 space-y-6 text-white"
+      className="bg-[#000110] p-6 rounded-md shadow-lg"
     >
       <h2 className="text-lg font-semibold mb-4">Confirm Purchase</h2>
       <p>
