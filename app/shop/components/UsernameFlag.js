@@ -372,7 +372,7 @@ export default function FlagShop() {
       {error && <p className="text-center text-red-500 m-2 font-semibold">{error}</p>} 
 
       {successMessage && (
-        <div className="mt-4 flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <p className="text-green-400 font-semibold mb-2">{successMessage}</p>
           <img
             src={`https://flagcdn.com/w80/${selectedFlag}.png`}
