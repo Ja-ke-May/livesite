@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameColor, commentColor, borderColor }) => {
+const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameColor, commentColor, borderColor, flag }) => {
 
   const formatDuration = (duration) => {
     const roundedDuration = Math.round(duration); 
@@ -20,7 +20,15 @@ const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameCo
     style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
     >
       <h3 className='text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]'
-      style={{ color: usernameColor }}>Stars Results</h3>
+      style={{ color: usernameColor }}>
+         {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
+      Stars Results</h3>
         <h3
         style={{ color: commentColor }}
         >Longest Time Live</h3>

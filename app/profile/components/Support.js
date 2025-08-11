@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Support = ({ username, supportersCount, isUserSupported, onToggleSupport, usernameColor, commentColor, borderColor }) => {
+const Support = ({ username, supportersCount, isUserSupported, onToggleSupport, usernameColor, commentColor, borderColor, flag }) => {
   return (
     <div className='flex justify-center'>
       <div 
@@ -11,7 +11,14 @@ const Support = ({ username, supportersCount, isUserSupported, onToggleSupport, 
           className="text-xl font-semibold mb-4"
           style={{ color: usernameColor }}
         >
-          Support <span className='font-bold'>{username}</span>
+           {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
+      Support <span className='font-bold'>{username}</span>
           {isUserSupported ? (
             <span
               className="inline-block ml-2 cursor-pointer text-yellow-400 brightness-125 text-3xl align-middle"

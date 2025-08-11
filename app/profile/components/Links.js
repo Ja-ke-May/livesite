@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { addLink, deleteLink } from '../../../utils/apiClient';
 
-const LinksSection = ({ links = [], setLinks, isLoggedIn, usernameColor, commentColor, borderColor }) => {
+const LinksSection = ({ links = [], setLinks, isLoggedIn, usernameColor, commentColor, borderColor, flag }) => {
   const [showAddLinkForm, setShowAddLinkForm] = useState(false);
   const [newLinkText, setNewLinkText] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -51,7 +51,15 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn, usernameColor, comment
       style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
       >
         <h3 className="text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]"
-        style={{ color: usernameColor }}>Links</h3>
+        style={{ color: usernameColor }}>
+           {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
+      Links</h3>
         <p className='text-xs text-center mb-4'><span className='text-red-600'>Please note:</span> MyMe.live is not responsible for the content of external links found on user profiles. Only click on links from users you trust.</p>
         <div className="flex flex-wrap justify-center mb-4 text-xl md:text-2xl"
         style={{ color: commentColor }}
