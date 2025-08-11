@@ -411,20 +411,24 @@ else {
 
         <div className='mt-4 text-right z-[150]'>
           <div className="flex justify-end">
-            <div 
-              className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm text-right border relative" 
-              style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
-            >
-              {flag && (
-        <img
-          src={`https://flagcdn.com/w40/${flag}.png`}
-          alt="flag"
-          className="h-5 w-8 object-cover rounded-sm absolute top-1 right-1"
-        />
-      )}
-              <h3 className="text-lg font-semibold mb-1" style={{ color: usernameColor }}>Border Colour</h3>
-              <p><span className='mt-2' style={{ color: color }}>Select a colour to customise your border.</span></p>
-            </div>
+            <div
+  className={`bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm text-right border relative
+    ${flag ? 'pt-10 pr-4' : 'pt-2 pr-2'}`}
+  style={{ borderColor: borderColor, borderWidth: 2, borderStyle: 'solid' }}
+>
+  {flag && (
+    <img
+      src={`https://flagcdn.com/w40/${flag}.png`}
+      alt="flag"
+      className="h-5 w-8 object-cover rounded-sm absolute right-2 -top-6 pointer-events-none"
+    />
+  )}
+  <h3 className="text-lg font-semibold mb-1" style={{ color: usernameColor }}>
+    Border Colour
+  </h3>
+  <p style={{ color: color }}>Select a colour to customise your border.</p>
+</div>
+
           </div>
           <div className="flex justify-end mt-4">
             <input
