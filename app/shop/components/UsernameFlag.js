@@ -318,6 +318,8 @@ export default function FlagShop() {
         </>
       )} 
 
+      {error && <p className="text-center text-red-500 m-2 font-semibold">{error}</p>} 
+
       {successMessage && (
         <div className="mb-4 flex flex-col items-center">
           <p className="text-green-400 font-semibold mb-2">{successMessage}</p>
@@ -367,7 +369,7 @@ export default function FlagShop() {
         </>
       )}
 
-      {error && <p className="text-red-500 mt-3 font-semibold">{error}</p>} 
+      {error && <p className="text-center text-red-500 m-2 font-semibold">{error}</p>} 
 
       {successMessage && (
         <div className="mt-4 flex flex-col items-center">
