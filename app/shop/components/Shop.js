@@ -11,7 +11,7 @@ import { getLuxuryIndex, updateLuxuryIndex } from '@/utils/apiClient';
 import FlagShop from './UsernameFlag';
 
 const Shop = () => {
-  const { isLoggedIn, username } = useContext(AuthContext);
+  const { isLoggedIn, username, flag } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('/shop');
   const [showTokenPopup, setShowTokenPopup] = useState(false);
   const [color, setColor] = useState('#ffffff'); 
@@ -377,6 +377,13 @@ else {
         <div className="mt-10 z-[150]">
           <div className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm"
             style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}>
+              {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
             <h3 className="text-lg font-semibold" style={{ color: usernameColor }}>Comment Colour</h3>
             <p className='mt-2' style={{ color: color }}>Select a colour to customise your comment text.</p>
           </div>
@@ -408,6 +415,13 @@ else {
               className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm text-right border" 
               style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
             >
+              {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
               <h3 className="text-lg font-semibold mb-1" style={{ color: usernameColor }}>Border Colour</h3>
               <p><span className='mt-2' style={{ color: color }}>Select a colour to customise your border.</span></p>
             </div>
@@ -437,7 +451,14 @@ else {
         
         <div className="mt-4 z-[150]">
           <div className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm"
-            style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}>
+            style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}> 
+            {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
             <h3 className="text-lg font-semibold" style={{ color: usernameColor }}>Username Colour</h3>
             <p style={{ color: color }}>Select a colour to customise your username text.</p>
           </div>
