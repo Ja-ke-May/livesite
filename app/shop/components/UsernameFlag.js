@@ -192,44 +192,43 @@ export default function FlagShop() {
             className="h-10 w-16 rounded-sm border border-yellow-400"
           />
         </div>
-      )} {/* Popup modal */}
+      )} 
+      
+      {/* Popup modal */}
       {showPopup && (
-        <div
+  <div
+    onClick={() => setShowPopup(false)}
+    className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+  >
+    <div
+      onClick={e => e.stopPropagation()}
+      className="bg-gray-800 rounded-lg shadow-lg max-w-md w-full p-6 space-y-6 text-white"
+    >
+      <h2 className="text-2xl font-bold">Confirm Purchase</h2>
+      <p>
+        Are you sure you want to purchase the{" "}
+        <span className="uppercase font-semibold">{selectedFlag}</span> flag for{" "}
+        <span className="font-semibold">{TOKEN_COST}</span> tokens?
+      </p>
+      <div className="flex justify-end space-x-4">
+        <button
           onClick={() => setShowPopup(false)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.6)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 9999,
-          }}
+          className="px-5 py-2 rounded bg-gray-700 hover:bg-gray-600 transition"
         >
-          <div
-            onClick={e => e.stopPropagation()}
-            className="bg-gray-900 text-white p-6 rounded-md max-w-sm w-full"
-          >
-            <h2 className="text-xl font-semibold mb-4">Confirm Purchase</h2>
-            <p className="mb-6">Are you sure you want to purchase the {selectedFlag.toUpperCase()} flag for {TOKEN_COST} tokens?</p>
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={() => setShowPopup(false)}
-                className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={buyFlag}
-                disabled={loading}
-                className="px-4 py-2 bg-yellow-400 text-black rounded hover:bg-yellow-500 disabled:opacity-50"
-              >
-                {loading ? "Processing..." : "Confirm"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          Cancel
+        </button>
+        <button
+          onClick={buyFlag}
+          disabled={loading}
+          className="px-5 py-2 rounded bg-yellow-400 text-black font-bold hover:bg-yellow-500 transition disabled:opacity-50"
+        >
+          {loading ? "Processing..." : "Confirm"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
