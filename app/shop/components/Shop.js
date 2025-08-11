@@ -412,7 +412,7 @@ else {
         <div className='mt-4 text-right z-[150]'>
           <div className="flex justify-end">
             <div 
-              className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm text-right border" 
+              className="bg-gray-800/80 p-1 lg:p-2 rounded-md shadow-md max-w-sm text-right border relative" 
               style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
             >
               {flag && (
