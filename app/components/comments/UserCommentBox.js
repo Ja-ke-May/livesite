@@ -66,7 +66,7 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
         style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
         >
           <div className='flex max-w-[100%] overflow-wrap'>
-            <p id={`username-${username}`} className="text-md font-bold cursor-pointer" 
+            <div id={`username-${username}`} className="text-md font-bold cursor-pointer" 
             onClick={togglePopup}
             style={{ color: usernameColor }}
             >
@@ -83,7 +83,7 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
             style={{ color: commentColor }}>
               {comment}
               </span>
-              </p>
+              </div>
           </div>
           <div className="flex justify-end">
             <h4 className="text-gray-400 text-xs">{time}</h4>
