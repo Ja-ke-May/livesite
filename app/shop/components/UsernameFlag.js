@@ -11,7 +11,7 @@ export default function FlagShop() {
    const [successMessage, setSuccessMessage] = useState(""); 
    const [showPopup, setShowPopup] = useState(false);
 
-   const TOKEN_COST = 1000;
+   const TOKEN_COST = 500;
 
   const flags = [
   { code: "us", name: "United States" },
@@ -171,13 +171,15 @@ export default function FlagShop() {
       {username && (
         <>
           <p className="text-center text-yellow-400 brightness-125 mb-4">{TOKEN_COST} Tokens</p>
+          <div className="w-full flex justify-center items-center">
           <button
             onClick={() => setShowPopup(true)} 
             disabled={loading}
             className="bg-yellow-400 font-bold brightness-125 text-[#000110] py-2 rounded-md shadow-sm hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
             {loading ? "Processing..." : "Purchase"}
-          </button>
+          </button> 
+          </div>
         </>
       )}
 
@@ -207,8 +209,8 @@ export default function FlagShop() {
       <h2 className="text-2xl font-bold">Confirm Purchase</h2>
       <p>
         Are you sure you want to purchase the{" "}
-        <span className="uppercase font-semibold">{selectedFlag}</span> flag for{" "}
-        <span className="font-semibold">{TOKEN_COST}</span> tokens?
+        <span className="uppercase font-semibold text-red-400 brightness-125">{selectedFlag}</span> flag for{" "}
+        <span className="font-semibold text-yellow-400 brightness-125">{TOKEN_COST}</span> tokens?
       </p>
       <div className="flex justify-end space-x-4">
         <button
