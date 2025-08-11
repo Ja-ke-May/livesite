@@ -489,8 +489,8 @@ else {
         <hr className='mt-10' />
         <FlagShop />
         </div>
-        <hr className='mt-10' />
-        <p className='mt-4'>More coming soon...</p>
+        {/* <hr className='mt-10' />
+        <p className='mt-4'>More coming soon...</p> */}
 
       
 
