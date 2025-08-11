@@ -220,7 +220,7 @@ export default function FlagShop() {
                 Cancel
               </button>
               <button
-                onClick={buyFlag}
+                onClick={() => setShowPopup(true)} 
                 disabled={loading}
                 className="px-4 py-2 bg-yellow-400 text-black rounded hover:bg-yellow-500 disabled:opacity-50"
               >
