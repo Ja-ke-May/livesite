@@ -316,7 +316,19 @@ export default function FlagShop() {
           </button> 
           </div>
         </>
-      )}
+      )} 
+
+      {successMessage && (
+        <div className="mt-4 flex flex-col items-center">
+          <p className="text-green-400 font-semibold mb-2">{successMessage}</p>
+          <img
+            src={`https://flagcdn.com/w80/${selectedFlag}.png`}
+            alt="Selected Flag"
+            className="h-10 w-16 rounded-sm border border-yellow-400"
+          />
+        </div>
+      )} 
+      
 
       <div className="grid gap-3 mb-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(56px, 1fr))' }}>
         {flags.map(({ code, name }) => (
