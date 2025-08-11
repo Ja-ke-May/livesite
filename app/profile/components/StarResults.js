@@ -19,15 +19,16 @@ const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameCo
     <div className="bg-gray-800/80 rounded-lg shadow-md p-6 mt-4 flex flex-col items-center"
     style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
     >
-      <h3 className='text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]'
-      style={{ color: usernameColor }}>
-         {flag && (
+      {flag && (
         <img
           src={`https://flagcdn.com/w40/${flag}.png`}
           alt="flag"
           className="h-5 w-8 object-cover rounded-sm"
         />
       )}
+      <h3 className='text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]'
+      style={{ color: usernameColor }}>
+         
       Stars Results</h3>
         <h3
         style={{ color: commentColor }}
