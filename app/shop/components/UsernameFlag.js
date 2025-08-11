@@ -171,12 +171,12 @@ export default function FlagShop() {
 
       {username && (
         <>
-          <p className="text-center text-yellow-400 brightness-125 mb-4">{TOKEN_COST} Tokens</p>
+          <p className="text-center text-yellow-400 brightness-125 mb-4 mt-2">{TOKEN_COST} Tokens</p>
           <div className="w-full flex justify-center items-center">
           <button
             onClick={() => setShowPopup(true)} 
             disabled={loading}
-            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-xl text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
+            className={`mb-5 bg-yellow-400 font-bold brightness-125 text-xl text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
           >
             {loading ? "Processing..." : "Purchase"}
           </button> 
