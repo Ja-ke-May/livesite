@@ -8,7 +8,7 @@ import ViewerMain from "./ViewerMain";
 import Votes from "./Votes";
 
 const Viewer = ( { isAdmin, isBlocked } ) => {
-    const { username } = useContext(AuthContext);
+    const { username, flag } = useContext(AuthContext);
     const isGuest = !username;
     
     const [state, setState] = useState({
@@ -583,6 +583,7 @@ const Viewer = ( { isAdmin, isBlocked } ) => {
                     liveUserId={state.liveUserId || username}
                     upNext={nextUsername}
                     username={username}
+                    flag={flag}
                     isAdmin={isAdmin}
                 />
             </div>

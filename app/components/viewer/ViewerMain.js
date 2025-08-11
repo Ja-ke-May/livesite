@@ -3,7 +3,7 @@ import UsernamePopUp from '../UsernamePopUp';
 import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity } from '@/utils/apiClient'; 
 import UserLinkAds from "./UserLinkAds";
 
-const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId, username, isAdmin }) => {
+const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId, username, isAdmin, flag }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [showVolumeControls, setShowVolumeControls] = useState(false);
   const [volume, setVolume] = useState(0.5); 
@@ -193,7 +193,17 @@ useEffect(() => {
          {!state.liveUserId && !state.isCameraOn && upNext && (
           <div>
         <div className="absolute inset-0 flex flex-col text-center items-center justify-center bg-none text-white text-sm md:text-md xl:text-lg p-2 rounded">
-          <p onClick={() => togglePopup(upNext)} className="text-white pointer-events-auto cursor-pointer">Up Next: <span className="font-bold">{upNext}</span></p>
+          <p onClick={() => togglePopup(upNext)} className="text-white pointer-events-auto cursor-pointer">
+            Up Next: <span className="font-bold">
+            {upNext}
+              {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
+            </span></p>
           
           {profilePicture && (
             <img
