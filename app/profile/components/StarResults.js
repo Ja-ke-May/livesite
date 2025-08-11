@@ -41,7 +41,7 @@ const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameCo
         >Total Time Live</h3>
         <h4 className='text-yellow-400 brightness-125'>{formatDuration(totalLiveDuration)}</h4>
     </div>
-    </>
+    </div>
   );
 };
 
