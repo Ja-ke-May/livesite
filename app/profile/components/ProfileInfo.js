@@ -121,14 +121,7 @@ const ProfileInfo = ({
     setShowTokenPopup(true);
   };
 
-  const countryCodeToEmoji = (countryCode) => {
-  if (!countryCode) return '';
-  return countryCode
-    .toUpperCase()
-    .replace(/./g, char => 
-      String.fromCodePoint(127397 + char.charCodeAt())
-    );
-};
+  
 
   return (
     <div className="flex justify-center mt-4">
@@ -139,7 +132,14 @@ const ProfileInfo = ({
           <h2 className="text-2xl font-bold cursor-pointer" 
           style={{ color: usernameColor }}
           onClick={(e) => togglePopup(e)}>
-            {countryCodeToEmoji(flag)} {username}
+           {flag && (
+        <img
+          src={`https://flagcdn.com/w40/${flag}.png`}
+          alt="flag"
+          className="h-5 w-8 object-cover rounded-sm"
+        />
+      )}
+            {username}
             
           </h2>
 
