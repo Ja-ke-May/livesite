@@ -130,7 +130,14 @@ export default function FlagShop() {
     const updatedUser = await updateUserFlag(username, selectedFlag); 
 
     updateFlag(updatedUser.flag); 
-    setSuccessMessage(`You have successfully purchased the ${selectedFlag.name} flag!`); 
+    const flag = flags.find(f => f.code === selectedFlag);
+    if (!flag) {
+      setError("Selected flag not found.");
+      setLoading(false);
+      return;
+    }
+
+    setSuccessMessage(`You have successfully purchased the ${flag.name} flag!`);
       setShowPopup(false);
   } catch (err) {
     setError(err.message || "Could not add flag.");
@@ -210,7 +217,7 @@ export default function FlagShop() {
       <h2 className="text-2xl font-bold">Confirm Purchase</h2>
       <p>
         Are you sure you want to purchase the{" "}
-        <span className="uppercase font-semibold text-yellow-400 brightness-125">{selectedFlag.name}</span> flag for{" "}
+        <span className="uppercase font-semibold text-yellow-400 brightness-125">{flags.find(f => f.code === selectedFlag)?.name}</span> flag for{" "}
         <span className="font-semibold text-yellow-400 brightness-125">{TOKEN_COST}</span> tokens?
       </p>
       <div className="flex justify-end space-x-4">
