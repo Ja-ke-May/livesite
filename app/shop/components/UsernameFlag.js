@@ -176,7 +176,7 @@ export default function FlagShop() {
           <button
             onClick={() => setShowPopup(true)} 
             disabled={loading}
-            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
+            className={`mt-2 mb-5 bg-yellow-400 font-bold brightness-125 text-xl text-[#000110] px-2 py-1 rounded-md shadow-sm hover:bg-yellow-600`}
           >
             {loading ? "Processing..." : "Purchase"}
           </button> 
