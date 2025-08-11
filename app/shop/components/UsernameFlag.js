@@ -8,7 +8,8 @@ export default function FlagShop() {
   const [selectedFlag, setSelectedFlag] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-   const [successMessage, setSuccessMessage] = useState("");
+   const [successMessage, setSuccessMessage] = useState(""); 
+   const [showPopup, setShowPopup] = useState(false);
 
    const TOKEN_COST = 1000;
 
@@ -128,7 +129,8 @@ export default function FlagShop() {
     const updatedUser = await updateUserFlag(username, selectedFlag); 
 
     updateFlag(updatedUser.flag); 
-    setSuccessMessage(`You have successfully purchased the ${selectedFlag} flag!`);
+    setSuccessMessage(`You have successfully purchased the ${selectedFlag} flag!`); 
+      setShowPopup(false);
   } catch (err) {
     setError(err.message || "Could not add flag.");
   } finally {
@@ -144,7 +146,7 @@ export default function FlagShop() {
     >
       <h3 className="text-center text-lg font-semibold text-white mb-4">Username Flag</h3>
 
-      <div className="grid grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-3 mb-4">
+      <div className="grid gap-3 mb-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(56px, 1fr))' }}>
         {flags.map(({ code, name }) => (
           <button
             key={code}
@@ -174,7 +176,7 @@ export default function FlagShop() {
             disabled={loading}
             className="w-full bg-yellow-400 font-bold brightness-125 text-[#000110] py-2 rounded-md shadow-sm hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
           >
-            {loading ? "Processing..." : "Buy Flag"}
+            {loading ? "Processing..." : "Purchase"}
           </button>
         </>
       )}
@@ -189,6 +191,43 @@ export default function FlagShop() {
             alt="Selected Flag"
             className="h-10 w-16 rounded-sm border border-yellow-400"
           />
+        </div>
+      )} {/* Popup modal */}
+      {showPopup && (
+        <div
+          onClick={() => setShowPopup(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            className="bg-gray-900 text-white p-6 rounded-md max-w-sm w-full"
+          >
+            <h2 className="text-xl font-semibold mb-4">Confirm Purchase</h2>
+            <p className="mb-6">Are you sure you want to purchase the {selectedFlag.toUpperCase()} flag for {TOKEN_COST} tokens?</p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowPopup(false)}
+                className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={buyFlag}
+                disabled={loading}
+                className="px-4 py-2 bg-yellow-400 text-black rounded hover:bg-yellow-500 disabled:opacity-50"
+              >
+                {loading ? "Processing..." : "Confirm"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
