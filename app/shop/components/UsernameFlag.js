@@ -209,7 +209,7 @@ export default function FlagShop() {
       <h2 className="text-2xl font-bold">Confirm Purchase</h2>
       <p>
         Are you sure you want to purchase the{" "}
-        <span className="uppercase font-semibold text-red-400 brightness-125">{selectedFlag}</span> flag for{" "}
+        <span className="uppercase font-semibold text-yellow-400 brightness-125">{selectedFlag}</span> flag for{" "}
         <span className="font-semibold text-yellow-400 brightness-125">{TOKEN_COST}</span> tokens?
       </p>
       <div className="flex justify-end space-x-4">
