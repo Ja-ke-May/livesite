@@ -16,16 +16,18 @@ const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameCo
   };
 
   return (
-    <div className="bg-gray-800/80 rounded-lg shadow-md p-6 mt-4 flex flex-col items-center"
-    style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
-    >
-      {flag && (
+    <div className='p-6'>
+    {flag && (
         <img
           src={`https://flagcdn.com/w40/${flag}.png`}
           alt="flag"
           className="h-5 w-8 object-cover rounded-sm"
         />
       )}
+    <div className="bg-gray-800/80 rounded-lg shadow-md mt-4 flex flex-col items-center"
+    style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
+    >
+      
       <h3 className='text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]'
       style={{ color: usernameColor }}>
          
@@ -39,6 +41,7 @@ const ProfileStarResults = ({ totalLiveDuration, longestLiveDuration, usernameCo
         >Total Time Live</h3>
         <h4 className='text-yellow-400 brightness-125'>{formatDuration(totalLiveDuration)}</h4>
     </div>
+    </>
   );
 };
 
