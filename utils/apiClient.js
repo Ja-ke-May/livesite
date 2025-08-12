@@ -443,3 +443,18 @@ export const sendPurchaseEmail = async (purchaseDetails) => {
     throw new Error(error.response?.data?.message || 'Failed to send purchase email');
   }
 };
+
+
+export const fetchNotificationCount = async () => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.get('/notifications/count', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.count; 
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch notification count');
+  }
+};

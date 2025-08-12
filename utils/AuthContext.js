@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useEffect } from 'react'; 
-import { fetchUserBlockedStatus } from '@/utils/apiClient'; 
+import { fetchUserBlockedStatus, fetchNotificationCount } from '@/utils/apiClient'; 
 
 const AuthContext = createContext();
 
@@ -31,7 +31,12 @@ const AuthProvider = ({ children }) => {
       fetchUserBlockedStatus(token, storedUsername).then((status) => {
         setIsBlocked(status); 
       });
-    }
+
+      fetchNotificationCount()
+      .then(count => setNotificationCount(count))
+      .catch(err => console.error('Error fetching notifications:', err));
+  }
+    
 
     setIsInitialized(true);  
   }, []);
