@@ -393,7 +393,7 @@ export default function FlagShop() {
       className="bg-[#000110] p-6 rounded-md shadow-lg"
     >
       <h2 className="text-lg font-semibold mb-4">Confirm Purchase</h2>
-      <p>
+      <p className="mb-4">
         Are you sure you want to purchase the{" "}
         <span className="uppercase font-semibold text-yellow-400 brightness-125">{flags.find(f => f.code === selectedFlag)?.name}</span> flag for{" "}
         <span className="font-semibold text-yellow-400 brightness-125">{TOKEN_COST}</span> tokens?
@@ -401,14 +401,14 @@ export default function FlagShop() {
       <div className="flex justify-end space-x-4">
         <button
           onClick={() => setShowPopup(false)}
-          className="px-5 py-2 rounded bg-gray-700 hover:bg-gray-600 transition"
+          className="mt-4 bg-red-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-700"
         >
           Cancel
         </button>
         <button
           onClick={buyFlag}
           disabled={loading}
-          className="px-5 py-2 rounded bg-yellow-400 text-black font-bold hover:bg-yellow-500 transition disabled:opacity-50"
+          className="ml-2 mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600"
         >
           {loading ? "Processing..." : "Confirm"}
         </button>
