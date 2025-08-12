@@ -3,10 +3,9 @@ import Link from 'next/link';
 import { AuthContext } from '@/utils/AuthContext';
 import Menu from './menu/Menu'; 
 import MyMeLogo from './MyMeLogo';
-import { fetchNotificationCount } from '@/utils/apiClient';
 
 const Navbar = () => {
-  const { isLoggedIn, username, notificationCount } = useContext(AuthContext);
+  const { isLoggedIn, username, setNotificationCount, notificationCount } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
@@ -30,8 +29,8 @@ const Navbar = () => {
   useEffect(() => {
   if (!isLoggedIn) return;
   const interval = setInterval(() => {
-    fetchNotificationCount()
-      .then(count => fetchNotificationCount(count))
+    setNotificationCount()
+      .then(count => setNotificationCount(count))
       .catch(console.error);
   }, 30000); 
   return () => clearInterval(interval);

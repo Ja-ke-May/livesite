@@ -444,7 +444,6 @@ export const sendPurchaseEmail = async (purchaseDetails) => {
   }
 };
 
-
 export const fetchNotificationCount = async () => {
   try {
     const token = getToken();
