@@ -7,7 +7,6 @@ import TokenPurchasePopup from './TokenPurchasePopup';
 import { updateColor, deductTokens, fetchUserProfile, sendLinkToAds, fetchAdsCount, sendPurchaseEmail } from '@/utils/apiClient';
 import UserLinkAds from '@/app/components/viewer/UserLinkAds';
 import BritGamesShop from './BritGamesShop';
-import { getLuxuryIndex, updateLuxuryIndex } from '@/utils/apiClient';
 import FlagShop from './UsernameFlag';
 
 const Shop = () => {
@@ -27,10 +26,6 @@ const Shop = () => {
   const [userLinks, setUserLinks] = useState([]);
   const [selectedLink, setSelectedLink] = useState(''); 
   const [adsCount, setAdsCount] = useState(0); 
-
-  const [luxuryIndex, setLuxuryIndex] = useState(5); 
-  const [luxuryGoal, setLuxuryGoal] = useState(0);
-  const [currentTokens, setCurrentTokens] = useState(0);
 
 
 
@@ -115,33 +110,6 @@ const Shop = () => {
   };
 
 
-useEffect(() => {
-    const fetchLuxury = async () => {
-      try {
-        const index = await getLuxuryIndex();
-        setLuxuryIndex(index);
-        
-        setLuxuryGoal(20000); 
-      } catch (error) {
-        console.error('Failed to fetch luxury index:', error);
-      }
-    };
-    fetchLuxury();
-  }, []);
-
-
- const handleAddTokens = async () => {
-  try {
-    const updatedIndex = await updateLuxuryIndex({
-      index: activeIndex,
-      tokens: tokenGoal,
-    });
-    setActiveIndex(updatedIndex);
-    setTokenGoal(0);
-  } catch (error) {
-    console.error("Failed to update luxury index:", error);
-  }
-};
 
 
 
@@ -181,23 +149,8 @@ useEffect(() => {
         await sendLinkToAds(selectedLinkObject);
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
-      }  else if (name === 'Luxury Contribution') {
-  await deductTokens(selectedTokens);
-
-  try {
-    const { index, tokenGoal } = await updateLuxuryIndex('up', username); 
-
-    setPurchaseStatus({ message: `Success! Contributed ${selectedTokens} tokens to Luxury Scale.`, type: 'success' });
-  } catch (error) {
-    console.error("Failed to contribute to luxury scale:", error);
-    setPurchaseStatus({ message: `Contribution failed. Try again.`, type: 'error' });
-    setIsPurchasing(false);
-    return;
-  }
-
-  
-} else if (
-  name === 'Safety Boat' || name === 'Blackpool' ||
+      }  else if (
+  name === 'Safety Boat' || name === 'Blackpool' || name === 'takeaway tonight' || name === 'fish chips' ||
   ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice') && player)
 ) {
   await deductTokens(selectedTokens);
@@ -318,9 +271,6 @@ else {
   username={username}
   isPurchasing={isPurchasing}
   handlePurchaseClick={handlePurchaseClick}
-  handleAddTokens={handleAddTokens}
-  luxuryIndex={luxuryIndex}
-  luxuryGoal={luxuryGoal}
 />
 
 </div>

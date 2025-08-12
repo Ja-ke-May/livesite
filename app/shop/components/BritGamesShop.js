@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react"; 
-import { getLuxuryIndex, updateLuxuryIndex } from "@/utils/apiClient";
 
 const BritGamesShop = ({
  selectedItem,
@@ -8,125 +6,9 @@ const BritGamesShop = ({
   username,
   isPurchasing,
   handlePurchaseClick,
-  luxuryIndex,
-  luxuryGoal,
-  handleAddTokens,
 }) => {
   
-  const [tokenGoal, setTokenGoal] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(""); 
-const [activeIndex, setActiveIndex] = useState(luxuryIndex ?? 5); 
-  const [currentTokens, setCurrentTokens] = useState(luxuryGoal ?? 0);
 
-
-  const scaleItems = [
-    "Hotel, Meal Out",
-    "Campsite, Pizza",
-    "Takeaway",
-    "Chicken",
-    "Beans on Toast",
-    "Cold Beans",
-  ];
-  const dotOffsets = [0, 20, 40, 60, 80, 100]; 
-
- 
-
-useEffect(() => {
-  setActiveIndex(luxuryIndex);
-  setCurrentTokens(luxuryGoal);
-}, [luxuryIndex, luxuryGoal]);
-
-
-useEffect(() => {
-  const fetchLuxurySelection = async () => {
-    try {
-      const index = await getLuxuryIndex();
-      setActiveIndex(index);
-    } catch (error) {
-      console.error("Failed to fetch luxury index:", error);
-    }
-  };
-
-  fetchLuxurySelection(); 
-
-  const interval = setInterval(fetchLuxurySelection, 5000); 
-  return () => clearInterval(interval); 
-}, []);
-
-
-  
-
-
-  const calculateTimeLeft = () => {
-  const now = new Date();
-
-  const londonTimeParts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/London",
-    hour12: false,
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).formatToParts(now);
-
-  const partsObj = {};
-  londonTimeParts.forEach(({ type, value }) => {
-    partsObj[type] = value;
-  });
-
-  const year = parseInt(partsObj.year, 10);
-  const month = parseInt(partsObj.month, 10) - 1;
-  const day = parseInt(partsObj.day, 10);
-  const hour = parseInt(partsObj.hour, 10);
-  const minute = parseInt(partsObj.minute, 10);
-  const second = parseInt(partsObj.second, 10);
-
-  const londonNow = new Date(year, month, day, hour, minute, second);
-  const fourPM = new Date(year, month, day, 16, 0, 0);
-
-  if (londonNow >= fourPM) {
-    fourPM.setDate(fourPM.getDate() + 1);
-  }
-
-  const diff = fourPM - londonNow;
-
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-  return `${hours.toString().padStart(2, "0")}:${minutes
-    .toString()
-    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-};
-
-
-useEffect(() => {
-  const updateTimer = () => {
-    setTimeLeft(calculateTimeLeft());
-  };
-
-  updateTimer();
-  const timerId = setInterval(updateTimer, 1000);
-
-  return () => clearInterval(timerId);
-}, []);
-
-useEffect(() => {
-  const resetCheck = () => {
-    const londonTime = new Date().toLocaleString("en-GB", { timeZone: "Europe/London" });
-    const now = new Date(londonTime);
-    if (now.getHours() === 16 && now.getMinutes() === 0 && now.getSeconds() === 0) {
-      setActiveIndex(5);
-      setCurrentTokens(0);
-      updateLuxuryIndex({ index: 5, tokens: 0 });
-    }
-  };
-
-  const interval = setInterval(resetCheck, 1000);
-  return () => clearInterval(interval);
-}, []);
 
 
 
@@ -322,9 +204,57 @@ useEffect(() => {
         </div>
 
 
+{/* Fish n Chips */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+          <h3 className="text-center text-xl font-semibold">Fish n Chips</h3>
+          <img
+            src="/images/fish_chips.png"
+            alt="Fish n Chips"
+            className="w-full h-40 object-contain mb-4 "
+          />
+          <p className="text-center text-sm mb-2 mt-2">Lovely</p>
 
+          {isLoggedIn && username && (
+            <div className="text-center flex flex-col flex-end">
+              <p className="text-yellow-400 brightness-125 mt-2">20000 Tokens</p>
+              <button
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}
+                onClick={() => handlePurchaseClick("fish chips", 20000)}
+                disabled={isPurchasing}
+              >
+                Purchase
+              </button>
+            </div>
+          )}
+        </div>
 
+{/* Takeaway Tonight */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+          <h3 className="text-center text-xl font-semibold">Takeaway Tonight?</h3>
+          <img
+            src="https://cdn.pixabay.com/photo/2023/07/16/20/49/ai-generated-8131440_1280.png"
+            alt="takeaway food"
+            className="w-full h-40 object-contain"
+          />
+          <p className="text-center text-sm mb-2 mt-2">BIG EATS!</p>
 
+          {isLoggedIn && username && (
+            <div className="text-center flex flex-col flex-end">
+              <p className="text-yellow-400 brightness-125 mt-2">30000 Tokens</p>
+              <button
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}
+                onClick={() => handlePurchaseClick("takeaway tonight", 30000)}
+                disabled={isPurchasing}
+              >
+                Purchase
+              </button>
+            </div>
+          )}
+        </div>
 
 
 
@@ -383,131 +313,6 @@ useEffect(() => {
       </div>
 
       
- {/* LUXURY SCALE */}
-<div className="relative w-full max-w-md mx-auto mt-6 mb-6 brightness-125 bg-gray-800/80 p-4 rounded-md shadow-md border-2">
-  <h3
-    className="
-      text-3xl
-      font-extrabold
-      text-center
-      italic
-      underline
-      bg-gradient-to-r from-red-500 via-white/50 to-blue-500
-      bg-clip-text
-      text-transparent
-      rounded-lg
-      relative
-      z-10
-      p-2
-      border-2
-      border-yellow-400
-      drop-shadow-md
-      tracking-wide
-    "
-  >
-    Luxury Scale
-  </h3>
-
-  <div className="flex flex-col gap-4 mt-6 z-10 relative">
-    
-
-<div className="flex flex-col gap-2 mt-6 mb-2 z-10 relative px-8"> 
-  {/* Vertical Line */}
-  <div className="absolute left-1/2 transform -translate-x-1/2 top-2 bottom-0 w-1 bg-white opacity-60 rounded"></div>
-
-  {/* Dot */}
-  <div
-    className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-yellow-400 z-20 transition-all duration-300"
-    style={{ top: `${dotOffsets[activeIndex]}%` }}
-  ></div>
-
-  {/* Scale Items */}
-  {scaleItems.map((label, index) => (
-    <div
-      key={index}
-    className={`
-  border-2 p-4 rounded-lg cursor-default transition-all duration-300
-  font-semibold tracking-wide max-w-[180px] break-words
-  ${index % 2 === 0 ? "self-start" : "self-end"}
-  ${activeIndex === index 
-    ? "ring-4 ring-yellow-400 scale-105 shadow-lg opacity-100" 
-    : "hover:ring-2 hover:ring-yellow-300 opacity-50"}
-  ${
-    index % 3 === 0
-      ? "bg-red-700 text-white border-black shadow-md"
-      : index % 3 === 1
-      ? "bg-white text-black border-black shadow-sm"
-      : "bg-blue-700 text-white border-black shadow-md"
-  }
-  select-none
-`}
-
-      style={{ textShadow: activeIndex === index ? "0 0 8px rgba(255, 215, 0, 0.7)" : "none" }}
-    >
-      {label}
-    </div>
-  ))}
-</div>
-
-
-  </div>
-
-
-  <div>
-  <h4 className="text-center text-2xl text-white mt-5 font-bold">
-    Reach the next goal to enhance tonights activities
-  </h4>
-
-  <div className="flex justify-center">
-  <div className="mt-4 h-5 w-[80%] bg-white rounded overflow-hidden border border-black">
-    <div
-  id="green-bar"
-  className="h-5 bg-green-600 brightness-125 transition-all duration-500"
-  style={{
-    width: `${Math.min((currentTokens / 20000) * 100, 100)}%`,
-  }}
-></div>
-
-  </div>
-</div>
-
-
-
- <p className="text-center text-white mt-4">
-    At 4pm UK time the item selected will be chosen.
-  </p>
-  <p className="text-center mb-2 text-red-300">{timeLeft}</p>
-
-  <div className="flex flex-col items-center gap-2 mt-4">
-  <input
-    type="number"
-    min="0"
-    className="w-40 p-2 rounded border border-gray-300 text-center text-black"
-    placeholder="Enter tokens"
-    value={tokenGoal}
-    onChange={(e) => {
-      const val = parseInt(e.target.value, 10);
-      setTokenGoal(isNaN(val) ? 0 : val);
-    }}
-  />
-
-  <button
-  onClick={() => handleAddTokens(tokenGoal)}
-  className={`border-2 text-2xl rounded p-2 transition
-    ${activeIndex === 0 ? "bg-green-700 opacity-50 cursor-not-allowed" : "bg-green-700 hover:bg-green-800"}`}
-  disabled={activeIndex === 0}
->
-  Add Tokens
-</button>
-
-</div>
-
-
- 
-  </div>
-
-</div>
-
     </div>
   );
 };

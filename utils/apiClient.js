@@ -11,27 +11,6 @@ const axiosInstance = axios.create({
   },
 }); 
 
-// BritGames Luxury
-
-export const getLuxuryIndex = async () => {
-  try {
-    const response = await axiosInstance.get('/luxury');
-    return response.data.index;
-  } catch (error) {
-    console.error('Error fetching luxury index:', error);
-    throw error;
-  }
-};
-
-export const updateLuxuryIndex = async ({ index, tokens }) => {
-  const response = await axiosInstance.post('/luxury/update', {
-    index,
-    tokens,
-  });
-  return response.data.index;
-};
-
-
 
 export const signup = async (userData) => {
   try {
