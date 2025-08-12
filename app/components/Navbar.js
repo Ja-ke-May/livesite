@@ -5,7 +5,7 @@ import Menu from './menu/Menu';
 import MyMeLogo from './MyMeLogo';
 
 const Navbar = () => {
-  const { isLoggedIn, username, notificationCount } = useContext(AuthContext);
+  const { isLoggedIn, username, fetchNotificationCount } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
@@ -30,7 +30,7 @@ const Navbar = () => {
   if (!isLoggedIn) return;
   const interval = setInterval(() => {
     fetchNotificationCount()
-      .then(count => setNotificationCount(count))
+      .then(count => fetchNotificationCount(count))
       .catch(console.error);
   }, 30000); 
   return () => clearInterval(interval);
