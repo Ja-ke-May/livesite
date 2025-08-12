@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { AuthContext } from '@/utils/AuthContext';
 import Menu from './menu/Menu'; 
 import MyMeLogo from './MyMeLogo';
+import { fetchNotificationCount } from '@/utils/apiClient';
 
 const Navbar = () => {
   const { isLoggedIn, username, setNotificationCount, notificationCount } = useContext(AuthContext);
@@ -23,13 +24,14 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    setCurrentPath(window.location.pathname);
+    setCurrentPath(window.location.pathname); 
+    
   }, []); 
 
   useEffect(() => {
   if (!isLoggedIn) return;
   const interval = setInterval(() => {
-    setNotificationCount()
+    fetchNotificationCount()
       .then(count => setNotificationCount(count))
       .catch(console.error);
   }, 30000); 
@@ -42,7 +44,10 @@ const Navbar = () => {
   const isActive = (href) => href === currentPath;
 
   const handleLinkClick = (href) => {
-    setCurrentPath(href);
+    setCurrentPath(href); 
+    if (username && href === `/profile/${username}`) {
+    setNotificationCount(0);
+  }
   };
 
   const renderLink = (href, defaultLabel) => (
