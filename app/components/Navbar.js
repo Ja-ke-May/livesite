@@ -24,7 +24,17 @@ const Navbar = () => {
 
   useEffect(() => {
     setCurrentPath(window.location.pathname);
-  }, []);
+  }, []); 
+
+  useEffect(() => {
+  if (!isLoggedIn) return;
+  const interval = setInterval(() => {
+    fetchNotificationCount()
+      .then(count => setNotificationCount(count))
+      .catch(console.error);
+  }, 30000); 
+  return () => clearInterval(interval);
+}, [isLoggedIn]);
 
   const linkClasses = "bg-gray-800/80 text-white px-2 md:px-4 py-2 mx-1 md:mx-2 rounded-t-lg hover:bg-[#000110]";
   const activeLinkClasses = "bg-[#000110] text-white px-2 md:px-4 py-2 mx-1 md:mx-2 rounded-t-lg"; 
