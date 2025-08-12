@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { AuthContext } from '@/utils/AuthContext';
 import Menu from './menu/Menu'; 
 import MyMeLogo from './MyMeLogo';
+import { fetchNotificationCount } from '@/utils/apiClient';
 
 const Navbar = () => {
-  const { isLoggedIn, username, fetchNotificationCount } = useContext(AuthContext);
+  const { isLoggedIn, username, notificationCount } = useContext(AuthContext);
   const [currentPath, setCurrentPath] = useState('');
   const [isDarkBackground, setIsDarkBackground] = useState(false);
 
