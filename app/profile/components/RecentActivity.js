@@ -14,7 +14,7 @@ const RecentActivity = ({ recentActivity, usernameColor, commentColor, borderCol
   });
 
   return (
-    <div className="max-h-[400px] bg-gray-800/80 rounded-lg shadow-md p-6 mt-4"
+    <div className="max-h-[400px] bg-gray-800/80 rounded-lg shadow-md p-6 pb-10 mt-4"
     style={{ borderColor: borderColor, borderWidth: '2px', borderStyle: 'solid' }}
     >
       <h3 className="text-4xl md:text-5xl font-semibold mb-4 text-center text-[#000110]"
