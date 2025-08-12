@@ -452,7 +452,7 @@ export const fetchNotificationCount = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.count; 
+    return response.data.notificationCount;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Failed to fetch notification count');
   }
