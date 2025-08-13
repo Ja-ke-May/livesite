@@ -2,7 +2,10 @@ import React from 'react';
 
 const TokenPurchasePopup = ({ onClose, username }) => {
   const PROJECT_ID = process.env.NEXT_PUBLIC_XSOLLA_PROJECT_ID;
+  const MERCHANT_ID = process.env.NEXT_PUBLIC_XSOLLA_MERCHANT_ID; // Only safe if public-safe key is allowed
+  const API_KEY = process.env.NEXT_PUBLIC_XSOLLA_API_KEY; // Only safe if using a public key or sandbox
   const RETURN_URL = 'https://myme.live/shop';
+  const SANDBOX = false; 
 
   const tokenOptions = [
     { amount: 400, price: '£9.99', sku: 'tokens_400' },
@@ -12,30 +15,45 @@ const TokenPurchasePopup = ({ onClose, username }) => {
     { amount: 10000, price: '£99.99', sku: 'tokens_10000' },
   ];
 
-  const handleBuy = (sku) => {
+  const handleBuy = async (sku) => {
     if (!username) {
       alert('Username is required.');
       return;
     }
 
-   
-    const xsollaScript = document.createElement('script');
-    xsollaScript.src = 'https://cdn.xsolla.com/sdk/paystation/1.0.0/xsolla-paystation.js';
-    xsollaScript.onload = () => {
-      window.XsollaPayStationWidget.init({
-        projectId: PROJECT_ID,
-        userId: username,
-        sku: sku,
-        currency: 'GBP', 
-        language: 'en',
-        sandbox: false, 
-        onSuccess: () => alert('Payment successful!'),
-        onError: (err) => alert('Payment failed: ' + JSON.stringify(err)),
-        onCancel: () => alert('Payment canceled.'),
-        returnUrl: RETURN_URL,
+    try {
+      const res = await fetch(`https://api.xsolla.com/merchant/v2/projects/${PROJECT_ID}/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Basic ' + btoa(`${MERCHANT_ID}:${API_KEY}`),
+        },
+        body: JSON.stringify({
+          user: {
+            id: { value: username },
+          },
+          purchase: {
+            virtual_items: [{ sku }],
+          },
+          settings: {
+            return_url: RETURN_URL,
+            sandbox: SANDBOX,
+          },
+        }),
       });
-    };
-    document.body.appendChild(xsollaScript);
+
+      if (!res.ok) {
+        throw new Error(`Failed to create token: ${res.status}`);
+      }
+
+      const { token } = await res.json();
+
+      const paystationUrl = `${SANDBOX ? 'https://sandbox-secure.xsolla.com' : 'https://secure.xsolla.com'}/paystation3/?token=${token}`;
+      window.open(paystationUrl, '_blank');
+    } catch (err) {
+      console.error(err);
+      alert(`Payment setup failed: ${err.message}`);
+    }
   };
 
   return (
@@ -49,7 +67,10 @@ const TokenPurchasePopup = ({ onClose, username }) => {
           {tokenOptions.map((option, index) => (
             <li key={index} className="m-4 flex justify-between">
               <span className="text-yellow-400 brightness-125">
-                <span className="line-through text-yellow-400">{option.amount / 2} Tokens</span> <br />
+                <span className="line-through text-yellow-400">
+                  {option.amount / 2} Tokens
+                </span>{' '}
+                <br />
                 {option.amount} Tokens <br />
                 <span className="text-white">{option.price}</span>
               </span>
