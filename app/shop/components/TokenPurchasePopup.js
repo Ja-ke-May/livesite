@@ -20,7 +20,7 @@ const TokenPurchasePopup = ({ onClose, username }) => {
     }
 
     // Build the direct Pay Station URL
-    const url = `https://secure.xsolla.com/paystation2/?project=${PROJECT_ID}&sku=${sku}&user=${encodeURIComponent(username)}&return_url=${encodeURIComponent(RETURN_URL)}`;
+    const url = `https://secure.xsolla.com/paystation4/?project=${PROJECT_ID}&sku=${sku}&user=${encodeURIComponent(username)}&return_url=${encodeURIComponent(RETURN_URL)}`;
 
     // Open the payment page in a new tab
     window.open(url, '_blank');
