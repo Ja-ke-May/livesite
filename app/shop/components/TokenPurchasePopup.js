@@ -1,8 +1,7 @@
 import React from 'react';
 
 const TokenPurchasePopup = ({ onClose, username }) => {
-  // Replace with your actual Xsolla project ID
-  const PROJECT_ID = 286753;
+  const PROJECT_ID = process.env.NEXT_PUBLIC_XSOLLA_PROJECT_ID;
   const RETURN_URL = 'https://myme.live/shop';
 
   const tokenOptions = [
@@ -15,15 +14,28 @@ const TokenPurchasePopup = ({ onClose, username }) => {
 
   const handleBuy = (sku) => {
     if (!username) {
-      alert('Username is required to proceed with payment.');
+      alert('Username is required.');
       return;
     }
 
-    // Build the direct Pay Station URL
-    const url = `https://secure.xsolla.com/paystation4/?project=${PROJECT_ID}&sku=${sku}&user=${encodeURIComponent(username)}&return_url=${encodeURIComponent(RETURN_URL)}`;
-
-    // Open the payment page in a new tab
-    window.open(url, '_blank');
+   
+    const xsollaScript = document.createElement('script');
+    xsollaScript.src = 'https://cdn.xsolla.com/sdk/paystation/1.0.0/xsolla-paystation.js';
+    xsollaScript.onload = () => {
+      window.XsollaPayStationWidget.init({
+        projectId: PROJECT_ID,
+        userId: username,
+        sku: sku,
+        currency: 'GBP', 
+        language: 'en',
+        sandbox: false, 
+        onSuccess: () => alert('Payment successful!'),
+        onError: (err) => alert('Payment failed: ' + JSON.stringify(err)),
+        onCancel: () => alert('Payment canceled.'),
+        returnUrl: RETURN_URL,
+      });
+    };
+    document.body.appendChild(xsollaScript);
   };
 
   return (
@@ -43,7 +55,7 @@ const TokenPurchasePopup = ({ onClose, username }) => {
               </span>
               <button
                 onClick={() => handleBuy(option.sku)}
-                className="ml-2 bg-yellow-400 font-bold text-[#000110] brightness-125 px-1 py-1 rounded-md shadow-sm hover:bg-yellow-600 flex justify-center items-center text-center"
+                className="ml-2 bg-yellow-400 font-bold text-[#000110] brightness-125 px-1 py-1 rounded-md shadow-sm hover:bg-yellow-600"
               >
                 Buy
               </button>
