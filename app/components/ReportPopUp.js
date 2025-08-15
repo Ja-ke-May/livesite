@@ -1,5 +1,6 @@
 import React, { useImperativeHandle, useRef, useEffect, forwardRef, useState, useContext } from 'react';
 import { reportUser, blockUser } from '@/utils/apiClient'; 
+import { AuthContext } from '@/utils/AuthContext';
 
 const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
   const { isAdmin } = useContext(AuthContext);
