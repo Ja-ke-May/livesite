@@ -9,16 +9,15 @@ const UserCommentBox = ({
   commentColor,
   borderColor,
   usernameColor,
-  isAdmin,
   flag,
-  onUsernameClick // passed down from Chat
+  onUsernameClick 
 }) => {
   const handleUsernameClick = async (e) => {
     if (!isLoggedIn) return;
 
     // Position near clicked username
     const rect = e.target.getBoundingClientRect();
-    const position = { x: rect.left, y: rect.bottom };
+    const position = { x: rect.left, y: rect.top };
 
     try {
       const [userProfile, supportersData] = await Promise.all([
