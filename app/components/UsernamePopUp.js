@@ -1,29 +1,27 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import LinksPopUp from './LinksPopUp';
 import SendTokensPopUp from './SendTokens';
 import ReportPopUp from './ReportPopUp';
 import Link from 'next/link';
 
-const UsernamePopUp = ({
-  visible,
-  onClose,
-  links,
-  username,
-  position,
-  isUserSupported,
-  onToggleSupport,
-  isAdmin
-}) => {
+const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupported, onToggleSupport, isAdmin }) => {
   const [activePopUp, setActivePopUp] = useState(null);
-  const [adjustedPosition, setAdjustedPosition] = useState(position);
+  const [lockedUsername, setLockedUsername] = useState(username); 
   const popupRef = useRef(null);
+
+  
+  useEffect(() => {
+    if (visible) {
+      setLockedUsername((prev) => prev || username); 
+    } else {
+      setLockedUsername(username); 
+    }
+  }, [visible, username]);
 
   const handlePopUpToggle = (popUpName) => {
     setActivePopUp((prev) => (prev === popUpName ? null : popUpName));
   };
 
-  // Adjust position without mutating props
   useEffect(() => {
     if (visible && popupRef.current) {
       const { innerWidth, innerHeight } = window;
@@ -33,17 +31,17 @@ const UsernamePopUp = ({
       let adjustedY = position.y;
 
       if (popupRect.right > innerWidth) {
-        adjustedX = Math.max(innerWidth - popupRect.width, 0);
+        adjustedX = innerWidth - popupRect.width;
       }
       if (popupRect.bottom > innerHeight) {
-        adjustedY = Math.max(innerHeight - popupRect.height, 0);
+        adjustedY = innerHeight - popupRect.height;
       }
 
-      setAdjustedPosition({ x: adjustedX, y: adjustedY });
+      position.x = adjustedX;
+      position.y = adjustedY;
     }
   }, [visible, position]);
 
-  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -53,7 +51,10 @@ const UsernamePopUp = ({
 
     if (visible) {
       document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
     }
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -61,14 +62,11 @@ const UsernamePopUp = ({
 
   if (!visible) return null;
 
-  return createPortal(
+  return (
     <div
       ref={popupRef}
-      className="fixed bg-[#000110] p-2 rounded-[5%] shadow-lg z-[101]"
-      style={{
-        top: adjustedPosition.y,
-        left: adjustedPosition.x
-      }}
+      className="absolute bg-[#000110] p-2 rounded-[5%] shadow-lg z-[101]"
+      style={{ top: position.y, left: position.x }}
     >
       <button
         onClick={onClose}
@@ -80,8 +78,8 @@ const UsernamePopUp = ({
 
       <ul>
         <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-4 mr-1 mb-1">
-          <Link href={`/profile/${username}`} className="hover:text-gray-400">
-            {username}'s Profile
+          <Link href={`/profile/${lockedUsername}`} className="hover:text-gray-400">
+            {lockedUsername}'s Profile
           </Link>
         </li>
 
@@ -120,36 +118,24 @@ const UsernamePopUp = ({
         </li>
 
         <li className="text-lg md:text-xl md:pl-4 md:pr-4 cursor-pointer mt-2 flex justify-between items-center text-red-400 hover:text-red-600">
-          <button onClick={() => handlePopUpToggle('report')}>Report</button>
+          <button onClick={() => handlePopUpToggle('report')}>
+            Report
+          </button>
         </li>
       </ul>
 
       {activePopUp === 'links' && (
-        <LinksPopUp
-          visible={activePopUp === 'links'}
-          onClose={() => handlePopUpToggle('links')}
-          links={links}
-          username={username}
-        />
+        <LinksPopUp visible onClose={() => handlePopUpToggle('links')} links={links} username={lockedUsername} />
       )}
       {activePopUp === 'sendTokens' && (
-        <SendTokensPopUp
-          recipientUsername={username}
-          visible={activePopUp === 'sendTokens'}
-          onClose={() => handlePopUpToggle('sendTokens')}
-        />
+        <SendTokensPopUp recipientUsername={lockedUsername} visible onClose={() => handlePopUpToggle('sendTokens')} />
       )}
       {activePopUp === 'report' && (
-        <ReportPopUp
-          visible={activePopUp === 'report'}
-          onClose={() => handlePopUpToggle('report')}
-          username={username}
-          isAdmin={isAdmin}
-        />
+        <ReportPopUp visible onClose={() => handlePopUpToggle('report')} username={lockedUsername} isAdmin={isAdmin} />
       )}
-    </div>,
-    document.body
+    </div>
   );
 };
 
 export default UsernamePopUp;
+
