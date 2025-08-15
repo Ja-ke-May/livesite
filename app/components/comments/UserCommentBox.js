@@ -5,6 +5,7 @@ import { fetchUserProfile, fetchSupporters, toggleSupport, fetchRecentActivity }
 
 const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, borderColor, usernameColor, isAdmin, flag }) => {
   
+  const [popupUsername, setPopupUsername] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 }); 
   const [links, setLinks] = useState([]);
@@ -21,7 +22,8 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
     setShowPopup(!showPopup);
 
     if (!showPopup) {
-      loadData();
+       setPopupUsername(username);
+      loadData(username);
     }
   };
 
@@ -96,7 +98,7 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
           <UsernamePopUp
             visible={showPopup}
             onClose={togglePopup}
-            username={username}
+            username={popupUsername}
             isAdmin={isAdmin}
             position={popupPosition}
             links={links}
