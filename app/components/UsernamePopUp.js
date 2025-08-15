@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import LinksPopUp from './LinksPopUp';
 import SendTokensPopUp from './SendTokens';
 import ReportPopUp from './ReportPopUp';
@@ -60,10 +61,10 @@ const UsernamePopUp = ({
 
   if (!visible) return null;
 
-  return (
+  return createPortal(
     <div
       ref={popupRef}
-      className="absolute bg-[#000110] p-2 rounded-[5%] shadow-lg z-[101]"
+      className="fixed bg-[#000110] p-2 rounded-[5%] shadow-lg z-[101]"
       style={{
         top: adjustedPosition.y,
         left: adjustedPosition.x
@@ -146,7 +147,8 @@ const UsernamePopUp = ({
           isAdmin={isAdmin}
         />
       )}
-    </div>
+    </div>,
+    document.body
   );
 };
 
