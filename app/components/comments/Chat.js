@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import UserCommentBox from './UserCommentBox';
-import UsernamePopUp from './UsernamePopUp';
+import UsernamePopUp from '../UsernamePopUp';
 
 const Chat = ({ socket, isLoggedIn, isAdmin, flag }) => {
   const [comments, setComments] = useState([]);
