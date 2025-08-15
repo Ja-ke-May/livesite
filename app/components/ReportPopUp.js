@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useRef, useEffect, forwardRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useEffect, forwardRef, useState, useContext } from 'react';
 import { reportUser, blockUser } from '@/utils/apiClient'; 
 
 const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
