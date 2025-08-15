@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import UserCommentBox from './UserCommentBox';
 import UsernamePopUp from '../UsernamePopUp';
 
-const Chat = ({ socket, isLoggedIn, isAdmin, flag }) => {
+const Chat = ({ socket, isLoggedIn, isAdmin }) => {
   const [comments, setComments] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
@@ -37,7 +37,7 @@ const Chat = ({ socket, isLoggedIn, isAdmin, flag }) => {
   const handleUsernameClick = (username, position, links, supported) => {
     setPopupUsername(username);
     setPopupLinks(links || []);
-    setIsUserSupported(supported || false);
+    setIsUserSupported(supported ?? false);
     setPopupPosition(position);
     setShowPopup(true);
   };
