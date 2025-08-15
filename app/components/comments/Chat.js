@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import UserCommentBox from './UserCommentBox';
 import UsernamePopUp from '../UsernamePopUp';
+import { fetchSupporters, toggleSupport } from '@/utils/apiClient'; 
 
-const Chat = ({ socket, isLoggedIn, isAdmin }) => {
+const Chat = ({ socket, isLoggedIn, isAdmin, username }) => {
   const [comments, setComments] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
@@ -27,24 +28,32 @@ const Chat = ({ socket, isLoggedIn, isAdmin }) => {
     };
 
     socket.on('new-comment', handleNewComment);
-
-    return () => {
-      socket.off('new-comment', handleNewComment);
-    };
+    return () => socket.off('new-comment', handleNewComment);
   }, [socket]);
 
-  // Handle username click from comment
-  const handleUsernameClick = (username, position, links, supported) => {
-    setPopupUsername(username);
+  
+  const handleUsernameClick = async (clickedUsername, position, links) => {
+    setPopupUsername(clickedUsername);
     setPopupLinks(links || []);
-    setIsUserSupported(supported ?? false);
     setPopupPosition(position);
     setShowPopup(true);
+
+    try {
+      const supporters = await fetchSupporters(clickedUsername);
+      setIsUserSupported(supporters.includes(username));
+    } catch (err) {
+      console.error('Error fetching supporters:', err);
+    }
   };
 
-  const handleToggleSupport = () => {
-    setIsUserSupported((prev) => !prev);
-    // TODO: Emit socket event or API call to update support status if needed
+  const handleToggleSupport = async () => {
+    try {
+      await toggleSupport(popupUsername); 
+      const supporters = await fetchSupporters(popupUsername); 
+      setIsUserSupported(supporters.includes(username));
+    } catch (err) {
+      console.error('Error toggling support:', err);
+    }
   };
 
   return (
@@ -65,13 +74,12 @@ const Chat = ({ socket, isLoggedIn, isAdmin }) => {
             usernameColor={c.usernameColor || '#ffffff'}
             flag={c.flag}
             onUsernameClick={(pos) =>
-              handleUsernameClick(c.username, pos, c.links, c.isSupported)
+              handleUsernameClick(c.username, pos, c.links)
             }
           />
         ))}
       </div>
 
-      {/* Global popup so it persists between comment updates */}
       <UsernamePopUp
         visible={showPopup}
         onClose={() => setShowPopup(false)}
