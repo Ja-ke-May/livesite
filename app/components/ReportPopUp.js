@@ -1,7 +1,8 @@
 import React, { useImperativeHandle, useRef, useEffect, forwardRef, useState } from 'react';
 import { reportUser, blockUser } from '@/utils/apiClient'; 
 
-const ReportPopUp = forwardRef(({ visible, onClose, username, isAdmin }, ref) => {
+const ReportPopUp = forwardRef(({ visible, onClose, username }, ref) => {
+  const { isAdmin } = useContext(AuthContext);
   const popupRef = useRef(null);
   const [reportText, setReportText] = useState('');
   const [submitted, setSubmitted] = useState(false);
