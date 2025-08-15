@@ -131,7 +131,7 @@ const UsernamePopUp = ({ visible, onClose, links, username, position, isUserSupp
         <SendTokensPopUp recipientUsername={lockedUsername} visible onClose={() => handlePopUpToggle('sendTokens')} />
       )}
       {activePopUp === 'report' && (
-        <ReportPopUp visible onClose={() => handlePopUpToggle('report')} username={lockedUsername} isAdmin={isAdmin} />
+        <ReportPopUp visible onClose={() => handlePopUpToggle('report')} username={username} isAdmin={isAdmin} />
       )}
     </div>
   );
