@@ -35,7 +35,7 @@ const Chat = ({ socket, isLoggedIn, isAdmin, username }) => {
   const handleUsernameClick = async (clickedUsername, rect, links) => {
     setPopupUsername(clickedUsername);
     setPopupLinks(links || []);
-   setPopupPosition({ x: rect.right, y: rect.top });
+   setPopupPosition({ x: rect.left, y: rect.top });
     setShowPopup(true);
 
     try {
