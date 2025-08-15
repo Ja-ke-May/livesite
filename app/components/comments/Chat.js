@@ -6,7 +6,6 @@ import { fetchSupporters, toggleSupport } from '@/utils/apiClient';
 const Chat = ({ socket, isLoggedIn, isAdmin, username }) => {
   const [comments, setComments] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [popupUsername, setPopupUsername] = useState('');
   const [popupLinks, setPopupLinks] = useState([]);
   const [isUserSupported, setIsUserSupported] = useState(false);
@@ -32,10 +31,9 @@ const Chat = ({ socket, isLoggedIn, isAdmin, username }) => {
   }, [socket]);
 
   
-  const handleUsernameClick = async (clickedUsername, rect, links) => {
+  const handleUsernameClick = async (clickedUsername, links) => {
     setPopupUsername(clickedUsername);
     setPopupLinks(links || []);
-   setPopupPosition({ x: rect.left, y: rect.top });
     setShowPopup(true);
 
     try {
@@ -85,7 +83,6 @@ const Chat = ({ socket, isLoggedIn, isAdmin, username }) => {
         onClose={() => setShowPopup(false)}
         links={popupLinks}
         username={popupUsername}
-        position={popupPosition}
         isUserSupported={isUserSupported}
         onToggleSupport={handleToggleSupport}
         isAdmin={isAdmin}
