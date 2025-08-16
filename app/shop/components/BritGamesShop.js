@@ -100,7 +100,7 @@ const BritGamesShop = ({
             }
           >
             <option value="">Select a player</option>
-            {[...Array(8)].map((_, i) => (
+            {[...Array(6)].map((_, i) => (
               <option key={i} value={`Player ${i + 1}`}>
                 Player {i + 1}
               </option>
@@ -143,7 +143,7 @@ const BritGamesShop = ({
             }
           >
             <option value="">Select a player</option>
-            {[...Array(8)].map((_, i) => (
+            {[...Array(6)].map((_, i) => (
               <option key={i} value={`Player ${i + 1}`}>
                 Player {i + 1}
               </option>
@@ -185,7 +185,7 @@ const BritGamesShop = ({
             }
           >
             <option value="">Select a player</option>
-            {[...Array(8)].map((_, i) => (
+            {[...Array(6)].map((_, i) => (
               <option key={i} value={`Player ${i + 1}`}>
                 Player {i + 1}
               </option>
@@ -228,7 +228,7 @@ const BritGamesShop = ({
             }
           >
             <option value="">Select a player</option>
-            {[...Array(8)].map((_, i) => (
+            {[...Array(6)].map((_, i) => (
               <option key={i} value={`Player ${i + 1}`}>
                 Player {i + 1}
               </option>

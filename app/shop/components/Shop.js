@@ -150,7 +150,7 @@ const Shop = () => {
   
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
       }  else if (
-  name === 'Safety Boat' || name === 'Blackpool' || name === 'takeaway tonight' || name === 'fish chips' ||
+  name === 'Safety Boat' || name === 'Blackpool' ||
   ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice') && player)
 ) {
   await deductTokens(selectedTokens);
