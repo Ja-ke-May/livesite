@@ -493,3 +493,23 @@ export const fetchNotificationCount = async () => {
     throw new Error(error.response?.data?.message || 'Failed to fetch notification count');
   }
 };
+
+
+// Square Checkout
+export const createCheckout = async (sku, username) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post(
+      '/square/create-checkout',
+      { sku, username },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to create checkout');
+  }
+};
