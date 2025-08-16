@@ -15,6 +15,9 @@ export default function FlagShop() {
 
  const flags = [
   { code: "gb", name: "United Kingdom" }, 
+   { code: "gb-eng", name: "England" }, 
+    { code: "gb-sct", name: "Scotland" }, 
+     { code: "gb-wls", name: "Wales" }, 
   { code: "us", name: "United States" },   
   { code: "ca", name: "Canada" },
   { code: "au", name: "Australia" },
