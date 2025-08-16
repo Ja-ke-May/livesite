@@ -26,9 +26,9 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
       return;
     }
 
-    try {
+    try { 
+        await deductTokens(numAmount);
       await addTokensToGoal(pot, numAmount); 
-      await deductTokens(numAmount);
       await loadGoal(); 
       setShowModal(false);
       setAmount("");
@@ -82,7 +82,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
 
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-              <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-80 text-center">
+              <div className="bg-[#000110] p-6 rounded-lg shadow-lg w-80 text-center">
                 <h3 className="text-lg font-bold mb-3 text-white">
                   Add Tokens to {item}
                 </h3>
