@@ -155,7 +155,7 @@ useEffect(() => {
 
 
   return (
-    <div className="relative h-[300px] md:min-h-[340px] lg:min-h-[400px] xl:min-h-[480px] rounded text-center bg-transparent shadow-md w-full group">
+    <div className="relative h-[300px] md:h-[340px] lg:h-[400px] rounded text-center bg-transparent shadow-md w-full group">
         
       <h2 className="hidden">Live Viewer Component</h2>
       <video ref={mainVideoRef} autoPlay muted={isMuted} className="w-full h-full object-cover" />
@@ -266,7 +266,7 @@ useEffect(() => {
       )}
 
        {!state.liveUserId && !state.isCameraOn && (
-  <div className='pointer-events-auto cursor-pointer'>
+  <div className='w-full h-full flex justify-center pointer-events-auto cursor-pointer'>
   <UserLinkAds />
   </div>
   )
