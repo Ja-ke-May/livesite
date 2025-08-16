@@ -3,32 +3,26 @@ import { fetchTokenGoal, addTokensToGoal, deductTokens } from "@/utils/apiClient
 
 const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
   const [currentTokens, setCurrentTokens] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true); 
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState("");
 
-  const loadGoal = async () => {
+  const loadGoal = async (showLoader = false) => {
     try {
-      setLoading(true);
+      if (showLoader) setInitialLoad(true);
       const data = await fetchTokenGoal(pot);
       setCurrentTokens(data.currentTokens);
     } catch (err) {
       console.error(`Failed to load token goal for ${item}:`, err);
     } finally {
-      setLoading(false);
+      if (showLoader) setInitialLoad(false);
     }
   };
 
   const handleAddTokens = async () => {
     const numAmount = parseInt(amount, 10);
-    if (
-      isNaN(numAmount) ||
-      numAmount < 1 ||
-      numAmount > goal - currentTokens
-    ) {
-      alert(
-        `Please enter a valid amount between 1 and ${goal - currentTokens}`
-      );
+    if (isNaN(numAmount) || numAmount < 1 || numAmount > goal - currentTokens) {
+      alert(`Please enter a valid amount between 1 and ${goal - currentTokens}`);
       return;
     }
 
@@ -44,8 +38,11 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
   };
 
   useEffect(() => {
-    loadGoal();
-    const interval = setInterval(loadGoal, 20000); 
+    loadGoal(true);
+    const interval = setInterval(() => {
+      loadGoal(false);
+    }, 20000);
+
     return () => clearInterval(interval);
   }, [pot]);
 
@@ -53,7 +50,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
 
   return (
     <div className="w-full mt-4">
-      {loading ? (
+      {initialLoad ? (
         <p className="text-center text-xs text-gray-300">Loading...</p>
       ) : (
         <>
@@ -72,7 +69,6 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
 
           {isLoggedIn && username && (
             <div className="w-full flex justify-center">
-              {/* Add Tokens Button */}
               <button
                 onClick={() => setShowModal(true)}
                 className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
@@ -84,7 +80,6 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
             </div>
           )}
 
-          {/* Modal */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-80 text-center">
