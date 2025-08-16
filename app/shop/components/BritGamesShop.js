@@ -1,3 +1,5 @@
+import TokenGoal from "./TokenGoal";
+
 
 const BritGamesShop = ({
  selectedItem,
@@ -31,6 +33,53 @@ const BritGamesShop = ({
 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center px-6">
+
+        {/* Fish n Chips */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+          <h3 className="text-center text-xl font-semibold">Fish n Chips</h3>
+          <img
+            src="/images/fish_chips.png"
+            alt="Fish n Chips"
+            className="w-full h-40 object-contain mb-4 "
+          />
+
+            <TokenGoal 
+  item="Fish n Chips"
+  pot="fishnchips-pot"
+  goal={20000}
+  currentTokens={0} 
+    isPurchasing={isPurchasing}
+/>
+
+          
+
+        
+        </div>
+
+{/* Takeaway Tonight */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+          <h3 className="text-center text-xl font-semibold">Takeaway Tonight?</h3>
+          <img
+            src="https://cdn.pixabay.com/photo/2023/07/16/20/49/ai-generated-8131440_1280.png"
+            alt="takeaway food"
+            className="w-full h-40 object-contain"
+          />
+
+          <TokenGoal 
+  item="Takeaway Tonight"
+  pot="takeaway-pot"
+  goal={30000}
+  currentTokens={12000} 
+  isPurchasing={isPurchasing}
+/>
+
+          
+
+
+          
+        </div>
+
+
 
 {/* Cookie */}
         <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
@@ -203,58 +252,6 @@ const BritGamesShop = ({
         </div>
 
 
-{/* Fish n Chips */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
-          <h3 className="text-center text-xl font-semibold">Fish n Chips</h3>
-          <img
-            src="/images/fish_chips.png"
-            alt="Fish n Chips"
-            className="w-full h-40 object-contain mb-4 "
-          />
-          <p className="text-center text-sm mb-2 mt-2">Lovely</p>
-
-          {isLoggedIn && username && (
-            <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">20000 Tokens</p>
-              <button
-                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
-                  isPurchasing ? "animate-pulse" : ""
-                }`}
-                onClick={() => handlePurchaseClick("fish chips", 20000)}
-                disabled={isPurchasing}
-              >
-                Purchase
-              </button>
-            </div>
-          )}
-        </div>
-
-{/* Takeaway Tonight */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
-          <h3 className="text-center text-xl font-semibold">Takeaway Tonight?</h3>
-          <img
-            src="https://cdn.pixabay.com/photo/2023/07/16/20/49/ai-generated-8131440_1280.png"
-            alt="takeaway food"
-            className="w-full h-40 object-contain"
-          />
-          <p className="text-center text-sm mb-2 mt-2">BIG EATS!</p>
-
-          {isLoggedIn && username && (
-            <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">30000 Tokens</p>
-              <button
-                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
-                  isPurchasing ? "animate-pulse" : ""
-                }`}
-                onClick={() => handlePurchaseClick("takeaway tonight", 30000)}
-                disabled={isPurchasing}
-              >
-                Purchase
-              </button>
-            </div>
-          )}
-        </div>
-
 
 
         {/* Safety Boat */}
@@ -269,12 +266,12 @@ const BritGamesShop = ({
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">40000 Tokens</p>
+              <p className="text-yellow-400 brightness-125 mt-2">20000 Tokens</p>
               <button
                 className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
-                onClick={() => handlePurchaseClick("Safety Boat", 40000)}
+                onClick={() => handlePurchaseClick("Safety Boat", 20000)}
                 disabled={isPurchasing}
               >
                 Purchase
