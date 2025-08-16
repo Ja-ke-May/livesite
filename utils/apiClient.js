@@ -428,7 +428,43 @@ export const fetchUserAds = async () => {
 };
 
 
-// BritGames
+// BritGames 
+
+// Token Goal API
+
+export const fetchTokenGoal = async (pot) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.get(`/api/token-goal/${pot}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; 
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch token goal');
+  }
+};
+
+export const addTokensToGoal = async (pot, amount) => {
+  try {
+    const token = getToken();
+    const response = await axiosInstance.post(
+      `/api/token-goal/${pot}/add`,
+      { amount },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data; 
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to add tokens to goal');
+  }
+};
+
+
 
 export const sendPurchaseEmail = async (purchaseDetails) => {
   try {
