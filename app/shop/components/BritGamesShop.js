@@ -45,7 +45,7 @@ const BritGamesShop = ({
 
             <TokenGoal 
   item="Fish n Chips"
-  pot="fishnchips-pot"
+  pot="fishnchips"
   goal={20000}
     isPurchasing={isPurchasing} 
     isLoggedIn={isLoggedIn}
