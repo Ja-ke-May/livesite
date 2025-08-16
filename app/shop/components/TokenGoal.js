@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { fetchTokenGoal, addTokensToGoal, deductTokens } from "@/utils/apiClient"; 
 
-
 const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
   const [currentTokens, setCurrentTokens] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState("");
 
@@ -33,7 +33,6 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
     }
 
     try {
-
       await deductTokens(numAmount);
       await addTokensToGoal(pot, numAmount);
       await loadGoal(); 
@@ -45,16 +44,18 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
   };
 
   useEffect(() => {
-  loadGoal();
-  const interval = setInterval(loadGoal, 20000); 
-  return () => clearInterval(interval);
-}, [pot]);
+    loadGoal();
+    const interval = setInterval(loadGoal, 20000); 
+    return () => clearInterval(interval);
+  }, [pot]);
 
   const progress = Math.min((currentTokens / goal) * 100, 100);
 
   return (
     <div className="w-full mt-4">
-      
+      {loading ? (
+        <p className="text-center text-xs text-gray-300">Loading...</p>
+      ) : (
         <>
           <div className="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
             <div
@@ -62,24 +63,26 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
               style={{ width: `${progress}%` }}
             />
           </div>
+
           <p className="text-center text-xs text-white mt-1">
             {currentTokens.toLocaleString()} / {goal.toLocaleString()} Tokens
           </p>
 
           <p className="text-center text-sm mb-2 mt-2">Help Reach the Goal!</p>
 
- {isLoggedIn && username && (
-<div className="w-full flex justify-center">
-          {/* Add Tokens Button */}
-          <button
-            onClick={() => setShowModal(true)}
-            className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+          {isLoggedIn && username && (
+            <div className="w-full flex justify-center">
+              {/* Add Tokens Button */}
+              <button
+                onClick={() => setShowModal(true)}
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
-                }`}>
-            Add Tokens
-          </button>
-          </div>
- )}
+                }`}
+              >
+                Add Tokens
+              </button>
+            </div>
+          )}
 
           {/* Modal */}
           {showModal && (
@@ -98,7 +101,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
                   placeholder={`1 - ${goal - currentTokens}`}
                 />
                 <div className="flex gap-3 justify-center">
-                    <button
+                  <button
                     onClick={() => setShowModal(false)}
                     className="mt-4 bg-red-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-700"
                   >
@@ -106,18 +109,18 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
                   </button>
                   <button
                     onClick={handleAddTokens}
-                     className={`ml-2 mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600 ${isPurchasing ? 'animate-pulse' : ''}`}
-                
+                    className={`ml-2 mt-4 bg-yellow-400 font-bold brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600 ${
+                      isPurchasing ? "animate-pulse" : ""
+                    }`}
                   >
                     Confirm
                   </button>
-                
                 </div>
               </div>
             </div>
           )}
         </>
-      
+      )}
     </div>
   );
 };
