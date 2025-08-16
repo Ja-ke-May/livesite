@@ -48,7 +48,9 @@ const BritGamesShop = ({
   pot="fishnchips-pot"
   goal={20000}
   currentTokens={0} 
-    isPurchasing={isPurchasing}
+    isPurchasing={isPurchasing} 
+    isLoggedIn={isLoggedIn}
+  username={username}
 />
 
           
@@ -71,6 +73,8 @@ const BritGamesShop = ({
   goal={30000}
   currentTokens={12000} 
   isPurchasing={isPurchasing}
+  isLoggedIn={isLoggedIn}
+  username={username}
 />
 
           

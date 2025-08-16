@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchTokenGoal, addTokensToGoal, deductTokens } from "@/utils/apiClient"; 
 
 
-const TokenGoal = ({ item, pot, goal, isPurchasing }) => {
+const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
   const [currentTokens, setCurrentTokens] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -46,8 +46,10 @@ const TokenGoal = ({ item, pot, goal, isPurchasing }) => {
   };
 
   useEffect(() => {
-    loadGoal();
-  }, [pot]);
+  loadGoal();
+  const interval = setInterval(loadGoal, 10000); 
+  return () => clearInterval(interval);
+}, [pot]);
 
   const progress = Math.min((currentTokens / goal) * 100, 100);
 
@@ -69,15 +71,18 @@ const TokenGoal = ({ item, pot, goal, isPurchasing }) => {
 
           <p className="text-center text-sm mb-2 mt-2">Help Reach the Goal!</p>
 
+ {isLoggedIn && username && (
 <div className="w-full flex justify-center">
           {/* Add Tokens Button */}
           <button
             onClick={() => setShowModal(true)}
-            className="mt-2 bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-500 text-sm font-semibold"
-          >
+            className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}>
             Add Tokens
           </button>
           </div>
+ )}
 
           {/* Modal */}
           {showModal && (
