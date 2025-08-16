@@ -27,8 +27,8 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
     }
 
     try {
+      await addTokensToGoal(pot, numAmount); 
       await deductTokens(numAmount);
-      await addTokensToGoal(pot, numAmount);
       await loadGoal(); 
       setShowModal(false);
       setAmount("");
