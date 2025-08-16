@@ -266,7 +266,7 @@ useEffect(() => {
       )}
 
        {!state.liveUserId && !state.isCameraOn && (
-  <div className='w-full h-full flex justify-center pointer-events-auto cursor-pointer'>
+  <div className='w-full h-full pointer-events-auto cursor-pointer'>
   <UserLinkAds />
   </div>
   )
