@@ -4,7 +4,6 @@ import { fetchTokenGoal, addTokensToGoal, deductTokens } from "@/utils/apiClient
 
 const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
   const [currentTokens, setCurrentTokens] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState("");
 
@@ -47,7 +46,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
 
   useEffect(() => {
   loadGoal();
-  const interval = setInterval(loadGoal, 10000); 
+  const interval = setInterval(loadGoal, 20000); 
   return () => clearInterval(interval);
 }, [pot]);
 
@@ -55,9 +54,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
 
   return (
     <div className="w-full mt-4">
-      {loading ? (
-        <p className="text-center text-xs text-gray-300">Loading...</p>
-      ) : (
+      
         <>
           <div className="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
             <div
@@ -120,7 +117,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
             </div>
           )}
         </>
-      )}
+      
     </div>
   );
 };
