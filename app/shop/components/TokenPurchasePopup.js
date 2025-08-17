@@ -4,11 +4,8 @@ import { createCheckout } from '@/utils/apiClient';
 const TokenPurchasePopup = ({ onClose, username }) => {
   const tokenOptions = [
     { amount: 400, price: '£9.99', sku: 'tokens_400' },
-    { amount: 1000, price: '£19.99', sku: 'tokens_1000' },
     { amount: 2000, price: '£29.99', sku: 'tokens_2000' },
-    { amount: 4000, price: '£49.99', sku: 'tokens_4000' },
     { amount: 10000, price: '£99.99', sku: 'tokens_10000' },
-     { amount: 50000, price: '£249.99', sku: 'tokens_50000' },
     { amount: 150000, price: '£499.99', sku: 'tokens_150000' },
     { amount: 400000, price: '£999.99', sku: 'tokens_400000' },
     { amount: 1000000, price: '£1999.99', sku: 'tokens_1000000' },
