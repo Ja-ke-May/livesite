@@ -500,7 +500,7 @@ export const createCheckout = async (sku, username) => {
   try {
     const token = getToken();
     const response = await axiosInstance.post(
-      '/square/create-checkout',
+      '/api/square/create-checkout',
       { sku, username },
       {
         headers: {
