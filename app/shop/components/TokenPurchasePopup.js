@@ -30,12 +30,12 @@ const TokenPurchasePopup = ({ onClose, username }) => {
     <div className="fixed inset-0 bg-[#000110] bg-opacity-90 flex justify-center items-center z-50">
       <div className="bg-[#000110] p-6 rounded-md shadow-lg w-[300px]">
         <h2 className="text-lg font-semibold mb-2 text-center">Buy Tokens</h2>
-        <p className="m-2 bg-yellow-400 brightness-125 rounded text-[#000110] font-black text-center">
+        <p className="text-sm md:text-md m-2 bg-yellow-400 brightness-125 rounded text-[#000110] font-black text-center">
           SPECIAL OFFER! <br /> DOUBLE TOKENS!
         </p>
         <ul className="mt-4">
           {tokenOptions.map((option, index) => (
-            <li key={index} className="m-4 flex justify-between">
+            <li key={index} className="m-2 md:m-4 flex justify-between">
               <span className="text-yellow-400 brightness-125">
                 <span className="line-through text-yellow-400">
                   {option.amount / 2} Tokens

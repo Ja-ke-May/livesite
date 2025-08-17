@@ -268,12 +268,12 @@ const BritGamesShop = ({
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">20000 Tokens</p>
+              <p className="text-yellow-400 brightness-125 mt-2">40000 Tokens</p>
               <button
                 className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
-                onClick={() => handlePurchaseClick("Safety Boat", 20000)}
+                onClick={() => handlePurchaseClick("Safety Boat", 40000)}
                 disabled={isPurchasing}
               >
                 Purchase
@@ -295,12 +295,12 @@ const BritGamesShop = ({
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">500000 Tokens</p>
+              <p className="text-yellow-400 brightness-125 mt-2">1000000 Tokens</p>
               <button
                 className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
-                onClick={() => handlePurchaseClick("Blackpool", 500000)}
+                onClick={() => handlePurchaseClick("Blackpool", 1000000)}
                 disabled={isPurchasing}
               >
                 Purchase
