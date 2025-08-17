@@ -33,7 +33,7 @@ const TokenPurchasePopup = ({ onClose, username }) => {
         <p className="m-2 bg-yellow-400 brightness-125 rounded text-[#000110] font-black text-center">
           SPECIAL OFFER! <br /> DOUBLE TOKENS!
         </p>
-        <ul className="mt-4 grid grid-cols-2 gap-4">
+        <ul className="mt-4">
           {tokenOptions.map((option, index) => (
             <li key={index} className="m-4 flex justify-between">
               <span className="text-yellow-400 brightness-125">
