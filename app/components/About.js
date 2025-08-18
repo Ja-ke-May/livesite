@@ -40,7 +40,7 @@ const About = () => {
           <section className="mb-8">
             <h2 className='text-xl font-semibold mb-2'>Welcome to MyMe <span className='brightness-125'>⭐</span></h2>
             <p>
-              <strong>MyMe</strong> is a unique live streaming platform and community where the spotlight is always on YOU. Designed for aspiring creative professionals, entrepreneurs, and anyone with a passion to share, MyMe gives you the stage to showcase your ideas, talents, or business. Whether you're an artist, a startup founder, or someone with a message, MyMe offers an exciting and supportive environment to connect, grow, and shine.
+              <strong>MyMe</strong> is a unique live streaming platform and community where the spotlight is always on YOU. Designed for aspiring creative professionals, entrepreneurs and anyone with a passion to share, MyMe gives you the stage to showcase your ideas, talents, or business. Whether you're an artist, a startup founder, or someone with a message, MyMe offers an exciting and supportive environment to connect, grow, and shine.
             </p>
           </section>
 
@@ -58,7 +58,7 @@ const About = () => {
       <strong><span className='brightness-125'>⭐</span> Go Live:</strong> Start by joining the live queue using the yellow "JOIN" banner at the top of the home page. You can join for free or use a Fast Pass to jump to the front of the line.
     </p>
     <p className='mt-2'>
-      <strong><span className='brightness-125'>⭐</span> One Minute Spotlight:</strong> When your position 2 in the queue, you're next! Click "Preview Your Camera" when you see it and in a few seconds you'll be shown the green "GO LIVE" button. You start with 1 minute on the clock.
+      <strong><span className='brightness-125'>⭐</span> One Minute Spotlight:</strong> When you're position 2 in the queue, you're next! Click "Preview Your Camera" when you see it and in a few seconds you'll be shown the green "GO LIVE" button. You start with 1 minute on the clock.
     </p>
     <p className='mt-2'>
       <strong><span className='brightness-125'>⭐</span> Real-Time Voting:</strong> Viewers vote using a sliding bar. If the bar moves towards the star <span className='brightness-125'>⭐</span>, you get an extra minute and 100 tokens! If it reaches the red cross ❌, your stream ends, and the next person goes live.
