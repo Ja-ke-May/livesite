@@ -11,6 +11,7 @@ const BritGamesShop = ({
 }) => {
   
 
+const players = ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5", "Player 6"];
 
 
 
@@ -93,19 +94,20 @@ const BritGamesShop = ({
           />
           <p className="text-center text-sm mb-2">Feed Me Plz</p>
           <select
-            className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
-            value={selectedItem.name === "Biscuit" ? selectedItem.player : ""}
-            onChange={(e) =>
-              setSelectedItem({ name: "Biscuit", player: e.target.value })
-            }
-          >
-            <option value="">Select a player</option>
-            {[...Array(6)].map((_, i) => (
-              <option key={i} value={`Player ${i + 1}`}>
-                Player {i + 1}
-              </option>
-            ))}
-          </select>
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  value={selectedItem.name === "Biscuit" ? selectedItem.player : ""}
+  onChange={(e) =>
+    setSelectedItem({ name: "Biscuit", player: e.target.value })
+  }
+>
+  <option value="">Select a player</option>
+  {players.map((player, i) => (
+    <option key={i} value={player}>
+      {player}
+    </option>
+  ))}
+</select>
+
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
@@ -136,19 +138,20 @@ const BritGamesShop = ({
           />
           <p className="text-center text-sm mb-2">Got a Stick Mate?</p>
           <select
-            className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
-            value={selectedItem.name === "Brit Stick" ? selectedItem.player : ""}
-            onChange={(e) =>
-              setSelectedItem({ name: "Brit Stick", player: e.target.value })
-            }
-          >
-            <option value="">Select a player</option>
-            {[...Array(6)].map((_, i) => (
-              <option key={i} value={`Player ${i + 1}`}>
-                Player {i + 1}
-              </option>
-            ))}
-          </select>
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  value={selectedItem.name === "Brit Stick" ? selectedItem.player : ""}
+  onChange={(e) =>
+    setSelectedItem({ name: "Brit Stick", player: e.target.value })
+  }
+>
+  <option value="">Select a player</option>
+  {players.map((player, i) => (
+    <option key={i} value={player}>
+      {player}
+    </option>
+  ))}
+</select>
+
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
@@ -178,19 +181,20 @@ const BritGamesShop = ({
           />
           <p className="text-center text-sm mb-2">Time to SHINE!</p>
           <select
-            className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
-            value={selectedItem.name === "Sparkle Song" ? selectedItem.player : ""}
-            onChange={(e) =>
-              setSelectedItem({ name: "Sparkle Song", player: e.target.value })
-            }
-          >
-            <option value="">Select a player</option>
-            {[...Array(6)].map((_, i) => (
-              <option key={i} value={`Player ${i + 1}`}>
-                Player {i + 1}
-              </option>
-            ))}
-          </select>
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  value={selectedItem.name === "Sparkle Song" ? selectedItem.player : ""}
+  onChange={(e) =>
+    setSelectedItem({ name: "Sparkle Song", player: e.target.value })
+  }
+>
+  <option value="">Select a player</option>
+  {players.map((player, i) => (
+    <option key={i} value={player}>
+      {player}
+    </option>
+  ))}
+</select>
+
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
@@ -221,19 +225,20 @@ const BritGamesShop = ({
           />
           <p className="text-center text-sm mb-2">We're rolling!</p>
           <select
-            className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
-            value={selectedItem.name === "Roll Dice" ? selectedItem.player : ""}
-            onChange={(e) =>
-              setSelectedItem({ name: "Roll Dice", player: e.target.value })
-            }
-          >
-            <option value="">Select a player</option>
-            {[...Array(6)].map((_, i) => (
-              <option key={i} value={`Player ${i + 1}`}>
-                Player {i + 1}
-              </option>
-            ))}
-          </select>
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  value={selectedItem.name === "Roll Dice" ? selectedItem.player : ""}
+  onChange={(e) =>
+    setSelectedItem({ name: "Roll Dice", player: e.target.value })
+  }
+>
+  <option value="">Select a player</option>
+  {players.map((player, i) => (
+    <option key={i} value={player}>
+      {player}
+    </option>
+  ))}
+</select>
+
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
@@ -295,12 +300,12 @@ const BritGamesShop = ({
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">1000000 Tokens</p>
+              <p className="text-yellow-400 brightness-125 mt-2">2000000 Tokens</p>
               <button
                 className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
-                onClick={() => handlePurchaseClick("Blackpool", 1000000)}
+                onClick={() => handlePurchaseClick("Blackpool", 2000000)}
                 disabled={isPurchasing}
               >
                 Purchase

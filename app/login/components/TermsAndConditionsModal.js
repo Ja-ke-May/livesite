@@ -65,7 +65,7 @@ const TermsAndConditionsModal = ({ isOpen, onClose }) => {
           </p>
           <h3 className="text-lg font-semibold mt-4">7. Payment and Tokens</h3>
           <p>
-            Payments on MyMe are processed through Stripe. By purchasing tokens or any other services, you agree to Stripe’s terms and conditions. All token purchases are final, and no refunds will be provided for tokens bought with real money. If your account is banned, all tokens associated with your account will be forfeited.
+            Payments on MyMe are processed through Square. By purchasing tokens or any other services, you agree to Square’s terms and conditions. All token purchases are final, and no refunds will be provided for tokens bought with real money. If your account is banned, all tokens associated with your account will be forfeited.
           </p>
           <h3 className="text-lg font-semibold mt-4">8. User Agreement</h3>
           <div>
