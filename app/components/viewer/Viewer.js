@@ -29,7 +29,7 @@ const Viewer = ( { isAdmin, isBlocked } ) => {
     const socket = useRef(null);
     const timerIntervalRef = useRef(null);
     const [slidePosition, setSlidePosition] = useState(50);
-    const [slidePositionAmount, setSlidePositionAmount] = useState(5); 
+    const [slidePositionAmount, setSlidePositionAmount] = useState(2); 
     const [showQueueAlert, setShowQueueAlert] = useState(false);
     const [queuePosition, setQueuePosition] = useState(null);
     const [nextUsername, setNextUsername] = useState(null);

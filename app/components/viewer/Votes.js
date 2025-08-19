@@ -33,7 +33,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
 
       socket.on('go-live', () => {
         setSlidePosition(50);
-        setSlidePositionAmount(2.5);
+        setSlidePositionAmount(2);
       });
 
        socket.on('reset-votes', () => {
@@ -53,7 +53,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
   useEffect(() => {
     if (liveUserId === null) {
         setSlidePosition(50);
-        setSlidePositionAmount(2.5);
+        setSlidePositionAmount(2);
     } else if (liveUserId) {
         setClickedIcon(null);
         setHasVoted(false);
