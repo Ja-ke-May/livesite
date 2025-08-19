@@ -5,7 +5,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
   const [isPulsing, setIsPulsing] = useState(false);
   const [stars, setStars] = useState([]);
   const [clickedIcon, setClickedIcon] = useState(null);
-  const [hasVoted, setHasVoted] = useState(false); 
+  const [hasVoted, setHasVoted] = useState(true); 
   const [showBuyVotePrompt, setShowBuyVotePrompt] = useState(false); 
   const [loading, setLoading] = useState(false); 
 
@@ -34,6 +34,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       socket.on('go-live', () => {
         setSlidePosition(50);
         setSlidePositionAmount(2);
+        setHasVoted(false); 
       });
 
        socket.on('reset-votes', () => {
