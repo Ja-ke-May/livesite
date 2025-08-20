@@ -156,7 +156,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
   const handleRewardUser = async () => {
     if (liveUserId) {
       try {
-        await awardTokens(liveUserId, 100);
+        await awardTokens(liveUserId, 10);
       } catch (error) {
         console.error('Failed to award tokens:', error);
       }
