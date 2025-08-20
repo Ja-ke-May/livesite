@@ -61,7 +61,7 @@ const About = () => {
       <strong><span className='brightness-125'>⭐</span> One Minute Spotlight:</strong> When you're position 2 in the queue, you're next! Click "Preview Your Camera" when you see it and in a few seconds you'll be shown the green "GO LIVE" button. You start with 1 minute on the clock.
     </p>
     <p className='mt-2'>
-      <strong><span className='brightness-125'>⭐</span> Real-Time Voting:</strong> Viewers vote using a sliding bar. If the bar moves towards the star <span className='brightness-125'>⭐</span>, you get an extra minute and 100 tokens! If it reaches the red cross ❌, your stream ends, and the next person goes live.
+      <strong><span className='brightness-125'>⭐</span> Real-Time Voting:</strong> Viewers vote using a sliding bar. If the bar moves towards the star <span className='brightness-125'>⭐</span>, you get an extra minute and 10 tokens! If it reaches the red cross ❌, your stream ends, and the next person goes live.
     </p>
     <p className='mt-2'>
       <strong><span className='brightness-125'>⭐</span> Votes:</strong> Viewers get 1 free vote per minute. You can purchase additional votes for 10 tokens each to help promote your favorite users.
