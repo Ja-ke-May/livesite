@@ -67,7 +67,7 @@ const SignUpForm = () => {
       const data = await response.json();
       setUsernameAvailable(data.available);
     } catch (error) {
-      console.error('Error checking username:', error);
+      
       setUsernameAvailable(false);
     } finally {
       setUsernameChecking(false);

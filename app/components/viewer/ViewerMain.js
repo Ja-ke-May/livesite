@@ -45,7 +45,7 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
           const userProfile = await fetchUserProfile(upNext);
           setProfilePicture(userProfile.profilePicture ? `data:image/jpeg;base64,${userProfile.profilePicture}` : '/images/logo.jpg');
         } catch (error) {
-          console.error('Failed to fetch user profile:', error);
+          
           setProfilePicture('/images/logo.jpg');  
         }
       }
@@ -98,7 +98,7 @@ const ViewerMain = ({ mainVideoRef, state, handleGoLiveClick, upNext, liveUserId
             setLinks(userProfile.links || []);
             setIsUserSupported(supportersData.isUserSupported);
         } catch (error) {
-            console.error('Failed to fetch user data:', error);
+           
         } finally {
             setLoadingLinks(false);
         }
@@ -118,7 +118,7 @@ const handleToggleSupport = useCallback(async () => {
     const recentActivityData = await fetchRecentActivity(liveUserId);
     setRecentActivity(recentActivityData);
   } catch (error) {
-    console.error('Failed to toggle support status:', error.message);
+   
     setIsUserSupported(!newIsUserSupported);
   }
 }, [isUserSupported, liveUserId]); 

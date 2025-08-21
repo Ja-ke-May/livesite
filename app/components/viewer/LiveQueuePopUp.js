@@ -25,7 +25,7 @@ const LiveQueuePopUp = forwardRef(({ visible, onClose, onJoin, queueLength }, re
         onJoin(true); 
         onClose(); 
       } catch (error) {
-        console.error("You don't have enough tokens:", error);
+       
       setErrorMessage(error.message || "You don't have enough tokens");
       } finally {
         setLoading(false); 

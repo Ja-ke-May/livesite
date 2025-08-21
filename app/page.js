@@ -86,7 +86,7 @@ const HomeContent = () => {
   
           audio.play().catch((err) => {
             if (err.name === 'NotAllowedError' || err.name === 'DOMException') {
-              console.error('Autoplay was prevented. Waiting for user interaction to play the audio.');
+              
   
               const playOnInteraction = () => {
                 audio.play().catch(error => console.error('Error playing audio:', error));
@@ -100,11 +100,11 @@ const HomeContent = () => {
               document.addEventListener('keydown', playOnInteraction);
               document.addEventListener('scroll', playOnInteraction);
             } else {
-              console.error('Error playing audio:', err);
+              
             }
           });
         } catch (err) {
-          console.error('Error handling received audio:', err);
+          
         }
       });
   

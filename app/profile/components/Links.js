@@ -25,7 +25,7 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn, usernameColor, comment
       setNewLinkImage(null);
       setShowAddLinkForm(false);
     } catch (error) {
-      console.error('Error adding link:', error);
+      
     }
   }, [newLinkText, newLinkUrl, newLinkImage, setLinks]);
 
@@ -34,7 +34,7 @@ const LinksSection = ({ links = [], setLinks, isLoggedIn, usernameColor, comment
       const updatedLinks = await deleteLink(linkId);
       setLinks(updatedLinks);
     } catch (error) {
-      console.error('Error deleting link:', error);
+      
     }
   }, [setLinks]);
 
