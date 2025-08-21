@@ -242,7 +242,7 @@ const Viewer = ( { isAdmin, isBlocked } ) => {
                 console.warn("Peer connection is not in a stable state to accept an offer.");
             }
         } catch (error) {
-            console.error("Error handling offer:", error);
+            
         }
     };
 

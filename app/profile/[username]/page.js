@@ -75,7 +75,7 @@ const [profileFlag, setProfileFlag] = useState('');
         setProfileFlag(userProfile.flag || ''); 
 
       } catch (error) {
-        console.error('Failed to load user profile:', error);
+        
       } finally {
         setIsLoading(false);
       }
@@ -88,7 +88,7 @@ const [profileFlag, setProfileFlag] = useState('');
         const recentActivityData = await fetchRecentActivity(profileUsername);
         setRecentActivity(recentActivityData);
       } catch (error) {
-        console.error('Failed to fetch recent activity:', error);
+        
       }
     }, 10000); 
 
@@ -110,7 +110,7 @@ const [profileFlag, setProfileFlag] = useState('');
       const recentActivityData = await fetchRecentActivity(profileUsername);
       setRecentActivity(recentActivityData);
     } catch (error) {
-      console.error('Failed to toggle support status:', error.message);
+      
       setIsUserSupported(!newIsUserSupported);
       setSupportersCount(supportersCount);
     }
@@ -123,7 +123,7 @@ const [profileFlag, setProfileFlag] = useState('');
         const response = await updateProfilePicture(file);
         setProfilePicture(response.profilePicture ? `data:image/jpeg;base64,${response.profilePicture}` : '/images/logo.jpg');
       } catch (error) {
-        console.error('Failed to update profile picture:', error);
+        
         setProfilePicture('/images/logo.jpg');
       }
     }

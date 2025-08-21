@@ -90,7 +90,7 @@ const ProfileInfo = ({
       handleBioChange({ target: { value: updatedUser.bio } });
       setShowBioInput(false);
     } catch (error) {
-      console.error('Failed to update bio:', error);
+     
     }
   };
 
@@ -106,10 +106,10 @@ const ProfileInfo = ({
       try {
         await handleFileChange(e); 
       } catch (error) {
-        console.error('Failed to update profile picture:', error);
+        
       }
     } else {
-      console.error('Failed to retrieve file from event');
+      
     }
   };
 

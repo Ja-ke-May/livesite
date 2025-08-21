@@ -39,7 +39,7 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
       setLinks(userProfile.links || []);
       setIsUserSupported(supportersData.isUserSupported);
     } catch (error) {
-      console.error('Failed to fetch user data:', error);
+      
     } finally {
       setLoadingLinks(false);
     }
@@ -56,7 +56,7 @@ const UserCommentBox = ({ isLoggedIn, username, comment, time, commentColor, bor
       const recentActivityData = await fetchRecentActivity(username);
       setRecentActivity(recentActivityData);
     } catch (error) {
-      console.error('Failed to toggle support status:', error.message);
+      
       setIsUserSupported(!newIsUserSupported);
     }
   }, [isUserSupported, username]);

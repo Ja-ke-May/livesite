@@ -22,7 +22,7 @@ const SendTokensPopUp = forwardRef(({ visible, onClose, recipientUsername }, ref
       await sendTokens(recipientUsername, tokenAmount);
       onClose();
     } catch (error) {
-      console.error('Failed to send:', error);
+      
       setErrorMessage(error.message || 'Failed to send');
     } finally {
       setLoading(false); 

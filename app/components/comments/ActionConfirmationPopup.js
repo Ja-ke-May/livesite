@@ -112,7 +112,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username,
         const audio = new Audio(audioUrl);
         setConfirmVisible(false);
         audio.play().catch(err => {
-          console.error('Error playing audio:', err);
+          
           setError('Error playing audio, please try again.');
         });
 
@@ -130,7 +130,7 @@ const ActionConfirmationPopup = forwardRef(({ action, onClose, socket, username,
         }
       } catch (error) {
         setError('Failed to deduct tokens. Please try again.');
-        console.error('Error deducting tokens:', error);
+        
       }
     }
   };

@@ -21,7 +21,7 @@ const LogInForm = ({ setShowForgotPasswordModal }) => {
       setErrorMessage('');
       window.location.href = `/profile/${data.username}`; 
     } catch (error) {
-      console.error('Login error:', error.message);
+      
       setErrorMessage(error.message || 'An unknown error occurred');
       setIsLoading(false);
     }

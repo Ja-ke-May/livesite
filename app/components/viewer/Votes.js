@@ -116,7 +116,7 @@ const Votes = ({ slidePosition, slidePositionAmount, setSlidePosition, setSlideP
       setHasVoted(false);
       setLoading(false);
     } catch (error) {
-      console.error('Failed to deduct tokens:', error);
+      
     }
   };
 
