@@ -45,7 +45,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           />
 
             <TokenGoal 
-            className="hidden" 
+            
   item="Fish n Chips"
   pot="fishnchips"
   goal={20000}
@@ -69,7 +69,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           />
 
           <TokenGoal 
-          className="hidden"
+          
   item="Takeaway Tonight"
   pot="takeaway-pot"
   goal={30000} 
