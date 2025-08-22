@@ -49,7 +49,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
   const progress = Math.min((currentTokens / goal) * 100, 100);
 
   return (
-    <div className="hidden w-full mt-4">
+    <div className="w-full mt-4">
       {initialLoad ? (
         <p className="text-center text-xs text-gray-300">Loading...</p>
       ) : (
@@ -71,7 +71,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
             <div className="w-full flex justify-center">
               <button
                 onClick={() => setShowModal(true)}
-                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                className={`hidden mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
               >
