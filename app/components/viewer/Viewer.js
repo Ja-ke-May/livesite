@@ -573,7 +573,7 @@ const Viewer = ( { isAdmin, isBlocked } ) => {
             <button className="mb-2 pt-1 h-8 bg-gradient-to-tr from-red-600 via-white to-blue-600 w-full font-bold text-md md:text-md text-center text-[#000110] brightness-125 rounded relative"
             onClick={() => (window.location.href = '/shop')}
             >
-                BRITGAMES - Coming Soon...
+                BRITGAMES - Aug 29-31
             </button>
             <div className="group"> 
                 <ViewerMain
