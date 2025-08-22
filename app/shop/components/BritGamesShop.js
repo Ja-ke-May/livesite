@@ -298,7 +298,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
             alt="Blackpool"
             className="w-full h-40 object-contain rounded-full"
           />
-          <p className="text-center text-sm mt-2 mb-2">The gang goes on holiday</p>
+          <p className="text-center text-sm mt-2 mb-2">Nothing beats a Blackpool holiday</p>
 
           {isLoggedIn && username && (
             <div className="text-center flex flex-col flex-end">
