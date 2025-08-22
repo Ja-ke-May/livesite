@@ -300,20 +300,15 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           />
           <p className="text-center text-sm mt-2 mb-2">Nothing beats a Blackpool holiday</p>
 
-          {isLoggedIn && username && (
-            <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">2000000 Tokens</p>
-              <button
-                className={`hidden mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
-                  isPurchasing ? "animate-pulse" : ""
-                }`}
-                onClick={() => handlePurchaseClick("Blackpool", 2000000)}
-                disabled={isPurchasing}
-              >
-                Purchase
-              </button>
-            </div>
-          )}
+           <TokenGoal 
+          
+  item="blackpool"
+  pot="blackpool"
+  goal={2000000} 
+  isPurchasing={isPurchasing}
+  isLoggedIn={isLoggedIn}
+  username={username}
+/>
         </div>
       </div>
 
