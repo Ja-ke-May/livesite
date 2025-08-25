@@ -11,7 +11,7 @@ const BritGamesShop = ({
 }) => {
   
 
-const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "Roxy"];
+const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "Roxey"];
 
 
 

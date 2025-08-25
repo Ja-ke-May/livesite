@@ -318,9 +318,7 @@ else {
             )}
           </div>
 
-<div classname="mt-4">
           <UserLinkAds />
-          </div>
         </div>
 
 
