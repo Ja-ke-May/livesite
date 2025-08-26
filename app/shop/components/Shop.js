@@ -278,7 +278,7 @@ else {
         <hr className='mt-10' />
 
         
-        <div className="relative h-[400px] md:h-[450px] w-full z-10">
+        <div className="relative h-[410px] md:h-[460px] w-full z-10">
           <div className="p-20 md:p-40 text-center">
             <p className="text-xl">Feature your links between streamers for 24 hours!</p>
             {isLoggedIn && username && adsCount < 15 && ( 
