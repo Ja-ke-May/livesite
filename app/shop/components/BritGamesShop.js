@@ -96,7 +96,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           />
           <p className="text-center text-sm mb-2">Feed Me Plz</p>
           <select
-  className="hidden mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
   value={selectedItem.name === "Biscuit" ? selectedItem.player : ""}
   onChange={(e) =>
     setSelectedItem({ name: "Biscuit", player: e.target.value })
@@ -115,7 +115,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
             <div className="text-center flex flex-col flex-end">
               <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
               <button
-                className={`hidden mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
                 onClick={() =>
@@ -140,7 +140,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           />
           <p className="text-center text-sm mb-2">Got a Stick Mate?</p>
           <select
-  className="hidden mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
   value={selectedItem.name === "Brit Stick" ? selectedItem.player : ""}
   onChange={(e) =>
     setSelectedItem({ name: "Brit Stick", player: e.target.value })
@@ -159,7 +159,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
             <div className="text-center flex flex-col flex-end">
               <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
               <button
-                className={`hidden mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
                 onClick={() =>
@@ -183,7 +183,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           />
           <p className="text-center text-sm mb-2">Time to SHINE!</p>
           <select
-  className="hidden mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
   value={selectedItem.name === "Sparkle Song" ? selectedItem.player : ""}
   onChange={(e) =>
     setSelectedItem({ name: "Sparkle Song", player: e.target.value })
@@ -202,7 +202,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
             <div className="text-center flex flex-col flex-end">
               <p className="text-yellow-400 brightness-125 mt-2">1000 Tokens</p>
               <button
-                className={`hidden mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
                 onClick={() =>
@@ -227,7 +227,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           />
           <p className="text-center text-sm mb-2">We're rolling!</p>
           <select
-  className="hidden mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
   value={selectedItem.name === "Roll Dice" ? selectedItem.player : ""}
   onChange={(e) =>
     setSelectedItem({ name: "Roll Dice", player: e.target.value })
@@ -246,7 +246,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
             <div className="text-center flex flex-col flex-end">
               <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
               <button
-                className={`hidden mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
                 onClick={() =>
@@ -277,7 +277,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
             <div className="text-center flex flex-col flex-end">
               <p className="text-yellow-400 brightness-125 mt-2">40000 Tokens</p>
               <button
-                className={`hidden mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
                 onClick={() => handlePurchaseClick("Safety Boat", 40000)}

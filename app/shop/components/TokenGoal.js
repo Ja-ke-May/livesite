@@ -71,7 +71,7 @@ const TokenGoal = ({ item, pot, goal, isPurchasing, isLoggedIn, username }) => {
             <div className="w-full flex justify-center">
               <button
                 onClick={() => setShowModal(true)}
-                className={`hidden mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
                   isPurchasing ? "animate-pulse" : ""
                 }`}
               >
