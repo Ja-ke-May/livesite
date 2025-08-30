@@ -38,7 +38,7 @@ const TokenPurchasePopup = ({ onClose, username }) => {
             <li key={index} className="m-2 md:m-4 flex justify-between">
               <span className="text-yellow-400 brightness-125">
                 <span className="line-through text-yellow-400">
-                  {option.amount / 2} Tokens
+                  {option.amount / 4} Tokens
                 </span>{' '}
                 <br />
                 {option.amount} Tokens <br />
