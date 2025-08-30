@@ -303,7 +303,31 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           )}
         </div>
 
+{/* Hermit Wisdom */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+          <h3 className="text-center text-xl font-semibold">Hermit Wisdom</h3>
+          <img
+            src="https://cdn.pixabay.com/photo/2025/02/02/17/46/man-9377284_1280.jpg"
+            alt="Hermit Wisdom"
+            className="w-full h-40 object-contain"
+          />
+          <p className="text-center text-sm mb-2 mt-2">He Knows...</p>
 
+          {isLoggedIn && username && (
+            <div className="text-center flex flex-col flex-end">
+              <p className="text-yellow-400 brightness-125 mt-2">500 Tokens</p>
+              <button
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}
+                onClick={() => handlePurchaseClick("Hermit Wisdom", 500)}
+                disabled={isPurchasing}
+              >
+                Purchase
+              </button>
+            </div>
+          )}
+        </div>
 
 
         {/* Safety Boat */}
