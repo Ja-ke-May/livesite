@@ -307,7 +307,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
         <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-xl font-semibold">Hermit Wisdom</h3>
           <img
-            src="https://cdn.pixabay.com/photo/2025/02/02/17/46/man-9377284_1280.jpg"
+            src="/images/hermit-britgames.png"
             alt="Hermit Wisdom"
             className="w-full h-40 object-contain"
           />
