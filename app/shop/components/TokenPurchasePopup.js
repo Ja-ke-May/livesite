@@ -3,12 +3,12 @@ import { createCheckout } from '@/utils/apiClient';
 
 const TokenPurchasePopup = ({ onClose, username }) => {
   const tokenOptions = [
-    { amount: 400, price: '£9.99', sku: 'tokens_400' },
-    { amount: 2000, price: '£29.99', sku: 'tokens_2000' },
-    { amount: 10000, price: '£99.99', sku: 'tokens_10000' },
-    { amount: 150000, price: '£499.99', sku: 'tokens_150000' },
-    { amount: 400000, price: '£999.99', sku: 'tokens_400000' },
-    { amount: 1000000, price: '£1999.99', sku: 'tokens_1000000' },
+    { amount: 800, price: '£9.99', sku: 'tokens_400' },
+    { amount: 4000, price: '£29.99', sku: 'tokens_2000' },
+    { amount: 20000, price: '£99.99', sku: 'tokens_10000' },
+    { amount: 300000, price: '£499.99', sku: 'tokens_150000' },
+    { amount: 800000, price: '£999.99', sku: 'tokens_400000' },
+    { amount: 2000000, price: '£1999.99', sku: 'tokens_1000000' },
     
   ];
 
@@ -31,7 +31,7 @@ const TokenPurchasePopup = ({ onClose, username }) => {
       <div className="bg-[#000110] p-6 rounded-md shadow-lg w-[300px]">
         <h2 className="text-lg font-semibold mb-2 text-center">Buy Tokens</h2>
         <p className="text-sm md:text-md m-2 bg-yellow-400 brightness-125 rounded text-[#000110] font-black text-center">
-          SPECIAL OFFER! <br /> DOUBLE TOKENS!
+          BRITGAMES! <br /> QUADRUPLE TOKENS!
         </p>
         <ul className="mt-4">
           {tokenOptions.map((option, index) => (
