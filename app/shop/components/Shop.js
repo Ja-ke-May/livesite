@@ -263,7 +263,7 @@ else {
 
  )}
 
-<div className=''>
+<div className='hidden'>
     <BritGamesShop
   selectedItem={selectedItem}
   setSelectedItem={setSelectedItem}
