@@ -151,12 +151,12 @@ const Shop = () => {
         setPurchaseStatus({ message: `Success! Your link has been featured in ads for 24 hours.`, type: 'success' });
       }  else if (
   name === 'Safety Boat' || name === 'Starlink' || name === 'Hermit Wisdom'|| 
-  ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice' || name === 'crucifixion') && player)
+  ((name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice' || name === 'crucifixion' || name === 'Elixir') && player)
 ) {
   await deductTokens(selectedTokens);
 
   const message =
-    (name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice' || name === 'crucifixion') && player
+    (name === 'Brit Stick' || name === 'Biscuit' || name === 'Sparkle Song' || name === 'Roll Dice' || name === 'crucifixion' || name === 'Elixir') && player
       ? `Success! You purchased ${name} for ${player}.`
       : `Success! You purchased ${name}.`;
   
