@@ -303,6 +303,49 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           )}
         </div>
 
+        {/* Elixir */}
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+          <h3 className="text-center text-lg font-semibold">Shot of Elixir</h3>
+          <img
+            src="/images/elixir.png"
+            alt="Elixir"
+            className="w-full h-40 object-contain mb-4 "
+          />
+          <p className="text-center text-sm mb-2">Shots, Shots, Shot Shot...</p>
+          <select
+  className="mt-2 bg-gray-900 text-white p-2 rounded-md shadow-sm w-full"
+  value={selectedItem.name === "Elixir" ? selectedItem.player : ""}
+  onChange={(e) =>
+    setSelectedItem({ name: "Elixir", player: e.target.value })
+  }
+>
+  <option value="">Select a player</option>
+  {players.map((player, i) => (
+    <option key={i} value={player}>
+      {player}
+    </option>
+  ))}
+</select>
+
+
+          {isLoggedIn && username && (
+            <div className="text-center flex flex-col flex-end">
+              <p className="text-yellow-400 brightness-125 mt-2">400 Tokens</p>
+              <button
+                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
+                  isPurchasing ? "animate-pulse" : ""
+                }`}
+                onClick={() =>
+                  handlePurchaseClick("Elixir", 400, selectedItem.player)
+                }
+                disabled={isPurchasing || !selectedItem.player}
+              >
+                Purchase
+              </button>
+            </div>
+          )}
+        </div>
+
 {/* Hermit Wisdom */}
         <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-xl font-semibold">Hermit Wisdom</h3>
