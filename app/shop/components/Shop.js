@@ -251,7 +251,7 @@ else {
 
         
         {isLoggedIn && username && (
-        <div className="mt-4 w-full flex items-center justify-center">
+        <div className="hidden mt-4 w-full flex items-center justify-center">
           <button
             onClick={handleBuyTokens}
             className="bg-yellow-400 font-black brightness-125 text-[#000110] px-4 py-2 rounded-md shadow-sm hover:bg-yellow-600"
