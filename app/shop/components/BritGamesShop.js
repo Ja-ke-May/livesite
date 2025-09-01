@@ -24,7 +24,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
         className="w-6 h-4  mx-auto mb-2"
       />
       <h2 className="text-center text-xl mb-2 font-black text-black flex items-center justify-center gap-2">
-        Limited Edition - BRITGAMES!
+        BRITGAMES!
       </h2>
       <img
         src="https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg"
@@ -36,7 +36,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center px-6">
 
         {/* Fish n Chips */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-xl font-semibold">Fish n Chips</h3>
           <img
             src="/images/fish_chips.png"
@@ -60,7 +60,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
         </div>
 
 {/* Takeaway Tonight */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-xl font-semibold">Takeaway Tonight?</h3>
           <img
             src="https://cdn.pixabay.com/photo/2023/07/16/20/49/ai-generated-8131440_1280.png"
@@ -87,7 +87,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
 
 
 {/* Cookie */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2">
           <h3 className="text-center text-lg font-semibold">Biscuit</h3>
           <img
             src="/images/cookie-britgames.png"
@@ -131,7 +131,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
 
 
         {/* Brit Stick */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2">
           <h3 className="text-center text-lg font-semibold">Brit Stick</h3>
           <img
             src="/images/stick-britgames.png"
@@ -174,7 +174,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
         </div>
 
 {/* Sparkle Song */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2">
           <h3 className="text-center text-lg font-semibold">Sparkle Song</h3>
           <img
             src="/images/sparkle-britgames.png"
@@ -218,7 +218,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
 
 
 {/* Roll Dice */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2">
           <h3 className="text-center text-lg font-semibold">Roll D20</h3>
           <img
             src="/images/roll-britgames.png"
@@ -261,7 +261,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
         </div>
 
         {/* crucifixion */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2">
           <h3 className="text-center text-lg font-semibold">Crucifixion</h3>
           <img
             src="/images/cross.png"
@@ -304,7 +304,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
         </div>
 
         {/* Elixir */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2">
           <h3 className="text-center text-lg font-semibold">Shot of Elixir</h3>
           <img
             src="/images/elixir.png"
@@ -347,7 +347,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
         </div>
 
 {/* Hermit Wisdom */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-xl font-semibold">Hermit Wisdom</h3>
           <img
             src="/images/hermit-britgames.png"
@@ -374,7 +374,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
 
 
         {/* Safety Boat */}
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-xl font-semibold">Safety Boat</h3>
           <img
             src="https://cdn.pixabay.com/photo/2013/07/13/12/19/dinghy-159624_1280.png"
@@ -399,7 +399,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           )}
         </div>
 
-        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-xl font-semibold">Starlink</h3>
           <img
             src="/images/starlink.png"
