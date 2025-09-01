@@ -399,7 +399,7 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           )}
         </div>
 
-        <div className="hidden bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
+        <div className="bg-gray-800/80 p-4 rounded-md shadow-md border-2 flex flex-col justify-between h-full">
           <h3 className="text-center text-xl font-semibold">Starlink</h3>
           <img
             src="/images/starlink.png"
@@ -408,20 +408,16 @@ const players = ["Oddwin", "Lou", "Lad(Michael)", "Hermit(Michael)", "Lentil", "
           />
           <p className="text-center text-sm mb-2 mt-2">They NEED this...</p>
 
-          {isLoggedIn && username && (
-            <div className="text-center flex flex-col flex-end">
-              <p className="text-yellow-400 brightness-125 mt-2">150000 Tokens</p>
-              <button
-                className={`mt-2 bg-yellow-400 font-bold text-[#000110] px-4 py-2 rounded-md hover:bg-yellow-600 ${
-                  isPurchasing ? "animate-pulse" : ""
-                }`}
-                onClick={() => handlePurchaseClick("Starlink", 150000)}
-                disabled={isPurchasing}
-              >
-                Purchase
-              </button>
-            </div>
-          )}
+          <TokenGoal 
+          
+  item="starlink"
+  pot="starlink"
+  goal={150000} 
+  isPurchasing={isPurchasing}
+  isLoggedIn={isLoggedIn}
+  username={username}
+/>
+
         </div>
       
 
